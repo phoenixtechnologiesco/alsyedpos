@@ -1,0 +1,16 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// @import "node_modules/font-awesome/scss/font-awesome.scss";
+@import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "node_modules/@coreui/coreui-pro-old/scss/coreui";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+// If you want to add something do it here
+@import "custom";

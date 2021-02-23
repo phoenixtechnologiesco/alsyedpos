@@ -1,0 +1,969 @@
+@charset "UTF-8";
+
+/*!
+ * Font Awesome Free 5.15.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+
+.full-page>.content,
+.full-page>.footer {
+    position: relative;
+    z-index: 4;
+}
+
+.full-page.section-image {
+    position: initial;
+}
+
+.full-page .footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+.full-page>.content {
+    padding-bottom: 150px;
+    padding-top: 150px;
+    width: 100%;
+}
+
+.full-page .footer .container {
+    color: #FFFFFF;
+}
+
+.wrapper {
+    position: relative;
+    top: 0;
+    height: 100vh;
+}
+
+.wrapper.wrapper-full-page {
+    min-height: 100vh;
+    height: auto;
+}
+
+.full-page .full-page-background {
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    display: block;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center center;
+}
+
+.full-page:after {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    left: 0;
+    top: 0;
+    content: "";
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.full-page.register-page .info-horizontal {
+    padding: 0px 0px 20px;
+}
+
+.full-page.register-page .info-horizontal {
+    text-align: left !important;
+}
+
+.full-page.register-page .info-horizontal .icon {
+    margin-top: 0;
+}
+
+.full-page.register-page .info-horizontal .icon>i {
+    font-size: 2em;
+}
+
+.full-page.register-page .info-horizontal .icon.icon-circle {
+    width: 65px;
+    height: 65px;
+    max-width: 65px;
+    margin-top: 8px;
+}
+
+.full-page.register-page .info-horizontal .icon.icon-circle i {
+    display: table;
+    margin: 0 auto;
+    line-height: 3.5;
+    font-size: 1.9em;
+}
+
+.full-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-page.register-page .info-horizontal .description {
+    overflow: hidden;
+}
+
+.section-image {
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+    width: 100%;
+}
+
+.section-image .title,
+.section-image .card-plain .card-title {
+    color: #FFFFFF;
+}
+
+.section-image .nav-pills .nav-link {
+    background-color: #FFFFFF;
+}
+
+.section-image .nav-pills .nav-link:hover,
+.section-image .nav-pills .nav-link:focus {
+    background-color: #FFFFFF;
+}
+
+.section-image .info-title,
+.section-image .info-area.info-horizontal .icon i,
+.section-image .card-pricing.card-plain ul li {
+    color: #FFFFFF;
+}
+
+.section-image .description,
+.section-image .info-area .icon:not(.icon-circle) {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.section-image .card:not(.card-plain) .info-title {
+    color: #2c2c2c;
+}
+
+.section-image .card:not(.card-plain) .info-area p,
+.section-image .card:not(.card-plain) .info-area .icon,
+.section-image .card:not(.card-plain) .description {
+    color: #9A9A9A;
+}
+
+.section-image .footer {
+    color: #FFFFFF;
+}
+
+.section-image .card-plain [class*="text-"],
+.section-image .card-plain ul li b {
+    color: #FFFFFF;
+}
+
+.section-image .card-plain .category {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.section-image:after {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    left: 0;
+    top: 0;
+    content: "";
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.section-image .container {
+    z-index: 2;
+    position: relative;
+}
+
+.logo {
+    position: relative;
+    padding: 0.5rem 0.7rem;
+    z-index: 4;
+}
+
+.logo a.logo-mini {
+    opacity: 1;
+    float: left;
+    width: 34px;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 12px;
+}
+
+.logo a.logo-normal {
+    display: block;
+    opacity: 1;
+    -webkit-transform: translate3d(0px, 0, 0);
+    transform: translate3d(0px, 0, 0);
+}
+
+.logo:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    height: 1px;
+    width: calc(100% - 30px);
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.logo p {
+    float: left;
+    font-size: 20px;
+    margin: 10px 10px;
+    color: #FFFFFF;
+    line-height: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.logo .simple-text {
+    text-transform: uppercase;
+    padding: 0.5rem 0;
+    display: block;
+    white-space: nowrap;
+    font-size: 1em;
+    color: #FFFFFF;
+    /* color: #000000; */
+    text-decoration: none;
+    font-weight: 400;
+    line-height: 30px;
+    overflow: hidden;
+}
+
+.table .firstcol{
+    padding: 0.3rem;
+    padding-left: 25px;
+    padding-right: 2.5px;
+    vertical-align: top;
+    border-top: 0px solid;
+    border-top-color: #d8dbe0;
+}
+.table .midcol{
+    padding: 0.3rem;
+    padding-left: 17px;
+    padding-right: 2.5px;
+    vertical-align: top;
+    border-top: 0px solid;
+    border-top-color: #d8dbe0;
+}
+.table .mycol {
+    padding: 0.3rem;
+    padding-left: 2.5px;
+    padding-right: 2.5px;
+    vertical-align: top;
+    border-top: 0px solid;
+    border-top-color: #d8dbe0;
+}
+.table .lastcol {
+    padding: 0.3rem;
+    padding-left: 2.5px;
+    padding-right: 25px;
+    vertical-align: top;
+    border-top: 0px solid;
+    border-top-color: #d8dbe0;
+}
+.table .singlecol {
+    padding: 0.3rem;
+    padding-left: 25px;
+    padding-right: 25px;
+    vertical-align: top;
+    border-top: 0px solid;
+    border-top-color: #d8dbe0;
+}
+
+  /* .table .thead-dark .pos {
+    position: sticky !important;
+    top:0 !important;
+    z-index:1 !important;
+  } */
+
+  thead {
+    /* display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit; */
+    position: sticky !important;
+    top:0 !important;
+    z-index:1 !important;
+  }
+
+  .form-control-pos-1 {
+    /* display: block; */
+    /* width: 100%; */
+    width: 50px;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid;
+    color: #5c6873;
+    background-color: #fff;
+    border-color: #e4e7ea;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .form-control-pos-2 {
+    /* display: block; */
+    /* width: 100%; */
+    width: 100px;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid;
+    color: #5c6873;
+    background-color: #fff;
+    border-color: #e4e7ea;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .card-body-custom {
+    -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+    min-height: 1px;
+    padding: 0.60rem;
+  }
+
+  .card-footer-custom {
+    padding: 0.75rem 0.50rem;
+    border-top: 1px solid;
+    background-color: #fff;
+    border-color: #d8dbe0;
+  }
+
+  .c-main-pos {
+    -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    -ms-flex-positive: 1;
+        flex-grow: 1;
+    min-width: 0;
+    padding-top: 1rem;
+  }
+
+  .modal-content-pos {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    width: 800px;
+    height: 800px;
+    pointer-events: auto;
+    background-clip: padding-box;
+    border: 1px solid;
+    border-radius: 0.3rem;
+    outline: 0;
+    background-color: #fff;
+    border-color: rgba(0, 0, 21, 0.2);
+  }
+
+  .modal-dialog-scrollable .modal-content-pos {
+    max-height: calc(100vh - 1rem);
+    /* max-width: calc(100vh - 1rem); */
+    overflow: hidden;
+  }
+
+  .modal-dialog-centered.modal-dialog-scrollable .modal-content-pos {
+    max-height: none;
+  }
+
+  @media (min-width: 576px) {
+  
+    .modal-dialog-scrollable .modal-content-pos {
+      max-height: calc(100vh - 3.5rem);
+    }
+}
+
+.pos-col-1,
+.pos-col-2,
+.pos-col-3,
+.pos-col-4,
+.pos-col-5,
+.pos-col-6,
+.pos-col-7,
+.pos-col-8,
+.pos-col-9,
+.pos-col-10,
+.pos-col-11,
+.pos-col-12,
+.pos-col,
+.pos-col-auto,
+.pos-col-sm-1,
+.pos-col-sm-2,
+.pos-col-sm-3,
+.pos-col-sm-4,
+.pos-col-sm-5,
+.pos-col-sm-6,
+.pos-col-sm-7,
+.pos-col-sm-8,
+.pos-col-sm-9,
+.pos-col-sm-10,
+.pos-col-sm-11,
+.pos-col-sm-12,
+.pos-col-sm,
+.pos-col-sm-auto,
+.pos-col-md-1,
+.pos-col-md-2,
+.pos-col-md-3,
+.pos-col-md-4,
+.pos-col-md-5,
+.pos-col-md-6,
+.pos-col-md-7,
+.pos-col-md-8,
+.pos-col-md-9,
+.pos-col-md-10,
+.pos-col-md-11,
+.pos-col-md-12,
+.pos-col-md,
+.pos-col-md-auto,
+.pos-col-lg-1,
+.pos-col-lg-2,
+.pos-col-lg-3,
+.pos-col-lg-4,
+.pos-col-lg-5,
+.pos-col-lg-6,
+.pos-col-lg-7,
+.pos-col-lg-8,
+.pos-col-lg-9,
+.pos-col-lg-10,
+.pos-col-lg-11,
+.pos-col-lg-12,
+.pos-col-lg,
+.pos-col-lg-auto,
+.pos-col-xl-1,
+.pos-col-xl-2,
+.pos-col-xl-3,
+.pos-col-xl-4,
+.pos-col-xl-5,
+.pos-col-xl-6,
+.pos-col-xl-7,
+.pos-col-xl-8,
+.pos-col-xl-9,
+.pos-col-xl-10,
+.pos-col-xl-11,
+.pos-col-xl-12,
+.pos-col-xl,
+.pos-col-xl-auto,
+.pos-col-xxl-1,
+.pos-col-xxl-2,
+.pos-col-xxl-3,
+.pos-col-xxl-4,
+.pos-col-xxl-5,
+.pos-col-xxl-6,
+.pos-col-xxl-7,
+.pos-col-xxl-8,
+.pos-col-xxl-9,
+.pos-col-xxl-10,
+.pos-col-xxl-11,
+.pos-col-xxl-12,
+.pos-col-xxl,
+.pos-col-xxl-auto {
+  position: relative;
+  width: auto;
+  padding-right: 3px;
+  padding-left: 3px;
+}
+.first-pos-col-md-3{
+  position: relative;
+  width: auto;
+  padding-right: 3px;
+  padding-left: 25px;
+}
+
+.mypos-col-1,
+.mypos-col-sm-1,
+.mypos-col-md-1{
+    /* style="width:120px !important" */
+    position: relative;
+    width:100px !important;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.last-pos-col-md-3{
+    position: relative;
+    width: auto;
+    padding-right: 3px;
+    padding-left: 25px;
+ }
+
+.pos-col {
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+  -ms-flex-positive: 1;
+      flex-grow: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+td.details-control {
+    background: url('DataTables/images/arrow-top.svg') no-repeat center center;
+    cursor: pointer;
+}
+tr.details td.details-control {
+    background: url('DataTables/images/arrow-bottom.svg') no-repeat center center;
+}
+
+.my-class {
+    display: block !important ;
+    width: 100% !important ;
+    height: calc(1.5em + 0.75rem + 2px) !important ;
+    padding: 0.375rem 0.75rem !important ;
+    font-size: 0.875rem !important ;
+    font-weight: 400 !important ;
+    line-height: 1.5 !important ;
+    background-clip: padding-box !important ;
+    border: 1px solid !important ;
+    color: #5c6873 !important ;
+    background-color: #fff !important ;
+    border-color: #e4e7ea !important ;
+    border-radius: 0.25rem !important ;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important ;
+}
+
+.myform-col,
+.myform-col-1,
+.myform-col-2,
+.myform-col-3,
+.myform-col-4,
+.myform-col-5,
+.myform-col-6,
+.myform-col-7,
+.myform-col-8,
+.myform-col-9,
+.myform-col-10,
+.myform-col-11,
+.myform-col-12,
+.myform-col,
+.myform-col-auto {
+  position: relative;
+  /* width: 100%; */
+  /* padding: 0.3rem; */
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.form-col-auto {
+    -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-1 {
+    -ms-flex: 0 0 8.33333333%;
+        flex: 0 0 8.33333333%;
+    max-width: 8.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-2 {
+    -ms-flex: 0 0 16.66666667%;
+        flex: 0 0 16.66666667%;
+    max-width: 16.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-3 {
+    -ms-flex: 0 0 25%;
+        flex: 0 0 25%;
+    max-width: 25%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-4 {
+    -ms-flex: 0 0 33.33333333%;
+        flex: 0 0 33.33333333%;
+    max-width: 33.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-5 {
+    -ms-flex: 0 0 41.66666667%;
+        flex: 0 0 41.66666667%;
+    max-width: 41.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-6 {
+    -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-7 {
+    -ms-flex: 0 0 58.33333333%;
+        flex: 0 0 58.33333333%;
+    max-width: 58.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-8 {
+    -ms-flex: 0 0 66.66666667%;
+        flex: 0 0 66.66666667%;
+    max-width: 66.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-9 {
+    -ms-flex: 0 0 75%;
+        flex: 0 0 75%;
+    max-width: 75%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-10 {
+    -ms-flex: 0 0 83.33333333%;
+        flex: 0 0 83.33333333%;
+    max-width: 83.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-11 {
+    -ms-flex: 0 0 91.66666667%;
+        flex: 0 0 91.66666667%;
+    max-width: 91.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+  
+.form-col-12 {
+    -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+
+.form-first-col-auto {
+    -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-1 {
+    -ms-flex: 0 0 8.33333333%;
+        flex: 0 0 8.33333333%;
+    max-width: 8.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-2 {
+    
+    -ms-flex: 0 0 16.66666667%;
+        flex: 0 0 16.66666667%;
+    max-width: 16.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-3 {
+    -ms-flex: 0 0 25%;
+        flex: 0 0 25%;
+    max-width: 25%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-4 {
+    -ms-flex: 0 0 33.33333333%;
+        flex: 0 0 33.33333333%;
+    max-width: 33.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-5 {
+    -ms-flex: 0 0 41.66666667%;
+        flex: 0 0 41.66666667%;
+    max-width: 41.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-6 {
+    -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-7 {
+    -ms-flex: 0 0 58.33333333%;
+        flex: 0 0 58.33333333%;
+    max-width: 58.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-8 {
+    -ms-flex: 0 0 66.66666667%;
+        flex: 0 0 66.66666667%;
+    max-width: 66.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-9 {
+    -ms-flex: 0 0 75%;
+        flex: 0 0 75%;
+    max-width: 75%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-10 {
+    -ms-flex: 0 0 83.33333333%;
+        flex: 0 0 83.33333333%;
+    max-width: 83.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-11 {
+    -ms-flex: 0 0 91.66666667%;
+        flex: 0 0 91.66666667%;
+    max-width: 91.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+  
+.form-first-col-12 {
+    -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 5px;
+    padding-left: 25px;
+}
+
+.form-last-col-auto {
+    -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-1 {
+    -ms-flex: 0 0 8.33333333%;
+        flex: 0 0 8.33333333%;
+    max-width: 8.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-2 {
+    
+    -ms-flex: 0 0 16.66666667%;
+        flex: 0 0 16.66666667%;
+    max-width: 16.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-3 {
+    -ms-flex: 0 0 25%;
+        flex: 0 0 25%;
+    max-width: 25%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-4 {
+    -ms-flex: 0 0 33.33333333%;
+        flex: 0 0 33.33333333%;
+    max-width: 33.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-5 {
+    -ms-flex: 0 0 41.66666667%;
+        flex: 0 0 41.66666667%;
+    max-width: 41.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-6 {
+    -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-7 {
+    -ms-flex: 0 0 58.33333333%;
+        flex: 0 0 58.33333333%;
+    max-width: 58.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-8 {
+    -ms-flex: 0 0 66.66666667%;
+        flex: 0 0 66.66666667%;
+    max-width: 66.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-9 {
+    -ms-flex: 0 0 75%;
+        flex: 0 0 75%;
+    max-width: 75%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-10 {
+    -ms-flex: 0 0 83.33333333%;
+        flex: 0 0 83.33333333%;
+    max-width: 83.33333333%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-11 {
+    -ms-flex: 0 0 91.66666667%;
+        flex: 0 0 91.66666667%;
+    max-width: 91.66666667%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+  
+.form-last-col-12 {
+    -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    /* width: 100%; */
+    padding-right: 20px;
+    padding-left: 5px;
+}
+
+.mytblcol {
+    /* padding: 0.3rem; */
+    padding-left: 2.5px;
+    padding-right: 2.5px;
+    /* vertical-align: top;
+    border-top: 0px solid;
+    border-top-color: #d8dbe0; */
+}
+
+.myrow {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    /* margin-right: -15px;
+    margin-left: -15px; */
+  }
