@@ -39,7 +39,7 @@ class CreateCustomersTable extends Migration
             $table->integer('customer_credit_limit')->nullable();
             $table->string('customer_sale_rate')->nullable();
             $table->integer('status_id')->index();
-            $table->string('created_by')->index();
+            $table->integer('customer_created_by')->index();
             $table->timestamps();
         });
     }

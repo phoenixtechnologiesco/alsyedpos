@@ -44,7 +44,7 @@
                   <th>Credit.P.Crt</th> --}}
                   {{-- <th>Expiry</th> --}}
                   {{-- <th>Status</th> --}}
-                  <th class="disabled-sorting text-left">Edit</th>
+                  {{-- <th class="disabled-sorting text-left">Edit</th> --}}
                 </tr>
                 <tr>
                   {{-- <th>Ref.Id</th> --}}
@@ -72,7 +72,7 @@
                   <th>Crt</th>
                   {{-- <th>Expiry</th> --}}
                   {{-- <th>Status</th> --}}
-                  <th class="disabled-sorting text-left">Edit</th>
+                  {{-- <th class="disabled-sorting text-left">Edit</th> --}}
                 </tr>
               </thead>
               {{-- <tfoot>
@@ -881,7 +881,7 @@
           $('#saadTable').DataTable();
       });
     </script> --}}
-    <script id="detailss-template" type="text/x-handlebars-template">
+    {{-- <script id="detailss-template" type="text/x-handlebars-template">
       @verbatim
           <table class="table">
               <tr>
@@ -898,7 +898,7 @@
               </tr>
           </table>
       @endverbatim
-    </script>
+    </script> --}}
 
     <script>
       // var template = Handlebars.compile($("#details-template").html());
@@ -908,13 +908,14 @@
           sum[i] = "&nbsp;"+"&nbsp;"+"&nbsp;"+d.barcodes[i].product_barcodes;
           // sum[i] = 'Attached Barcodes: '+"&nbsp;"+"&nbsp;"+"&nbsp;"+d.barcodes[i].product_barcodes+'<br>';
         });
-        return 'Attached Barcodes: '+sum
-        // return 'Attached Barcodes: '+"&nbsp;"+"&nbsp;"+"&nbsp;"+d.barcodes[0].product_barcodes+','+"&nbsp;"+"&nbsp;"+"&nbsp;"+d.barcodes[1].product_barcodes+','+"&nbsp;"+"&nbsp;"+"&nbsp;"+d.product_barcode+','+"&nbsp;"+"&nbsp;"+"&nbsp;"+d.product_barcode+','+"&nbsp;"+"&nbsp;"+"&nbsp;"+d.product_barcode+','+"&nbsp;"+"&nbsp;"+"&nbsp;"+d.product_barcode+'<br>';
+        // $products->product_id
+        return '<a href="product/'+d.product_id+'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>Edit</a>'+'&nbsp;&nbsp;'+'Attached Barcodes: '+sum;
+        // return 'Attached Barcodes: '+sum;
       }
       var dt = $('#saadTable').DataTable({
-        processing: true,
+        // processing: true,
         serverSide: true,
-        ajax: '{{ route('api.row_details') }}',
+        ajax: '{{ route('api.product_row_details') }}',
         columns: [
           {
             "className":      'details-control',
@@ -942,7 +943,7 @@
           { data: 'product_credit_price_piece', name: 'product_credit_price_piece' },
           { data: 'product_credit_price_packet', name: 'product_credit_price_packet' },
           { data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
-          { data: 'action', name: 'action'},
+          // { data: 'action', name: 'action'},
         ],
         order: [[1, 'asc']]
       });
@@ -970,6 +971,8 @@
           var tr = $(this).closest('tr');
           var row = dt.row( tr );
           var idx = $.inArray( tr.attr('id'), detailRows );
+
+          // console.log(row.data());
   
           if ( row.child.isShown() ) {
               tr.removeClass( 'details' );
@@ -1003,7 +1006,7 @@
       //   processing: true,
       //   serverSide: true,
       //   ajax: {
-      //     "url": '{{ route('api.row_attributes') }}',
+      //     "url": '{{ route('api.product_row_attributes') }}',
       //     // "type": "POST"
       //   },
       //   "rowCallback": function( row, data ) {

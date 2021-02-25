@@ -10,14 +10,14 @@
                 FreelyPositionedMenus::render( $appMenus['top menu'] , 'c-header-', 'd-md-down-none');
             }
         ?>  
-        <ul class="c-header-nav ml-auto mr-4">
+        <ul class="c-header-nav ml-auto">
           <li class="c-header-nav-item d-md-down-none mx-2">
-            <div class="col-sm-10 col-md-12">
+            <div class=" col-12">
               <a class="c-header-nav-link">{{ \Carbon\Carbon::now()->toDateString() }}</a>
             </div>
           </li>
           <li class="c-header-nav-item d-md-down-none mx-2">
-            <div class="col-sm-10 col-md-2">
+            <div class=" col-2">
               <div class="digital-clock">00:00:00</div>
             </div>
           </li>
@@ -27,7 +27,7 @@
                 <span>POS</span>
             </a>
           </li>
-          <li class="c-header-nav-item d-md-down-none mx-2">
+          {{-- <li class="c-header-nav-item d-md-down-none mx-2">
             <a class="c-header-nav-link">
               <svg class="c-icon">
                 <use xlink:href="{{ url('/icons/sprites/free.svg#cil-list-rich') }}"></use>
@@ -40,10 +40,10 @@
                 <use xlink:href="{{ url('/icons/sprites/free.svg#cil-envelope-open') }}"></use>
               </svg>
             </a>
-          </li>
+          </li> --}}
           <li class="c-header-nav-item dropdown">
             <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              <div class="c-avatar">Username</div>
+              <div>{{ auth()->user()->name }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
               {{-- <div class="dropdown-header bg-light py-2">

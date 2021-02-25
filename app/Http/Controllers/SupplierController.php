@@ -31,8 +31,8 @@ class SupplierController extends Controller
      */
     public function index(Supplier $model)
     {
-        // dd($model->paginate(15)->items()[1]);
-        return view('suppliers.index', ['suppliers' => $model->paginate(15)->items()]);
+        $suppliers = Supplier::all();
+        return view('suppliers.index', compact('suppliers') );
     }
 
     /**
@@ -42,7 +42,8 @@ class SupplierController extends Controller
      */
     public function create(Supplier $model)
     {
-        return view('suppliers.add', ['suppliers' => $model->paginate(15)->items()]);
+        $suppliers = Supplier::all();
+        return view('suppliers.add', compact('suppliers') );
     }
 
     /**
@@ -130,7 +131,10 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $model, $id)
     {
-        return view('suppliers.edit', ['suppliers' => $model->paginate(15)->items()[$id-1]]);
+        $supplier = Supplier::where('supplier_id', $id)->get();
+
+        return view('suppliers.edit', compact('supplier') );
+        // return view('suppliers.edit', ['supplier' => $model->paginate(15)->items()[$id-1]]);
     }
 
     /**
@@ -208,7 +212,10 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('suppliers')->where('supplier_id', $id)->delete();
+
+        return redirect('/supplier')->with(['message' => 'Supplier Deleted Successfully'], 200);
+
     }
 
     public function searchsupplier(Request $request)

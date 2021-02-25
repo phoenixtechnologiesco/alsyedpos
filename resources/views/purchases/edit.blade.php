@@ -10,7 +10,7 @@
             <h5 class="title">{{__(" Edit Purchase")}}</h5>
           </div>
           <div class="card-body-custom">
-            <form method="post" action="{{ route('purchase.update', ['purchase' => $purchases->purchase_id,]) }}" autocomplete="off"
+            <form method="post" action="{{ route('purchase.update', ['purchase' => $purchase[0]->purchase_id,]) }}" autocomplete="off"
             enctype="multipart/form-data">
               @csrf
               @method('put')
@@ -20,7 +20,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="row">
-                        <div class="form-first-col-3">
+                        {{-- <div class="form-first-col-3">
                           <div class="form-group">
                             <label for="supplier_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Supplier")}}</label>
                             <div class="form-col-12 input-group ">
@@ -29,26 +29,25 @@
                                   <a class="" data-toggle="modal" data-target="#supplier-list" id="product-list-btn"><i class="fa fa-search"></i></a>
                                 </span>
                               </div>
-                              {{-- <div class="input-group pos"> --}}
+                              <-- <div class="input-group pos"> -->
                                 <input disabled type="text" name="supplier_code" id="suppliercodesearch" placeholder="Search supplier by code" class="form-control col-12" value="{{ old('supplier_code') }}" />
-                                {{-- <input type="hidden" name="supplier_code" id="allsuppliers" class="form-control col-12"  /> --}}
                                   <?php $snameArray = []; $snamecodeArray = []; ?>
                                   @foreach($suppliers as $one_supplier) 
                                     <div class="suppliernames_array" style="display: none">{{ $snameArray[] = $one_supplier->supplier_name }}</div>
                                     <div class="suppliernamecode_array" style="display: none">{{ $snamecodeArray[] = $one_supplier->supplier_name.", ".($one_supplier->supplier_ref_no) }}</div>
                                   @endforeach
-                                {{-- <select required name="supplier_code" id="supplier_code" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select supplier..." style="width: 100px">
+                                <-- <select required name="supplier_code" id="supplier_code" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select supplier..." style="width: 100px">
                                   @foreach($lims_supplier_list as $supplier)
                                     <option value="{{$supplier->id}}">{{$supplier->name}}</option>
                                   @endforeach
                                   <option value="0">Asif Ghafoor</option>
-                                </select> --}}
-                              {{-- </div> --}}
+                                </select> -->
+                              <-- </div> -->
                               @include('alerts.feedback', ['field' => 'supplier_code'])
                             </div>
                           </div>
-                        </div>
-                        <div class="form-col-3">
+                        </div> --}}
+                        <div class="form-first-col-3">
                           <div class="form-group">
                             <label readonly for="purchase_supplier_name" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Supplier Name")}}</label>
                             <div class="form-col-12 input-group ">
@@ -60,10 +59,16 @@
                               {{-- <div class="input-group pos"> --}}
                                 <input readonly type="text" name="purchase_supplier_name" id="supplier_name" placeholder="Supplier Name" class="form-control col-12" value="{{ $supplier->supplier_name }}" />
                                 <input readonly type="hidden" name="purchase_supplier_id" id="supplier_id" class="form-control col-12" value="{{ $supplier->supplier_id }}" />
+                                <input disabled type="hidden" name="supplier_code" id="suppliercodesearch" placeholder="Search supplier by code" class="form-control col-12" value="{{ old('supplier_code') }}" />
+                                  <?php $snameArray = []; $snamecodeArray = []; ?>
+                                  @foreach($suppliers as $one_supplier) 
+                                    <div class="suppliernames_array" style="display: none">{{ $snameArray[] = $one_supplier->supplier_name }}</div>
+                                    <div class="suppliernamecode_array" style="display: none">{{ $snamecodeArray[] = $one_supplier->supplier_name.", ".($one_supplier->supplier_ref_no) }}</div>
+                                  @endforeach
                                 {{-- <select readonly required name="purchase_supplier_name" id="supplier_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Supplier..." style="width: 150px">
                                   @foreach($suppliers as $single_supplier)
-                                    <option @if($purchases->purchase_supplier_id == $single_supplier->supplier_id) selected @endif status_id="{{$single_supplier->status_id}}" value="{{$single_supplier->supplier_id}}">{{$single_supplier->supplier_name}}</option>
-                                    ?php if($purchases->purchase_supplier_id == $single_supplier->supplier_id) $supplierstatus = $single_supplier->status_id; ?>
+                                    <option @if($purchase[0]->purchase_supplier_id == $single_supplier->supplier_id) selected @endif status_id="{{$single_supplier->status_id}}" value="{{$single_supplier->supplier_id}}">{{$single_supplier->supplier_name}}</option>
+                                    ?php if($purchase[0]->purchase_supplier_id == $single_supplier->supplier_id) $supplierstatus = $single_supplier->status_id; ?>
                                   @endforeach
                                 </select> --}}
                               {{-- </div> --}}
@@ -87,23 +92,36 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="purchase_amount_paid" id="purchase_balance_paid" class="form-control" value="{{ $purchases->purchase_amount_paid }}">
+                              <input readonly type="number" name="purchase_amount_paid" id="purchase_balance_paid" class="form-control" value="{{ $purchase[0]->purchase_amount_paid }}">
                               <input readonly type="hidden" name="supplier_balance_paid" id="supplier_balance_paid" class="form-control" value="{{ $supplier->supplier_balance_paid }}">
                               @include('alerts.feedback', ['field' => 'purchase_amount_paid'])
                             </div>
                           </div>
                         </div>
-                        <div class="form-last-col-2">
+                        <div class="form-col-2">
                           <div class="form-group">
                             <label for="purchase_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Dues")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="purchase_amount_dues" id="purchase_balance_dues" class="form-control" value="{{ $purchases->purchase_amount_dues }}">
+                              <input readonly type="number" name="purchase_amount_dues" id="purchase_balance_dues" class="form-control" value="{{ $purchase[0]->purchase_amount_dues }}">
                               <input readonly type="hidden" name="supplier_balance_dues" id="supplier_balance_dues" class="form-control" value="{{ $supplier->supplier_balance_dues }}">
                               @include('alerts.feedback', ['field' => 'purchase_amount_dues'])
                             </div>
+                          </div>
+                        </div>
+                        <div class="form-last-col-2">
+                          <div class="form-group">
+                            <label for="purchase_status" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Status")}}</label>
+                              <select name="purchase_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Purchase Status">
+                                <option @if($purchase[0]->purchase_status == 'pending') selected @endif value="pending">Pending</option>
+                                <option @if($purchase[0]->purchase_status == 'ordered') selected @endif value="ordered">Ordered</option>
+                                <option @if($purchase[0]->purchase_status == 'partial') selected @endif value="partial">Partial</option>
+                                <option @if($purchase[0]->purchase_status == 'received') selected @endif value="received">Received</option>
+                                //received,partial,pending,ordered
+                              </select>
+                              @include('alerts.feedback', ['field' => 'purchase_amount_dues'])
                           </div>
                         </div>
                       </div>
@@ -114,8 +132,8 @@
                               <div class="form-col-12">
                                 {{-- <input readonly type="text" name="purchase_payment_method" class="form-control col-12" value="{{ old('purchase_payment_method', 'Cash') }}"> --}}
                                 <select readonly required id="purchase_payment_method" name="purchase_payment_method" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Method...">
-                                  <option @if($purchases->purchase_payment_method == 'cash') selected @endif value="cash">Cash</option>
-                                  <option @if($purchases->purchase_payment_method == 'credit') selected @endif value="credit">Credit</option>
+                                  <option @if($purchase[0]->purchase_payment_method == 'cash') selected @endif value="cash">Cash</option>
+                                  <option @if($purchase[0]->purchase_payment_method == 'credit') selected @endif value="credit">Credit</option>
                                 </select>
                                 @include('alerts.feedback', ['field' => 'purchase_payment_method'])
                               </div>
@@ -127,7 +145,7 @@
                               <div class="form-col-12">
                                 <div class="myrow">
                                   {{-- <div class="col-1"></div> --}}
-                                  <input readonly type="text" name="purchase_invoice_id" class="form-control form-col-10" value="{{ $purchases->purchase_invoice_id }}">
+                                  <input readonly type="text" name="purchase_invoice_id" class="form-control form-col-10" value="{{ $purchase[0]->purchase_invoice_id }}">
                                   <button type="button" href="{{ route('purchase.edit', ['purchase' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
                                     <i class="fa fa-file-text-o"></i>
                                   </button>
@@ -143,7 +161,7 @@
                               {{-- <div class="input-group-prepend">
                                 <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
                               </div> --}}
-                              <input readonly type="date" name="purchase_invoice_date" class="form-control" value="{{ $purchases->purchase_invoice_date }}">
+                              <input readonly type="date" name="purchase_invoice_date" class="form-control" value="{{ $purchase[0]->purchase_invoice_date }}">
                               @include('alerts.feedback', ['field' => 'purchase_invoice_date'])
                             </div>
                           </div>
@@ -157,7 +175,7 @@
                                   <i class="fa fa-file-text-o"></i>
                                 </span>
                               </div>
-                              <input type="file" name="purchase_document" id="purchase_document" class="form-control col-12" value="{{ $purchases->purchase_document }}">
+                              <input type="file" name="purchase_document" id="purchase_document" class="form-control col-12" value="{{ $purchase[0]->purchase_document }}">
                             </div>
                           </div>
                         </div>
@@ -248,7 +266,7 @@
                                 
                                     $myproduct_sub_total = $singlepurchaseproduct->purchase_product_sub_total;
                                     $mysubtotal_amount = $mysubtotal_amount + $myproduct_sub_total;
-                                    $mygrandtotal_amount = $mysubtotal_amount + $purchases->purchase_free_amount + $purchases->purchase_add_amount;
+                                    $mygrandtotal_amount = $mysubtotal_amount + $purchase[0]->purchase_free_amount + $purchase[0]->purchase_add_amount;
                                     $j++; 
                                     ?>
                                 @endforeach
@@ -291,32 +309,14 @@
                               </tbody>
                               <tfoot class="thead-dark">
                                 <tr class="row">
-                                  <th class="col-2 firstcol" scope="col">Purchase Status</th>
-                                  <th class="col-2 mycol" scope="col">Payment Status</th>
                                   {{-- <th class="col-1 mycol" scope="col">Invoice Id</th> --}}
                                   {{-- <th class="col-3 mycol" scope="col" style="text-align: center">Invoice Date</th> --}}
                                   {{-- <th class="col-2 mycol" scope="col">Document</th> --}}
-                                  <th class="col-8 lastcol" scope="col">Remarks</th>
+                                  <th class="col-8 firstcol" scope="col">Remarks</th>
+                                  <th class="col-2 mycol" scope="col">Payment Status</th>
+                                  <th class="col-2 lastcol" scope="col">Return Change</th>
                                 </tr>
                                 <tr class="row table-info" >
-                                  <td class="col-2 firstcol" scope="col">
-                                    <select name="purchase_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Purchase Status">
-                                      <option @if($purchases->purchase_status == 'pending') selected @endif value="pending">Pending</option>
-                                      <option @if($purchases->purchase_status == 'ordered') selected @endif value="ordered">Ordered</option>
-                                      <option @if($purchases->purchase_status == 'partial') selected @endif value="partial">Partial</option>
-                                      <option @if($purchases->purchase_status == 'received') selected @endif value="received">Received</option>
-                                      //received,partial,pending,ordered
-                                    </select>
-                                  </td>
-                                  <td class="col-2 mycol" scope="col">
-                                    <select name="purchase_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
-                                      <option @if($purchases->purchase_payment_status == 'paid') selected @endif value="paid">Paid</option>
-                                      <option @if($purchases->purchase_payment_status == 'due') selected @endif value="due">Due</option>
-                                      <option @if($purchases->purchase_payment_status == 'partial') selected @endif value="partial">Partial</option>
-                                      <option @if($purchases->purchase_payment_status == 'overdue') selected @endif value="overdue">Overdue</option>
-                                      //paid,due,partial,overdue,
-                                    </select>
-                                  </td>
                                   {{-- <td class="col-1 mycol" scope="col">
                                     <input type="text" name="purchase_invoice_id" class="form-control col-12" value="{{ old('purchase_invoice_id', '') }}">
                                   </td>
@@ -331,8 +331,20 @@
                                   {{-- <td class="col-2 mycol" scope="col">
                                     <input type="file" name="purchase_document" id="purchase_document" class="form-control col-12" value="{{ old('purchase_document', '') }}">
                                   </td> --}}
-                                  <td class="col-8 lastcol" scope="col">
-                                    <input type="text" name="purchase_note" class="form-control col-12" value="{{ $purchases->purchase_note }}" >
+                                  <td class="col-8 firstcol" scope="col">
+                                    <input type="text" name="purchase_note" class="form-control col-12" value="{{ $purchase[0]->purchase_note }}" >
+                                  </td>
+                                  <td class="col-2 mycol" scope="col">
+                                    <select name="purchase_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
+                                      <option @if($purchase[0]->purchase_payment_status == 'paid') selected @endif value="paid">Paid</option>
+                                      <option @if($purchase[0]->purchase_payment_status == 'due') selected @endif value="due">Due</option>
+                                      <option @if($purchase[0]->purchase_payment_status == 'partial') selected @endif value="partial">Partial</option>
+                                      <option @if($purchase[0]->purchase_payment_status == 'overdue') selected @endif value="overdue">Overdue</option>
+                                      //paid,due,partial,overdue,
+                                    </select>
+                                  </td>
+                                  <td class="col-2 lastcol" scope="col">
+                                    <input type="number" min="0" name="purchase_return_change" class="form-control col-12"  value="0">
                                   </td>
                                 </tr>
                               </tfoot>
@@ -356,16 +368,16 @@
                                     <input readonly type="text" name="purchase_total_qty" id="purchase_total_qty" class="form-control col-12" value="{{ $mytotal_quantity }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_free_piece" class="form-control col-12" value="{{ $purchases->purchase_free_piece }}">
+                                    <input type="number" name="purchase_free_piece" class="form-control col-12" value="{{ $purchase[0]->purchase_free_piece }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_free_amount" id="purchase_free_amount" class="form-control col-12"  value="{{ $purchases->purchase_free_amount }}">
+                                    <input type="number" name="purchase_free_amount" id="purchase_free_amount" class="form-control col-12"  value="{{ $purchase[0]->purchase_free_amount }}">
                                   </td>
                                   <td class="col-2 mycol" scope="col">
                                     <input readonly type="number" name="purchase_total_price" id="purchase_total_price" class="form-control col-12"  value="{{ $mysubtotal_amount }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="text" name="purchase_add_amount" id="purchase_add_amount" class="form-control col-12"  value="{{ $purchases->purchase_add_amount }}">
+                                    <input type="text" name="purchase_add_amount" id="purchase_add_amount" class="form-control col-12"  value="{{ $purchase[0]->purchase_add_amount }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input readonly type="text" name="purchase_discount" id="purchase_discount" class="form-control col-12"  value="{{ $mytotal_discount }}">
@@ -813,16 +825,21 @@
                 </div>
               </div>
               <div class="card-footer-custom row">
-                <div class="col-sm-10 col-6">
-                  <button type="button" class="btn btn-secondary btn-round ">{{__('Back')}}</button>
-                  <button type="button" class="btn btn-danger btn-round ">{{__('Delete')}}</button>
+                <div class="col-6">
+                  <button type="submit" class="btn btn-info btn-round pull-left">{{__('Update')}}</button>
                 </div>
-                <div class="col-sm-10 col-6">
-                  <button type="submit" class="btn btn-info btn-round pull-right">{{__('Update')}}</button>
+            </form>
+                <div class="col-6">
+                  <a type="button"  href="{{ URL::previous() }}" class="btn btn-secondary btn-round pull-right">{{__('Back')}}</a>
+                  <form action="{{ route('purchase.destroy', $purchase[0]->purchase_id) }}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-danger btn-round pull-right">{{__('Delete')}}</button>
+                  </form>
                 </div>
               </div>
               <hr class="half-rule"/>
-            </form>
+            {{-- </form> --}}
           </div>
         </div>
       </div>

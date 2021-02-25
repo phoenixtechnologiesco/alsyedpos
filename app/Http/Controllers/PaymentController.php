@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Models\Sale;
+use App\Models\Purchase;
 use App\Models\Customer;
+use App\Models\Supplier;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -46,6 +48,22 @@ class PaymentController extends Controller
         // return view('sales.payment', ['sales' => $sales, 'customers' => $customers, 'payments' => $payments]);
     }
 
+        /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function purchasecreate(Purchase $model, Supplier $model2, Payment $model3)
+    {
+        $purchases = $model->paginate(15)->items();
+        // $purchases = Purchase::all();
+        $suppliers = Supplier::where('status_id', 1)->get();
+        $payments = Payment::get();
+
+        return view('purchases.payment', compact('purchases', 'suppliers', 'payments') );
+        // return view('purchases.payment', ['purchases' => $purchases, 'suppliers' => $suppliers, 'payments' => $payments]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -85,6 +103,7 @@ class PaymentController extends Controller
         $customer_amount_paid = $request->customer_amount_paid;
         $customer_amount_dues = $request->customer_amount_dues;
 
+
         if($payment_amount_recieved > $customer_amount_dues){
             $customer_amount_paid = $customer_amount_paid + $payment_amount_recieved;
             $customer_amount_dues = $customer_amount_dues - $payment_amount_recieved;
@@ -98,6 +117,7 @@ class PaymentController extends Controller
 
         $customer_id = $request->payment_customer_id;
         // $customer_name = $request->payment_customer_name;
+
         $customer_edits = array(
             'customer_balance_paid' 	=> $customer_amount_paid,
             'customer_balance_dues' 	=> $customer_amount_dues,
@@ -118,6 +138,112 @@ class PaymentController extends Controller
             // 'payment_amount_balance'   => $payment_amount_balance,
             'customer_amount_paid'     => $customer_amount_paid,
             'customer_amount_dues'     => $customer_amount_dues,
+            'payment_method'           => $request->payment_method,
+            'payment_cheque_no'        => $request->payment_cheque_no,
+            // 'payment_document'         => $request->payment_document,
+            // 'account_id'               => $request->account_id,
+            'payment_invoice_id'       => $request->payment_invoice_id,
+            'payment_invoice_date'     => $request->payment_invoice_date,
+            // 'payment_date'             => $request->payment_date,
+            'payment_created_by' 	   => Auth::user()->id,
+            'created_at'	 		   => date('Y-m-d h:i:s'),
+        );
+        $document = $request->payment_document;
+        if($document){
+            $v = Validator::make([
+                    'extension' => strtolower($request->payment_document->getClientOriginalExtension()),
+                ],
+                [
+                    'extension' => 'in:pdf,csv,docx,pptx,xlsx,txt',
+            ]);
+            if($v->fails()) {
+                return redirect()->back()->withErrors($v->errors());
+            }
+            $documentName = $document->getClientOriginalName();
+            // dd($documentName);
+            // $document->move('public/documents/payment', $documentName);
+            Storage::disk('documents')->put('/', $document);
+            // Storage::putFile('documents', $document, $documentName);
+            $payment_adds['payment_document'] = $documentName;
+        }
+
+        $save = DB::table('payments')->insert($payment_adds);
+        $id = DB::getPdo()->lastInsertId();
+        // $add_id = DB::table('payments')->insertGetId($payment_adds)
+        
+		if($save){
+			return response()->json(['data' => $payment_adds, 'message' => 'payment Created Successfully'], 200);
+		}else{
+			return response()->json("Oops! Something Went Wrong", 400);
+		}
+    }
+
+    public function purchasestore(Request $request)
+    {
+        // dd($request->all());
+        // $validate = Validator::make($request->all(), [ 
+        //     'payment_id'                 => '',
+        //     'payment_ref_no'             => '',
+        //     'payment_type'               => '',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
+        //     'customer_id'                => '',
+        //     'supplier_id'                => '',
+        //     'payment_method'             => 'required',//'cash', 'credit', 'deposit', 'card', 'cheque', 'other'
+        //     'payment_amount_paid'        => 'required',
+        //     'payment_amount_balance'     => '',
+        //     'payment_cheque_no'          => '',
+        //     'account_id'                 => '',
+        //     'payment_note'               => '',
+        //     'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
+        //     'payment_invoice_no'         => '',
+        //     'payment_invoice_date'       => '',
+        //     'payment_document'           => '',
+        //     'created_by'                 => '',
+        // ]);
+        // if ($validate->fails()) {    
+        //    return response()->json("Fields Required", 400);
+        // }
+        $payment_ref_no = $random = Str::random(8); //str_random
+        $payment_type = 'debit';
+        //$payment_adds = $request->except('document');
+        //$payment_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
+        $payment_amount_recieved = $request->payment_amount_recieved;
+        // $payment_amount_balance = $request->payment_amount_paid;
+        $supplier_amount_paid = $request->supplier_amount_paid;
+        $supplier_amount_dues = $request->supplier_amount_dues;
+
+        if($payment_amount_recieved > $supplier_amount_dues){
+            $supplier_amount_paid = $supplier_amount_paid + $payment_amount_recieved;
+            $supplier_amount_dues = $supplier_amount_dues - $payment_amount_recieved;
+            // $payment_amount_balance = $payment_amount_balance - $payment_amount_recieved;
+        }
+        else{
+            $supplier_amount_paid = $supplier_amount_paid + $payment_amount_recieved;
+            $supplier_amount_dues = $supplier_amount_dues - $payment_amount_recieved;
+            // // $payment_amount_balance = $payment_amount_balance - $payment_amount_recieved;
+        }
+
+        $supplier_id = $request->payment_supplier_id;
+        // $supplier_name = $request->payment_supplier_name;
+
+        $supplier_edits = array(
+            'supplier_balance_paid' 	=> $supplier_amount_paid,
+            'supplier_balance_dues' 	=> $supplier_amount_dues,
+            // 'supplier_total_balance'    => $request->supplier_total_balance,
+        );
+
+        $update = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->update($supplier_edits);
+
+        $payment_adds = array(
+            'payment_ref_no'           => $payment_ref_no,
+            'payment_type'             => $request->payment_type,
+            'payment_supplier_id'      => $request->payment_supplier_id,
+            // 'payment_status'           => $request->payment_status,
+            'payment_status'           => 'done',
+            'payment_note'             => $request->payment_note,
+            'payment_amount_paid'      => $payment_amount_recieved,
+            // 'payment_amount_balance'   => $payment_amount_balance,
+            'supplier_amount_recieved' => $supplier_amount_paid,
+            'supplier_amount_dues'     => $supplier_amount_dues,
             'payment_method'           => $request->payment_method,
             'payment_cheque_no'        => $request->payment_cheque_no,
             // 'payment_document'         => $request->payment_document,

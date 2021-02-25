@@ -7,10 +7,10 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5 class="title">{{__(" Add Payment")}}</h5>
+            <h5 class="title">{{__(" Add Purchase Payment")}}</h5>
           </div>
           <div class="card-body-custom">
-            <form method="post" action="{{ route('sale.paymentadd') }}" autocomplete="off" enctype="multipart/form-data">
+            <form method="post" action="{{ route('purchase.paymentadd') }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @method('post')
               @include('alerts.success')
@@ -21,110 +21,91 @@
                       <div class="row">
                         <div class="form-first-col-3">
                           <div class="form-group">
-                            <label for="customer_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
+                            <label for="supplier_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Supplier")}}</label>
                             <div class="form-col-12 input-group ">
                               <div class="input-group-prepend">
                                 <span class="input-group-text barcode">
-                                  <a class="" data-toggle="modal" data-target="#customer-list" id="product-list-btn"><i class="fa fa-search"></i></a>
+                                  <a class="" data-toggle="modal" data-target="#supplier-list" id="product-list-btn"><i class="fa fa-search"></i></a>
                                 </span>
                               </div>
                               {{-- <div class="input-group pos"> --}}
-                                <input type="text" name="customer_code" id="customercodesearch" placeholder="Search Customer by code" class="form-control col-12" value="{{ old('customer_code') }}" />
-                                <input readonly type="hidden" name="payment_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
-                                <input readonly type="hidden" name="payment_customer_id" id="customer_id" class="form-control col-12" value="" />
+                                <input type="text" name="supplier_code" id="suppliercodesearch" placeholder="Search supplier by code" class="form-control col-12" value="{{ old('supplier_code') }}" />
+                                <input readonly type="hidden" name="payment_supplier_name" id="supplier_name" placeholder="Supplier Name" class="form-control col-12" value="" />
+                                <input readonly type="hidden" name="payment_supplier_id" id="supplier_id" class="form-control col-12" value="" />
  
-                                {{-- <input type="hidden" name="customer_code" id="allcustomers" class="form-control col-12"  /> --}}
+                                {{-- <input type="hidden" name="supplier_code" id="allsuppliers" class="form-control col-12"  /> --}}
                                   <?php $snameArray = []; $snamecodeArray = []; ?>
-                                  @foreach($customers as $one_customer) 
-                                    <div class="customernames_array" style="display: none">{{ $snameArray[] = $one_customer->customer_name }}</div>
-                                    <div class="customernamecode_array" style="display: none">{{ $snamecodeArray[] = $one_customer->customer_name.", ".($one_customer->customer_ref_no) }}</div>
+                                  @foreach($suppliers as $one_supplier) 
+                                    <div class="suppliernames_array" style="display: none">{{ $snameArray[] = $one_supplier->supplier_name }}</div>
+                                    <div class="suppliernamecode_array" style="display: none">{{ $snamecodeArray[] = $one_supplier->supplier_name.", ".($one_supplier->supplier_ref_no) }}</div>
                                   @endforeach
-                                {{-- <select required name="customer_code" id="customer_code" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 100px">
-                                  @foreach($lims_customer_list as $customer)
-                                    <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                {{-- <select required name="supplier_code" id="supplier_code" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select supplier..." style="width: 100px">
+                                  @foreach($lims_supplier_list as $supplier)
+                                    <option value="{{$supplier->id}}">{{$supplier->name}}</option>
                                   @endforeach
                                   <option value="0">Asif Ghafoor</option>
                                 </select> --}}
                               {{-- </div> --}}
-                              @include('alerts.feedback', ['field' => 'customer_code'])
+                              @include('alerts.feedback', ['field' => 'supplier_code'])
                             </div>
                           </div>
                         </div>
                         {{-- <div class="form-col-3">
                           <div class="form-group">
-                            <label readonly for="payment_customer_name" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
+                            <label readonly for="payment_supplier_name" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Supplier Name")}}</label>
                             <div class="form-col-12 input-group ">
                               <div class="input-group-prepend">
                                 <span class="input-group-text barcode">
-                                  <a class="" data-toggle="modal" data-target="#customer-list" id="product-list-btn"><i class="fa fa-user"></i></a>
+                                  <a class="" data-toggle="modal" data-target="#supplier-list" id="product-list-btn"><i class="fa fa-user"></i></a>
                                 </span>
                               </div>
                               <div class="input-group pos">
-                                <input readonly type="text" name="payment_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
-                                <input readonly type="hidden" name="payment_customer_id" id="customer_id" class="form-control col-12" value="" />
-                                <-- <select readonly required name="payment_customer_name" id="customer_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 150px">
-                                  @foreach($customers as $single_customer)
-                                    <option status_id="{{$single_customer->status_id}}" value="{{$single_customer->customer_id}}">{{$single_customer->customer_name}}</option>
+                                <input readonly type="text" name="payment_supplier_name" id="supplier_name" placeholder="Supplier Name" class="form-control col-12" value="" />
+                                <input readonly type="hidden" name="payment_supplier_id" id="supplier_id" class="form-control col-12" value="" />
+                                <-- <select readonly required name="payment_supplier_name" id="supplier_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select supplier..." style="width: 150px">
+                                  @foreach($suppliers as $single_supplier)
+                                    <option status_id="{{$single_supplier->status_id}}" value="{{$single_supplier->supplier_id}}">{{$single_supplier->supplier_name}}</option>
                                   @endforeach
                                 </select> -->
                               </div>
-                              @include('alerts.feedback', ['field' => 'payment_customer_name'])
+                              @include('alerts.feedback', ['field' => 'payment_supplier_name'])
                             </div>
                           </div>
                         </div> --}}
                         <div class="form-col-1">
                           <div class="form-group">
-                            <label for="customer_status" class="form-col-12 control-label">{{__(" Cust Status")}}</label>
+                            <label for="supplier_status" class="form-col-12 control-label">{{__(" Cust Status")}}</label>
                               <div class="form-col-12">
-                                <input readonly type="text" name="customer_status" id="customer_status" class="form-control col-12" value="">
-                                @include('alerts.feedback', ['field' => 'customer_status'])
+                                <input readonly type="text" name="supplier_status" id="supplier_status" class="form-control col-12" value="">
+                                @include('alerts.feedback', ['field' => 'supplier_status'])
                               </div>
                           </div>
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Amount Paid")}}</label>
+                            <label for="supplier_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Amount Paid")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="customer_amount_paid" id="customer_balance_paid" class="form-control" value="{{ old('customer_amount_paid', '') }}">
-                              @include('alerts.feedback', ['field' => 'customer_amount_paid'])
+                              <input readonly type="number" name="supplier_amount_paid" id="supplier_balance_paid" class="form-control" value="{{ old('supplier_amount_paid', '') }}">
+                              @include('alerts.feedback', ['field' => 'supplier_amount_paid'])
                             </div>
                           </div>
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="customer_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Dues")}}</label>
+                            <label for="supplier_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Dues")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="customer_amount_dues" id="customer_balance_dues" class="form-control" value="{{ old('customer_amount_dues', '') }}">
-                              @include('alerts.feedback', ['field' => 'customer_amount_dues'])
+                              <input readonly type="number" name="supplier_amount_dues" id="supplier_balance_dues" class="form-control" value="{{ old('supplier_amount_dues', '') }}">
+                              @include('alerts.feedback', ['field' => 'supplier_amount_dues'])
                             </div>
                           </div>
                         </div>
                         <div class="form-col-2">
-                          <div class="form-group">
-                            <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label>
-                              <div class="form-col-12">
-                                <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="{{ old('payterm_duratype', '30 Days') }}">
-                              </div>
-                          </div>
-                        </div>
-                        <div class="form-last-col-2">
-                          <div class="form-group">
-                            <label for="customer_credit_limit" class=" form-col-12 control-label">{{__(" Credit Limit")}}</label>
-                              <div class=" form-col-12">
-                                <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="{{ old('customer_credit_limit', '30000') }}">
-                                @include('alerts.feedback', ['field' => 'credit_limit'])
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-first-col-2">
                           <div class="form-group">
                             <label for="payment_method" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment Method")}}</label>
                               <div class="form-col-12">
@@ -138,17 +119,37 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        <div class="form-last-col-2">
                           <div class="form-group">
                             <label for="payment_type" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment Type")}}</label>
                               <div class="form-col-12">
                                 {{-- <input readonly type="text" name="payment_type" class="form-control col-12" value="{{ old('payment_type', 'Cash') }}"> --}}
                                 <select required id="payment_type" name="payment_type" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Type...">
-                                  <option value="recieving">Recieving</option>
                                   <option value="paying">Paying</option>
+                                  <option value="recieving">Recieving</option>
                                 </select>
                                 @include('alerts.feedback', ['field' => 'payment_type'])
                               </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-first-col-2">
+                          <div class="form-group">
+                            <label for="payment_cheque_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque #")}}</label>
+                            <div class="form-col-12">
+                              <input type="text" name="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
+                              @include('alerts.feedback', ['field' => 'payment_cheque_no'])
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-col-2">
+                          <div class="form-group">
+                            <label for="payment_cheque_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque Date")}}</label>
+                            <div class="form-col-12">
+                              <input type="date" name="payment_cheque_date" class="form-control form-col-12"  value="{{ old('payment_cheque_date', '') }}">
+                              @include('alerts.feedback', ['field' => 'payment_cheque_date'])
+                            </div>
                           </div>
                         </div>
                         <div class="form-col-2">
@@ -166,7 +167,7 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-last-col-2">
+                        <div class="form-col-2">
                           <div class="form-group">
                             <label for="payment_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment/Invoice Date")}}</label>
                             <div class="form-col-12 input-group ">
@@ -195,7 +196,7 @@
                       <div class="row">
                         <div class="form-first-col-2">
                           <div class="form-group">
-                            <label for="payment_amount_recieved" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Recieved Amount")}}</label>
+                            <label for="payment_amount_recieved" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Paid Amount")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -207,10 +208,10 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="payment_cheque_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque #")}}</label>
+                            <label for="payment_account_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Account #")}}</label>
                             <div class="form-col-12">
-                              <input type="text" name="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
-                              @include('alerts.feedback', ['field' => 'payment_cheque_no'])
+                              <input type="text" name="payment_account_no" class="form-control form-col-12"  value="{{ old('payment_account_no', '') }}">
+                              @include('alerts.feedback', ['field' => 'payment_account_no'])
                             </div>
                           </div>
                         </div>
@@ -253,13 +254,13 @@
 
 <script type="text/javascript">
 
-  var customersnames_array = <?php echo json_encode($snameArray); ?>;
-  var customersnamescodes_array = <?php echo json_encode($snamecodeArray); ?>;
+  var suppliersnames_array = <?php echo json_encode($snameArray); ?>;
+  var suppliersnamescodes_array = <?php echo json_encode($snamecodeArray); ?>;
 
-  $("#customercodesearch").on('focus', function () {
-    // $("#customercodesearch" ).autocomplete({
+  $("#suppliercodesearch").on('focus', function () {
+    // $("#suppliercodesearch" ).autocomplete({
     $(this).autocomplete({
-      source: customersnamescodes_array,
+      source: suppliersnamescodes_array,
       autoFocus:true,
       minLength: 0,
       // select: $('#payment_product_barcode').val();
@@ -280,7 +281,7 @@
           var data = ui.item.value;
           data = data.split(',')[0];
           console.log(data);
-          customerSearch(data);
+          suppliersearch(data);
       }
     }).on('click', function(event) {  
             // $(this).trigger('keydown.autocomplete');
@@ -289,58 +290,58 @@
     });
   });
 
-  function customerSearch(data){
+  function suppliersearch(data){
     $.ajax({
-      url: 'searchcustomer',
+      url: 'searchsupplier',
       type: "GET",
       data: {
         data: data,
       },
       success:function(data) {
-        // alert(data[0]["customer_id"]);
-        var customer_id = data[0]["customer_id"];
-        var customer_name = data[0]["customer_name"];
+        // alert(data[0]["supplier_id"]);
+        var supplier_id = data[0]["supplier_id"];
+        var supplier_name = data[0]["supplier_name"];
         var status_id = data[0]["status_id"];
-        var customer_balance_paid = data[0]["customer_balance_paid"];
-        var customer_balance_dues = data[0]["customer_balance_dues"];
-        var customer_total_balance = data[0]["customer_total_balance"];
-        var customer_credit_duration = data[0]["customer_credit_duration"];
-        var customer_credit_type = data[0]["customer_credit_type"];
-        var payterm_duratype = customer_credit_duration+' '+customer_credit_type;
+        var supplier_balance_paid = data[0]["supplier_balance_paid"];
+        var supplier_balance_dues = data[0]["supplier_balance_dues"];
+        var supplier_total_balance = data[0]["supplier_total_balance"];
+        var supplier_credit_duration = data[0]["supplier_credit_duration"];
+        var supplier_credit_type = data[0]["supplier_credit_type"];
+        var payterm_duratype = supplier_credit_duration+' '+supplier_credit_type;
         console.log(payterm_duratype);
-        var customer_credit_limit = data[0]["customer_credit_limit"];
-        // $('#customer_name option').removeAttr('selected');
-        // // $('#customer_name option[value='+customer_id+']').removeAttr('selected');
-        // $('#customer_name option[value='+customer_id+']').attr('selected', 'selected');
-        // $('#customer_name option[value='+customer_id+']').attr('status_id', status_id);
-        $('#customer_name').val(customer_name);
-        $('#customer_id').val(customer_id);
+        var supplier_credit_limit = data[0]["supplier_credit_limit"];
+        // $('#supplier_name option').removeAttr('selected');
+        // // $('#supplier_name option[value='+supplier_id+']').removeAttr('selected');
+        // $('#supplier_name option[value='+supplier_id+']').attr('selected', 'selected');
+        // $('#supplier_name option[value='+supplier_id+']').attr('status_id', status_id);
+        $('#supplier_name').val(supplier_name);
+        $('#supplier_id').val(supplier_id);
         if(status_id == 1){
-        $('#customer_status').val('Active');
+        $('#supplier_status').val('Active');
         }
         // else{
-        //   $('#customer_status').val('Inactive');
+        //   $('#supplier_status').val('Inactive');
         // }
-        $('#customer_balance_paid').val(customer_balance_paid);
-        $('#customer_balance_dues').val(customer_balance_dues);
-        // $('#customer_total_balance').val(customer_total_balance);
-        // $('#customer_credit_duration').val(customer_credit_duration);
-        // $('#customer_credit_type').val(customer_credit_type);
+        $('#supplier_balance_paid').val(supplier_balance_paid);
+        $('#supplier_balance_dues').val(supplier_balance_dues);
+        // $('#supplier_total_balance').val(supplier_total_balance);
+        // $('#supplier_credit_duration').val(supplier_credit_duration);
+        // $('#supplier_credit_type').val(supplier_credit_type);
         $('#payterm_duratype').val(payterm_duratype);
-        $('#customer_credit_limit').val(customer_credit_limit);
+        $('#supplier_credit_limit').val(supplier_credit_limit);
       }
     });
   }
 
-  $(document).on('change', '#customer_name', function(e){
+  $(document).on('change', '#supplier_name', function(e){
     var status = $('option:selected', this).attr('status_id');
     e.preventDefault();
-    // $('#customer_status').val(status);
+    // $('#supplier_status').val(status);
     if(status == 1){
-      $('#customer_status').val('Active');
+      $('#supplier_status').val('Active');
     }
     // else{
-    //   $('#customer_status').val('Inactive');
+    //   $('#supplier_status').val('Inactive');
     // }
   });
 

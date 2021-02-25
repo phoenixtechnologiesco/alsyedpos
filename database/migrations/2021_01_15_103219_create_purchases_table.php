@@ -40,7 +40,7 @@ class CreatePurchasesTable extends Migration
             $table->date('purchase_invoice_date')->nullable();
             $table->integer('purchase_added_by');
             // $table->integer('purchase_payment_id')->index()->nullable();
-            $table->integer('purchase_warehouse_id')->index()->nullable();
+            $table->integer('warehouse_id')->index()->nullable();
             // $table->string('purchase_warehouse')->index()->nullable();
             $table->timestamps();
         });

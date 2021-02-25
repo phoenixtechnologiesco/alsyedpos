@@ -41,7 +41,7 @@ class CreateSalesTable extends Migration
             // $table->string('sale_payterm_duration')->nullable();
             $table->integer('sale_added_by');
             // $table->integer('sale_payment_id')->index();
-            $table->integer('sale_warehouse_id')->index()->nullable();
+            $table->integer('warehouse_id')->index()->nullable();
             // $table->string('sale_warehouse')->index()->nullable();
             $table->timestamps();
         });

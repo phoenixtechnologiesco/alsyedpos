@@ -29,9 +29,8 @@ class CreateAccountsTable extends Migration
             $table->decimal('account_total_amount', 10, 2);
             $table->decimal('account_amount_paid', 10, 2);
             $table->decimal('account_amount_dues', 10, 2);
-            $table->string('account_document');
+            $table->string('account_document')->nullable();
             $table->integer('account_created_by')->index();
-            // $table->date('account_date')->nullable();
             $table->timestamps();
         });
     }

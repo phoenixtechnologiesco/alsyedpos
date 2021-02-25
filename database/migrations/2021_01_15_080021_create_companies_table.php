@@ -21,7 +21,6 @@ class CreateCompaniesTable extends Migration
             $table->string('company_name')->unique();
             // $table->string('company_image')->nullable();
             $table->text('company_description')->nullable();
-            // $table->string('company_slug')->nullable();
             $table->integer('status_id')->index();
             $table->timestamps();
         });

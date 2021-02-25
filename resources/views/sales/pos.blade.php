@@ -1,6 +1,5 @@
 @extends('dashboard.basepos')
 
-
 @section('content')
 <div class="container-fluid">
   <div class="animated fadeIn">
@@ -97,6 +96,8 @@
                                 </div>
                                 {{-- <div class="input-group pos"> --}}
                                   <input type="text" name="customer_code" id="customercodesearch" placeholder="Search Customer by code" class="form-control col-12" value="{{ old('customer_code') }}" />
+                                  <input readonly type="hidden" name="sale_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
+                                  <input readonly type="hidden" name="sale_customer_id" id="customer_id" class="form-control col-12" value="" />
                                   {{-- <input type="hidden" name="customer_code" id="allcustomers" class="form-control col-12"  /> --}}
                                     <?php $snameArray = []; $snamecodeArray = [];?>
                                     
@@ -114,7 +115,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="form-col-3">
+                          {{-- <div class="form-col-3">
                             <div class="form-group">
                               <label readonly for="sale_customer_name" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
                               <div class="form-col-12 input-group ">
@@ -123,22 +124,22 @@
                                     <a class="" data-toggle="modal" data-target="#customer-list" id="product-list-btn"><i class="fa fa-user"></i></a>
                                   </span>
                                 </div>
-                                {{-- <div class="input-group pos"> --}}
+                                <-- <div class="input-group pos"> -->
                                   <input readonly type="text" name="sale_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
                                   <input readonly type="hidden" name="sale_customer_id" id="customer_id" class="form-control col-12" value="" />
-                                  {{-- <select readonly required name="sale_customer_name" id="customer_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 150px">
+                                  <-- <select readonly required name="sale_customer_name" id="customer_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 150px">
                                     @foreach($customers as $single_customer)
                                       <option status_id="{{$single_customer->status_id}}" value="{{$single_customer->customer_id}}">{{$single_customer->customer_name}}</option>
                                     @endforeach
-                                  </select> --}}
-                                {{-- </div> --}}
+                                  </select> -->
+                                <-- </div> -->
                                 @include('alerts.feedback', ['field' => 'sale_customer_name'])
                               </div>
                             </div>
-                          </div>
-                          <div class="form-col-1">
+                          </div> --}}
+                          <div class="form-col-2">
                             <div class="form-group">
-                              <label for="customer_status" class="form-col-12 control-label">{{__(" Cust Status")}}</label>
+                              <label for="customer_status" class="form-col-12 control-label">{{__(" Customer Status")}}</label>
                                 <div class="form-col-12">
                                   <input readonly type="text" name="customer_status" id="customer_status" class="form-control col-12" value="">
                                   @include('alerts.feedback', ['field' => 'customer_status'])
@@ -147,30 +148,30 @@
                           </div>
                           <div class="form-col-2">
                             <div class="form-group">
-                              <label for="sale_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Amount Paid")}}</label>
+                              <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Amount Paid")}}</label>
                               <div class="form-col-12 input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text rs">Rs: </span>
                                 </div>
-                                <input readonly type="number" name="sale_amount_paid" id="customer_balance_paid" class="form-control" value="{{ old('sale_amount_paid', '') }}">
-                                @include('alerts.feedback', ['field' => 'sale_amount_paid'])
+                                <input readonly type="number" name="customer_amount_paid" id="customer_balance_paid" class="form-control" value="{{ old('customer_amount_paid', '') }}">
+                                @include('alerts.feedback', ['field' => 'customer_amount_paid'])
                               </div>
                             </div>
                           </div>
-                          <div class="form-last-col-3">
+                          <div class="form-col-3">
                             <div class="form-group">
                               <label for="party_balance_dues" class="form-col-12 control-label">{{__(" Party Balance Dues")}}</label>
                             {{-- <div class="card overflow-hidden">
                               <div class="card-body p-0 align-items-center">
                                 <div class="bg-gradient-info form-col-12"> --}}
                                   <div class="row">
-                                    <div class="form-col-5">
+                                    <div class="form-first-col-6">
                                     {{-- <div class="text-white text-value">Rs: 203400.00</div>
                                     <div class="text-white text-value">Rs: 205500.00</div> --}}
-                                      <input readonly type="number" name="sale_amount_dues" id="customer_balance_dues" class="bg-gradient-info form-control col-12" value="{{ old('sale_amount_dues', '') }}">
+                                      <input readonly type="number" name="customer_amount_dues" id="customer_balance_dues" class="bg-gradient-info form-control col-12" value="{{ old('customer_amount_dues', '') }}">
                                     </div>
-                                    <div class="form-col-5">
-                                      <input readonly type="number" name="sale_amount_dues2" id="customer_balance_dues2" class="bg-gradient-info form-control col-12" value="{{ old('sale_amount_dues2', '') }}">
+                                    <div class="form-last-col-6">
+                                      <input readonly type="number" name="customer_amount_dues2" id="customer_balance_dues2" class="bg-gradient-info form-control col-12" value="{{ old('customer_amount_dues2', '') }}">
                                     </div>
                                   </div>
                                 {{-- </div>
@@ -178,15 +179,28 @@
                             </div> --}}
                             </div>
                           </div>
+                          <div class="form-last-col-2">
+                            <div class="form-group">
+                              <label for="sale_status" class="form-col-12 control-label">{{__(" Sale Status")}}</label>
+                                <div class="form-col-12">
+                                  <select name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
+                                    <option value="pending">Pending</option>
+                                    <option value="completed">Completed</option>
+                                    //completed/pending
+                                  </select>
+                                  @include('alerts.feedback', ['field' => 'sale_status'])
+                                </div>
+                            </div>
+                          </div>
                           {{-- <div class="form-last-col-2">
                             <div class="form-group">
-                              <label for="sale_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Dues")}}</label>
+                              <label for="customer_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Dues")}}</label>
                               <div class="form-col-12 input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text rs">Rs: </span>
                                 </div>
-                                <input readonly type="number" name="sale_amount_dues" id="customer_balance_dues" class="form-control" value="{{ old('sale_amount_dues', '') }}">
-                                @include('alerts.feedback', ['field' => 'sale_amount_dues'])
+                                <input readonly type="number" name="customer_amount_dues" id="customer_balance_dues" class="form-control" value="{{ old('customer_amount_dues', '') }}">
+                                @include('alerts.feedback', ['field' => 'customer_amount_dues'])
                               </div>
                             </div>
                           </div> --}}
@@ -227,7 +241,8 @@
                                 {{-- <div class="input-group-prepend">
                                   <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
                                 </div> --}}
-                                <input type="date" name="sale_invoice_date" class="form-control" value="{{ old('sale_invoice_date', '') }}">
+                                <input type="date" name="sale_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
+                                {{-- ->format('m/d/Y') --}}
                                 @include('alerts.feedback', ['field' => 'sale_invoice_date'])
                               </div>
                             </div>
@@ -273,9 +288,9 @@
                                       <tr class="row">
                                         <th class="col-2 firstcol" scope="col">Barcode</th>
                                         <th class="col-3 mycol" scope="col">Product</th>
-                                        <th class="col-1 mycol" scope="col">Pcs</th>
-                                        <th class="col-1 mycol" scope="col">Pkts</th>
-                                        <th class="col-1 mycol" scope="col">Crtns</th>
+                                        <th class="col-1 mycol" scope="col">Pieces</th>
+                                        <th class="col-1 mycol" scope="col">Packets</th>
+                                        <th class="col-1 mycol" scope="col">Cartons</th>
                                         <th class="col-1 mycol" scope="col">Price</th>
                                         <th class="col-1 mycol" scope="col">Discount</th>
                                         <th class="col-1 mycol" scope="col">Total</th>
@@ -318,7 +333,7 @@
                                           <input type="number" name="sale_products_cartons_i" id="sale_products_cartons_i" class="form-control col-12" min="0" value="{{ old('sale_products_cartons_i', '0') }}">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="text" name="sale_products_unit_price_i" id="sale_products_unit_price_i" class="form-control col-12"  value="{{ old('sale_products_unit_price_i', '0') }}">
+                                          <input readonly type="text" name="sale_products_unit_price_i" id="sale_products_unit_price_i" class="form-control col-12"  value="{{ old('sale_products_unit_price_i', '0') }}">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
                                           <input type="text" name="sale_products_discount_i" id="sale_products_discount_i" class="form-control col-12"  value="{{ old('sale_products_discount_i', '0') }}">
@@ -331,33 +346,18 @@
                                             <button id="add_button" type="button" rel="tooltip" class="btn btn-info btn-round pull-right " data-original-title="+" title="+"><i class="fa fa-plus"></i></button>
                                         </td>
                                       </tr>
+                                      <?php $i=1; $j = 1; $mytotal_quantity = 0; $mytotal_discount = 0; $mysubtotal_amount = 0; $mygrandtotal_amount = 0; ?>
                                     </tbody>
                                     <tfoot class="thead-dark">
                                       <tr class="row">
-                                        <th class="col-2 firstcol" scope="col">Sale Status</th>
-                                        <th class="col-2 mycol" scope="col">Payment Status</th>
                                         {{-- <th class="col-1 mycol" scope="col">Invoice Id</th> --}}
                                         {{-- <th class="col-3 mycol" scope="col" style="text-align: center">Invoice Date</th> --}}
                                         {{-- <th class="col-2 mycol" scope="col">Document</th> --}}
-                                        <th class="col-8 lastcol" scope="col">Remarks</th>
+                                        <th class="col-8 firstcol" scope="col">Remarks</th>
+                                        <th class="col-2 mycol" scope="col">Payment Status</th>
+                                        <th class="col-2 lastcol" scope="col">Return Change</th>
                                       </tr>
                                       <tr class="row table-info" >
-                                        <td class="col-2 firstcol" scope="col">
-                                          <select name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
-                                            <option value="pending">Pending</option>
-                                            <option value="completed">Completed</option>
-                                            //completed/pending
-                                          </select>
-                                        </td>
-                                        <td class="col-2 mycol" scope="col">
-                                          <select name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
-                                            <option value="paid">Paid</option>
-                                            <option value="due">Due</option>
-                                            <option value="partial">Partial</option>
-                                            <option value="overdue">Overdue</option>
-                                            //paid,due,partial,overdue,
-                                          </select>
-                                        </td>
                                         {{-- <td class="col-1 mycol" scope="col">
                                           <input type="text" name="sale_invoice_id" class="form-control col-12" value="{{ old('sale_invoice_id', '') }}">
                                         </td>
@@ -372,8 +372,20 @@
                                         {{-- <td class="col-2 mycol" scope="col">
                                           <input type="file" name="sale_document" id="sale_document" class="form-control col-12" value="{{ old('sale_document', '') }}">
                                         </td> --}}
-                                        <td class="col-8 lastcol" scope="col">
+                                        <td class="col-8 firstcol" scope="col">
                                           <input type="text" name="sale_note" class="form-control col-12" value="{{ old('sale_note'), '' }}" >
+                                        </td>
+                                        <td class="col-2 mycol" scope="col">
+                                          <select name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
+                                            <option value="due">Due</option>
+                                            <option value="paid">Paid</option>
+                                            <option value="partial">Partial</option>
+                                            <option value="overdue">Overdue</option>
+                                            //due,paid,partial,overdue,
+                                          </select>
+                                        </td>
+                                        <td class="col-2 lastcol" scope="col">
+                                          <input readonly type="number" min="0" name="sale_return_change" id="sale_return_change" class="form-control col-12" value="0">
                                         </td>
                                       </tr>
                                     </tfoot>
@@ -406,16 +418,16 @@
                                           <input readonly type="number" name="sale_total_price" id="sale_total_price" class="form-control col-12"  value="{{ old('sale_total_price', '') }}">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="text" name="sale_add_amount" id="sale_add_amount" class="form-control col-12"  value="{{ old('sale_add_amount', '0.00') }}">
+                                          <input type="number" name="sale_add_amount" id="sale_add_amount" class="form-control col-12"  value="{{ old('sale_add_amount', '0.00') }}">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input readonly type="text" name="sale_discount" id="sale_discount" class="form-control col-12"  value="{{ old('sale_discount', '') }}">
+                                          <input readonly type="number" name="sale_discount" id="sale_discount" class="form-control col-12"  value="{{ old('sale_discount', '') }}">
                                         </td>
                                         <td class="col-2 mycol" scope="col">
-                                          <input readonly type="text" name="sale_grandtotal_price" id="sale_grandtotal_price" id="sale_grandtotal_price" class="form-control col-12"  value="{{ old('sale_grandtotal_price', '') }}">
+                                          <input readonly type="number" name="sale_grandtotal_price" id="sale_grandtotal_price" id="sale_grandtotal_price" class="form-control col-12"  value="{{ old('sale_grandtotal_price', '') }}">
                                         </td>
                                         <td class="col-2 lastcol" scope="col">
-                                          <input type="text" name="sale_amount_recieved" class="form-control col-12"  value="{{ old('sale_amount_recieved', '100') }}">
+                                          <input type="number" name="sale_amount_recieved" id="sale_amount_recieved" class="form-control col-12"  value="{{ old('sale_amount_recieved', '0') }}">
                                         </td>
                                       </tr>
                                     </tfoot>
@@ -429,11 +441,12 @@
                           <div class="col-12">
                             <div class="form-group">
                               <div class="col-12">
-                                <?php $productArray = []; $nameArray = []; $codeArray = []; ?>
+                                <?php $productArray = []; $nameArray = []; $codeArray = []; $barcodeArray = []; ?>
                                 @foreach($products as $one_product) 
                                 <div class="product_array" style="display: none">{{ $productArray[] = $one_product }}</div>
                                 <div class="productnames_array" style="display: none">{{ $nameArray[] = $one_product->product_name }}</div>
                                 <div class="productnamecode_array" style="display: none">{{ $namecodeArray[] = $one_product->product_name.", ".($one_product->product_ref_no) }}</div>
+                                <div class="productbarcodes_array" style="display: none">{{ $barcodeArray[] = "$one_product->product_barcode" }}</div>
                                 @endforeach 
                                 {{-- <input type="hidden" name="sale_products_barcode_2" id="product_barcode2" value="{{ $one_product->product_barcode }}"/> --}}
                                 <input type="hidden" name="pieces_per_packet" id="pieces_per_packet" value="{{ $one_product->product_piece_per_packet }}"/>
@@ -678,93 +691,563 @@
                       </div>
                     </div> --}}
                   </div>
-                  <!-- payment modal -->
-                  <div id="add-payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-                    <div role="document" class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 id="exampleModalLabel" class="modal-title">Payment</h5>
-                          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
-                        </div>
-                        <div class="modal-body">
+                </form>
+                <!-- payment modal -->
+                <div id="add-payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                  <div role="document" class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 id="exampleModalLabel" class="modal-title">Sale Payment</h5>
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post" action="{{ route('sale.paymentadd') }}" autocomplete="off" enctype="multipart/form-data">
+                          @csrf
+                          @method('post')
+                          @include('alerts.success')
                           <div class="row">
-                            <div class="col-10">
+                            <div class="card-body-custom col-12">
                               <div class="row">
-                                <div class="col-md-4 mt-1">
-                                    <label>Final Amount *</label>
-                                    <input type="number" name="final_amount_p" class="form-control numkey" required step="any">
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="form-first-col-3">
+                                      <div class="form-group">
+                                        <label for="customer_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
+                                        <div class="form-col-12 input-group ">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text barcode">
+                                              <a class="" data-toggle="modal" data-target="#customer-list" id="product-list-btn"><i class="fa fa-search"></i></a>
+                                            </span>
+                                          </div>
+                                          {{-- <div class="input-group pos"> --}}
+                                            <input type="text" name="customer_code" id="customercodesearch" placeholder="Search Customer by code" class="form-control col-12" value="{{ old('customer_code') }}" />
+                                            <input readonly type="hidden" name="payment_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
+                                            <input readonly type="hidden" name="payment_customer_id" id="customer_id" class="form-control col-12" value="" />
+              
+                                              <?php $snameArray = []; $snamecodeArray = []; ?>
+                                              @foreach($customers as $one_customer) 
+                                                <div class="customernames_array" style="display: none">{{ $snameArray[] = $one_customer->customer_name }}</div>
+                                                <div class="customernamecode_array" style="display: none">{{ $snamecodeArray[] = $one_customer->customer_name.", ".($one_customer->customer_ref_no) }}</div>
+                                              @endforeach
+                                          {{-- </div> --}}
+                                          @include('alerts.feedback', ['field' => 'customer_code'])
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-col-1">
+                                      <div class="form-group">
+                                        <label for="customer_status" class="form-col-12 control-label">{{__("Status")}}</label>
+                                          <div class="form-col-12">
+                                            <input readonly type="text" name="customer_status" id="customer_status" class="form-control col-12" value="">
+                                            @include('alerts.feedback', ['field' => 'customer_status'])
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-col-2">
+                                      <div class="form-group">
+                                        <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Paid")}}</label>
+                                        <div class="form-col-12 input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text rs">Rs: </span>
+                                          </div>
+                                          <input readonly type="number" name="customer_amount_paid" id="customer_balance_paid" class="form-control" value="{{ old('customer_amount_paid', '') }}">
+                                          @include('alerts.feedback', ['field' => 'customer_amount_paid'])
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-col-2">
+                                      <div class="form-group">
+                                        <label for="customer_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Dues")}}</label>
+                                        <div class="form-col-12 input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text rs">Rs: </span>
+                                          </div>
+                                          <input readonly type="number" name="customer_amount_dues" id="customer_balance_dues" class="form-control" value="{{ old('customer_amount_dues', '') }}">
+                                          @include('alerts.feedback', ['field' => 'customer_amount_dues'])
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-col-2">
+                                      <div class="form-group">
+                                        <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label>
+                                          <div class="form-col-12">
+                                            <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="{{ old('payterm_duratype', '30 Days') }}">
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-last-col-2">
+                                      <div class="form-group">
+                                        <label for="customer_credit_limit" class=" form-col-12 control-label">{{__(" Credit Limit")}}</label>
+                                          <div class=" form-col-12">
+                                            <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="{{ old('customer_credit_limit', '30000') }}">
+                                            @include('alerts.feedback', ['field' => 'credit_limit'])
+                                          </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="form-first-col-2">
+                                      <div class="form-group">
+                                        <label for="payment_method" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Method")}}</label>
+                                          <div class="form-col-12">
+                                            {{-- <input readonly type="text" name="payment_method" class="form-control col-12" value="{{ old('payment_method', 'Cash') }}"> --}}
+                                            <select required id="payment_method" name="payment_method" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Method...">
+                                              <option value="cash">Cash</option>
+                                              <option value="credit">Credit</option>
+                                              <option value="cheque">Cheque</option>
+                                            </select>
+                                            @include('alerts.feedback', ['field' => 'payment_method'])
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-col-2">
+                                      <div class="form-group">
+                                        <label for="payment_type" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment Type")}}</label>
+                                          <div class="form-col-12">
+                                            {{-- <input readonly type="text" name="payment_type" class="form-control col-12" value="{{ old('payment_type', 'Cash') }}"> --}}
+                                            <select required id="payment_type" name="payment_type" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Type...">
+                                              <option value="recieving">Recieving</option>
+                                              <option value="paying">Paying</option>
+                                            </select>
+                                            @include('alerts.feedback', ['field' => 'payment_type'])
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-col-2">
+                                      <div class="form-group">
+                                        <label for="payment_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Invoice ID")}}</label>
+                                          <div class="form-col-12">
+                                            <div class="myrow">
+                                              {{-- <div class="col-1"></div> --}}
+                                              <input type="text" name="payment_invoice_id" class="form-control form-col-10" value="{{ old('payment_invoice_id', '') }}">
+                                              <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
+                                                <i class="fa fa-file-text-o"></i>
+                                              </button>
+                                            </div>
+                                            @include('alerts.feedback', ['field' => 'payment_invoice_id'])
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-last-col-2">
+                                      <div class="form-group">
+                                        <label for="payment_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Invoice Date")}}</label>
+                                        <div class="form-col-12 input-group ">
+                                          {{-- <div class="input-group-prepend">
+                                            <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
+                                          </div> --}}
+                                          <input type="date" name="payment_invoice_date" class="form-control" value="{{ old('payment_invoice_date', '') }}">
+                                          @include('alerts.feedback', ['field' => 'payment_invoice_date'])
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-last-col-4">
+                                      <div class="form-group">
+                                        <label for="payment_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
+                                        <div class="form-col-12 input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text barcode">
+                                              <i class="fa fa-file-text-o"></i>
+                                            </span>
+                                          </div>
+                                          <input type="file" name="payment_document" id="payment_document" class="form-control col-12" value="{{ old('payment_document', '') }}">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="form-first-col-2">
+                                      <div class="form-group">
+                                        <label for="payment_amount_recieved" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Recieved")}}</label>
+                                        <div class="form-col-12 input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text rs">Rs: </span>
+                                          </div>
+                                          <input type="text" name="payment_amount_recieved" class="form-control form-col-12"  value="{{ old('payment_amount_recieved', '100') }}">
+                                          @include('alerts.feedback', ['field' => 'payment_amount_recieved'])
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-col-2">
+                                      <div class="form-group">
+                                        <label for="payment_cheque_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque #")}}</label>
+                                        <div class="form-col-12">
+                                          <input type="text" name="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
+                                          @include('alerts.feedback', ['field' => 'payment_cheque_no'])
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-last-col-8">
+                                      <div class="form-group">
+                                        <label for="payment_note" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Remarks")}}</label>
+                                        <div class="form-col-12 input-group ">
+                                          {{-- <div class="input-group-prepend">
+                                            <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
+                                          </div> --}}
+                                          <input type="text" name="payment_note" class="form-control col-12" value="{{ old('payment_note'), '' }}" >
+                                          @include('alerts.feedback', ['field' => 'payment_note'])
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div class="col-md-4 mt-1">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card-footer row">
+                            <div class=" form-col-6">
+                              <a type="button" href="{{ URL::previous() }}" class="btn btn-secondary btn-round ">{{__('Back')}}</a>
+                            </div>
+                            <div class=" form-col-6">
+                              <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
+                            </div>
+                          </div>
+                          <hr class="half-rule"/>
+                        </form>
+                        {{-- <div class="row">
+                            <div class="col-10">
+                                <div class="row">
+                                    <div class="col-6 mt-1">
+                                        <label>Recieved Amount *</label>
+                                        <input type="text" name="paying_amount" class="form-control numkey" required step="any">
+                                    </div>
+                                    <div class="col-6 mt-1">
+                                        <label>Paying Amount *</label>
+                                        <input type="text" name="paid_amount" class="form-control numkey"  step="any">
+                                    </div>
+                                    <div class="col-6 mt-1">
+                                        <label>Change : </label>
+                                        <p id="change" class="ml-2">0.00</p>
+                                    </div>
+                                    <div class="col-6 mt-1">
+                                        <input type="hidden" name="paid_by_id">
+                                        <label>Paid By</label>
+                                        <select name="paid_by_id_select" class="form-control selectpicker">
+                                            <option value="1">Credit Card</option>
+                                            <option value="2">Cash</option>
+                                            <option value="3">Cheque</option>
+                                            <option value="4">Deposit</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-12 mt-3">
+                                        <div class="card-element form-control">
+                                        </div>
+                                        <div class="card-errors" role="alert"></div>
+                                    </div>
+                                    <div class="form-group col-12 cheque">
+                                        <label>Cheque Number *</label>
+                                        <input type="text" name="cheque_no" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-6 form-group">
+                                        <label>sale Note</label>
+                                        <textarea rows="3" class="form-control" name="sale_note"></textarea>
+                                    </div>
+                                    <div class="col-6 form-group">
+                                        <label>Payment Note</label>
+                                        <textarea rows="3" class="form-control" name="payment_note"></textarea>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
+                                </div>
+                            </div>
+                            <div class="col-2 qc" data-initial="1">
+                                <h4><strong>Quick Cash</strong></h4>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="10" type="button">10</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="20" type="button">20</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="50" type="button">50</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="100" type="button">100</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="500" type="button">500</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="1000" type="button">1000</button>
+                                <button class="btn btn-block btn-danger qc-btn sound-btn" data-amount="0" type="button">Clear</button>
+                            </div>
+                        </div> --}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- financial modal -->
+                <div id="financial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                  <div role="document" class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 id="exampleModalLabel" class="modal-title">Party Balance Sheet</h5>
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="row">
+                              <div class=" col-12">
+                                <div class="form-group">
+                                  <label for="customer_name" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
+                                    <div class=" col-12 input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text barcode">
+                                          <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-user"></i></a>
+                                        </span>
+                                      </div>
+                                      <input type="text" name="customer_name" id="lims_productcodeSearch" placeholder="Customer by name/code" class="form-control"  />
+                                    </div>
+                                    @include('alerts.feedback', ['field' => 'customer_name'])
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class=" col-12 ">
+                                <div class="form-group">
+                                  <div class=" col-12">
+                                    <div class="table-responsive transaction-list">
+                                      <table id="myTable" class="table table-hover table-striped order-list table-fixed">
+                                        <thead class="thead-dark" style="position: sticky; top: 0; z-index: 1">
+                                          <tr>
+                                              <th class="col-1">RefNo</th>
+                                              <th class="col-1">Date</th>
+                                              <th class="col-2">Product</th>
+                                              <th class="col-2">Transaction</th>
+                                              <th class="col-1">Total(Rs)</th>
+                                              <th class="col-1">Paid(Rs)</th>
+                                              <th class="col-1">Method</th>
+                                              <th class="col-1">Status</th>
+                                              <th class="col-2">Balance Amount</th>
+                                              {{-- <th class="col-1">Debit</th>
+                                              <th class="col-1">Credit</th> --}}
+                                              {{-- $table->integer('product_total_quantity'); --}}
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td class="col-1">EP-243</td>
+                                            <td class="col-1">2021/01/22</td>
+                                            <td class="col-2">Earphone</td>
+                                            <td class="col-2">Sale</td>
+                                            <td class="col-1">2340.00</td>
+                                            <td class="col-1">5000.00</td>
+                                            <td class="col-1">Cash</td>
+                                            <td class="col-1">Paid</td>
+                                            <td class="col-2">-2660.00</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="col-1">MO-451</td>
+                                            <td class="col-1">2021/01/25</td>
+                                            <td class="col-2">Mouse</td>
+                                            <td class="col-2">Purchase</td>
+                                            <td class="col-1">1470.00</td>
+                                            <td class="col-1">0.00</td>
+                                            <td class="col-1">Credit</td>
+                                            <td class="col-1">Due</td>
+                                            <td class="col-2">1470.00</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="col-1">MO-451</td>
+                                            <td class="col-1">2021/01/25</td>
+                                            <td class="col-2">Mouse</td>
+                                            <td class="col-2">Purchase</td>
+                                            <td class="col-1">1470.00</td>
+                                            <td class="col-1">0.00</td>
+                                            <td class="col-1">Credit</td>
+                                            <td class="col-1">Due</td>
+                                            <td class="col-2">1470.00</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="col-1">MO-451</td>
+                                            <td class="col-1">2021/01/25</td>
+                                            <td class="col-2">Mouse</td>
+                                            <td class="col-2">Purchase</td>
+                                            <td class="col-1">1470.00</td>
+                                            <td class="col-1">0.00</td>
+                                            <td class="col-1">Credit</td>
+                                            <td class="col-1">Due</td>
+                                            <td class="col-2">1470.00</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="col-1">MO-451</td>
+                                            <td class="col-1">2021/01/25</td>
+                                            <td class="col-2">Mouse</td>
+                                            <td class="col-2">Purchase</td>
+                                            <td class="col-1">1470.00</td>
+                                            <td class="col-1">0.00</td>
+                                            <td class="col-1">Credit</td>
+                                            <td class="col-1">Due</td>
+                                            <td class="col-2">1470.00</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="col-1">MO-451</td>
+                                            <td class="col-1">2021/01/25</td>
+                                            <td class="col-2">Mouse</td>
+                                            <td class="col-2">Purchase</td>
+                                            <td class="col-1">1470.00</td>
+                                            <td class="col-1">0.00</td>
+                                            <td class="col-1">Credit</td>
+                                            <td class="col-1">Due</td>
+                                            <td class="col-2">1470.00</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="col-1">MO-451</td>
+                                            <td class="col-1">2021/01/25</td>
+                                            <td class="col-2">Mouse</td>
+                                            <td class="col-2">Purchase</td>
+                                            <td class="col-1">1470.00</td>
+                                            <td class="col-1">0.00</td>
+                                            <td class="col-1">Credit</td>
+                                            <td class="col-1">Due</td>
+                                            <td class="col-2">1470.00</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="col-1">MO-451</td>
+                                            <td class="col-1">2021/01/25</td>
+                                            <td class="col-2">Mouse</td>
+                                            <td class="col-2">Purchase</td>
+                                            <td class="col-1">1470.00</td>
+                                            <td class="col-1">0.00</td>
+                                            <td class="col-1">Credit</td>
+                                            <td class="col-1">Due</td>
+                                            <td class="col-2">1470.00</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="col-1">MO-451</td>
+                                            <td class="col-1">2021/01/25</td>
+                                            <td class="col-2">Mouse</td>
+                                            <td class="col-2">Purchase</td>
+                                            <td class="col-1">1470.00</td>
+                                            <td class="col-1">0.00</td>
+                                            <td class="col-1">Credit</td>
+                                            <td class="col-1">Due</td>
+                                            <td class="col-2">1470.00</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {{-- <div class="row">
+                                <div class="col-md-6 mt-1">
                                     <label>Recieved Amount *</label>
-                                    <input type="number" name="recieved_amount_p" class="form-control numkey" required step="any">
+                                    <input type="text" name="paying_amount" class="form-control numkey" required step="any">
                                 </div>
-                                <div class="col-md-4 mt-1">
-                                    <label>Paid Amount *</label>
-                                    <input type="number" name="amount_paid_p" class="form-control numkey"  step="any">
+                                <div class="col-md-6 mt-1">
+                                    <label>Paying Amount *</label>
+                                    <input type="text" name="paid_amount" class="form-control numkey"  step="any">
                                 </div>
                                 <div class="col-md-6 mt-1">
                                     <label>Change : </label>
-                                    <input type="number" name="change_p" class="form-control numkey" readonly step="any">
+                                    <p id="change" class="ml-2">0.00</p>
                                 </div>
                                 <div class="col-md-6 mt-1">
                                     <input type="hidden" name="paid_by_id">
                                     <label>Paid By</label>
                                     <select name="paid_by_id_select" class="form-control selectpicker">
-                                        <option value="1">Cash</option>
-                                        <option value="2">Cheque</option>
-                                        <option value="3">Deposit</option>
+                                        <option value="1">Credit Card</option>
+                                        <option value="2">Cash</option>
+                                        <option value="3">Cheque</option>
+                                        <option value="4">Deposit</option>
                                     </select>
                                 </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-12 form-group">
-                                  <label>Sale Note</label>
-                                  <textarea rows="3" class="form-control" name="sale_note"></textarea>
-                                  </div>
-                              </div>
-                              <div class="mt-3">
-                                <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
-                              </div>
+                                <div class="form-group col-12 mt-3">
+                                    <div class="card-errors" role="alert"></div>
+                                </div>
+                                <div class="form-group col-12 cheque">
+                                    <label>Cheque Number *</label>
+                                    <input type="text" name="cheque_no" class="form-control">
+                                </div>
                             </div>
-                            <div class="col-2 qc" data-initial="1">
-                              <h5><strong>Quick Cash</strong></h5>
-                              <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="10" type="button">10</button>
-                              <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="20" type="button">20</button>
-                              <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="50" type="button">50</button>
-                              <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="100" type="button">100</button>
-                              <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="500" type="button">500</button>
-                              <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="1000" type="button">1000</button>
-                              <button class="btn btn-block btn-danger qc-btn sound-btn" data-amount="0" type="button">Clear</button>
+                            <div class="row">
+                              <div class="col-md-6 form-group">
+                                    <label>Sale Note</label>
+                                    <textarea rows="3" class="form-control" name="sale_note"></textarea>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Payment Note</label>
+                                    <textarea rows="3" class="form-control" name="payment_note"></textarea>
+                                </div>
+                            </div> --}}
+                            <div class="mt-3">
+                                <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <!-- financial modal -->
-                  <div id="financial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-                    <div role="document" class="modal-dialog">
-                      <div class="modal-content">
+                </div>
+                <!-- product list modal -->
+                <div id="product-list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                  <div role="document" class="modal-dialog">
+                    <div class="modal-content-pos">
                         <div class="modal-header">
-                          <h5 id="exampleModalLabel" class="modal-title">Party Balance Sheet</h5>
-                          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+                            <h5 id="exampleModalLabel" class="modal-title">Products List</h5>
+                            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
                         </div>
                         <div class="modal-body">
                           <div class="row">
                             <div class="col-12">
                               <div class="row">
-                                <div class=" col-12">
+                                <div class=" col-md-6 ">
                                   <div class="form-group">
-                                    <label for="customer_name" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
+                                    <label for="customer_name" class=" col-10 control-label">&nbsp;&nbsp;{{__("Customer Name")}}</label>
+                                    <div class=" col-12 input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text barcode">
+                                          <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-user"></i></a>
+                                        </span>
+                                      </div>
+                                      {{-- <div class="input-group pos"> --}}
+                                        <input type="text" name="customer_name" id="lims_customercodeSearch" placeholder="Customer Name" class="form-control"  />
+                                        {{-- <select required name="customer_name" id="customer_name" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 100px">
+                                        ?php $deposit = [] ?>
+                                          @foreach($lims_customer_list as $customer)
+                                            @php $deposit[$customer->id] = $customer->deposit - $customer->expense; @endphp
+                                            <option value="{{$customer->id}}">{{$customer->name . ' (' . $customer->phone_number . ')'}}</option>
+                                          @endforeach
+                                          <option value="0">Walk-in Customer</option>
+                                        </select> --}}
+                                      {{-- </div> --}}
+                                      @include('alerts.feedback', ['field' => 'customer_name'])
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class=" col-md-6 ">
+                                  <div class="form-group">
+                                    <label for="customer_code" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Customer Code")}}</label>
+                                    <div class=" col-12 input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text barcode">
+                                          <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
+                                        </span>
+                                      </div>
+                                      <input type="hidden" name="customer_code_hidden" value="lims_pos_setting_data>customer_code">
+                                      {{-- <div class="input-group pos"> --}}
+                                        <input type="text" name="customer_code" id="lims_customercodeSearch" placeholder="Customer Code" class="form-control"  />
+                                        {{-- <select required name="customer_code" id="customer_code" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 100px">
+                                        <?php $deposit = [] ?>
+                                          @foreach($lims_customer_list as $customer)
+                                            @php $deposit[$customer->id] = $customer->deposit - $customer->expense; @endphp
+                                            <option value="{{$customer->id}}">{{$customer->name . ' (' . $customer->phone_number . ')'}}</option>
+                                          @endforeach
+                                          <option value="0">Walk-in Customer</option>
+                                        </select> --}}
+                                      {{-- </div> --}}
+                                      @include('alerts.feedback', ['field' => 'customer_code'])
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class=" col-12 ">
+                                  <div class="search-box form-group">
+                                    <label for="product_code_name" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Search Product")}}</label>
                                       <div class=" col-12 input-group">
                                         <div class="input-group-prepend">
                                           <span class="input-group-text barcode">
-                                            <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-user"></i></a>
+                                            <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
                                           </span>
                                         </div>
-                                        <input type="text" name="customer_name" id="lims_productcodeSearch" placeholder="Customer by name/code" class="form-control"  />
+                                        <input type="text" name="product_code_name" id="lims_productcodeSearch" placeholder="Scan/Search product by name/code" class="form-control"  />
                                       </div>
-                                      @include('alerts.feedback', ['field' => 'customer_name'])
+                                      @include('alerts.feedback', ['field' => 'product_code_name'])
                                   </div>
                                 </div>
                               </div>
@@ -772,126 +1255,170 @@
                                 <div class=" col-12 ">
                                   <div class="form-group">
                                     <div class=" col-12">
-                                      <div class="table-responsive transaction-list">
-                                        <table id="myTable" class="table table-hover table-striped order-list table-fixed">
-                                          <thead class="thead-dark" style="position: sticky; top: 0; z-index: 1">
-                                            <tr>
-                                                <th class="col-1">RefNo</th>
-                                                <th class="col-1">Date</th>
-                                                <th class="col-2">Product</th>
-                                                <th class="col-2">Transaction</th>
-                                                <th class="col-1">Total(Rs)</th>
-                                                <th class="col-1">Paid(Rs)</th>
-                                                <th class="col-1">Method</th>
-                                                <th class="col-1">Status</th>
-                                                <th class="col-2">Balance Amount</th>
-                                                {{-- <th class="col-1">Debit</th>
-                                                <th class="col-1">Credit</th> --}}
-                                                {{-- $table->integer('product_total_quantity'); --}}
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            <tr>
-                                              <td class="col-1">EP-243</td>
-                                              <td class="col-1">2021/01/22</td>
-                                              <td class="col-2">Earphone</td>
-                                              <td class="col-2">Sale</td>
-                                              <td class="col-1">2340.00</td>
-                                              <td class="col-1">5000.00</td>
-                                              <td class="col-1">Cash</td>
-                                              <td class="col-1">Paid</td>
-                                              <td class="col-2">-2660.00</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="col-1">MO-451</td>
-                                              <td class="col-1">2021/01/25</td>
-                                              <td class="col-2">Mouse</td>
-                                              <td class="col-2">Purchase</td>
-                                              <td class="col-1">1470.00</td>
-                                              <td class="col-1">0.00</td>
-                                              <td class="col-1">Credit</td>
-                                              <td class="col-1">Due</td>
-                                              <td class="col-2">1470.00</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="col-1">MO-451</td>
-                                              <td class="col-1">2021/01/25</td>
-                                              <td class="col-2">Mouse</td>
-                                              <td class="col-2">Purchase</td>
-                                              <td class="col-1">1470.00</td>
-                                              <td class="col-1">0.00</td>
-                                              <td class="col-1">Credit</td>
-                                              <td class="col-1">Due</td>
-                                              <td class="col-2">1470.00</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="col-1">MO-451</td>
-                                              <td class="col-1">2021/01/25</td>
-                                              <td class="col-2">Mouse</td>
-                                              <td class="col-2">Purchase</td>
-                                              <td class="col-1">1470.00</td>
-                                              <td class="col-1">0.00</td>
-                                              <td class="col-1">Credit</td>
-                                              <td class="col-1">Due</td>
-                                              <td class="col-2">1470.00</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="col-1">MO-451</td>
-                                              <td class="col-1">2021/01/25</td>
-                                              <td class="col-2">Mouse</td>
-                                              <td class="col-2">Purchase</td>
-                                              <td class="col-1">1470.00</td>
-                                              <td class="col-1">0.00</td>
-                                              <td class="col-1">Credit</td>
-                                              <td class="col-1">Due</td>
-                                              <td class="col-2">1470.00</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="col-1">MO-451</td>
-                                              <td class="col-1">2021/01/25</td>
-                                              <td class="col-2">Mouse</td>
-                                              <td class="col-2">Purchase</td>
-                                              <td class="col-1">1470.00</td>
-                                              <td class="col-1">0.00</td>
-                                              <td class="col-1">Credit</td>
-                                              <td class="col-1">Due</td>
-                                              <td class="col-2">1470.00</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="col-1">MO-451</td>
-                                              <td class="col-1">2021/01/25</td>
-                                              <td class="col-2">Mouse</td>
-                                              <td class="col-2">Purchase</td>
-                                              <td class="col-1">1470.00</td>
-                                              <td class="col-1">0.00</td>
-                                              <td class="col-1">Credit</td>
-                                              <td class="col-1">Due</td>
-                                              <td class="col-2">1470.00</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="col-1">MO-451</td>
-                                              <td class="col-1">2021/01/25</td>
-                                              <td class="col-2">Mouse</td>
-                                              <td class="col-2">Purchase</td>
-                                              <td class="col-1">1470.00</td>
-                                              <td class="col-1">0.00</td>
-                                              <td class="col-1">Credit</td>
-                                              <td class="col-1">Due</td>
-                                              <td class="col-2">1470.00</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="col-1">MO-451</td>
-                                              <td class="col-1">2021/01/25</td>
-                                              <td class="col-2">Mouse</td>
-                                              <td class="col-2">Purchase</td>
-                                              <td class="col-1">1470.00</td>
-                                              <td class="col-1">0.00</td>
-                                              <td class="col-1">Credit</td>
-                                              <td class="col-1">Due</td>
-                                              <td class="col-2">1470.00</td>
-                                            </tr>
-                                          </tbody>
-                                        </table>
+                                      <div class="table-responsive-sm" style="height:300px; overflow-x:hidden">
+                                          <table id="myTable" class="table table-sm table-hover table-striped table-fixed table-bordered">
+                                              <thead class="thead-dark pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
+                                                <tr>
+                                                    <th class="col-1">RefID</th>
+                                                    <th class="col-2">Barcode</th>
+                                                    <th class="col-2">Product</th>
+                                                    <th class="col-1">Unit</th>
+                                                    <th class="col-1">T.P</th>
+                                                    <th class="col-1">Cash</th>
+                                                    <th class="col-1">Credit</th>
+                                                    <th class="col-1">Non Bulk</th>
+                                                    <th class="col-1">Available</th>
+                                                    <th class="col-1">Action</th>
+                                                    {{-- $table->integer('product_total_quantity'); --}}
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr>
+                                                  <td class="col-1">EP-243</td>
+                                                  <td class="col-2">1935365764</td>
+                                                  <td class="col-2">Earphone</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">240.00</td>
+                                                  <td class="col-1">250.00</td>
+                                                  <td class="col-1">260.00</td>
+                                                  <td class="col-1">270.00</td>
+                                                  <td class="col-1">2</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td class="col-1">MO-451</td>
+                                                  <td class="col-2">8645323472</td>
+                                                  <td class="col-2">Mouse</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">140.00</td>
+                                                  <td class="col-1">150.00</td>
+                                                  <td class="col-1">160.00</td>
+                                                  <td class="col-1">170.00</td>
+                                                  <td class="col-1">1</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td class="col-1">MO-451</td>
+                                                  <td class="col-2">8645323472</td>
+                                                  <td class="col-2">Mouse</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">140.00</td>
+                                                  <td class="col-1">150.00</td>
+                                                  <td class="col-1">160.00</td>
+                                                  <td class="col-1">170.00</td>
+                                                  <td class="col-1">1</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td class="col-1">MO-451</td>
+                                                  <td class="col-2">8645323472</td>
+                                                  <td class="col-2">Mouse</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">140.00</td>
+                                                  <td class="col-1">150.00</td>
+                                                  <td class="col-1">160.00</td>
+                                                  <td class="col-1">170.00</td>
+                                                  <td class="col-1">1</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td class="col-1">MO-451</td>
+                                                  <td class="col-2">8645323472</td>
+                                                  <td class="col-2">Mouse</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">140.00</td>
+                                                  <td class="col-1">150.00</td>
+                                                  <td class="col-1">160.00</td>
+                                                  <td class="col-1">170.00</td>
+                                                  <td class="col-1">1</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td class="col-1">MO-451</td>
+                                                  <td class="col-2">8645323472</td>
+                                                  <td class="col-2">Mouse</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">140.00</td>
+                                                  <td class="col-1">150.00</td>
+                                                  <td class="col-1">160.00</td>
+                                                  <td class="col-1">170.00</td>
+                                                  <td class="col-1">1</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td class="col-1">MO-451</td>
+                                                  <td class="col-2">8645323472</td>
+                                                  <td class="col-2">Mouse</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">140.00</td>
+                                                  <td class="col-1">150.00</td>
+                                                  <td class="col-1">160.00</td>
+                                                  <td class="col-1">170.00</td>
+                                                  <td class="col-1">1</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td class="col-1">MO-451</td>
+                                                  <td class="col-2">8645323472</td>
+                                                  <td class="col-2">Mouse</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">140.00</td>
+                                                  <td class="col-1">150.00</td>
+                                                  <td class="col-1">160.00</td>
+                                                  <td class="col-1">170.00</td>
+                                                  <td class="col-1">1</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td class="col-1">MO-451</td>
+                                                  <td class="col-2">8645323472</td>
+                                                  <td class="col-2">Mouse</td>
+                                                  <td class="col-1">Piece</td>
+                                                  <td class="col-1">140.00</td>
+                                                  <td class="col-1">150.00</td>
+                                                  <td class="col-1">160.00</td>
+                                                  <td class="col-1">170.00</td>
+                                                  <td class="col-1">1</td>
+                                                  <td class="col-1">
+                                                    <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
+                                                      <i class="fa fa-plus-square"></i>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                              </tbody>
+                                          </table>
                                       </div>
                                     </div>
                                   </div>
@@ -944,693 +1471,392 @@
                             </div>
                           </div>
                         </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- pending bill list modal -->
+                <div id="pending-list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                  <div role="document" class="modal-dialog">
+                    <div class="modal-content-pos">
+                      <div class="modal-header">
+                        <h5 id="exampleModalLabel" class="modal-title">Pending Bill List</h5>
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="row">
+                              <div class=" col-12 ">
+                                <div class="form-group">
+                                  <div class=" col-12">
+                                    <div class="table-responsive-sm" style="height:500px; overflow-x:hidden">
+                                      <table id="myTable" class="table table-sm table-hover table-striped table-fixed table-bordered">
+                                        <thead class="thead-dark pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
+                                          <tr>
+                                            <th>S.No</th>
+                                            <th>Ref_No</th>
+                                            <th>Customer Name</th>
+                                            <th>Sale Status</th>
+                                            <th>Invoice Date</th>
+                                            <th>Grandtotal Price</th>
+                                            <th>Amount Paid</th>
+                                            <th>Amount Dues</th>
+                                            <th>Payment Method</th>
+                                            <th>Payment Status</th>
+                                            <!-- <th>Invoice Id</th> -->
+                                            <th>Payterm DuraType</th>
+                                            <th class="disabled-sorting text-right">Actions</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          @foreach ($pendingsales as $key => $value)
+                                          <tr>
+                                            <td>{{ $value->sale_id }}</td>
+                                            <td>{{ $value->sale_ref_no }}</td>
+                                            <td>{{ $value->customer_name }}</td> 
+                                            <td>{{ $value->sale_status }}</td>
+                                            <td>{{ $value->sale_invoice_date }}</td>
+                                            <td>{{ $value->sale_grandtotal_price }}</td>
+                                            <td>{{ $value->customer_amount_paid }}</td>
+                                            <td>{{ $value->customer_amount_dues }}</td>
+                                            <td>{{ $value->sale_payment_method }}</td> 
+                                            <td>{{ $value->sale_payment_status }}</td>
+                                            <td>{{ $value->customer_credit_duration." ".$value->customer_credit_type }}</td>
+                                            <td class="text-right">
+                                              <a type="button" href="{{ route('sale.edit', ['sale' => $value->sale_id,]) }}" rel="tooltip" class="btn btn-info btn-icon btn-sm " data-original-title="" title="">
+                                                <i class="fa fa-edit"></i>
+                                              </a>
+                                            </td>
+                                          </tr>
+                                          @endforeach
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- <div class="mt-3">
+                                <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
+                            </div> -->
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <!-- product list modal -->
-                  <div id="product-list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-                    <div role="document" class="modal-dialog">
-                      <div class="modal-content-pos">
-                          <div class="modal-header">
-                              <h5 id="exampleModalLabel" class="modal-title">Products List</h5>
-                              <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="row">
-                              <div class="col-12">
-                                <div class="row">
-                                  <div class=" col-md-6 ">
-                                    <div class="form-group">
-                                      <label for="customer_name" class=" col-10 control-label">&nbsp;&nbsp;{{__("Customer Name")}}</label>
-                                      <div class=" col-12 input-group">
-                                        <div class="input-group-prepend">
-                                          <span class="input-group-text barcode">
-                                            <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-user"></i></a>
-                                          </span>
-                                        </div>
-                                        {{-- <div class="input-group pos"> --}}
-                                          <input type="text" name="customer_name" id="lims_customercodeSearch" placeholder="Customer Name" class="form-control"  />
-                                          {{-- <select required name="customer_name" id="customer_name" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 100px">
-                                          ?php $deposit = [] ?>
-                                            @foreach($lims_customer_list as $customer)
-                                              @php $deposit[$customer->id] = $customer->deposit - $customer->expense; @endphp
-                                              <option value="{{$customer->id}}">{{$customer->name . ' (' . $customer->phone_number . ')'}}</option>
-                                            @endforeach
-                                            <option value="0">Walk-in Customer</option>
-                                          </select> --}}
-                                        {{-- </div> --}}
-                                        @include('alerts.feedback', ['field' => 'customer_name'])
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class=" col-md-6 ">
-                                    <div class="form-group">
-                                      <label for="customer_code" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Customer Code")}}</label>
-                                      <div class=" col-12 input-group">
-                                        <div class="input-group-prepend">
-                                          <span class="input-group-text barcode">
-                                            <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
-                                          </span>
-                                        </div>
-                                        <input type="hidden" name="customer_code_hidden" value="lims_pos_setting_data>customer_code">
-                                        {{-- <div class="input-group pos"> --}}
-                                          <input type="text" name="customer_code" id="lims_customercodeSearch" placeholder="Customer Code" class="form-control"  />
-                                          {{-- <select required name="customer_code" id="customer_code" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 100px">
-                                          <?php $deposit = [] ?>
-                                            @foreach($lims_customer_list as $customer)
-                                              @php $deposit[$customer->id] = $customer->deposit - $customer->expense; @endphp
-                                              <option value="{{$customer->id}}">{{$customer->name . ' (' . $customer->phone_number . ')'}}</option>
-                                            @endforeach
-                                            <option value="0">Walk-in Customer</option>
-                                          </select> --}}
-                                        {{-- </div> --}}
-                                        @include('alerts.feedback', ['field' => 'customer_code'])
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class=" col-12 ">
-                                    <div class="search-box form-group">
-                                      <label for="product_code_name" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Search Product")}}</label>
-                                        <div class=" col-12 input-group">
-                                          <div class="input-group-prepend">
-                                            <span class="input-group-text barcode">
-                                              <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
-                                            </span>
+                </div>
+                {{-- <!-- recent transaction modal -->
+                <div id="recentTransaction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                  <div role="document" class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Recent Transaction')}} <div class="badge badge-primary">{{trans('file.latest')}} 10</div></h5>
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+                      </div>
+                      <div class="modal-body">
+                          <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" href="#sale-latest" role="tab" data-toggle="tab">{{trans('file.Sale')}}</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#draft-latest" role="tab" data-toggle="tab">{{trans('file.Draft')}}</a>
+                            </li>
+                          </ul>
+                          <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane show active" id="sale-latest">
+                                <div class="table-responsive">
+                                  <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th>{{trans('file.date')}}</th>
+                                        <th>{{trans('file.reference')}}</th>
+                                        <th>{{trans('file.customer')}}</th>
+                                        <th>{{trans('file.grand total')}}</th>
+                                        <th>{{trans('file.action')}}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      @foreach($recent_sale as $sale)
+                                      ?php $customer = DB::table('customers')->find($sale->customer_id); ?>
+                                      <tr>
+                                        <td>{{date('d-m-Y', strtotime($sale->created_at))}}</td>
+                                        <td>{{$sale->reference_no}}</td>
+                                        <td>{{$customer->name}}</td>
+                                        <td>{{$sale->grand_total}}</td>
+                                        <td>
+                                          <div class="btn-group">
+                                              @if(in_array("sales-edit", $all_permission))
+                                              <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-success btn-sm" title="Edit"><i class="fa fa-document-edit"></i></a>&nbsp;
+                                              @endif
+                                              @if(in_array("sales-delete", $all_permission))
+                                              {{ Form::open(['route' => ['sales.destroy', $sale->id], 'method' => 'DELETE'] ) }}
+                                              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()" title="Delete"><i class="fa fa-trash"></i></button>
+                                              {{ Form::close() }}
+                                              @endif
                                           </div>
-                                          <input type="text" name="product_code_name" id="lims_productcodeSearch" placeholder="Scan/Search product by name/code" class="form-control"  />
-                                        </div>
-                                        @include('alerts.feedback', ['field' => 'product_code_name'])
-                                    </div>
-                                  </div>
+                                        </td>
+                                      </tr>
+                                      @endforeach
+                                    </tbody>
+                                  </table>
                                 </div>
-                                <div class="row">
-                                  <div class=" col-12 ">
-                                    <div class="form-group">
-                                      <div class=" col-12">
-                                        <div class="table-responsive-sm" style="height:300px; overflow-x:hidden">
-                                            <table id="myTable" class="table table-sm table-hover table-striped table-fixed table-bordered">
-                                                <thead class="thead-dark pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
-                                                  <tr>
-                                                      <th class="col-1">RefID</th>
-                                                      <th class="col-2">Barcode</th>
-                                                      <th class="col-2">Product</th>
-                                                      <th class="col-1">Unit</th>
-                                                      <th class="col-1">T.P</th>
-                                                      <th class="col-1">Cash</th>
-                                                      <th class="col-1">Credit</th>
-                                                      <th class="col-1">Non Bulk</th>
-                                                      <th class="col-1">Available</th>
-                                                      <th class="col-1">Action</th>
-                                                      {{-- $table->integer('product_total_quantity'); --}}
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                  <tr>
-                                                    <td class="col-1">EP-243</td>
-                                                    <td class="col-2">1935365764</td>
-                                                    <td class="col-2">Earphone</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">240.00</td>
-                                                    <td class="col-1">250.00</td>
-                                                    <td class="col-1">260.00</td>
-                                                    <td class="col-1">270.00</td>
-                                                    <td class="col-1">2</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="col-1">MO-451</td>
-                                                    <td class="col-2">8645323472</td>
-                                                    <td class="col-2">Mouse</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">140.00</td>
-                                                    <td class="col-1">150.00</td>
-                                                    <td class="col-1">160.00</td>
-                                                    <td class="col-1">170.00</td>
-                                                    <td class="col-1">1</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="col-1">MO-451</td>
-                                                    <td class="col-2">8645323472</td>
-                                                    <td class="col-2">Mouse</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">140.00</td>
-                                                    <td class="col-1">150.00</td>
-                                                    <td class="col-1">160.00</td>
-                                                    <td class="col-1">170.00</td>
-                                                    <td class="col-1">1</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="col-1">MO-451</td>
-                                                    <td class="col-2">8645323472</td>
-                                                    <td class="col-2">Mouse</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">140.00</td>
-                                                    <td class="col-1">150.00</td>
-                                                    <td class="col-1">160.00</td>
-                                                    <td class="col-1">170.00</td>
-                                                    <td class="col-1">1</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="col-1">MO-451</td>
-                                                    <td class="col-2">8645323472</td>
-                                                    <td class="col-2">Mouse</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">140.00</td>
-                                                    <td class="col-1">150.00</td>
-                                                    <td class="col-1">160.00</td>
-                                                    <td class="col-1">170.00</td>
-                                                    <td class="col-1">1</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="col-1">MO-451</td>
-                                                    <td class="col-2">8645323472</td>
-                                                    <td class="col-2">Mouse</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">140.00</td>
-                                                    <td class="col-1">150.00</td>
-                                                    <td class="col-1">160.00</td>
-                                                    <td class="col-1">170.00</td>
-                                                    <td class="col-1">1</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="col-1">MO-451</td>
-                                                    <td class="col-2">8645323472</td>
-                                                    <td class="col-2">Mouse</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">140.00</td>
-                                                    <td class="col-1">150.00</td>
-                                                    <td class="col-1">160.00</td>
-                                                    <td class="col-1">170.00</td>
-                                                    <td class="col-1">1</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="col-1">MO-451</td>
-                                                    <td class="col-2">8645323472</td>
-                                                    <td class="col-2">Mouse</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">140.00</td>
-                                                    <td class="col-1">150.00</td>
-                                                    <td class="col-1">160.00</td>
-                                                    <td class="col-1">170.00</td>
-                                                    <td class="col-1">1</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="col-1">MO-451</td>
-                                                    <td class="col-2">8645323472</td>
-                                                    <td class="col-2">Mouse</td>
-                                                    <td class="col-1">Piece</td>
-                                                    <td class="col-1">140.00</td>
-                                                    <td class="col-1">150.00</td>
-                                                    <td class="col-1">160.00</td>
-                                                    <td class="col-1">170.00</td>
-                                                    <td class="col-1">1</td>
-                                                    <td class="col-1">
-                                                      <button type="button" href="{{ route('sale.destroy', ['sale' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="+" title="+">
-                                                        <i class="fa fa-plus-square"></i>
-                                                      </button>
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="draft-latest">
+                                <div class="table-responsive">
+                                  <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th>{{trans('file.date')}}</th>
+                                        <th>{{trans('file.reference')}}</th>
+                                        <th>{{trans('file.customer')}}</th>
+                                        <th>{{trans('file.grand total')}}</th>
+                                        <th>{{trans('file.action')}}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      @foreach($recent_draft as $draft)
+                                      ?php $customer = DB::table('customers')->find($draft->customer_id); ?>
+                                      <tr>
+                                        <td>{{date('d-m-Y', strtotime($draft->created_at))}}</td>
+                                        <td>{{$draft->reference_no}}</td>
+                                        <td>{{$customer->name}}</td>
+                                        <td>{{$draft->grand_total}}</td>
+                                        <td>
+                                          <div class="btn-group">
+                                              @if(in_array("sales-edit", $all_permission))
+                                              <a href="{{url('sales/'.$draft->id.'/create') }}" class="btn btn-success btn-sm" title="Edit"><i class="fa fa-document-edit"></i></a>&nbsp;
+                                              @endif
+                                              @if(in_array("sales-delete", $all_permission))
+                                              {{ Form::open(['route' => ['sales.destroy', $draft->id], 'method' => 'DELETE'] ) }}
+                                              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()" title="Delete"><i class="fa fa-trash"></i></button>
+                                              {{ Form::close() }}
+                                              @endif
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      @endforeach
+                                    </tbody>
+                                  </table>
                                 </div>
-                                {{-- <div class="row">
-                                    <div class="col-md-6 mt-1">
-                                        <label>Recieved Amount *</label>
-                                        <input type="text" name="paying_amount" class="form-control numkey" required step="any">
-                                    </div>
-                                    <div class="col-md-6 mt-1">
-                                        <label>Paying Amount *</label>
-                                        <input type="text" name="paid_amount" class="form-control numkey"  step="any">
-                                    </div>
-                                    <div class="col-md-6 mt-1">
-                                        <label>Change : </label>
-                                        <p id="change" class="ml-2">0.00</p>
-                                    </div>
-                                    <div class="col-md-6 mt-1">
-                                        <input type="hidden" name="paid_by_id">
-                                        <label>Paid By</label>
-                                        <select name="paid_by_id_select" class="form-control selectpicker">
-                                            <option value="1">Credit Card</option>
-                                            <option value="2">Cash</option>
-                                            <option value="3">Cheque</option>
-                                            <option value="4">Deposit</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-12 mt-3">
-                                        <div class="card-errors" role="alert"></div>
-                                    </div>
-                                    <div class="form-group col-12 cheque">
-                                        <label>Cheque Number *</label>
-                                        <input type="text" name="cheque_no" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-6 form-group">
-                                        <label>Sale Note</label>
-                                        <textarea rows="3" class="form-control" name="sale_note"></textarea>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label>Payment Note</label>
-                                        <textarea rows="3" class="form-control" name="payment_note"></textarea>
-                                    </div>
-                                </div> --}}
-                                <div class="mt-3">
-                                    <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
-                                </div>
-                              </div>
                             </div>
                           </div>
                       </div>
                     </div>
                   </div>
-                  <!-- pending bill list modal -->
-                  <div id="pending-list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                </div>
+                <!-- add cash register modal -->
+                <div id="cash-register-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                     <div role="document" class="modal-dialog">
-                      <div class="modal-content-pos">
+                      <div class="modal-content">
+                        {!! Form::open(['route' => 'cashRegister.store', 'method' => 'post']) !!}
                         <div class="modal-header">
-                          <h5 id="exampleModalLabel" class="modal-title">Pending Bill List</h5>
+                          <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Add Cash Register')}}</h5>
                           <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
                         </div>
                         <div class="modal-body">
-                          <div class="row">
-                            <div class="col-12">
-                              <div class="row">
-                                <div class=" col-12 ">
-                                  <div class="form-group">
-                                    <div class=" col-12">
-                                      <div class="table-responsive-sm" style="height:500px; overflow-x:hidden">
-                                        <table id="myTable" class="table table-sm table-hover table-striped table-fixed table-bordered">
-                                          <thead class="thead-dark pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
-                                            <tr>
-                                              <th>S.No</th>
-                                              <th>Ref_No</th>
-                                              <th>Customer Name</th>
-                                              <th>Sale Status</th>
-                                              <th>Invoice Date</th>
-                                              <th>Grandtotal Price</th>
-                                              <th>Amount Paid</th>
-                                              <th>Amount Dues</th>
-                                              <th>Payment Method</th>
-                                              <th>Payment Status</th>
-                                              <!-- <th>Invoice Id</th> -->
-                                              <th>Payterm DuraType</th>
-                                              <th class="disabled-sorting text-right">Actions</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            @foreach ($pendingsales as $key => $value)
-                                            <tr>
-                                              <td>{{ $value->sale_id }}</td>
-                                              <td>{{ $value->sale_ref_no }}</td>
-                                              <td>{{ $value->customer_name }}</td> 
-                                              <td>{{ $value->sale_status }}</td>
-                                              <td>{{ $value->sale_invoice_date }}</td>
-                                              <td>{{ $value->sale_grandtotal_price }}</td>
-                                              <td>{{ $value->sale_amount_paid }}</td>
-                                              <td>{{ $value->sale_amount_dues }}</td>
-                                              <td>{{ $value->sale_payment_method }}</td> 
-                                              <td>{{ $value->sale_payment_status }}</td>
-                                              <td>{{ $value->customer_credit_duration." ".$value->customer_credit_type }}</td>
-                                              <td class="text-right">
-                                                <a type="button" href="{{ route('sale.edit', ['sale' => $value->sale_id,]) }}" rel="tooltip" class="btn btn-info btn-icon btn-sm " data-original-title="" title="">
-                                                  <i class="fa fa-edit"></i>
-                                                </a>
-                                              </td>
-                                            </tr>
-                                            @endforeach
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                          <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
+                            <div class="row">
+                              <div class="col-md-6 form-group warehouse-section">
+                                  <label>{{trans('file.Warehouse')}} *</strong> </label>
+                                  <select required name="product_warehouse" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select warehouse...">
+                                      @foreach($lims_warehouse_list as $warehouse)
+                                      <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                      @endforeach
+                                  </select>
                               </div>
-                              <!-- <div class="mt-3">
-                                  <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
-                              </div> -->
+                              <div class="col-md-6 form-group">
+                                  <label>{{trans('file.Cash in Hand')}} *</strong> </label>
+                                  <input type="number" name="cash_in_hand" required class="form-control">
+                              </div>
+                              <div class="col-12 form-group">
+                                  <button type="submit" class="btn btn-primary">{{trans('file.submit')}}</button>
+                              </div>
                             </div>
-                          </div>
                         </div>
+                        {{ Form::close() }}
                       </div>
                     </div>
-                  </div>
-                  {{-- <!-- recent transaction modal -->
-                  <div id="recentTransaction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                </div>
+                <!-- cash register details modal -->
+                <div id="register-details-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                     <div role="document" class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Recent Transaction')}} <div class="badge badge-primary">{{trans('file.latest')}} 10</div></h5>
+                          <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Cash Register Details')}}</h5>
                           <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
                         </div>
                         <div class="modal-body">
-                            <ul class="nav nav-tabs" role="tablist">
-                              <li class="nav-item">
-                                <a class="nav-link active" href="#sale-latest" role="tab" data-toggle="tab">{{trans('file.Sale')}}</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="#draft-latest" role="tab" data-toggle="tab">{{trans('file.Draft')}}</a>
-                              </li>
-                            </ul>
-                            <div class="tab-content">
-                              <div role="tabpanel" class="tab-pane show active" id="sale-latest">
-                                  <div class="table-responsive">
-                                    <table class="table">
-                                      <thead>
-                                        <tr>
-                                          <th>{{trans('file.date')}}</th>
-                                          <th>{{trans('file.reference')}}</th>
-                                          <th>{{trans('file.customer')}}</th>
-                                          <th>{{trans('file.grand total')}}</th>
-                                          <th>{{trans('file.action')}}</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        @foreach($recent_sale as $sale)
-                                        ?php $customer = DB::table('customers')->find($sale->customer_id); ?>
-                                        <tr>
-                                          <td>{{date('d-m-Y', strtotime($sale->created_at))}}</td>
-                                          <td>{{$sale->reference_no}}</td>
-                                          <td>{{$customer->name}}</td>
-                                          <td>{{$sale->grand_total}}</td>
-                                          <td>
-                                            <div class="btn-group">
-                                                @if(in_array("sales-edit", $all_permission))
-                                                <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-success btn-sm" title="Edit"><i class="fa fa-document-edit"></i></a>&nbsp;
-                                                @endif
-                                                @if(in_array("sales-delete", $all_permission))
-                                                {{ Form::open(['route' => ['sales.destroy', $sale->id], 'method' => 'DELETE'] ) }}
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()" title="Delete"><i class="fa fa-trash"></i></button>
-                                                {{ Form::close() }}
-                                                @endif
-                                            </div>
-                                          </td>
-                                        </tr>
-                                        @endforeach
-                                      </tbody>
+                          <p>{{trans('file.Please review the transaction and payments.')}}</p>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                              <td>{{trans('file.Cash in Hand')}}:</td>
+                                              <td id="cash_in_hand" class="text-right">0</td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Total Sale Amount')}}:</td>
+                                              <td id="total_sale_amount" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Total Payment')}}:</td>
+                                              <td id="total_payment" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Cash Payment')}}:</td>
+                                              <td id="cash_payment" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Credit Card Payment')}}:</td>
+                                              <td id="credit_card_payment" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Cheque Payment')}}:</td>
+                                              <td id="cheque_payment" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Gift Card Payment')}}:</td>
+                                              <td id="gift_card_payment" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Paypal Payment')}}:</td>
+                                              <td id="paypal_payment" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Total Sale Return')}}:</td>
+                                              <td id="total_sale_return" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Total Expense')}}:</td>
+                                              <td id="total_expense" class="text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td><strong>{{trans('file.Total Cash')}}:</strong></td>
+                                              <td id="total_cash" class="text-right"></td>
+                                            </tr>
+                                        </tbody>
                                     </table>
-                                  </div>
-                              </div>
-                              <div role="tabpanel" class="tab-pane fade" id="draft-latest">
-                                  <div class="table-responsive">
-                                    <table class="table">
-                                      <thead>
-                                        <tr>
-                                          <th>{{trans('file.date')}}</th>
-                                          <th>{{trans('file.reference')}}</th>
-                                          <th>{{trans('file.customer')}}</th>
-                                          <th>{{trans('file.grand total')}}</th>
-                                          <th>{{trans('file.action')}}</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        @foreach($recent_draft as $draft)
-                                        ?php $customer = DB::table('customers')->find($draft->customer_id); ?>
-                                        <tr>
-                                          <td>{{date('d-m-Y', strtotime($draft->created_at))}}</td>
-                                          <td>{{$draft->reference_no}}</td>
-                                          <td>{{$customer->name}}</td>
-                                          <td>{{$draft->grand_total}}</td>
-                                          <td>
-                                            <div class="btn-group">
-                                                @if(in_array("sales-edit", $all_permission))
-                                                <a href="{{url('sales/'.$draft->id.'/create') }}" class="btn btn-success btn-sm" title="Edit"><i class="fa fa-document-edit"></i></a>&nbsp;
-                                                @endif
-                                                @if(in_array("sales-delete", $all_permission))
-                                                {{ Form::open(['route' => ['sales.destroy', $draft->id], 'method' => 'DELETE'] ) }}
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()" title="Delete"><i class="fa fa-trash"></i></button>
-                                                {{ Form::close() }}
-                                                @endif
-                                            </div>
-                                          </td>
-                                        </tr>
-                                        @endforeach
-                                      </tbody>
-                                    </table>
-                                  </div>
-                              </div>
+                                </div>
+                                <div class="col-md-6" id="closing-section">
+                                  <form action="{{route('cashRegister.close')}}" method="POST">
+                                      @csrf
+                                      <input type="hidden" name="cash_register_id">
+                                      <button type="submit" class="btn btn-primary">{{trans('file.Close Register')}}</button>
+                                  </form>
+                                </div>
                             </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- add cash register modal -->
-                  <div id="cash-register-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-                      <div role="document" class="modal-dialog">
-                        <div class="modal-content">
-                          {!! Form::open(['route' => 'cashRegister.store', 'method' => 'post']) !!}
-                          <div class="modal-header">
-                            <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Add Cash Register')}}</h5>
-                            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
-                          </div>
-                          <div class="modal-body">
-                            <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
-                              <div class="row">
-                                <div class="col-md-6 form-group warehouse-section">
-                                    <label>{{trans('file.Warehouse')}} *</strong> </label>
-                                    <select required name="product_warehouse" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select warehouse...">
+                </div>
+                <!-- today sale modal -->
+                <div id="today-sale-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                    <div role="document" class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Today Sale')}}</h5>
+                          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>{{trans('file.Please review the transaction and payments.')}}</p>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                              <td>{{trans('file.Total Sale Amount')}}:</td>
+                                              <td class="total_sale_amount text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Cash Payment')}}:</td>
+                                              <td class="cash_payment text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Credit Card Payment')}}:</td>
+                                              <td class="credit_card_payment text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Cheque Payment')}}:</td>
+                                              <td class="cheque_payment text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Gift Card Payment')}}:</td>
+                                              <td class="gift_card_payment text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Paypal Payment')}}:</td>
+                                              <td class="paypal_payment text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Total Payment')}}:</td>
+                                              <td class="total_payment text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Total Sale Return')}}:</td>
+                                              <td class="total_sale_return text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Total Expense')}}:</td>
+                                              <td class="total_expense text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td><strong>{{trans('file.Total Cash')}}:</strong></td>
+                                              <td class="total_cash text-right"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <!-- today profit modal -->
+                <div id="today-profit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                    <div role="document" class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Today Profit')}}</h5>
+                          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select required name="warehouseId" class="form-control">
+                                        <option value="0">{{trans('file.All Warehouse')}}</option>
                                         @foreach($lims_warehouse_list as $warehouse)
                                         <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-6 form-group">
-                                    <label>{{trans('file.Cash in Hand')}} *</strong> </label>
-                                    <input type="number" name="cash_in_hand" required class="form-control">
+                                <div class="col-12 mt-2">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                              <td>{{trans('file.Product Revenue')}}:</td>
+                                              <td class="product_revenue text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Product Cost')}}:</td>
+                                              <td class="product_cost text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td>{{trans('file.Expense')}}:</td>
+                                              <td class="expense_amount text-right"></td>
+                                            </tr>
+                                            <tr>
+                                              <td><strong>{{trans('file.Profit')}}:</strong></td>
+                                              <td class="profit text-right"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-12 form-group">
-                                    <button type="submit" class="btn btn-primary">{{trans('file.submit')}}</button>
-                                </div>
-                              </div>
-                          </div>
-                          {{ Form::close() }}
+                            </div>
                         </div>
                       </div>
-                  </div>
-                  <!-- cash register details modal -->
-                  <div id="register-details-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-                      <div role="document" class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Cash Register Details')}}</h5>
-                            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
-                          </div>
-                          <div class="modal-body">
-                            <p>{{trans('file.Please review the transaction and payments.')}}</p>
-                              <div class="row">
-                                  <div class="col-12">
-                                      <table class="table table-hover">
-                                          <tbody>
-                                              <tr>
-                                                <td>{{trans('file.Cash in Hand')}}:</td>
-                                                <td id="cash_in_hand" class="text-right">0</td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Total Sale Amount')}}:</td>
-                                                <td id="total_sale_amount" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Total Payment')}}:</td>
-                                                <td id="total_payment" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Cash Payment')}}:</td>
-                                                <td id="cash_payment" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Credit Card Payment')}}:</td>
-                                                <td id="credit_card_payment" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Cheque Payment')}}:</td>
-                                                <td id="cheque_payment" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Gift Card Payment')}}:</td>
-                                                <td id="gift_card_payment" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Paypal Payment')}}:</td>
-                                                <td id="paypal_payment" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Total Sale Return')}}:</td>
-                                                <td id="total_sale_return" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Total Expense')}}:</td>
-                                                <td id="total_expense" class="text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><strong>{{trans('file.Total Cash')}}:</strong></td>
-                                                <td id="total_cash" class="text-right"></td>
-                                              </tr>
-                                          </tbody>
-                                      </table>
-                                  </div>
-                                  <div class="col-md-6" id="closing-section">
-                                    <form action="{{route('cashRegister.close')}}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="cash_register_id">
-                                        <button type="submit" class="btn btn-primary">{{trans('file.Close Register')}}</button>
-                                    </form>
-                                  </div>
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-                  <!-- today sale modal -->
-                  <div id="today-sale-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-                      <div role="document" class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Today Sale')}}</h5>
-                            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
-                          </div>
-                          <div class="modal-body">
-                            <p>{{trans('file.Please review the transaction and payments.')}}</p>
-                              <div class="row">
-                                  <div class="col-12">
-                                      <table class="table table-hover">
-                                          <tbody>
-                                              <tr>
-                                                <td>{{trans('file.Total Sale Amount')}}:</td>
-                                                <td class="total_sale_amount text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Cash Payment')}}:</td>
-                                                <td class="cash_payment text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Credit Card Payment')}}:</td>
-                                                <td class="credit_card_payment text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Cheque Payment')}}:</td>
-                                                <td class="cheque_payment text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Gift Card Payment')}}:</td>
-                                                <td class="gift_card_payment text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Paypal Payment')}}:</td>
-                                                <td class="paypal_payment text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Total Payment')}}:</td>
-                                                <td class="total_payment text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Total Sale Return')}}:</td>
-                                                <td class="total_sale_return text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Total Expense')}}:</td>
-                                                <td class="total_expense text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><strong>{{trans('file.Total Cash')}}:</strong></td>
-                                                <td class="total_cash text-right"></td>
-                                              </tr>
-                                          </tbody>
-                                      </table>
-                                  </div>
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-                  <!-- today profit modal -->
-                  <div id="today-profit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-                      <div role="document" class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Today Profit')}}</h5>
-                            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
-                          </div>
-                          <div class="modal-body">
-                              <div class="row">
-                                  <div class="col-md-6">
-                                      <select required name="warehouseId" class="form-control">
-                                          <option value="0">{{trans('file.All Warehouse')}}</option>
-                                          @foreach($lims_warehouse_list as $warehouse)
-                                          <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
-                                          @endforeach
-                                      </select>
-                                  </div>
-                                  <div class="col-12 mt-2">
-                                      <table class="table table-hover">
-                                          <tbody>
-                                              <tr>
-                                                <td>{{trans('file.Product Revenue')}}:</td>
-                                                <td class="product_revenue text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Product Cost')}}:</td>
-                                                <td class="product_cost text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td>{{trans('file.Expense')}}:</td>
-                                                <td class="expense_amount text-right"></td>
-                                              </tr>
-                                              <tr>
-                                                <td><strong>{{trans('file.Profit')}}:</strong></td>
-                                                <td class="profit text-right"></td>
-                                              </tr>
-                                          </tbody>
-                                      </table>
-                                  </div>
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                  </div> --}}
+                    </div>
+                </div> --}}
                 </div>
                 <div class="row">
                   <div class="footer col-12">
@@ -1640,19 +1866,20 @@
                           <div class="col-1">
                           </div>
                           <div class="col-1">
-                            <button style="background-color: #d63031;" type="button" class="btn btn-round" id="cancel-btn" onclick="return confirmCancel()">{{__('Exit')}}</button>
+                            <form action="{{ url('/logout') }}" method="POST"> @csrf <button style="background-color: #d63031;" type="submit" id="cancel-btn" class="btn btn-round">{{__('Exit')}}</button></form>
+                            {{-- onclick="return confirmCancel()" --}}
                           </div>
                           <div class="col-1">
-                            <button style="background: #18ce0f" type="button" class="btn btn-round pull-left" id="new-btn">{{__('New')}}</button>
+                            <a style="background: #18ce0f" type="button" href="{{ route('sale.pos') }}" class="btn btn-round pull-left" id="new-btn">{{__('New')}}</a>
                           </div>
                           <div class="col-2">
                           </div>
                           <div class="col-2">
                             <button style="background: #00cec9" type="button" class="btn btn-round pull-right" data-toggle="modal" data-target="#pending-list" id="pending-btn">{{__('Get Pending')}}</button>
                           </div>
-                          <div class="col-1">
+                          {{-- <div class="col-1">
                             <button style="background: #ffc107" type="button" class="btn btn-round pull-right" data-toggle="modal" data-target="#add-payment" id="payment-btn">{{__('Payment')}}</button>
-                          </div>
+                          </div> --}}
                           <div class="col-2">
                             <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save/Print')}}</button>
                           </div>
@@ -1664,7 +1891,7 @@
                   </div>
                 </div>
               <hr class="half-rule"/>
-            </form>
+            {{-- </form> --}}
           </div>
         </div>
       </div>
@@ -1678,13 +1905,15 @@
 
 <script type="text/javascript">
 
-  var total_items = [];
-  var total_quantity = [];
-  var total_discount = [];
-  var subtotal_amount = [];
+  var total_items;
+  var total_quantity;
+  var total_discount;
+  var subtotal_amount;
   var grandtotal_amount;
   var sale_free_amount;
   var sale_add_amount;
+  var product_quantity;
+  var product_sub_total;
   var customer_balance_dues;
   var customer_balance_dues2;
   var customer_balance_dues3;
@@ -1701,6 +1930,8 @@
   var customer_sale_rate;
   var row_product_price;
   var pos;
+
+  var rownum = <?php echo $i; ?>;
 
   $(document).on('click', '#add_button', function(e){
     var product_barcode = $('#sale_products_barcode_i').val();
@@ -1721,28 +1952,50 @@
     var packets_per_carton = $('#packets_per_carton').val();
     sale_free_amount = $('#sale_free_amount').val();
     sale_add_amount = $('#sale_add_amount').val();
+    sale_amount_recieved = $('#sale_amount_recieved').val();
 
-    var product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
-    if(product_quantity == 0 || product_unit_price == 0){
-      product_discount = 0;
-      product_unit_price = 0;
-    }
+    product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
 
-    total_items = Number(total_items) + 1;
-    total_quantity = Number(total_quantity) + (Number(product_quantity));
-    total_discount = Number(total_discount) + Number(product_discount);
-    // var product_sub_total = $('#sale_products_sub_total').val();
+    var allRows = [];
+    var repeated;
+    $(".prtr").each(function() {
+      // rowindex = $(this).closest('tr').index();
+      allRows.push($(this).find('[name="product_id[]"]').val());
+    });
 
-    var product_sub_total = product_unit_price*(Number(product_quantity))-Number(product_discount);
-    if(product_quantity == 0){
-      product_sub_total = 0;
-    }
-    subtotal_amount = Number(subtotal_amount) + Number(product_sub_total);
-    grandtotal_amount = Number(subtotal_amount) + Number(sale_free_amount) + Number(sale_add_amount);
+    // rowindex = $(".prtr").closest('tr').index();
 
-    if(product_name !== "" && product_quantity !== 0 ){
-      $('.sale-product').append('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+i+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+i+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+i+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+i+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+i+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+i+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+i+'" class="form-control col-12" value='+product_packets+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+i+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+i+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+i+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+i+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+i+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+i+'" row-id="'+i+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
-      i++;
+    allRows.forEach(element => {
+      if(product_id == element){
+        repeated = 1;
+      }
+    });
+
+    if(product_name !== "" && product_quantity !== 0 && product_unit_price !== 0 && repeated !== 1){
+
+      product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
+      
+      if(product_quantity == 0 || product_unit_price == 0){
+        product_discount = 0;
+        product_unit_price = 0;
+      }
+
+      total_items = Number(total_items) + 1;
+      total_quantity = Number(total_quantity) + (Number(product_quantity));
+      total_discount = Number(total_discount) + Number(product_discount);
+      // var product_sub_total = $('#sale_products_sub_total').val();
+
+      product_sub_total = product_unit_price*(Number(product_quantity))-Number(product_discount);
+      if(product_quantity == 0){
+        product_sub_total = 0;
+      }
+      subtotal_amount = Number(subtotal_amount) + Number(product_sub_total);
+      grandtotal_amount = Number(subtotal_amount) + Number(sale_free_amount) + Number(sale_add_amount);
+
+      $('.sale-product').append('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
+      // alert(rownum);
+      rownum++;
+      // alert(rownum);
       $('#sale_total_qty').val('');
       $('#sale_total_qty').val(total_quantity);
       $('#sale_total_items').val('');
@@ -1757,8 +2010,14 @@
       $('#sale_grandtotal_price').val(grandtotal_amount);
       customer_balance_dues3 = Number(customer_balance_dues2) +  Number(grandtotal_amount);
       $('#customer_balance_dues2').val(customer_balance_dues3);
+      if(sale_amount_recieved >= grandtotal_amount){
+        sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
+        $('#sale_return_change').val(sale_return_change);
+      }
+      else{
+        $('#sale_return_change').val(0);
+      }
     }
-
   });
   $(document).on('change', "#sale_add_amount", function(e){
     grandtotal_amount = Number(grandtotal_amount) - Number(sale_add_amount);
@@ -1774,6 +2033,13 @@
     $('#sale_grandtotal_price').val('');
     $('#sale_grandtotal_price').val(grandtotal_amount);
   });
+  $(document).on('change', "#sale_amount_recieved", function(e){
+    sale_amount_recieved = $('#sale_amount_recieved').val();
+    if(sale_amount_recieved >= grandtotal_amount){
+      sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
+      $('#sale_return_change').val(sale_return_change);
+    }
+  });
   $(document).on('click', ".delete-productfield", function(event) {
     rowid = $(this).attr('row-id');
     thisproduct_discount = $('#sale_products_discount'+rowid).val();
@@ -1783,6 +2049,7 @@
     thisproduct_cartons = $('#sale_products_cartons'+rowid).val();
     thispieces_per_packet = $('#sale_pieces_per_packet'+rowid).val();
     thispieces_per_carton = $('#sale_pieces_per_carton'+rowid).val();
+    sale_amount_recieved = $('#sale_amount_recieved').val();
 
     // rowindex = $(this).closest('tr').index();
     var my_total_qty = this.value;
@@ -1803,6 +2070,13 @@
     $('#sale_total_price').val(subtotal_amount);
     $('#sale_grandtotal_price').val('');
     $('#sale_grandtotal_price').val(grandtotal_amount);
+    if(sale_amount_recieved >= grandtotal_amount){
+      sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
+      $('#sale_return_change').val(sale_return_change);
+    }
+    else{
+        $('#sale_return_change').val(0);
+    }
 
     $(this).closest('.prtr').remove();
 
@@ -1818,6 +2092,7 @@
     // calculateTotal();
   });
     
+  var productsbarcodes_array = <?php echo json_encode($barcodeArray); ?>;
   var productsnames_array = <?php echo json_encode($nameArray); ?>;
   var productsnamescodes_array = <?php echo json_encode($namecodeArray); ?>;
 
@@ -1875,9 +2150,14 @@
         var catchbarcode = data[0]['product_barcode'];
         var catchproduct_code = data[0]['product_ref_no'];
         var catchproduct_id = data[0]['product_id'];
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var catchproduct_cartons = data[0]['product_cartons_available'];
         var pieces_per_carton = data[0]['product_piece_per_carton'];
         var pieces_per_packet = data[0]['product_piece_per_packet'];
         var packets_per_carton = data[0]['product_packet_per_carton'];
+        var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        var product_credit_price_piece = data[0]['product_credit_price_piece'];
         // console.log(total_items);
         $('#sale_products_barcode_i').val('');
         $('#sale_products_barcode_i').val(catchbarcode);
@@ -1885,13 +2165,106 @@
         $('#product_code_i').val(catchproduct_code);
         $('#product_id_i').val('');
         $('#product_id_i').val(catchproduct_id);
+        $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
+        $('#sale_products_packets_i').attr('max', catchproduct_packets);
+        $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
         $('#pieces_per_carton').val('');
         $('#pieces_per_carton').val(pieces_per_carton);
         $('#pieces_per_packet').val('');
         $('#pieces_per_packet').val(pieces_per_packet);
         $('#packets_per_carton').val('');
         $('#packets_per_carton').val(packets_per_carton);
-        // $('#product_barcode2').val(data[0]['product_barcode']);
+        $('#sale_products_unit_price_i').val('');
+        $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+      }
+    });
+  }
+
+  $("#sale_products_barcode_i").on('focus', function () {
+    // $( "product_name" ).autocomplete({
+    $(this).autocomplete({
+      source: productsbarcodes_array,
+      autoFocus:true,
+      minLength: 0,
+      // select: $('#sale_product_barcode').val();
+      // source: function(request, response) {
+      //   var matcher = new RegExp(".?" + $.ui.autocomplete.escapeRegex(request.term), "i");
+      //     response($.grep(productsnamescodes_array, function(item) {
+      //     return matcher.test(item);
+      //   }));
+      // },
+      // response: function(event, ui) {
+      //   if (ui.content.length == 1) {
+      //         var data = ui.content[0].value;
+      //         $(this).autocomplete( "close" );
+      //         // productSearch(data);
+      //   };
+      // },
+      select: function(event, ui) {
+        var data = ui.item.value;
+        console.log(data);
+        barcodeSearch(data);
+      },
+      // change: function(event, ui) {
+      //   var data = ui.item;
+      //   console.log(data);
+      //   if (ui.item == null) {
+      //       this.setCustomValidity("You must select a product");
+      //   }
+      // }
+    }).on('click', function(event) {  
+            // $(this).trigger('keydown.autocomplete');
+            $(this).autocomplete("search", $(this).val());
+            // .focus(function(){
+    });
+    // $(this).autocomplete("search", "");
+
+  });
+
+  function barcodeSearch(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchname = data[0]['product_name'];
+        var catchproduct_code = data[0]['product_ref_no'];
+        catchname = catchname+", "+catchproduct_code;
+        var catchproduct_id = data[0]['product_id'];
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        // console.log(total_items);
+        $('#product_name_i').val('');
+        $('#product_name_i').val(catchname);
+        $('#product_code_i').val('');
+        $('#product_code_i').val(catchproduct_code);
+        $('#product_id_i').val('');
+        $('#product_id_i').val(catchproduct_id);
+        $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
+        $('#sale_products_packets_i').attr('max', catchproduct_packets);
+        $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        $('#pieces_per_carton').val('');
+        $('#pieces_per_carton').val(pieces_per_carton);
+        $('#pieces_per_packet').val('');
+        $('#pieces_per_packet').val(pieces_per_packet);
+        $('#packets_per_carton').val('');
+        $('#packets_per_carton').val(packets_per_carton);
+        $('#sale_products_unit_price_i').val('');
+        $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
       }
     });
   }

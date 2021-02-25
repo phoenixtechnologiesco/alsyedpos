@@ -108,6 +108,11 @@ Route::group(['middleware' => ['get.menu']], function () {
     Route::get('sale/payment', 'PaymentController@create')->name('sale.payment');
     Route::post('sale/paymentadd', 'PaymentController@store')->name('sale.paymentadd');
     Route::get('sale/financial', 'SaleController@financial')->name('sale.financial');
+    Route::get('sale/return', 'SaleController@return')->name('sale.return');
+    Route::get('purchase/payment', 'PaymentController@purchasecreate')->name('purchase.payment');
+    Route::post('purchase/paymentadd', 'PaymentController@purchasestore')->name('purchase.paymentadd');
+    Route::get('purchase/ledger', 'PurchaseController@ledger')->name('purchase.ledger');
+    Route::get('purchase/return', 'PurchaseController@return')->name('purchase.return');
     // Route::get('getsupplier/{id}', ['as' => 'getsupplier', 'uses' => 'SupplierController@getSupplier']);
     Route::get('purchase/searchsupplier', 'SupplierController@searchsupplier')->name('searchsupplier');
     Route::get('purchase/searchproduct', 'ProductController@searchproduct')->name('searchproduct');

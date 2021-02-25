@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Payment;
 use App\Models\SaleProducts;
+use App\Models\SaleReturn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -38,6 +39,16 @@ class SaleController extends Controller
         // return view('sales.index', ['sales' => $sales]);
     }
 
+    public function return(SaleReturn $model)
+    {
+        $salereturns = SaleReturn::join('sales', 'sale_returns.sale_id', '=', 'sales.sale_id')->get();
+        // $salereturns = SaleReturn::join('suppliers', 'sales.sale_supplier_id', '=', 'suppliers.supplier_id')->get();
+        $customers = Customer::where('status_id', 1)->get();
+
+        return view('sales.return', compact('salereturns', 'customers') );
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -45,7 +56,7 @@ class SaleController extends Controller
      */
     public function create(Sale $model, Customer $model2, Product $model3)
     {
-        $sales = $model->paginate(15)->items();
+        $sales = Sale::all();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
         return view('sales.add', compact('sales', 'customers', 'products') );
@@ -59,7 +70,7 @@ class SaleController extends Controller
      */
     public function pos(Sale $model, Customer $model2, Product $model3)
     {
-        $sales = $model->paginate(15)->items();
+        $sales = Sale::all();
         $pendingsales = Sale::where('sale_status', 'pending')->join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->get();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
@@ -67,6 +78,23 @@ class SaleController extends Controller
         return view('sales.pos', compact('sales', 'pendingsales', 'customers', 'products') );
         // return view('sales.pos', ['sales' => $sales, 'pendingsales' => $pendingsales, 'customers' => $customers, 'products' => $products]);
 
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function financial(Sale $model)
+    {
+        // $sales = $model->paginate(15)->items();
+        $sales = Sale::all();
+        $customers = Customer::where('status_id', 1)->get();
+        $products = Product::all();
+        // $payments = Payment::get();
+
+        return view('sales.financial', compact('sales', 'customers', 'products') );
+        // return view('sales.financial', ['sales' => $sales, 'customers' => $customers, 'payments' => $payments]);
     }
 
     /**
@@ -111,8 +139,8 @@ class SaleController extends Controller
         //$sale_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $sale_grandtotal_price = $request->sale_grandtotal_price;
         $sale_amount_recieved = $request->sale_amount_recieved;
-        $customer_amount_paid = $request->sale_amount_paid;
-        $customer_amount_dues = $request->sale_amount_dues;
+        $customer_amount_paid = $request->customer_amount_paid;
+        $customer_amount_dues = $request->customer_amount_dues;
         $sale_amount_dues = $sale_grandtotal_price;
 
         if($sale_amount_recieved > $sale_grandtotal_price){
@@ -150,7 +178,7 @@ class SaleController extends Controller
             'sale_add_amount'       => $request->sale_add_amount,
             'sale_discount'         => $request->sale_discount,
             'sale_grandtotal_price' => $sale_grandtotal_price,
-            'sale_amount_paid'      => $sale_amount_recieved,
+            'customer_amount_paid'      => $sale_amount_recieved,
             'sale_amount_dues'      => $sale_amount_dues,
             'sale_payment_method'   => $request->sale_payment_method,
             'sale_payment_status'   => $request->sale_payment_status,
@@ -301,12 +329,13 @@ class SaleController extends Controller
         // $s_name = $model->paginate(15)->items()[$id-1]->customer_name;
         $s_id = $model->paginate(15)->items()[$id-1]->sale_customer_id;
         $customer = DB::table('customers')->where('customer_id','=', $s_id)->first();
-        $sales = $model->paginate(15)->items()[$id-1];
+        // $sale = $model->paginate(15)->items()[$id-1];
+        $sale = Sale::where('sale_id', $id)->get();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
         $saleproducts = SaleProducts::where('sale_id', $id)->get();    
 
-        return view('sales.edit', compact('sales', 'customers', 'products', 'saleproducts', 'customer') );//'selectedproducts'
+        return view('sales.edit', compact('sale', 'customers', 'products', 'saleproducts', 'customer') );//'selectedproducts'
         // return view('sales.edit', ['sales' => $model->paginate(15)->items()[$id-1], 'customers' => $model2->paginate(15)->items(), 'products' => $model3->paginate(15)->items()]);
     }
 
@@ -352,15 +381,15 @@ class SaleController extends Controller
 
         $sale_grandtotal_price = $request->sale_grandtotal_price;
         $sale_amount_recieved = $request->sale_amount_recieved;
-        $sale_amount_paid = $request->sale_amount_paid;
-        $sale_amount_dues = $request->sale_amount_dues;
-        $net_sale_price = $sale_grandtotal_price - $sale_amount_paid;
+        $customer_amount_paid = $request->customer_amount_paid;
+        $sale_amount_dues = $request->customer_amount_dues;
+        $net_sale_price = $sale_grandtotal_price - $customer_amount_paid;
         $customer_amount_paid = $request->customer_balance_paid;
         $customer_amount_dues = $request->customer_balance_dues;
         // dd($customer_amount_paid);
 
         // if($sale_amount_recieved > $net_sale_price){
-        $sale_amount_paid_new = $sale_amount_paid + $sale_amount_recieved;
+        $sale_amount_paid_new = $customer_amount_paid + $sale_amount_recieved;
         $sale_amount_dues_new = $sale_amount_dues - $sale_amount_recieved;
         $customer_amount_paid_new = $customer_amount_paid + $sale_amount_recieved;
         $customer_amount_dues_new = $customer_amount_dues - $sale_amount_recieved;
@@ -390,7 +419,7 @@ class SaleController extends Controller
             'sale_add_amount'       => $request->sale_add_amount,
             'sale_discount'         => $request->sale_discount,
             'sale_grandtotal_price' => $sale_grandtotal_price,
-            'sale_amount_paid'      => $sale_amount_paid_new,
+            'customer_amount_paid'      => $sale_amount_paid_new,
             'sale_amount_dues'      => $sale_amount_dues_new,
             'sale_payment_method'   => $request->sale_payment_method,
             'sale_payment_status'   => $request->sale_payment_status,
@@ -556,6 +585,68 @@ class SaleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $url = url()->previous();
+        $sale_data = Sale::where('sale_id', $id)->first();
+        $sale_products_data = SaleProducts::where('sale_id', $id)->get();
+        // dd($sale_products_data);
+        if(!empty($sale_products_data)){
+            foreach ($sale_products_data as $product_sale) {
+                // if($product_sale->sale_payment_method == "cash")
+                // if($product_sale->sale_payment_method == "credit")
+                $product_data = Product::where('product_id', $product_sale->product_id)->get();
+                //adjust product quantity
+                foreach ($product_data as $child_product) {
+                    // $child_data = Product::find($child_id);
+                    $child_data = Product::where('product_id', $child_product->product_id)->first();
+                    $update_data = array(
+                        'product_quantity_total'  =>  $child_data->product_quantity_total - $product_sale->sale_quantity_total,
+                        'product_quantity_available'  =>  $child_data->product_quantity_available - $product_sale->sale_quantity_total,
+                        'product_pieces_total'  =>  $child_data->product_pieces_total - $product_sale->sale_pieces_total,
+                        'product_packets_total'  =>  $child_data->product_packets_total - $product_sale->sale_packets_total,
+                        'product_cartons_total'  =>  $child_data->product_cartons_total - $product_sale->sale_cartons_total,
+                        'product_pieces_available'  =>  $child_data->product_pieces_available - $product_sale->sale_pieces_total,
+                        'product_packets_available'  =>  $child_data->product_packets_available - $product_sale->sale_packets_total,
+                        'product_cartons_available'  =>  $child_data->product_cartons_available - $product_sale->sale_cartons_total,
+                    );
+                    Product::where('product_id', $child_product->product_id)->update($update_data);
+                }
+                SaleProducts::where('product_id', $product_sale->product_id)->delete();
+            }
+        }
+        $payment_data = Payment::where('sale_id', $id)->get();
+        if(!empty($payment_data)){
+            foreach ($payment_data as $payment) {
+                if($payment->payment_method == 'cheque'){
+                    // $customer = Customer::where('sale_customer_id', $sale_data->sale_customer_id)->get();
+                    // $customer_data = array(
+                    //     'customer_balance_paid' => $customer->customer_balance_paid - $payment->payment_amount_paid
+                    // );
+                    // Customer::where('customer_id', $sale_data->sale_customer_id)->update($customer_data);
+                    $thispayment = Payment::where('payment_id', $payment->payment_id)->first();
+                    Payment::where('payment_id', $thispayment->payment_id)->delete();
+                }
+                elseif($payment->payment_method == 'cash'){
+                    $customer = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
+                    $customer_data = array(
+                        'customer_balance_paid' => $customer->customer_balance_paid - $payment->payment_amount_paid
+                    );
+                    Customer::where('customer_id', $sale_data->sale_customer_id)->update($customer_data);
+                    $thispayment = Payment::where('payment_id', $payment->payment_id)->first();
+                    Payment::where('payment_id', $thispayment->payment_id)->delete();
+                }
+                elseif($payment->payment_method == 'credit'){
+                    $customer = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
+                    $customer_data = array(
+                        'customer_balance_dues' => $customer->customer_balance_dues - $payment->payment_amount_paid
+                    );
+                    Customer::where('customer_id', $sale_data->sale_customer_id)->update($customer_data);
+                    $thispayment = Payment::where('payment_id', $payment->payment_id)->first();
+                    Payment::where('payment_id', $thispayment->payment_id)->delete();
+                }
+                // $payment->delete();
+            }
+        }
+        Sale::where('sale_id', $sale_data->sale_id)->delete();
+        return Redirect::to('sale')->with('Sale deleted successfully');
     }
 }

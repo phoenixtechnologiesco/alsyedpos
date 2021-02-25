@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="animated fadeIn">
     <div class="row">
-      <div class="form-col-12">
+      <div class="col-12">
         <div class="card">
           <div class="card-header">
             <h5 class="title">{{__(" Add Sale")}}</h5>
@@ -19,7 +19,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="row">
-                        <div class="form-first-col-3">
+                        <div class="form-first-col-4">
                           <div class="form-group">
                             <label for="customer_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
                             <div class="form-col-12 input-group ">
@@ -30,6 +30,9 @@
                               </div>
                               {{-- <div class="input-group pos"> --}}
                                 <input type="text" name="customer_code" id="customercodesearch" placeholder="Search Customer by code" class="form-control col-12" value="{{ old('customer_code') }}" />
+                                <input readonly type="hidden" name="sale_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
+                                <input readonly type="hidden" name="sale_customer_id" id="customer_id" class="form-control col-12" value="" />
+
                                 {{-- <input type="hidden" name="customer_code" id="allcustomers" class="form-control col-12"  /> --}}
                                   <?php $snameArray = []; $snamecodeArray = []; ?>
                                   @foreach($customers as $one_customer) 
@@ -47,7 +50,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-col-3">
+                        {{-- <div class="form-col-3">
                           <div class="form-group">
                             <label readonly for="sale_customer_name" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
                             <div class="form-col-12 input-group ">
@@ -56,19 +59,19 @@
                                   <a class="" data-toggle="modal" data-target="#customer-list" id="product-list-btn"><i class="fa fa-user"></i></a>
                                 </span>
                               </div>
-                              {{-- <div class="input-group pos"> --}}
+                              <-- <div class="input-group pos"> -->
                                 <input readonly type="text" name="sale_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
                                 <input readonly type="hidden" name="sale_customer_id" id="customer_id" class="form-control col-12" value="" />
-                                {{-- <select readonly required name="sale_customer_name" id="customer_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 150px">
+                                <-- <select readonly required name="sale_customer_name" id="customer_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 150px">
                                   @foreach($customers as $single_customer)
                                     <option status_id="{{$single_customer->status_id}}" value="{{$single_customer->customer_id}}">{{$single_customer->customer_name}}</option>
                                   @endforeach
-                                </select> --}}
-                              {{-- </div> --}}
+                                </select> -->
+                              <-- </div> -->
                               @include('alerts.feedback', ['field' => 'sale_customer_name'])
                             </div>
                           </div>
-                        </div>
+                        </div> --}}
                         <div class="form-col-2">
                           <div class="form-group">
                             <label for="customer_status" class="form-col-12 control-label">{{__(" Customer Status")}}</label>
@@ -80,26 +83,39 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="sale_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Amount Paid")}}</label>
+                            <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Amount Paid")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="sale_amount_paid" id="customer_balance_paid" class="form-control" value="{{ old('sale_amount_paid', '') }}">
-                              @include('alerts.feedback', ['field' => 'sale_amount_paid'])
+                              <input readonly type="number" name="customer_amount_paid" id="customer_balance_paid" class="form-control" value="{{ old('customer_amount_paid', '') }}">
+                              @include('alerts.feedback', ['field' => 'customer_amount_paid'])
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-col-2">
+                          <div class="form-group">
+                            <label for="customer_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Dues")}}</label>
+                            <div class="form-col-12 input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text rs">Rs: </span>
+                              </div>
+                              <input readonly type="number" name="customer_amount_dues" id="customer_balance_dues" class="form-control" value="{{ old('customer_amount_dues', '') }}">
+                              @include('alerts.feedback', ['field' => 'customer_amount_dues'])
                             </div>
                           </div>
                         </div>
                         <div class="form-last-col-2">
                           <div class="form-group">
-                            <label for="sale_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Dues")}}</label>
-                            <div class="form-col-12 input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text rs">Rs: </span>
+                            <label for="sale_status" class="form-col-12 control-label">{{__(" Sale Status")}}</label>
+                              <div class="form-col-12">
+                                <select name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
+                                  <option value="pending">Pending</option>
+                                  <option value="completed">Completed</option>
+                                  //completed/pending
+                                </select>
+                                @include('alerts.feedback', ['field' => 'sale_status'])
                               </div>
-                              <input readonly type="number" name="sale_amount_dues" id="customer_balance_dues" class="form-control" value="{{ old('sale_amount_dues', '') }}">
-                              @include('alerts.feedback', ['field' => 'sale_amount_dues'])
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -139,7 +155,8 @@
                               {{-- <div class="input-group-prepend">
                                 <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
                               </div> --}}
-                              <input type="date" name="sale_invoice_date" class="form-control" value="{{ old('sale_invoice_date', '') }}">
+                              <input type="date" name="sale_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
+                              {{-- ->format('m/d/Y' --}}
                               @include('alerts.feedback', ['field' => 'sale_invoice_date'])
                             </div>
                           </div>
@@ -187,9 +204,9 @@
                                 <tr class="row">
                                   <th class="col-2 firstcol" scope="col">Barcode</th>
                                   <th class="col-3 mycol" scope="col">Product</th>
-                                  <th class="col-1 mycol" scope="col">Pcs</th>
-                                  <th class="col-1 mycol" scope="col">Pkts</th>
-                                  <th class="col-1 mycol" scope="col">Crtns</th>
+                                  <th class="col-1 mycol" scope="col">Pieces</th>
+                                  <th class="col-1 mycol" scope="col">Packets</th>
+                                  <th class="col-1 mycol" scope="col">Cartons</th>
                                   <th class="col-1 mycol" scope="col">Price</th>
                                   <th class="col-1 mycol" scope="col">Discount</th>
                                   <th class="col-1 mycol" scope="col">Total</th>
@@ -234,7 +251,7 @@
                                     <input type="number" name="sale_products_cartons_i" id="sale_products_cartons_i" class="form-control col-12" min="0" value="{{ old('sale_products_cartons_i', '0') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="text" name="sale_products_unit_price_i" id="sale_products_unit_price_i" class="form-control col-12"  value="{{ old('sale_products_unit_price_i', '0') }}">
+                                    <input readonly type="text" name="sale_products_unit_price_i" id="sale_products_unit_price_i" class="form-control col-12"  value="{{ old('sale_products_unit_price_i', '0') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="text" name="sale_products_discount_i" id="sale_products_discount_i" class="form-control col-12"  value="{{ old('sale_products_discount_i', '0') }}">
@@ -250,30 +267,14 @@
                               </tbody>
                               <tfoot class="thead-dark">
                                 <tr class="row">
-                                  <th class="col-2 firstcol" scope="col">Sale Status</th>
-                                  <th class="col-2 mycol" scope="col">Payment Status</th>
                                   {{-- <th class="col-1 mycol" scope="col">Invoice Id</th> --}}
                                   {{-- <th class="col-3 mycol" scope="col" style="text-align: center">Invoice Date</th> --}}
                                   {{-- <th class="col-2 mycol" scope="col">Document</th> --}}
-                                  <th class="col-8 lastcol" scope="col">Remarks</th>
+                                  <th class="col-8 firstcol" scope="col">Remarks</th>
+                                  <th class="col-2 mycol" scope="col">Payment Status</th>
+                                  <th class="col-2 lastcol" scope="col">Return Change</th>
                                 </tr>
                                 <tr class="row table-info" >
-                                  <td class="col-2 firstcol" scope="col">
-                                    <select name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
-                                      <option value="pending">Pending</option>
-                                      <option value="completed">Completed</option>
-                                      //completed/pending
-                                    </select>
-                                  </td>
-                                  <td class="col-2 mycol" scope="col">
-                                    <select name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
-                                      <option value="paid">Paid</option>
-                                      <option value="due">Due</option>
-                                      <option value="partial">Partial</option>
-                                      <option value="overdue">Overdue</option>
-                                      //paid,due,partial,overdue,
-                                    </select>
-                                  </td>
                                   {{-- <td class="col-1 mycol" scope="col">
                                     <input type="text" name="sale_invoice_id" class="form-control col-12" value="{{ old('sale_invoice_id', '') }}">
                                   </td>
@@ -288,8 +289,20 @@
                                   {{-- <td class="col-2 mycol" scope="col">
                                     <input type="file" name="sale_document" id="sale_document" class="form-control col-12" value="{{ old('sale_document', '') }}">
                                   </td> --}}
-                                  <td class="col-8 lastcol" scope="col">
+                                  <td class="col-8 firstcol" scope="col">
                                     <input type="text" name="sale_note" class="form-control col-12" value="{{ old('sale_note'), '' }}" >
+                                  </td>
+                                  <td class="col-2 mycol" scope="col">
+                                    <select name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
+                                      <option value="due">Due</option>
+                                      <option value="paid">Paid</option>
+                                      <option value="partial">Partial</option>
+                                      <option value="overdue">Overdue</option>
+                                      //due,paid,partial,overdue,
+                                    </select>
+                                  </td>
+                                  <td class="col-2 lastcol" scope="col">
+                                    <input readonly type="number" min="0" name="sale_return_change" id="sale_return_change" class="form-control col-12" value="0">
                                   </td>
                                 </tr>
                               </tfoot>
@@ -322,16 +335,16 @@
                                     <input readonly type="number" name="sale_total_price" id="sale_total_price" class="form-control col-12"  value="{{ old('sale_total_price', '') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="text" name="sale_add_amount" id="sale_add_amount" class="form-control col-12"  value="{{ old('sale_add_amount', '0.00') }}">
+                                    <input type="number" name="sale_add_amount" id="sale_add_amount" class="form-control col-12"  value="{{ old('sale_add_amount', '0.00') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input readonly type="text" name="sale_discount" id="sale_discount" class="form-control col-12"  value="{{ old('sale_discount', '') }}">
+                                    <input readonly type="number" name="sale_discount" id="sale_discount" class="form-control col-12"  value="{{ old('sale_discount', '') }}">
                                   </td>
                                   <td class="col-2 mycol" scope="col">
-                                    <input readonly type="text" name="sale_grandtotal_price" id="sale_grandtotal_price" id="sale_grandtotal_price" class="form-control col-12"  value="{{ old('sale_grandtotal_price', '') }}">
+                                    <input readonly type="number" name="sale_grandtotal_price" id="sale_grandtotal_price" class="form-control col-12"  value="{{ old('sale_grandtotal_price', '') }}">
                                   </td>
                                   <td class="col-2 lastcol" scope="col">
-                                    <input type="text" name="sale_amount_recieved" class="form-control col-12"  value="{{ old('sale_amount_recieved', '100') }}">
+                                    <input type="number" name="sale_amount_recieved" id="sale_amount_recieved" class="form-control col-12"  value="{{ old('sale_amount_recieved', '0') }}">
                                   </td>
                                 </tr>
                               </tfoot>
@@ -370,78 +383,78 @@
                   </div>
                 </div>
                 <!-- payment modal -->
-                {{-- <div id="add-payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                <div id="add-payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                   <div role="document" class="modal-dialog">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <h5 id="exampleModalLabel" class="modal-title">Finalize sale</h5>
-                              <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
-                          </div>
-                          <div class="modal-body">
-                              <div class="row">
-                                  <div class="col-10">
-                                      <div class="row">
-                                          <div class="col-6 mt-1">
-                                              <label>Recieved Amount *</label>
-                                              <input type="text" name="paying_amount" class="form-control numkey" required step="any">
-                                          </div>
-                                          <div class="col-6 mt-1">
-                                              <label>Paying Amount *</label>
-                                              <input type="text" name="paid_amount" class="form-control numkey"  step="any">
-                                          </div>
-                                          <div class="col-6 mt-1">
-                                              <label>Change : </label>
-                                              <p id="change" class="ml-2">0.00</p>
-                                          </div>
-                                          <div class="col-6 mt-1">
-                                              <input type="hidden" name="paid_by_id">
-                                              <label>Paid By</label>
-                                              <select name="paid_by_id_select" class="form-control selectpicker">
-                                                  <option value="1">Credit Card</option>
-                                                  <option value="2">Cash</option>
-                                                  <option value="3">Cheque</option>
-                                                  <option value="4">Deposit</option>
-                                              </select>
-                                          </div>
-                                          <div class="form-group col-12 mt-3">
-                                              <div class="card-element form-control">
-                                              </div>
-                                              <div class="card-errors" role="alert"></div>
-                                          </div>
-                                          <div class="form-group col-12 cheque">
-                                              <label>Cheque Number *</label>
-                                              <input type="text" name="cheque_no" class="form-control">
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                        <div class="col-6 form-group">
-                                              <label>sale Note</label>
-                                              <textarea rows="3" class="form-control" name="sale_note"></textarea>
-                                          </div>
-                                          <div class="col-6 form-group">
-                                              <label>Payment Note</label>
-                                              <textarea rows="3" class="form-control" name="payment_note"></textarea>
-                                          </div>
-                                      </div>
-                                      <div class="mt-3">
-                                          <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
-                                      </div>
-                                  </div>
-                                  <div class="col-2 qc" data-initial="1">
-                                      <h4><strong>Quick Cash</strong></h4>
-                                      <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="10" type="button">10</button>
-                                      <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="20" type="button">20</button>
-                                      <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="50" type="button">50</button>
-                                      <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="100" type="button">100</button>
-                                      <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="500" type="button">500</button>
-                                      <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="1000" type="button">1000</button>
-                                      <button class="btn btn-block btn-danger qc-btn sound-btn" data-amount="0" type="button">Clear</button>
-                                  </div>
-                              </div>
-                          </div>
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 id="exampleModalLabel" class="modal-title">Finalize sale</h5>
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
                       </div>
+                      <div class="modal-body">
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="row">
+                                    <div class="col-6 mt-1">
+                                        <label>Recieved Amount *</label>
+                                        <input type="text" name="paying_amount" class="form-control numkey" required step="any">
+                                    </div>
+                                    <div class="col-6 mt-1">
+                                        <label>Paying Amount *</label>
+                                        <input type="text" name="paid_amount" class="form-control numkey"  step="any">
+                                    </div>
+                                    <div class="col-6 mt-1">
+                                        <label>Change : </label>
+                                        <p id="change" class="ml-2">0.00</p>
+                                    </div>
+                                    <div class="col-6 mt-1">
+                                        <input type="hidden" name="paid_by_id">
+                                        <label>Paid By</label>
+                                        <select name="paid_by_id_select" class="form-control selectpicker">
+                                            <option value="1">Credit Card</option>
+                                            <option value="2">Cash</option>
+                                            <option value="3">Cheque</option>
+                                            <option value="4">Deposit</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-12 mt-3">
+                                        <div class="card-element form-control">
+                                        </div>
+                                        <div class="card-errors" role="alert"></div>
+                                    </div>
+                                    <div class="form-group col-12 cheque">
+                                        <label>Cheque Number *</label>
+                                        <input type="text" name="cheque_no" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-6 form-group">
+                                        <label>sale Note</label>
+                                        <textarea rows="3" class="form-control" name="sale_note"></textarea>
+                                    </div>
+                                    <div class="col-6 form-group">
+                                        <label>Payment Note</label>
+                                        <textarea rows="3" class="form-control" name="payment_note"></textarea>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
+                                </div>
+                            </div>
+                            <div class="col-2 qc" data-initial="1">
+                                <h4><strong>Quick Cash</strong></h4>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="10" type="button">10</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="20" type="button">20</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="50" type="button">50</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="100" type="button">100</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="500" type="button">500</button>
+                                <button class="btn btn-block btn-primary qc-btn sound-btn" data-amount="1000" type="button">1000</button>
+                                <button class="btn btn-block btn-danger qc-btn sound-btn" data-amount="0" type="button">Clear</button>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div> --}}
+                </div>
                 <!-- product list modal -->
                 <div id="product-list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                   <div role="document" class="modal-dialog">
@@ -773,7 +786,7 @@
               </div>
               <div class="card-footer row">
                 <div class=" form-col-6">
-                  <button type="button" class="btn btn-secondary btn-round ">{{__('Back')}}</button>
+                  <a type="button"  href="{{ URL::previous() }}" class="btn btn-secondary btn-round ">{{__('Back')}}</a>
                 </div>
                 <div class=" form-col-6">
                   <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
@@ -827,6 +840,7 @@
     var packets_per_carton = $('#packets_per_carton').val();
     sale_free_amount = $('#sale_free_amount').val();
     sale_add_amount = $('#sale_add_amount').val();
+    sale_amount_recieved = $('#sale_amount_recieved').val();
 
     var product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
     if(product_quantity == 0 || product_unit_price == 0){
@@ -861,6 +875,10 @@
       $('#sale_discount').val(total_discount);
       $('#sale_grandtotal_price').val('');
       $('#sale_grandtotal_price').val(grandtotal_amount);
+      if(sale_amount_recieved >= grandtotal_amount){
+        sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
+        $('#sale_return_change').val(sale_return_change);
+      }
     }
 
   });
@@ -877,6 +895,13 @@
     grandtotal_amount = Number(grandtotal_amount) - Number(sale_free_amount);
     $('#sale_grandtotal_price').val('');
     $('#sale_grandtotal_price').val(grandtotal_amount);
+  });
+  $(document).on('change', "#sale_amount_recieved", function(e){
+    sale_amount_recieved = $('#sale_amount_recieved').val();
+    if(sale_amount_recieved >= grandtotal_amount){
+      sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
+      $('#sale_return_change').val(sale_return_change);
+    }
   });
   $(document).on('click', ".delete-productfield", function(event) {
     rowid = $(this).attr('row-id');
@@ -921,6 +946,7 @@
     // $(this).closest('.prtr').remove();
     // calculateTotal();
   });
+
     
   var productsbarcodes_array = <?php echo json_encode($barcodeArray); ?>;
   var productsnames_array = <?php echo json_encode($nameArray); ?>;

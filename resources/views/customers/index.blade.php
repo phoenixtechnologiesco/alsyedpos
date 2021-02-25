@@ -4,13 +4,13 @@
 <div class="container-fluid">
   <div class="animated fadeIn">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-12">
         <div class="card">
           <div class="card-header">
-              <a class="btn btn-info btn-round text-white pull-right" href="{{ route('customer.create') }}">Add Customer</a>
-            <h4 class="card-title">Customers</h4>
-            <div class="col-12 mt-2">
-                                        </div>
+            <a class="btn btn-info btn-round text-white pull-right" href="{{ route('customer.create') }}">{{ __('Add Customer') }}</a>
+            <h4 class="card-title">{{ __('Customers') }}</h4>
+            <div class="col-12">
+            </div>
           </div>
           <div class="card-body">
             <div class="toolbar">
@@ -87,7 +87,7 @@
         </div>
         <!--  end card  -->
       </div>
-      <!-- end col-md-12 -->
+      <!-- end col-12 -->
     </div>
     <!-- end row -->
   </div>

@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('product_id');
             $table->string('product_ref_no')->index();
             // $table->string('product_type')->nullable();//single,variable or standard,digital,combo
-            $table->string('warehouse_id')->index()->nullable();
+            $table->integer('warehouse_id')->index()->nullable();
             $table->string('product_name')->unique();
             $table->bigInteger('product_barcode')->index();
             // $table->string('product_barcode_type')->nullable();//C128, C39, EAN-13, EAN-8, UPC-A, UPC-E, ITF-14
@@ -53,7 +53,6 @@ class CreateProductsTable extends Migration
             $table->string('product_state');//damage,faulty,etc
             $table->date('product_expiry_date')->nullable();
             $table->text('product_info')->nullable();
-            // $table->string('product_slug')->nullable();
             $table->integer('status_id')->index();//active,inactive
             $table->timestamps();
         });

@@ -160,7 +160,7 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('user,admin,superadmin', 'Add Product',         '/product/create');
             $this->insertLink('admin,superadmin',      'Companies List',      '/company');
             $this->insertLink('admin,superadmin',      'Add Company',      '/company/create');
-            $this->insertLink('admin,superadmin',      'Brands',         '/brand');
+            $this->insertLink('admin,superadmin',      'Brands List',         '/brand');
             $this->insertLink('admin,superadmin',      'Add Brand',     '/brand/create');
         $this->endDropdown();
         $this->beginDropdown('user,admin,superadmin', 'Sale/Party Section', 'cil-cart');
@@ -169,14 +169,14 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('user,admin,superadmin', 'Add Sale',  '/sale/create');
             $this->insertLink('admin,superadmin', 'Payment',  '/sale/payment');
             $this->insertLink('admin,superadmin', 'Financial',  '/sale/financial');
-            $this->insertLink('user,admin,superadmin', 'Sale Return',  '/sale/return');
+            $this->insertLink('user,admin,superadmin', 'Sale Return List',  '/sale/return');
         $this->endDropdown();
         $this->beginDropdown('user,admin,superadmin', 'Purchase Section', 'cil-money');
             $this->insertLink('admin,superadmin', 'Purchases List',  '/purchase');
             $this->insertLink('admin,superadmin', 'Add Purchase',  '/purchase/create');
             $this->insertLink('admin,superadmin', 'Payment',  '/purchase/payment');
             $this->insertLink('admin,superadmin', 'Ledger',  '/purchase/ledger');
-            $this->insertLink('admin,superadmin', 'Purchase Return',  '/purchase/return');
+            $this->insertLink('admin,superadmin', 'Purchase Return List',  '/purchase/return');
             $this->insertLink('admin,superadmin', 'Stock',  '/purchase/stock');
             $this->insertLink('user,admin,superadmin', 'Available Stock',  '/purchase/available');
             $this->insertLink('admin,superadmin', 'Damage Stock',  '/purchase/damage');

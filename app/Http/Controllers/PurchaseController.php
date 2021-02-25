@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\Product;
+use App\Models\Payment;
 use App\Models\PurchaseProducts;
+use App\Models\PurchaseReturn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -36,6 +38,15 @@ class PurchaseController extends Controller
         // return view('purchases.index', ['purchases' => $purchases]);
     }
 
+    public function return(PurchaseReturn $model)
+    {
+        $purchasereturns = PurchaseReturn::join('purchases', 'purchase_returns.purchase_id', '=', 'purchases.purchase_id')->get();
+        // $purchasereturns = PurchaseReturn::join('suppliers', 'purchases.purchase_supplier_id', '=', 'suppliers.supplier_id')->get();
+        $suppliers = Supplier::where('status_id', 1)->get();
+
+        return view('purchases.return', compact('purchasereturns', 'suppliers') );
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -43,7 +54,7 @@ class PurchaseController extends Controller
      */
     public function create(Purchase $model, Supplier $model2, Product $model3)
     {
-        $purchases = $model->paginate(15)->items();
+        $purchases = Purchase::get();
         $suppliers = Supplier::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
 
@@ -283,12 +294,13 @@ class PurchaseController extends Controller
         // $s_name = $model->paginate(15)->items()[$id-1]->supplier_name;
         $s_id = $model->paginate(15)->items()[$id-1]->purchase_supplier_id;
         $supplier = DB::table('suppliers')->where('supplier_id','=', $s_id)->first();
-        $purchases = $model->paginate(15)->items()[$id-1];
+        // $purchase = $model->paginate(15)->items()[$id-1];
+        $purchase = Purchase::where('purchase_id', $id)->get();
         $suppliers = Supplier::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
         $purchaseproducts = PurchaseProducts::where('purchase_id', $id)->get();    
 
-        return view('purchases.edit', compact('purchases', 'suppliers', 'products', 'purchaseproducts', 'supplier') );//'selectedproducts'
+        return view('purchases.edit', compact('purchase', 'suppliers', 'products', 'purchaseproducts', 'supplier') );//'selectedproducts'
         // return view('purchases.edit', ['purchases' => $model->paginate(15)->items()[$id-1], 'suppliers' => $model2->paginate(15)->items(), 'products' => $model3->paginate(15)->items()]);
     }
 
@@ -536,7 +548,69 @@ class PurchaseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $url = url()->previous();
+        $purchase_data = Purchase::where('purchase_id', $id)->first();
+        $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->get();
+        // dd($purchase_products_data);
+        if(!empty($purchase_products_data)){
+            foreach ($purchase_products_data as $product_purchase) {
+                // if($product_purchase->purchase_payment_method == "cash")
+                // if($product_purchase->purchase_payment_method == "credit")
+                $product_data = Product::where('product_id', $product_purchase->product_id)->get();
+                //adjust product quantity
+                foreach ($product_data as $child_product) {
+                    // $child_data = Product::find($child_id);
+                    $child_data = Product::where('product_id', $child_product->product_id)->first();
+                    $update_data = array(
+                        'product_quantity_total'  =>  $child_data->product_quantity_total + $product_purchase->purchase_quantity_total,
+                        'product_quantity_available'  =>  $child_data->product_quantity_available + $product_purchase->purchase_quantity_total,
+                        'product_pieces_total'  =>  $child_data->product_pieces_total + $product_purchase->purchase_pieces_total,
+                        'product_packets_total'  =>  $child_data->product_packets_total + $product_purchase->purchase_packets_total,
+                        'product_cartons_total'  =>  $child_data->product_cartons_total + $product_purchase->purchase_cartons_total,
+                        'product_pieces_available'  =>  $child_data->product_pieces_available + $product_purchase->purchase_pieces_total,
+                        'product_packets_available'  =>  $child_data->product_packets_available + $product_purchase->purchase_packets_total,
+                        'product_cartons_available'  =>  $child_data->product_cartons_available + $product_purchase->purchase_cartons_total,
+                    );
+                    Product::where('product_id', $child_product->product_id)->update($update_data);
+                }
+                PurchaseProducts::where('product_id', $product_purchase->product_id)->delete();
+            }
+        }
+        $payment_data = Payment::where('purchase_id', $id)->get();
+        if(!empty($payment_data)){
+            foreach ($payment_data as $payment) {
+                if($payment->payment_method == 'cheque'){
+                    // $supplier = Supplier::where('purchase_supplier_id', $purchase_data->purchase_supplier_id)->get();
+                    // $supplier_data = array(
+                    //     'supplier_balance_paid' => $supplier->supplier_balance_paid - $payment->payment_amount_paid
+                    // );
+                    // Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->update($supplier_data);
+                    $thispayment = Payment::where('payment_id', $payment->payment_id)->first();
+                    Payment::where('payment_id', $thispayment->payment_id)->delete();
+                }
+                elseif($payment->payment_method == 'cash'){
+                    $supplier = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
+                    $supplier_data = array(
+                        'supplier_balance_paid' => $supplier->supplier_balance_paid - $payment->payment_amount_paid
+                    );
+                    Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->update($supplier_data);
+                    $thispayment = Payment::where('payment_id', $payment->payment_id)->first();
+                    Payment::where('payment_id', $thispayment->payment_id)->delete();
+                }
+                elseif($payment->payment_method == 'credit'){
+                    $supplier = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
+                    $supplier_data = array(
+                        'supplier_balance_dues' => $supplier->supplier_balance_dues - $payment->payment_amount_paid
+                    );
+                    Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->update($supplier_data);
+                    $thispayment = Payment::where('payment_id', $payment->payment_id)->first();
+                    Payment::where('payment_id', $thispayment->payment_id)->delete();
+                }
+                // $payment->delete();
+            }
+        }
+        Purchase::where('purchase_id', $purchase_data->purchase_id)->delete();
+        return Redirect::to('purchase')->with('Purchase deleted successfully');
     }
 
     public  function generateRandomString($length = 20){

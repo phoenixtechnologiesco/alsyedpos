@@ -24,7 +24,8 @@ class CompanyController extends Controller
      */
     public function index(Company $model)
     {
-        return view('companies.index', ['companies' => $model->paginate(15)->items()]);
+        $companies = Company::all();
+        return view('companies.index', compact('companies') );
     }
 
     /**
@@ -34,7 +35,9 @@ class CompanyController extends Controller
      */
     public function create(Company $model)
     {
-        return view('companies.add', ['companies' => $model->paginate(15)->items(), 'allcompanies' => $model->paginate(15)->items()]);
+        $allcompanies = Company::all();
+        
+        return view('companies.add', compact('allcompanies'));
     }
 
     /**
@@ -93,7 +96,11 @@ class CompanyController extends Controller
      */
     public function edit(Company $model, $id)
     {
-        return view('companies.edit', ['companies' => $model->paginate(15)->items()[$id-1], 'allcompanies' => $model->paginate(15)->items()]);
+        $company = Company::where('company_id', $id)->get();
+        $allcompanies = Company::all();
+
+        return view('companies.edit', compact('company', 'allcompanies') );
+        // return view('companies.edit', ['company' => $model->paginate(15)->items()[$id-1], 'allcompanies' => $model->paginate(15)->items()]);
     }
 
     /**
@@ -141,6 +148,9 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('companies')->where('company_id', $id)->delete();
+
+        return redirect('/company')->with(['message' => 'Company Deleted Successfully'], 200);
+
     }
 }

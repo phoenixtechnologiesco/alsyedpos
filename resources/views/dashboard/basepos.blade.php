@@ -122,10 +122,10 @@
     <script src="{{ asset('js/bootstrap.js') }}"></script> --}}
     <script src="{{ asset('js/coreui.bundle.js') }}"></script>
     <script src="{{ asset('js/coreui-utils.js') }}"></script>
-    {{-- <script src="{{ asset('js/jquery.js') }}"></script>
-    <script src="{{ asset('js/jquery-ui.js') }}"></script> --}}
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> --}}
     <script src="{{ asset('js/select2.js') }}"></script>
 
     {{-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script> --}}

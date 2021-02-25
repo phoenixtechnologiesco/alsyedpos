@@ -30,7 +30,9 @@
                               </div>
                               {{-- <div class="input-group pos"> --}}
                                 <input type="text" name="supplier_code" id="suppliercodesearch" placeholder="Search supplier by code" class="form-control col-12" value="{{ old('supplier_code') }}" />
-                                {{-- <input type="hidden" name="supplier_code" id="allsuppliers" class="form-control col-12"  /> --}}
+                                <input readonly type="hidden" name="purchase_supplier_name" id="supplier_name" placeholder="Supplier Name" class="form-control col-12" value="" />
+                                <input readonly type="hidden" name="purchase_supplier_id" id="supplier_id" class="form-control col-12" value="" />
+
                                   <?php $snameArray = []; $snamecodeArray = []; ?>
                                   @foreach($suppliers as $one_supplier) 
                                     <div class="suppliernames_array" style="display: none">{{ $snameArray[] = $one_supplier->supplier_name }}</div>
@@ -47,7 +49,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-col-3">
+                        {{-- <div class="form-col-3">
                           <div class="form-group">
                             <label readonly for="purchase_supplier_name" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Supplier Name")}}</label>
                             <div class="form-col-12 input-group ">
@@ -56,19 +58,19 @@
                                   <a class="" data-toggle="modal" data-target="#supplier-list" id="product-list-btn"><i class="fa fa-user"></i></a>
                                 </span>
                               </div>
-                              {{-- <div class="input-group pos"> --}}
+                              <-- <div class="input-group pos"> -->
                                 <input readonly type="text" name="purchase_supplier_name" id="supplier_name" placeholder="Supplier Name" class="form-control col-12" value="" />
                                 <input readonly type="hidden" name="purchase_supplier_id" id="supplier_id" class="form-control col-12" value="" />
-                                {{-- <select readonly required name="purchase_supplier_name" id="supplier_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Supplier..." style="width: 150px">
+                                <-- <select readonly required name="purchase_supplier_name" id="supplier_name" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Supplier..." style="width: 150px">
                                   @foreach($suppliers as $single_supplier)
                                     <option status_id="{{$single_supplier->status_id}}" value="{{$single_supplier->supplier_id}}">{{$single_supplier->supplier_name}}</option>
                                   @endforeach
-                                </select> --}}
-                              {{-- </div> --}}
+                                </select> -->
+                              <-- </div> -->
                               @include('alerts.feedback', ['field' => 'purchase_supplier_name'])
                             </div>
                           </div>
-                        </div>
+                        </div> --}}
                         <div class="form-col-2">
                           <div class="form-group">
                             <label for="supplier_status" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Status")}}</label>
@@ -90,7 +92,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-last-col-2">
+                        <div class="form-col-2">
                           <div class="form-group">
                             <label for="purchase_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Dues")}}</label>
                             <div class="form-col-12 input-group">
@@ -100,6 +102,19 @@
                               <input readonly type="number" name="purchase_amount_dues" id="supplier_balance_dues" class="form-control" value="{{ old('purchase_amount_dues', '') }}">
                               @include('alerts.feedback', ['field' => 'purchase_amount_dues'])
                             </div>
+                          </div>
+                        </div>
+                        <div class="form-last-col-2">
+                          <div class="form-group">
+                            <label for="purchase_status" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Status")}}</label>
+                              <select name="purchase_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Purchase Status">
+                                <option value="pending">Pending</option>
+                                <option value="ordered">Ordered</option>
+                                <option value="partial">Partial</option>
+                                <option value="received">Received</option>
+                                //received,partial,pending,ordered
+                              </select>
+                              @include('alerts.feedback', ['field' => 'purchase_amount_dues'])
                           </div>
                         </div>
                       </div>
@@ -231,32 +246,14 @@
                               </tbody>
                               <tfoot class="thead-dark">
                                 <tr class="row">
-                                  <th class="col-2 firstcol" scope="col">Purchase Status</th>
-                                  <th class="col-2 mycol" scope="col">Payment Status</th>
                                   {{-- <th class="col-1 mycol" scope="col">Invoice Id</th> --}}
                                   {{-- <th class="col-3 mycol" scope="col" style="text-align: center">Invoice Date</th> --}}
                                   {{-- <th class="col-2 mycol" scope="col">Document</th> --}}
-                                  <th class="col-8 lastcol" scope="col">Remarks</th>
+                                  <th class="col-8 firstcol" scope="col">Remarks</th>
+                                  <th class="col-2 mycol" scope="col">Payment Status</th>
+                                  <th class="col-2 firstcol" scope="col">Return Change</th>
                                 </tr>
                                 <tr class="row table-info" >
-                                  <td class="col-2 firstcol" scope="col">
-                                    <select name="purchase_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Purchase Status">
-                                      <option value="pending">Pending</option>
-                                      <option value="ordered">Ordered</option>
-                                      <option value="partial">Partial</option>
-                                      <option value="received">Received</option>
-                                      //received,partial,pending,ordered
-                                    </select>
-                                  </td>
-                                  <td class="col-2 mycol" scope="col">
-                                    <select name="purchase_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
-                                      <option value="paid">Paid</option>
-                                      <option value="due">Due</option>
-                                      <option value="partial">Partial</option>
-                                      <option value="overdue">Overdue</option>
-                                      //paid,due,partial,overdue,
-                                    </select>
-                                  </td>
                                   {{-- <td class="col-1 mycol" scope="col">
                                     <input type="text" name="purchase_invoice_id" class="form-control col-12" value="{{ old('purchase_invoice_id', '') }}">
                                   </td>
@@ -271,8 +268,20 @@
                                   {{-- <td class="col-2 mycol" scope="col">
                                     <input type="file" name="purchase_document" id="purchase_document" class="form-control col-12" value="{{ old('purchase_document', '') }}">
                                   </td> --}}
-                                  <td class="col-8 lastcol" scope="col">
+                                  <td class="col-8 firstcol" scope="col">
                                     <input type="text" name="purchase_note" class="form-control col-12" value="{{ old('purchase_note'), '' }}" >
+                                  </td>
+                                  <td class="col-2 mycol" scope="col">
+                                    <select name="purchase_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
+                                      <option value="paid">Paid</option>
+                                      <option value="due">Due</option>
+                                      <option value="partial">Partial</option>
+                                      <option value="overdue">Overdue</option>
+                                      //paid,due,partial,overdue,
+                                    </select>
+                                  </td>
+                                  <td class="col-2 lastcol" scope="col">
+                                    <input type="number" min="0" name="purchase_return_change" class="form-control col-12"  value="0">
                                   </td>
                                 </tr>
                               </tfoot>
@@ -754,10 +763,10 @@
                 </div>
               </div>
               <div class="card-footer-custom row">
-                <div class="col-sm-10 col-6">
-                  <button type="button" class="btn btn-secondary btn-round ">{{__('Back')}}</button>
+                <div class=" col-6">
+                  <a type="button" href="{{ URL::previous() }}" class="btn btn-secondary btn-round ">{{__('Back')}}</a>
                 </div>
-                <div class="col-sm-10 col-6">
+                <div class=" col-6">
                   <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
                 </div>
               </div>

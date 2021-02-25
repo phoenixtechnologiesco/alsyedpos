@@ -25,7 +25,8 @@ class BrandController extends Controller
      */
     public function index(Brand $model, Company $model2)
     {
-        return view('brands.index', ['brands' => $model->paginate(15)->items()]);
+        $brands = Brand::all();
+        return view('brands.index', compact('brands') );
     }
 
     /**
@@ -35,7 +36,10 @@ class BrandController extends Controller
      */
     public function create(Brand $model, Company $model2)
     {
-        return view('brands.add', ['brands' => $model->paginate(15)->items(), 'companies' => $model2->paginate(15)->items()]);
+        $brands = Brand::all();
+        $companies = Company::all();
+
+        return view('brands.add', compact('brands', 'companies') );
     }
 
     /**
@@ -94,7 +98,11 @@ class BrandController extends Controller
      */
     public function edit(Brand $model, $id, Company $model2)
     {
-        return view('brands.edit', ['brands' => $model->paginate(15)->items()[$id-1], 'companies' => $model2->paginate(15)->items()]);
+        $brand = Brand::where('brand_id', $id)->get();
+        $companies = Company::all();
+        // dd($brand[0]->brand_id);
+        return view('brands.edit', compact('brand', 'companies'));
+        // return view('brands.edit', ['brand' => $model->paginate(15)->items()[$id-1], 'companies' => $model2->paginate(15)->items()]);
     }
 
     /**
@@ -142,6 +150,9 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('brands')->where('brand_id', $id)->delete();
+
+        return redirect('/brand')->with(['message' => 'Brand Deleted Successfully'], 200);
+
     }
 }

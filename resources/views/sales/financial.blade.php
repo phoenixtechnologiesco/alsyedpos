@@ -4,10 +4,10 @@
 <div class="container-fluid">
   <div class="animated fadeIn">
     <div class="row">
-      <div class="form-col-12">
+      <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5 class="title">{{__(" Add Sale")}}</h5>
+            <h5 class="title">{{__(" Financial")}}</h5>
           </div>
           <div class="card-body-custom">
             <form method="post" action="{{ route('sale.store') }}" autocomplete="off" enctype="multipart/form-data">
@@ -773,7 +773,7 @@
               </div>
               <div class="card-footer row">
                 <div class=" form-col-6">
-                  <button type="button" class="btn btn-secondary btn-round ">{{__('Back')}}</button>
+                  <a type="button" href="{{ URL::previous() }}" class="btn btn-secondary btn-round ">{{__('Back')}}</a>
                 </div>
                 <div class=" form-col-6">
                   <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>

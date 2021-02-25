@@ -31,8 +31,10 @@ class CustomerController extends Controller
      */
     public function index(Customer $model)
     {
-        // dd($model->paginate(15)->items()[1]);
-        return view('customers.index', ['customers' => $model->paginate(15)->items()]);
+        $customers = Customer::all();
+
+        return view('customers.index', compact('customers') );
+        // return view('customers.index', ['customers' => $model->paginate(15)->items()]);
     }
 
     /**
@@ -42,8 +44,8 @@ class CustomerController extends Controller
      */
     public function create(Customer $model)
     {
-        return view('customers.add', ['customers' => $model->paginate(15)->items()]);
-        // return view('customers.add', compact('customer'));
+        $customers = Customer::all();
+        return view('customers.add', compact('customers') );
     }
 
     /**
@@ -141,7 +143,10 @@ class CustomerController extends Controller
      */
     public function edit(Customer $model, $id)
     {
-        return view('customers.edit', ['customers' => $model->paginate(15)->items()[$id-1]]);
+        $customer = Customer::where('customer_id', $id)->get();
+
+        return view('customers.edit', compact('customer') );
+        // return view('customers.edit', ['customer' => $model->paginate(15)->items()[$id-1]]);
     }
 
     /**
@@ -228,7 +233,10 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('customers')->where('customer_id', $id)->delete();
+
+        return redirect('/customer')->with(['message' => 'Customer Deleted Successfully'], 200);
+
     }
 
     public function searchcustomer(Request $request)

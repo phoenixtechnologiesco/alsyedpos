@@ -35,7 +35,7 @@ class CreateSuppliersTable extends Migration
             $table->decimal('supplier_balance_paid', 10, 2)->nullable();
             $table->decimal('supplier_balance_dues', 10, 2)->nullable();
             $table->integer('status_id')->index();
-            $table->string('created_by')->index();
+            $table->integer('supplier_created_by')->index();
             $table->timestamps();
         });
     }
