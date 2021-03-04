@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -242,7 +243,7 @@ class CustomerController extends Controller
     public function searchcustomer(Request $request)
     {
 
-        $getRecords = null;
+        $getRecords = NULL;
         // $input = trim(filter_var($request['search_data'], FILTER_SANITIZE_STRING));
         $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
         //return response()->json(['input' => $request['input'],], 200);
@@ -261,5 +262,41 @@ class CustomerController extends Controller
         // ], 200);
 
         return $records;
+    }
+
+    public function searchcustomerpayments(Request $request)
+    {
+
+        $getRecords = NULL;
+        $myvar = NULL;
+        // $input = trim(filter_var($request['search_data'], FILTER_SANITIZE_STRING));
+        $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
+        //return response()->json(['input' => $request['input'],], 200);
+        $records = Customer::where(function($query)use($input){
+            // $query->orWhere('customer_ref_no', 'LIKE', "%{$input}%");
+            $query->orWhere('customer_name', 'LIKE', "%{$input}%");
+        })
+        ->get()->toArray();
+
+        $customer_id = $records[0]['customer_id'];
+
+        $records2 = Payment::where(function($query)use($customer_id){
+            $query->where('payment_customer_id', '=', $customer_id);
+        })
+        ->get()->toArray();
+
+        foreach($records2 as $one_payment){
+            $myvar .= '<tr class="row table-info"><td class="col-1 firstcol text-center">'.$one_payment['payment_invoice_id'].'</td><td class="col-1 mycol text-center">'.$one_payment['payment_invoice_date'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_id'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_amount_paid'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_id'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_method'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_type'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_id'].'</td> <td class="col-1 lastcol text-center" >'.$one_payment['customer_amount_dues'].'</td></tr>';
+        }
+
+
+        $records3 = array(
+            'customer' => $records,
+            'payments' => $myvar
+        );
+        
+        // dd($records3);
+
+        return $records3;
     }
 }

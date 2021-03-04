@@ -27795,6 +27795,7 @@ html:not([dir="rtl"]) .c-switch-label .c-switch-slider::after {
   width: 100%;
   margin-bottom: 1rem;
   color: #3c4b64;
+  /* position: relative; */
 }
 
 .c-legacy-theme .table {
@@ -27824,6 +27825,12 @@ html:not([dir="rtl"]) .c-switch-label .c-switch-slider::after {
 .c-dark-theme
 .table td {
   border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.table thead{
+  position: sticky !important;
+  top:0 !important;
+  z-index:1 !important;
 }
 
 .table thead th {

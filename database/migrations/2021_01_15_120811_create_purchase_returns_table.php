@@ -16,17 +16,18 @@ class CreatePurchaseReturnsTable extends Migration
         Schema::create('purchase_returns', function (Blueprint $table) {
             $table->bigIncrements('purchase_return_id');
             $table->integer('purchase_id');
-            $table->integer('purchase_ref_no');
-            // $table->integer('purchase_return_supplier_id');
-            $table->integer('purchase_return_product_pieces')->nullable();
-            $table->integer('purchase_return_product_packets')->nullable();
-            $table->integer('purchase_return_product_cartons')->nullable();
-            $table->decimal('purchase_return_unit_price', 10, 2);
-            $table->integer('purchase_return_product_quantity');
-            $table->string('purchase_status');//received,partial,pending,ordered
-            // $table->string('purchase_return_status');
+            $table->integer('purchase_return_ref_no');
+            $table->integer('purchase_return_supplier_id');
+            $table->integer('purchase_return_total_items');
+            $table->integer('purchase_return_total_quantity');
+            $table->integer('purchase_return_free_piece')->nullable();
+            $table->integer('purchase_return_free_amount')->nullable();
+            $table->string('purchase_return_status');
+            // $table->string('purchase_status');//received,partial,pending,ordered
             $table->date('purchase_return_date')->nullable();
             $table->decimal('purchase_return_total_price', 10, 2);
+            $table->decimal('purchase_return_add_amount', 10, 2)->nullable();
+            $table->decimal('purchase_return_discount', 10, 2)->nullable();
             $table->decimal('purchase_return_grandtotal_price', 10, 2);
             $table->decimal('purchase_return_amount_paid', 10, 2);
             $table->decimal('purchase_return_amount_dues', 10, 2);
@@ -35,7 +36,7 @@ class CreatePurchaseReturnsTable extends Migration
             $table->integer('purchase_return_invoice_id')->nullable();
             $table->date('purchase_return_invoice_date')->nullable();
             $table->string('purchase_return_document')->nullable();
-            // $table->text('purchase_return_note')->nullable();
+            $table->text('purchase_return_note')->nullable();
             $table->integer('purchase_return_returned_by');
             $table->timestamps();
         });

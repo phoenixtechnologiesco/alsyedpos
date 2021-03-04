@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Yajra\Datatables\Datatables;
 use App\Models\Payment;
 use App\Models\Sale;
 use App\Models\Purchase;
@@ -27,9 +28,53 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Payment $model, Customer $model2)
     {
-        //
+        // $payments = $model->paginate(15)->items();
+        $customers = Customer::where('status_id', 1)->get();
+        $payments = Payment::get();
+
+        return view('sales.payment', compact('payments', 'customers') );
+        // return view('sales.payment', ['payments' => $payments]);
+    }
+
+    public function indexpurchase(Payment $model, Supplier $model2)
+    {
+        // $payments = $model->paginate(15)->items();
+        $suppliers = Supplier::where('status_id', 1)->get();
+        $payments = Payment::get();
+
+        return view('purchases.payment', compact('payments', 'suppliers') );
+        // return view('sales.payment', ['payments' => $payments]);
+    }
+
+    public function getRowDetailsData()
+    {
+        $payments = Payment::join('customers', 'payments.payment_customer_id', '=', 'customers.customer_id')->join('sales', 'payments.sale_id', '=', 'sales.sale_id')->join('users', 'payments.payment_created_by', '=', 'users.id')
+        // ->select('payments.*', 'sales.*', 'customers.customer_name', 'users.name', )
+        ->get();
+        $customers = Customer::where('status_id', 1)->get();
+        // dd($sales);
+        return Datatables::of($payments)
+        ->addColumn('action', function ($payments) {
+            return '<a type="button" href="payment/'. $payments->payment_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+        })
+        // ->editColumn('payment_id', '{{$payment_id}}')
+        ->make(true);
+    }
+
+    public function getRowDetailsData2()
+    {
+        $payments = Payment::join('suppliers', 'payments.payment_supplier_id', '=', 'suppliers.supplier_id')->join('purchases', 'payments.purchase_id', '=', 'purchases.purchase_id')->join('users', 'payments.payment_created_by', '=', 'users.id')
+        // ->select('payments.*', 'purchases.*', 'suppliers.supplier_name', 'users.name', )
+        ->get();
+        $suppliers = Supplier::where('status_id', 1)->get();
+        return Datatables::of($payments)
+        ->addColumn('action', function ($payments) {
+            return '<a type="button" href="payment/'. $payments->payment_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+        })
+        // ->editColumn('payment_id', '{{$payment_id}}')
+        ->make(true);
     }
 
     /**
@@ -44,11 +89,11 @@ class PaymentController extends Controller
         $customers = Customer::where('status_id', 1)->get();
         $payments = Payment::get();
 
-        return view('sales.payment', compact('sales', 'customers', 'payments') );
+        return view('sales.paymentadd', compact('sales', 'customers', 'payments') );
         // return view('sales.payment', ['sales' => $sales, 'customers' => $customers, 'payments' => $payments]);
     }
 
-        /**
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -60,7 +105,7 @@ class PaymentController extends Controller
         $suppliers = Supplier::where('status_id', 1)->get();
         $payments = Payment::get();
 
-        return view('purchases.payment', compact('purchases', 'suppliers', 'payments') );
+        return view('purchases.paymentadd', compact('purchases', 'suppliers', 'payments') );
         // return view('purchases.payment', ['purchases' => $purchases, 'suppliers' => $suppliers, 'payments' => $payments]);
     }
 

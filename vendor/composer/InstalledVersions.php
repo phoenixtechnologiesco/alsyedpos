@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '9b8ecf4d85d143420a21577aa296e15da761fb2e',
+    'reference' => 'f449f4d7d1baa170c1f618d406b8c1cb5726d075',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -437,6 +437,15 @@ private static $installed = array (
         0 => '*',
       ),
     ),
+    'kwn/number-to-words' => 
+    array (
+      'pretty_version' => '1.12.1',
+      'version' => '1.12.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '7461b531a971eb6b75a687eb28787b79dad09eb1',
+    ),
     'laravel/framework' => 
     array (
       'pretty_version' => 'v7.4.0',
@@ -453,7 +462,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '9b8ecf4d85d143420a21577aa296e15da761fb2e',
+      'reference' => 'f449f4d7d1baa170c1f618d406b8c1cb5726d075',
     ),
     'laravel/tinker' => 
     array (
@@ -562,6 +571,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '361c0f545c3172ee26c3d596a0aa03f0cef65e6a',
+    ),
+    'milon/barcode' => 
+    array (
+      'pretty_version' => '7.0.0',
+      'version' => '7.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '7692ac1f9c833b44c071ef8db461fb08d7b78003',
     ),
     'mockery/mockery' => 
     array (

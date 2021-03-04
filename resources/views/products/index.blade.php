@@ -9,14 +9,14 @@
           <div class="card-header">
             <a class="btn btn-info btn-round text-white pull-right" href="{{ route('product.create') }}">Add Product</a>
             <h4 class="card-title">Products</h4>
-            <div class="col-12 mt-2">
+            <div class="col-12">
             </div>
           </div>
           <div class="card-body">
             <div class="toolbar">
               <!--        Here you can write extra buttons/actions for the toolbar              -->
             </div>
-            <table id="saadTable" class="table table-sm table-striped table-bordered dataTable display compact hover order-column" cellspacing="0" width="600px">
+            <table id="productTable" class="table table-sm table-striped table-bordered dataTable display compact hover order-column" cellspacing="0" width="600px">
               <thead>
                 <tr>
                   {{-- <th>Ref.Id</th> --}}
@@ -416,7 +416,7 @@
               </div>
             </div> --}}
 
-            <!-- <table id="saadTable" class="table table-striped table-bordered datatable">
+            <!-- <table id="productTable" class="table table-striped table-bordered datatable">
               <thead>
                 <tr>
                   {{-- <th>Ref.Id</th> --}}
@@ -878,7 +878,7 @@
 
     {{-- <script>
       $(document).ready( function () {
-          $('#saadTable').DataTable();
+          $('#productTable').DataTable();
       });
     </script> --}}
     {{-- <script id="detailss-template" type="text/x-handlebars-template">
@@ -912,7 +912,7 @@
         return '<a href="product/'+d.product_id+'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>Edit</a>'+'&nbsp;&nbsp;'+'Attached Barcodes: '+sum;
         // return 'Attached Barcodes: '+sum;
       }
-      var dt = $('#saadTable').DataTable({
+      var dt = $('#productTable').DataTable({
         // processing: true,
         serverSide: true,
         ajax: '{{ route('api.product_row_details') }}',
@@ -948,7 +948,7 @@
         order: [[1, 'asc']]
       });
 
-      // $('#saadTable table tbody').on('click', 'td.details-control', function () {
+      // $('#productTable table tbody').on('click', 'td.details-control', function () {
       //   var tr = $(this).closest('tr');
       //   var row = mytable.row( tr );
 
@@ -967,7 +967,7 @@
       // Array to track the ids of the details displayed rows
       var detailRows = [];
   
-      $('#saadTable tbody').on( 'click', 'tr td.details-control', function () {
+      $('#productTable tbody').on( 'click', 'tr td.details-control', function () {
           var tr = $(this).closest('tr');
           var row = dt.row( tr );
           var idx = $.inArray( tr.attr('id'), detailRows );
@@ -1002,7 +1002,7 @@
 
       // var selected = [];
 
-      // $('#saadTable').DataTable({
+      // $('#productTable').DataTable({
       //   processing: true,
       //   serverSide: true,
       //   ajax: {
@@ -1038,7 +1038,7 @@
       //   ]
       // });
 
-      // $('#saadTable tbody').on('click', 'tr', function () {
+      // $('#productTable tbody').on('click', 'tr', function () {
       //   var id = this.id;
       //   var index = $.inArray(id, selected);
  

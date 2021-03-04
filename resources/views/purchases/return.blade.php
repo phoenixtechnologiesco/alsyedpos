@@ -7,7 +7,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-              <a class="btn btn-info btn-round text-white pull-right" href="{{ route('purchase.create') }}">Add Purchase Return</a>
+              <a class="btn btn-info btn-round text-white pull-right" href="{{ route('purchase.returnadd') }}">Add Purchase Return</a>
             <h4 class="card-title">Purchase Returns</h4>
             <div class="col-12 mt-2">
                                         </div>
@@ -20,18 +20,18 @@
               <thead>
                 <tr>
                   <th>S.No</th>
-                  <th>Ref_No</th>
+                  <th>P.Return Ref_No</th>
                   <th>Supplier Name</th>
-                  <th>Purchase Status</th>
-                  <th>Invoice Date</th>
+                  <th>P.Return Status</th>
+                  <th>P.Return Date</th>
                   <th>Grandtotal Price</th>
                   <th>Amount Paid</th>
                   <th>Amount Dues</th>
                   <th>Payment Method</th>
                   <th>Payment Status</th>
-                  <!-- <th>Invoice Id</th>
-                  <th>Invoice Date</th> -->
-                  <th class="disabled-sorting text-right">Actions</th>
+                  <th>Invoice Id</th>
+                  <th>Invoice Date</th>
+                  {{-- <th class="disabled-sorting text-right">Actions</th> --}}
                 </tr>
               </thead>
               {{-- <tfoot>
@@ -41,21 +41,23 @@
               <tbody>
                 @foreach ($purchasereturns as $key => $value)
                 <tr>
-                  <td>{{ $value->purchase_id }}</td>
-                  <td>{{ $value->purchase_ref_no }}</td>
+                  <td>{{ $value->purchase_return_id }}</td>
+                  <td>{{ $value->purchase_return_ref_no }}</td>
                   <td>{{ $value->supplier_name}}</td> 
-                  <td>{{ $value->purchase_status }}</td>
-                  <td>{{ $value->purchase_invoice_date }}</td>
-                  <td>{{ $value->purchase_grandtotal_price }}</td>
-                  <td>{{ $value->purchase_amount_paid }}</td>
-                  <td>{{ $value->purchase_amount_dues }}</td>
-                  <td>{{ $value->purchase_payment_method }}</td> 
-                  <td>{{ $value->purchase_payment_status }}</td>
-                  <td class="text-right">
+                  <td>{{ $value->purchase_return_status }}</td>
+                  <td>{{ $value->purchase_return_date }}</td>
+                  <td>{{ $value->purchase_return_grandtotal_price }}</td>
+                  <td>{{ $value->purchase_return_amount_paid }}</td>
+                  <td>{{ $value->purchase_return_amount_dues }}</td>
+                  <td>{{ $value->purchase_return_payment_method }}</td> 
+                  <td>{{ $value->purchase_return_payment_status }}</td>
+                  <td>{{ $value->purchase_return_invoice_id }}</td> 
+                  <td>{{ $value->purchase_return_invoice_date }}</td>
+                  {{-- <td class="text-right">
                     <a type="button" href="{{ route('purchase.edit', ['purchase' => $value->purchase_id,]) }}" rel="tooltip" class="btn btn-info btn-icon btn-sm " data-original-title="" title="">
                       <i class="fa fa-edit"></i>
                     </a>
-                  </td>
+                  </td> --}}
                 </tr>
                 @endforeach
               </tbody>

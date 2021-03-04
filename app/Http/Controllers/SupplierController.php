@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -220,7 +221,6 @@ class SupplierController extends Controller
 
     public function searchsupplier(Request $request)
     {
-
         $getRecords = null;
         // $input = trim(filter_var($request['search_data'], FILTER_SANITIZE_STRING));
         $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
@@ -240,5 +240,37 @@ class SupplierController extends Controller
         // ], 200);
 
         return $records;
+    }
+
+    public function searchsupplierpayments(Request $request)
+    {
+        $getRecords = NULL;
+        $myvar = NULL;
+        // $input = trim(filter_var($request['search_data'], FILTER_SANITIZE_STRING));
+        $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
+        //return response()->json(['input' => $request['input'],], 200);
+        $records = Supplier::where(function($query)use($input){
+            // $query->orWhere('supplier_ref_no', 'LIKE', "%{$input}%");
+            $query->orWhere('supplier_name', 'LIKE', "%{$input}%");
+        })
+        ->get()->toArray();
+
+        $supplier_id = $records[0]['supplier_id'];
+
+        $records2 = Payment::where(function($query)use($supplier_id){
+            $query->where('payment_supplier_id', '=', $supplier_id);
+        })
+        ->get()->toArray();
+
+        foreach($records2 as $one_payment){
+            $myvar .= '<tr class="row table-info"><td class="col-1 firstcol text-center">'.$one_payment['payment_invoice_id'].'</td><td class="col-1 mycol text-center">'.$one_payment['payment_invoice_date'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_id'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_amount_paid'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_id'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_method'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_type'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_id'].'</td> <td class="col-1 lastcol text-center" >'.$one_payment['supplier_amount_dues'].'</td></tr>';
+        }
+
+        $records3 = array(
+            'supplier' => $records,
+            'payments' => $myvar
+        );
+        
+        return $records3;
     }
 }

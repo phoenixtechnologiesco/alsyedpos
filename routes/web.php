@@ -12,8 +12,8 @@
 */
 
 Route::group(['middleware' => ['get.menu']], function () {
-    // Route::get('/', function () {           return view('dashboard.homepage'); });
     Route::get('/',        'HomeController@index')->name('homepage');
+    Route::get('/dashboard', function () {           return view('dashboard.homepage'); });
 
     Route::group(['middleware' => ['role:superadmin']], function () {
         Route::get('/colors', function () {     return view('dashboard.colors'); });
@@ -102,24 +102,48 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::resource('product', 'ProductController', ['except' => ['show']]);
         Route::resource('sale', 'SaleController', ['except' => ['show']]);
         Route::resource('purchase', 'PurchaseController', ['except' => ['show']]);
+        Route::resource('payment', 'PaymentController', ['except' => ['show']]);
     });
 
     Route::get('sale/pos', 'SaleController@pos')->name('sale.pos');
-    Route::get('sale/payment', 'PaymentController@create')->name('sale.payment');
+    Route::get('sale/payment', 'PaymentController@index')->name('sale.payment');
+    Route::get('sale/payment/create', 'PaymentController@create')->name('sale.paymentcreate');
     Route::post('sale/paymentadd', 'PaymentController@store')->name('sale.paymentadd');
     Route::get('sale/financial', 'SaleController@financial')->name('sale.financial');
     Route::get('sale/return', 'SaleController@return')->name('sale.return');
-    Route::get('purchase/payment', 'PaymentController@purchasecreate')->name('purchase.payment');
+    Route::get('sale/returnadd', 'SaleController@returnadd')->name('sale.returnadd');
+    Route::post('sale/storereturn', 'SaleController@storereturn')->name('sale.storereturn');
+    Route::get('purchase/payment', 'PaymentController@indexpurchase')->name('purchase.payment');
+    Route::get('purchase/payment/create', 'PaymentController@purchasecreate')->name('purchase.paymentcreate');
     Route::post('purchase/paymentadd', 'PaymentController@purchasestore')->name('purchase.paymentadd');
     Route::get('purchase/ledger', 'PurchaseController@ledger')->name('purchase.ledger');
     Route::get('purchase/return', 'PurchaseController@return')->name('purchase.return');
+    Route::get('purchase/returnadd', 'PurchaseController@returnadd')->name('purchase.returnadd');
+    Route::post('purchase/storereturn', 'PurchaseController@storereturn')->name('purchase.storereturn');
+    Route::get('purchase/available', 'PurchaseController@available')->name('purchase.available');
+    Route::get('purchase/minimum', 'PurchaseController@minimum')->name('purchase.minimum');
+    Route::get('purchase/damage', 'PurchaseController@damage')->name('purchase.damage');
+    Route::get('purchase/amountwise', 'PurchaseController@amountwise')->name('purchase.amountwise');
     // Route::get('getsupplier/{id}', ['as' => 'getsupplier', 'uses' => 'SupplierController@getSupplier']);
     Route::get('purchase/searchsupplier', 'SupplierController@searchsupplier')->name('searchsupplier');
+    Route::get('purchase/searchsupplierpayments', 'SupplierController@searchsupplierpayments')->name('searchsupplierpayments');
     Route::get('purchase/searchproduct', 'ProductController@searchproduct')->name('searchproduct');
     Route::get('sale/searchcustomer', 'CustomerController@searchcustomer')->name('searchcustomer');
+    Route::get('sale/searchcustomerpayments', 'CustomerController@searchcustomerpayments')->name('searchcustomerpayments');
     Route::get('sale/searchproduct', 'ProductController@searchproduct')->name('searchproduct2');
+    Route::get('sale/gen_invoice/{id}', 'SaleController@genInvoice')->name('saleinvoice');
     // Route::get('product/addmore', ['as' => 'product.addmore', 'uses' => 'ProductController@addMore']);
     // Route::post('product/addmore', ['as' => 'product.addmore', 'uses' => 'ProductController@addMoreBarcode']);
+    Route::get('balance/customer', 'ReportController@balancecustomer')->name('balancecustomer');
+    Route::get('balance/sale', 'ReportController@balancesale')->name('balancesale');
+    Route::get('balance/purchase', 'ReportController@balancepurchase')->name('balancepurchase');
+    Route::get('balance/creditduration', 'ReportController@balancecreditduration')->name('balancecreditduration');
+    Route::get('report/date', 'ReportController@reportdate')->name('reportdate');
+    Route::get('report/cashcredit', 'ReportController@reportcashcredit')->name('reportcashcredit');
+    Route::get('report/customer', 'ReportController@reportcustomer')->name('reportcustomer');
+    Route::get('report/brand', 'ReportController@reportbrand')->name('reportbrand');
+    Route::get('report/company', 'ReportController@reportcompany')->name('reportcompany');
+
 
     Route::group(['middleware' => ['role:superadmin']], function () {
         Route::resource('bread',  'BreadController');   //create BREAD (resource)

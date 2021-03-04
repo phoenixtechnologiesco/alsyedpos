@@ -279,13 +279,14 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class=" col-12 ">
+                          <div class="col-12">
                             <div class="form-group">
-                              <div class=" col-12">
-                                <div class="table-responsive" style="overflow-x:hidden">
-                                  <table id="myTable" class="table table-hover table-striped table-fixed order-list">
-                                    <thead class="thead-dark" style="position: sticky; top: 0; z-index: 1">
-                                      <tr class="row">
+                              <div class="col-12">
+                                <div class="table-responsive-custom">
+                                  {{-- style="overflow-x:hidden" --}}
+                                  <table id="myTable" class="table table-hover table-fixed table-bordered order-list">
+                                    <thead class="thead-dark" >
+                                      <tr class="row thead-dark-custom">
                                         <th class="col-2 firstcol" scope="col">Barcode</th>
                                         <th class="col-3 mycol" scope="col">Product</th>
                                         <th class="col-1 mycol" scope="col">Pieces</th>
@@ -325,12 +326,15 @@
                                         </td>
                                         <td class="col-1 mycol" scope="col">
                                           <input type="number" name="sale_products_pieces_i" id="sale_products_pieces_i" class="form-control col-12" min="0" value="{{ old('sale_products_pieces_i', '0') }}">
+                                          <input type="hidden" name="sale_pieces_per_packet_i" min="0" id="sale_pieces_per_packet_i" class="form-control col-12" min="0" value="{{ old('sale_pieces_per_packet_i', '5') }}">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
                                           <input type="number" name="sale_products_packets_i" id="sale_products_packets_i" class="form-control col-12" min="0" value="{{ old('sale_products_packets_i', '0') }}">
+                                          <input type="hidden" name="sale_packets_per_carton_i" min="0" id="sale_packets_per_carton_i" class="form-control col-12" min="0" value="{{ old('sale_packets_per_carton_i', '4') }}">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
                                           <input type="number" name="sale_products_cartons_i" id="sale_products_cartons_i" class="form-control col-12" min="0" value="{{ old('sale_products_cartons_i', '0') }}">
+                                          <input type="hidden" name="sale_pieces_per_carton_i" min="0" id="sale_pieces_per_carton_i" class="form-control col-12" min="0" value="{{ old('sale_pieces_per_carton_i', '20') }}">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
                                           <input readonly type="text" name="sale_products_unit_price_i" id="sale_products_unit_price_i" class="form-control col-12"  value="{{ old('sale_products_unit_price_i', '0') }}">
@@ -348,49 +352,20 @@
                                       </tr>
                                       <?php $i=1; $j = 1; $mytotal_quantity = 0; $mytotal_discount = 0; $mysubtotal_amount = 0; $mygrandtotal_amount = 0; ?>
                                     </tbody>
-                                    <tfoot class="thead-dark">
-                                      <tr class="row">
-                                        {{-- <th class="col-1 mycol" scope="col">Invoice Id</th> --}}
-                                        {{-- <th class="col-3 mycol" scope="col" style="text-align: center">Invoice Date</th> --}}
-                                        {{-- <th class="col-2 mycol" scope="col">Document</th> --}}
-                                        <th class="col-8 firstcol" scope="col">Remarks</th>
-                                        <th class="col-2 mycol" scope="col">Payment Status</th>
-                                        <th class="col-2 lastcol" scope="col">Return Change</th>
-                                      </tr>
-                                      <tr class="row table-info" >
-                                        {{-- <td class="col-1 mycol" scope="col">
-                                          <input type="text" name="sale_invoice_id" class="form-control col-12" value="{{ old('sale_invoice_id', '') }}">
-                                        </td>
-                                        <td class="col-3 midcol" scope="col">
-                                          <div class="row">
-                                            <input type="text" name="sale_invoice_date" class="form-control col-9" value="{{ old('sale_invoice_date', '') }}">
-                                            <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon col-2" title="Re-Open">
-                                              <i class="fa fa-file-text-o"></i>
-                                            </button>
-                                          </div>
-                                        </td> --}}
-                                        {{-- <td class="col-2 mycol" scope="col">
-                                          <input type="file" name="sale_document" id="sale_document" class="form-control col-12" value="{{ old('sale_document', '') }}">
-                                        </td> --}}
-                                        <td class="col-8 firstcol" scope="col">
-                                          <input type="text" name="sale_note" class="form-control col-12" value="{{ old('sale_note'), '' }}" >
-                                        </td>
-                                        <td class="col-2 mycol" scope="col">
-                                          <select name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
-                                            <option value="due">Due</option>
-                                            <option value="paid">Paid</option>
-                                            <option value="partial">Partial</option>
-                                            <option value="overdue">Overdue</option>
-                                            //due,paid,partial,overdue,
-                                          </select>
-                                        </td>
-                                        <td class="col-2 lastcol" scope="col">
-                                          <input readonly type="number" min="0" name="sale_return_change" id="sale_return_change" class="form-control col-12" value="0">
-                                        </td>
-                                      </tr>
-                                    </tfoot>
-                                    <tfoot class="thead-dark">
-                                      <tr class="row">
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="form-group">
+                              <div class="col-12">
+                                <div class="table-responsive-custom">
+                                  <table id="myTable2" class="table table-hover table-fixed table-bordered">
+                                    <thead class="thead-dark">
+                                      <tr class="row thead-dark-custom">
                                         <th colspan="1" class="col-1 firstcol" scope="col">Items</th>
                                         <th colspan="1" class="col-1 mycol" scope="col">Total Qty</th>
                                         <th colspan="2" class="col-2 mycol" scope="col">Free Pcs  /  Free Amount</th>
@@ -403,31 +378,57 @@
                                       </tr>
                                       <tr class="row table-info" >
                                         <td class="col-1 firstcol" scope="col">
-                                          <input readonly type="text" name="sale_total_items" id="sale_total_items" class="form-control col-12" value="{{ old('sale_total_items', '') }}">
+                                          <input readonly type="text" name="sale_total_items" id="sale_total_items" class="form-control col-12" value="0">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input readonly type="text" name="sale_total_qty" id="sale_total_qty" class="form-control col-12" value="{{ old('sale_total_qty', '') }}">
+                                          <input readonly type="text" name="sale_total_qty" id="sale_total_qty" class="form-control col-12" value="0">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="number" name="sale_free_piece" class="form-control col-12" value="{{ old('sale_free_piece', '0') }}">
+                                          <input type="number" name="sale_free_piece" class="form-control col-12" value="0">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="number" name="sale_free_amount" id="sale_free_amount" class="form-control col-12"  value="{{ old('sale_free_amount', '0.00') }}">
+                                          <input type="number" name="sale_free_amount" id="sale_free_amount" class="form-control col-12"  value="0">
                                         </td>
                                         <td class="col-2 mycol" scope="col">
-                                          <input readonly type="number" name="sale_total_price" id="sale_total_price" class="form-control col-12"  value="{{ old('sale_total_price', '') }}">
+                                          <input readonly type="number" name="sale_total_price" id="sale_total_price" class="form-control col-12"  value="0">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="number" name="sale_add_amount" id="sale_add_amount" class="form-control col-12"  value="{{ old('sale_add_amount', '0.00') }}">
+                                          <input type="number" name="sale_add_amount" id="sale_add_amount" class="form-control col-12"  value="0">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input readonly type="number" name="sale_discount" id="sale_discount" class="form-control col-12"  value="{{ old('sale_discount', '') }}">
+                                          <input readonly type="number" name="sale_discount" id="sale_discount" class="form-control col-12"  value="0">
                                         </td>
                                         <td class="col-2 mycol" scope="col">
-                                          <input readonly type="number" name="sale_grandtotal_price" id="sale_grandtotal_price" id="sale_grandtotal_price" class="form-control col-12"  value="{{ old('sale_grandtotal_price', '') }}">
+                                          <input readonly type="number" name="sale_grandtotal_price" id="sale_grandtotal_price" id="sale_grandtotal_price" class="form-control col-12"  value="0">
                                         </td>
                                         <td class="col-2 lastcol" scope="col">
-                                          <input type="number" name="sale_amount_recieved" id="sale_amount_recieved" class="form-control col-12"  value="{{ old('sale_amount_recieved', '0') }}">
+                                          <input type="number" name="sale_amount_recieved" id="sale_amount_recieved" class="form-control col-12"  value="0">
+                                        </td>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot class="thead-dark">
+                                      <tr class="row tfoot-dark-custom">
+                                        <th class="col-8 firstcol" scope="col">Remarks</th>
+                                        <th class="col-2 mycol" scope="col">Payment Status</th>
+                                        <th class="col-2 lastcol" scope="col">Return Change</th>
+                                      </tr>
+                                      <tr class="row table-info" >
+                                        <td class="col-8 firstcol" scope="col">
+                                          <input type="text" name="sale_note" class="form-control col-12" value="" >
+                                        </td>
+                                        <td class="col-2 mycol" scope="col">
+                                          <select name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
+                                            <option value="due">Due</option>
+                                            <option value="paid">Paid</option>
+                                            <option value="partial">Partial</option>
+                                            <option value="overdue">Overdue</option>
+                                            //due,paid,partial,overdue,
+                                          </select>
+                                        </td>
+                                        <td class="col-2 lastcol" scope="col">
+                                          <input readonly type="number" min="0" name="sale_return_change" id="sale_return_change" class="form-control col-12" value="0">
                                         </td>
                                       </tr>
                                     </tfoot>
@@ -584,6 +585,38 @@
                             </div>
                           </div>
                         </div> --}}
+                        <div class="row">
+                          <div class="footer col-12">
+                            <div class="row">
+                              <div class="col-12">
+                                <div class="row">
+                                  <div class="col-1">
+                                  </div>
+                                  <div class="col-1">
+                                    <form action="{{ url('/logout') }}" method="POST"> @csrf <button style="background-color: #d63031;" type="submit" id="cancel-btn" class="btn btn-round">{{__('Exit')}}</button></form>
+                                    {{-- onclick="return confirmCancel()" --}}
+                                  </div>
+                                  <div class="col-1">
+                                    <a style="background: #18ce0f" type="button" href="{{ route('sale.pos') }}" class="btn btn-round pull-left" id="new-btn">{{__('New')}}</a>
+                                  </div>
+                                  <div class="col-2">
+                                  </div>
+                                  <div class="col-2">
+                                    <button style="background: #00cec9" type="button" class="btn btn-round pull-right" data-toggle="modal" data-target="#pending-list" id="pending-btn">{{__('Get Pending')}}</button>
+                                  </div>
+                                  {{-- <div class="col-1">
+                                    <button style="background: #ffc107" type="button" class="btn btn-round pull-right" data-toggle="modal" data-target="#add-payment" id="payment-btn">{{__('Payment')}}</button>
+                                  </div> --}}
+                                  <div class="col-2">
+                                    <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save/Print')}}</button>
+                                  </div>
+                                  <div class="col-2">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div> 
                     {{-- <div class="row">
@@ -691,7 +724,8 @@
                       </div>
                     </div> --}}
                   </div>
-                </form>
+                </div>
+            </form>
                 <!-- payment modal -->
                 <div id="add-payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                   <div role="document" class="modal-dialog">
@@ -1857,39 +1891,6 @@
                       </div>
                     </div>
                 </div> --}}
-                </div>
-                <div class="row">
-                  <div class="footer col-12">
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="row">
-                          <div class="col-1">
-                          </div>
-                          <div class="col-1">
-                            <form action="{{ url('/logout') }}" method="POST"> @csrf <button style="background-color: #d63031;" type="submit" id="cancel-btn" class="btn btn-round">{{__('Exit')}}</button></form>
-                            {{-- onclick="return confirmCancel()" --}}
-                          </div>
-                          <div class="col-1">
-                            <a style="background: #18ce0f" type="button" href="{{ route('sale.pos') }}" class="btn btn-round pull-left" id="new-btn">{{__('New')}}</a>
-                          </div>
-                          <div class="col-2">
-                          </div>
-                          <div class="col-2">
-                            <button style="background: #00cec9" type="button" class="btn btn-round pull-right" data-toggle="modal" data-target="#pending-list" id="pending-btn">{{__('Get Pending')}}</button>
-                          </div>
-                          {{-- <div class="col-1">
-                            <button style="background: #ffc107" type="button" class="btn btn-round pull-right" data-toggle="modal" data-target="#add-payment" id="payment-btn">{{__('Payment')}}</button>
-                          </div> --}}
-                          <div class="col-2">
-                            <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save/Print')}}</button>
-                          </div>
-                          <div class="col-2">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               <hr class="half-rule"/>
             {{-- </form> --}}
           </div>
@@ -1912,19 +1913,14 @@
   var grandtotal_amount;
   var sale_free_amount;
   var sale_add_amount;
+  var sale_amount_recieved;
+  var sale_return_change;
   var product_quantity;
   var product_sub_total;
   var customer_balance_dues;
   var customer_balance_dues2;
   var customer_balance_dues3;
   var i = 1;
-  // var productArray = [];
-  var product_code = [];
-  var product_name = [];
-
-  // array data with selection
-  var product_price = [];
-  var product_discount = [];
 
   var rowindex;
   var customer_sale_rate;
@@ -1947,11 +1943,19 @@
     var product_cartons = $('#sale_products_cartons_i').val();
     var product_unit_price = $('#sale_products_unit_price_i').val();
     var product_discount = $('#sale_products_discount_i').val();
-    var pieces_per_carton = $('#pieces_per_carton').val();
-    var pieces_per_packet = $('#pieces_per_packet').val();
-    var packets_per_carton = $('#packets_per_carton').val();
+    var pieces_per_packet = $('#sale_pieces_per_packet_i').val();
+    var packets_per_carton = $('#sale_packets_per_carton_i').val();
+    var pieces_per_carton = $('#sale_pieces_per_carton_i').val();
+    // var pieces_per_carton = $('#pieces_per_carton').val();
+    // var packets_per_carton = $('#packets_per_carton_i').val();
+    // var pieces_per_packet = $('#pieces_per_packet').val();
+    total_items = $('#sale_total_items').val();
+    total_quantity = $('#sale_total_qty').val();
     sale_free_amount = $('#sale_free_amount').val();
     sale_add_amount = $('#sale_add_amount').val();
+    subtotal_amount = $('#sale_total_price').val();
+    total_discount = $('#sale_discount').val();
+    grandtotal_amount = $('#sale_grandtotal_price').val();
     sale_amount_recieved = $('#sale_amount_recieved').val();
 
     product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
@@ -1973,7 +1977,7 @@
 
     if(product_name !== "" && product_quantity !== 0 && product_unit_price !== 0 && repeated !== 1){
 
-      product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
+      // product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
       
       if(product_quantity == 0 || product_unit_price == 0){
         product_discount = 0;
@@ -1992,7 +1996,7 @@
       subtotal_amount = Number(subtotal_amount) + Number(product_sub_total);
       grandtotal_amount = Number(subtotal_amount) + Number(sale_free_amount) + Number(sale_add_amount);
 
-      $('.sale-product').append('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
+      $('.sale-product').append('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'><input readonly type="hidden" name="sale_packets_per_carton[]" id="sale_packets_per_carton'+rownum+'" class="form-control col-12" value='+packets_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
       // alert(rownum);
       rownum++;
       // alert(rownum);
@@ -2018,6 +2022,7 @@
         $('#sale_return_change').val(0);
       }
     }
+
   });
   $(document).on('change', "#sale_add_amount", function(e){
     grandtotal_amount = Number(grandtotal_amount) - Number(sale_add_amount);
@@ -2034,6 +2039,7 @@
     $('#sale_grandtotal_price').val(grandtotal_amount);
   });
   $(document).on('change', "#sale_amount_recieved", function(e){
+    grandtotal_amount = $('#sale_grandtotal_price').val();
     sale_amount_recieved = $('#sale_amount_recieved').val();
     if(sale_amount_recieved >= grandtotal_amount){
       sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
@@ -2052,7 +2058,6 @@
     sale_amount_recieved = $('#sale_amount_recieved').val();
 
     // rowindex = $(this).closest('tr').index();
-    var my_total_qty = this.value;
     total_quantity = Number(total_quantity) - (Number(thisproduct_pieces)+(thisproduct_packets*thispieces_per_packet)+(thisproduct_cartons*thispieces_per_carton));
     total_items = Number(total_items) - 1;
     total_discount = Number(total_discount) - Number(thisproduct_discount);
@@ -2158,7 +2163,6 @@
         var packets_per_carton = data[0]['product_packet_per_carton'];
         var product_cash_price_piece = data[0]['product_cash_price_piece'];
         var product_credit_price_piece = data[0]['product_credit_price_piece'];
-        // console.log(total_items);
         $('#sale_products_barcode_i').val('');
         $('#sale_products_barcode_i').val(catchbarcode);
         $('#product_code_i').val('');
@@ -2324,7 +2328,7 @@
         var customer_credit_duration = data[0]["customer_credit_duration"];
         var customer_credit_type = data[0]["customer_credit_type"];
         var payterm_duratype = customer_credit_duration+' '+customer_credit_type;
-        console.log(payterm_duratype);
+        // console.log(payterm_duratype);
         var customer_credit_limit = data[0]["customer_credit_limit"];
         // $('#customer_name option').removeAttr('selected');
         // // $('#customer_name option[value='+customer_id+']').removeAttr('selected');
@@ -2340,7 +2344,9 @@
         // }
         $('#customer_balance_paid').val(customer_balance_paid);
         $('#customer_balance_dues').val(customer_balance_dues);
-        $('#customer_balance_dues2').val(customer_balance_dues2);
+        // $('#customer_balance_dues2').val(customer_balance_dues2);
+        customer_balance_dues3 = Number(customer_balance_dues2) +  Number(grandtotal_amount);
+        $('#customer_balance_dues2').val(customer_balance_dues3);
         // $('#customer_total_balance').val(customer_total_balance);
         // $('#customer_credit_duration').val(customer_credit_duration);
         // $('#customer_credit_type').val(customer_credit_type);

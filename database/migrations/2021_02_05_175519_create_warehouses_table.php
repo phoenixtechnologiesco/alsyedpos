@@ -17,6 +17,7 @@ class CreateWarehousesTable extends Migration
             $table->bigIncrements('warehouse_id');
             $table->string('warehouse_name')->index();
             $table->string('warehouse_location');
+            $table->string('warehouse_phone_number');
             $table->integer('status_id')->index();
             $table->timestamps();
         });
