@@ -7,12 +7,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header ">
-                            <h3 class="text-center">{{'Customer Report'}}</h3>
+                            <h3 class="text-center">{{'Cashcredit Report'}}</h3>
                         </div>
                         <div class="card-body-custom">
-                            {!! Form::open(['route' => 'customerreport', 'method' => 'post']) !!}
+                            {!! Form::open(['route' => 'cashcreditreport', 'method' => 'post']) !!}
                             <div class="row">
-                                <div class="card-body-custom col-12 ">
+                                <div class="card-body-custom col-12">
                                     <div class="row">
                                         <div class="col-4 offset-1">
                                             <div class="form-group">
@@ -28,13 +28,12 @@
                                         </div>
                                         <div class="col-4 ">
                                             <div class="form-group">
-                                                <label><strong>{{'Choose Customer'}}</strong> &nbsp;</label>
+                                                <label><strong>{{'Choose Method'}}</strong> &nbsp;</label>
                                                 <div class="input-group">
-                                                    <input type="hidden" name="customer_id_hidden" value="{{$customer_id}}" />
-                                                    <select id="customer_id" name="customer_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
-                                                        @foreach($customer_list as $customer)
-                                                        <option value="{{$customer->customer_id}}">{{$customer->customer_name}}</option>
-                                                        @endforeach
+                                                    <input type="hidden" name="cashcredit_hidden" value="{{$cashcredit}}" />
+                                                    <select id="cashcredit" name="cashcredit" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                                        <option value="cash">{{'Cash'}}</option>
+                                                        <option value="credit">{{'Credit'}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -50,7 +49,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="customer_id_hidden" value="{{$customer_id}}" />
+                            <input type="hidden" name="cashcredit_hidden" value="{{$cashcredit}}" />
                             {!! Form::close() !!}
                             <div class="row">
                                 <ul class="nav nav-tabs ml-4" role="tablist">
@@ -237,7 +236,7 @@
         $("ul#report").addClass("show");
         $("ul#report #customer-report-menu").addClass("active");
 
-        $('#customer_id').val($('input[name="customer_id_hidden"]').val());
+        $('#cashcredit').val($('input[name="cashcredit_hidden"]').val());
         // $('.selectpicker').selectpicker('refresh');
 
         var dt = $('#sale-table').DataTable( {

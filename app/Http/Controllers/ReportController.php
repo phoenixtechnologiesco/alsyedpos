@@ -15,6 +15,7 @@ use App\Models\PurchaseProducts;
 use App\Models\SaleProducts;
 use App\Models\PurchaseReturn;
 use App\Models\SaleReturn;
+use App\Models\SaleReturnProducts;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -241,6 +242,40 @@ class ReportController extends Controller
         // $payments = Payment::get();
         return view('report.datewise', compact('customers') );
     }
+    public function dateReport(Request $request)
+    {
+    	$data = $request->all();
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+        $sale_data = Sale::where('created_at', '>=', $start_date)
+        ->where('created_at', '<=', $end_date)
+        ->orderBy('created_at', 'desc')
+        ->with('warehouse')
+        ->get();
+        $return_data = SaleReturn::whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->orderBy('created_at', 'desc')
+        ->with('warehouse', 'cashier')
+        ->get();
+        $payment_data = DB::table('payments')
+        ->join('sales', 'payments.sale_id', '=', 'sales.sale_id')
+        ->whereDate('payments.created_at', '>=' , $start_date)
+        ->whereDate('payments.created_at', '<=' , $end_date)
+        ->select('payments.*', 'sales.sale_ref_no as sale_reference')
+        ->orderBy('payments.created_at', 'desc')
+        ->get();
+
+        $product_sale_data = [];
+        $product_return_data = [];
+
+        foreach ($sale_data as $key => $sale) {
+            $product_sale_data[$key] = SaleProducts::where('sale_id', $sale->sale_id)->get();
+        }
+        foreach ($return_data as $key => $return) {
+            // SaleReturnProducts::
+            $product_return_data[$key] = DB::table('salereturn_products')->where('sale_return_id', $return->sale_return_id)->get();
+        }
+
+        return view('report2.date_report', compact('sale_data', 'start_date', 'end_date', 'product_sale_data', 'payment_data',  'return_data', 'product_return_data'));
+    }
 
     public function reportcashcredit()
     {
@@ -251,6 +286,38 @@ class ReportController extends Controller
         // $payments = Payment::get();
         return view('report.cashcreditwise', compact('customers') );
     }
+    public function cashcreditReport(Request $request)
+    {
+    	$data = $request->all();
+        $cashcredit = $data['cashcredit'];
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+        $sale_data = Sale::where('sale_payment_method', $cashcredit)
+        ->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)
+        ->orderBy('created_at', 'desc')
+        ->with('warehouse')
+        ->get();
+        // dd($sale_data);
+        $return_data = SaleReturn::where('sale_return_payment_method', $cashcredit)->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->orderBy('created_at', 'desc')
+        ->with('warehouse', 'cashier')
+        ->get();
+        // dd($return_data[0]->cashier->name);
+        $payment_data = DB::table('payments')->join('sales', 'payments.sale_id', '=', 'sales.sale_id')->where('payment_method', $cashcredit)->whereDate('payments.created_at', '>=' , $start_date)->whereDate('payments.created_at', '<=' , $end_date)->select('payments.*', 'sales.sale_ref_no as sale_reference')->orderBy('payments.created_at', 'desc')->get();
+        // dd($payment_data);
+
+        $product_sale_data = [];
+        $product_return_data = [];
+
+        foreach ($sale_data as $key => $sale) {
+            $product_sale_data[$key] = SaleProducts::where('sale_id', $sale->sale_id)->get();
+        }
+        foreach ($return_data as $key => $return) {
+            // SaleReturnProducts::
+            $product_return_data[$key] = DB::table('salereturn_products')->where('sale_return_id', $return->sale_return_id)->get();
+        }
+
+        return view('report2.cashcredit_report', compact('sale_data','cashcredit', 'start_date', 'end_date', 'product_sale_data', 'payment_data', 'return_data', 'product_return_data'));
+    }
 
     public function reportcustomer()
     {
@@ -260,6 +327,44 @@ class ReportController extends Controller
         // $products = Product::all();
         // $payments = Payment::get();
         return view('report.customerwise', compact('customers') );
+    }
+    public function customerReport(Request $request)
+    {
+    	$data = $request->all();
+        $customer_id = (integer)$data['customer_id'];
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+        $sale_data = Sale::where('sale_customer_id', $customer_id)
+        ->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)
+        ->orderBy('created_at', 'desc')
+        ->with('warehouse')
+        ->get();
+        // dd($sale_data);
+        $return_data = SaleReturn::where('sale_return_customer_id', $customer_id)->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->orderBy('created_at', 'desc')
+        ->with('warehouse', 'cashier')
+        ->get();
+        // dd($return_data[0]->cashier->name);
+        $payment_data = DB::table('payments')->join('sales', 'payments.sale_id', '=', 'sales.sale_id')->where('payment_customer_id', $customer_id)->whereDate('payments.created_at', '>=' , $start_date)->whereDate('payments.created_at', '<=' , $end_date)->select('payments.*', 'sales.sale_ref_no as sale_reference')->orderBy('payments.created_at', 'desc')->get();
+        // dd($payment_data);
+
+        $product_sale_data = [];
+        $product_return_data = [];
+
+        foreach ($sale_data as $key => $sale) {
+            $product_sale_data[$key] = SaleProducts::where('sale_id', $sale->sale_id)->get();
+        }
+        foreach ($return_data as $key => $return) {
+            // SaleReturnProducts::
+            $product_return_data[$key] = DB::table('salereturn_products')->where('sale_return_id', $return->sale_return_id)->get();
+        }
+        $customer_list = Customer::where('status_id', 1)->get();
+
+        // foreach($product_sale_data as $product_sale_data){
+        //     $product = Product::where('product_id', $product_sale_data->product_id)->select('product_name')->get()->toArray();
+        //     $product[0]['product_name'].' ('.$product_sale_data->sale_quantity_total.')';
+        // }
+
+        return view('report2.customer_report', compact('sale_data','customer_id', 'start_date', 'end_date', 'product_sale_data', 'payment_data', 'customer_list', 'return_data', 'product_return_data'));
     }
 
     public function reportbrand()
@@ -273,6 +378,66 @@ class ReportController extends Controller
 
         return view('report.brandwise', compact('customers', 'brands') );
     }
+    public function brandReport(Request $request)
+    {
+    	$data = $request->all();
+        $brand_name = $data['brand_name'];
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        $saleproducts_data = SaleProducts::where('sale_product_brand',  $brand_name)->orderBy('created_at', 'desc')->get();
+        $sale_data = [];
+        if(!empty($saleproducts_data)){
+            foreach($saleproducts_data as $saleproduct){
+                $sale_data = Sale::where('sale_id', $saleproduct->sale_id)
+                ->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)
+                ->orderBy('created_at', 'desc')
+                ->with('warehouse')
+                ->get();
+            }
+        }
+
+        $salereturn_products_data = SaleReturnProducts::where('salereturn_product_brand',  $brand_name)->orderBy('created_at', 'desc')->get();
+        $return_data = [];
+        if(!empty($salereturn_products_data)){
+            foreach($salereturn_products_data as $salereturn_product){
+                $return_data = SaleReturn::where('sale_return_id', $salereturn_product->sale_return_id)
+                ->where('created_at', '>=' , $start_date)->where('created_at', '<=' , $end_date)
+                ->orderBy('created_at', 'desc')
+                ->with('warehouse', 'cashier')
+                ->get();
+            }
+        }
+
+        // dd($return_data[0]->cashier->name);
+        $payment_data = [];
+        if(!empty($sale_data)){
+            foreach($sale_data as $single_sale){
+                $payment_data = DB::table('payments')
+                ->join('sales', 'payments.sale_id', '=', 'sales.sale_id')
+                ->where('payments.sale_id', $single_sale->sale_id)
+                ->where('payments.created_at', '>=' , $start_date)
+                ->where('payments.created_at', '<=' , $end_date)
+                ->select('payments.*', 'sales.sale_ref_no as sale_reference')
+                ->orderBy('payments.created_at', 'desc')
+                ->get();
+            }
+        }
+        
+        $product_sale_data = [];
+        $product_return_data = [];
+
+        foreach ($sale_data as $key => $sale) {
+            $product_sale_data[$key] = SaleProducts::where('sale_id', $sale->sale_id)->get();
+        }
+        foreach ($return_data as $key => $return) {
+            // SaleReturnProducts::
+            $product_return_data[$key] = DB::table('salereturn_products')->where('sale_return_id', $return->sale_return_id)->get();
+        }
+        $brand_list = Brand::where('status_id', 1)->get();
+
+        return view('report2.brand_report', compact('sale_data','brand_name', 'start_date', 'end_date', 'product_sale_data', 'payment_data', 'brand_list', 'return_data', 'product_return_data'));
+    }
 
     public function reportcompany()
     {
@@ -284,6 +449,66 @@ class ReportController extends Controller
         $companies = Company::all();
 
         return view('report.companywise', compact('customers', 'companies') );
+    }
+    public function companyReport(Request $request)
+    {
+    	$data = $request->all();
+        $company_name = $data['company_name'];
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        $saleproducts_data = SaleProducts::where('sale_product_company',  $company_name)->orderBy('created_at', 'desc')->get();
+        $sale_data = [];
+        if(!empty($saleproducts_data)){
+            foreach($saleproducts_data as $saleproduct){
+                $sale_data = Sale::where('sale_id', $saleproduct->sale_id)
+                ->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)
+                ->orderBy('created_at', 'desc')
+                ->with('warehouse')
+                ->get();
+            }
+        }
+
+        $salereturn_products_data = SaleReturnProducts::where('salereturn_product_company',  $company_name)->orderBy('created_at', 'desc')->get();
+        $return_data = [];
+        if(!empty($salereturn_products_data)){
+            foreach($salereturn_products_data as $salereturn_product){
+                $return_data = SaleReturn::where('sale_return_id', $salereturn_product->sale_return_id)
+                ->where('created_at', '>=' , $start_date)->where('created_at', '<=' , $end_date)
+                ->orderBy('created_at', 'desc')
+                ->with('warehouse', 'cashier')
+                ->get();
+            }
+        }
+
+        // dd($return_data[0]->cashier->name);
+        $payment_data = [];
+        if(!empty($sale_data)){
+            foreach($sale_data as $single_sale){
+                $payment_data = DB::table('payments')
+                ->join('sales', 'payments.sale_id', '=', 'sales.sale_id')
+                ->where('payments.sale_id', $single_sale->sale_id)
+                ->where('payments.created_at', '>=' , $start_date)
+                ->where('payments.created_at', '<=' , $end_date)
+                ->select('payments.*', 'sales.sale_ref_no as sale_reference')
+                ->orderBy('payments.created_at', 'desc')
+                ->get();
+            }
+        }
+        
+        $product_sale_data = [];
+        $product_return_data = [];
+
+        foreach ($sale_data as $key => $sale) {
+            $product_sale_data[$key] = SaleProducts::where('sale_id', $sale->sale_id)->get();
+        }
+        foreach ($return_data as $key => $return) {
+            // SaleReturnProducts::
+            $product_return_data[$key] = DB::table('salereturn_products')->where('sale_return_id', $return->sale_return_id)->get();
+        }
+        $company_list = Company::where('status_id', 1)->get();
+
+        return view('report2.company_report', compact('sale_data','company_name', 'start_date', 'end_date', 'product_sale_data', 'payment_data', 'company_list', 'return_data', 'product_return_data'));
     }
 
 

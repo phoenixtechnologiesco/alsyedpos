@@ -27,7 +27,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::get('/carbon', 'DatatablesController@getCarbonData')->name('api.carbon');
 
 Route::get('/product-row-details', 'ProductController@getRowDetailsData')->name('api.product_row_details');
-// Route::get('/product-row-attributes', 'ProductController@getRowAttributesData')->name('api.product_row_attributes');
+Route::get('/product-row-attributes', 'ProductController@getRowAttributesData')->name('api.product_row_attributes');
 
 Route::get('/sale-row-details', 'SaleController@getRowDetailsData')->name('api.sale_row_details');
 Route::get('/sale-row-attributes', 'SaleController@getRowAttributesData')->name('api.sale_row_attributes');

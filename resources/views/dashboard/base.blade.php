@@ -180,6 +180,58 @@
         }, 2000);
       });
     </script>
+    <script type="text/javascript">
+      $("a#profitLoss-link").click(function(e){
+        e.preventDefault();
+        $("#profitLoss-report-form").submit();
+      });
+
+      $("a#report-link").click(function(e){
+        e.preventDefault();
+        $("#product-report-form").submit();
+      });
+
+      $("a#purchase-report-link").click(function(e){
+        e.preventDefault();
+        $("#purchase-report-form").submit();
+      });
+
+      $("a#sale-report-link").click(function(e){
+        e.preventDefault();
+        $("#sale-report-form").submit();
+      });
+
+      $("a#customer-report-link").click(function(e){
+        e.preventDefault();
+        $('#customer-modal').modal();
+      });
+      $("a#cashcredit-report-link").click(function(e){
+        e.preventDefault();
+        $('#cashcredit-modal').modal();
+      });
+      $("a#date-report-link").click(function(e){
+        e.preventDefault();
+        $('#date-modal').modal();
+      });
+      $("a#brand-report-link").click(function(e){
+        e.preventDefault();
+        $('#brand-modal').modal();
+      });
+      $("a#company-report-link").click(function(e){
+        e.preventDefault();
+        $('#company-modal').modal();
+      });
+
+      $("a#supplier-report-link").click(function(e){
+        e.preventDefault();
+        $('#supplier-modal').modal();
+      });
+
+      $("a#due-report-link").click(function(e){
+        e.preventDefault();
+        $("#due-report-form").submit();
+      });
+    </script>
     @yield('javascript')
 
   </body>

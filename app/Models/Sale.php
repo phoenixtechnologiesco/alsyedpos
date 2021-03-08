@@ -14,4 +14,9 @@ class Sale extends Model
         //  ->withPivot('invoice_id');
         //  ->withTimestamps();
     }
+
+    public function warehouse()
+    {
+        return $this->hasOne(Warehouse::class, 'warehouse_id', 'warehouse_id');
+    }
 }

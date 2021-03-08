@@ -144,6 +144,11 @@ Route::group(['middleware' => ['get.menu']], function () {
     Route::get('report/brand', 'ReportController@reportbrand')->name('reportbrand');
     Route::get('report/company', 'ReportController@reportcompany')->name('reportcompany');
 
+    Route::post('report/datereport', 'ReportController@dateReport')->name('datereport');
+    Route::post('report/cashcreditreport', 'ReportController@cashcreditReport')->name('cashcreditreport');
+    Route::post('report/customerreport', 'ReportController@customerReport')->name('customerreport');
+    Route::post('report/brandreport', 'ReportController@brandReport')->name('brandreport');
+    Route::post('report/companyreport', 'ReportController@companyReport')->name('companyreport');
 
     Route::group(['middleware' => ['role:superadmin']], function () {
         Route::resource('bread',  'BreadController');   //create BREAD (resource)

@@ -44,7 +44,7 @@ class SaleController extends Controller
 
     public function getRowDetailsData()
     {
-        $sales = Sale::join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->join('users', 'sales.sale_created_by', '=', 'users.id')->join('warehouses', 'sales.warehouse_id', '=', 'warehouses.warehouse_id')->select('sales.*', 'customers.customer_name', 'users.name', 'warehouses.warehouse_name')->get();
+        $sales = Sale::join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->join('users', 'sales.sale_added_by', '=', 'users.id')->join('warehouses', 'sales.warehouse_id', '=', 'warehouses.warehouse_id')->select('sales.*', 'customers.customer_name', 'users.name', 'warehouses.warehouse_name')->get();
         $customers = Customer::where('status_id', 1)->get();
         // dd($sales);
         return Datatables::of($sales)
@@ -219,7 +219,7 @@ class SaleController extends Controller
             'sale_invoice_date'     => $request->sale_invoice_date,
             // 'sale_payment_id'       => $request->sale_payment_id,
             // 'warehouse_id'              => $request->warehouse_id,
-            'sale_created_by' 	    => Auth::user()->id,
+            'sale_added_by' 	    => Auth::user()->id,
             'created_at'	 			=> date('Y-m-d h:i:s'),
         );
         $document = $request->sale_document;

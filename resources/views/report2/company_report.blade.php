@@ -7,10 +7,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header ">
-                            <h3 class="text-center">{{'Customer Report'}}</h3>
+                            <h3 class="text-center">{{'Company Report'}}</h3>
                         </div>
                         <div class="card-body-custom">
-                            {!! Form::open(['route' => 'customerreport', 'method' => 'post']) !!}
+                            {!! Form::open(['route' => 'companyreport', 'method' => 'post']) !!}
                             <div class="row">
                                 <div class="card-body-custom col-12 ">
                                     <div class="row">
@@ -28,12 +28,12 @@
                                         </div>
                                         <div class="col-4 ">
                                             <div class="form-group">
-                                                <label><strong>{{'Choose Customer'}}</strong> &nbsp;</label>
+                                                <label><strong>{{'Choose company'}}</strong> &nbsp;</label>
                                                 <div class="input-group">
-                                                    <input type="hidden" name="customer_id_hidden" value="{{$customer_id}}" />
-                                                    <select id="customer_id" name="customer_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
-                                                        @foreach($customer_list as $customer)
-                                                        <option value="{{$customer->customer_id}}">{{$customer->customer_name}}</option>
+                                                    <input type="hidden" name="company_id_hidden" value="{{$company_name}}" />
+                                                    <select id="company_name" name="company_name" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                                        @foreach($company_list as $company)
+                                                        <option value="{{$company->company_name}}">{{$company->company_name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -50,7 +50,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="customer_id_hidden" value="{{$customer_id}}" />
+                            <input type="hidden" name="company_id_hidden" value="{{$company_name}}" />
                             {!! Form::close() !!}
                             <div class="row">
                                 <ul class="nav nav-tabs ml-4" role="tablist">
@@ -237,7 +237,7 @@
         $("ul#report").addClass("show");
         $("ul#report #customer-report-menu").addClass("active");
 
-        $('#customer_id').val($('input[name="customer_id_hidden"]').val());
+        $('#company_name').val($('input[name="company_id_hidden"]').val());
         // $('.selectpicker').selectpicker('refresh');
 
         var dt = $('#sale-table').DataTable( {

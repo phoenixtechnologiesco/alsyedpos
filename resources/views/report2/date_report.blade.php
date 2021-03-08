@@ -7,14 +7,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header ">
-                            <h3 class="text-center">{{'Customer Report'}}</h3>
+                            <h3 class="text-center">{{'Date Report'}}</h3>
                         </div>
                         <div class="card-body-custom">
-                            {!! Form::open(['route' => 'customerreport', 'method' => 'post']) !!}
+                            {!! Form::open(['route' => 'datereport', 'method' => 'post']) !!}
                             <div class="row">
                                 <div class="card-body-custom col-12 ">
                                     <div class="row">
-                                        <div class="col-4 offset-1">
+                                        <div class="col-8 offset-1">
                                             <div class="form-group">
                                                 <label><strong>{{'Choose Your Date'}}</strong> &nbsp;</label>
                                                 <div class="input-group">
@@ -23,19 +23,6 @@
                                                     <input type="date" name="start_date" class="daterangepicker-field form-control" value="{{$start_date}}" required/>
                                                     <label>&nbsp;<strong>{{'To'}}</strong>&nbsp;</label>
                                                     <input type="date" name="end_date" class="daterangepicker-field form-control" value="{{$end_date}}" required/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 ">
-                                            <div class="form-group">
-                                                <label><strong>{{'Choose Customer'}}</strong> &nbsp;</label>
-                                                <div class="input-group">
-                                                    <input type="hidden" name="customer_id_hidden" value="{{$customer_id}}" />
-                                                    <select id="customer_id" name="customer_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
-                                                        @foreach($customer_list as $customer)
-                                                        <option value="{{$customer->customer_id}}">{{$customer->customer_name}}</option>
-                                                        @endforeach
-                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -50,7 +37,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="customer_id_hidden" value="{{$customer_id}}" />
                             {!! Form::close() !!}
                             <div class="row">
                                 <ul class="nav nav-tabs ml-4" role="tablist">
@@ -90,11 +76,12 @@
                                                             <td>{{$sale->sale_ref_no}}</td>
                                                             <td>{{$sale->warehouse->warehouse_name}}</td>
                                                             <td>
-                                                                @foreach($product_sale_data[$key] as $product_sale_data)
+                                                                {{-- {{ dd($product_sale_data) }} --}}
+                                                                @foreach($product_sale_data[$key] as $product_saledata)
                                                                 <?php 
-                                                                    $product = App\Models\Product::where('product_id', $product_sale_data->product_id)->select('product_name')->get()->toArray();
+                                                                    $product = App\Models\Product::where('product_id', $product_saledata->product_id)->select('product_name')->get()->toArray();
                                                                 ?>
-                                                                {{$product[0]['product_name'].' ('.$product_sale_data->sale_quantity_total.')'}}
+                                                                {{$product[0]['product_name'].' ('.$product_saledata->sale_quantity_total.')'}}
                                                                 <br>
                                                                 @endforeach
                                                             </td>
@@ -237,7 +224,6 @@
         $("ul#report").addClass("show");
         $("ul#report #customer-report-menu").addClass("active");
 
-        $('#customer_id').val($('input[name="customer_id_hidden"]').val());
         // $('.selectpicker').selectpicker('refresh');
 
         var dt = $('#sale-table').DataTable( {
