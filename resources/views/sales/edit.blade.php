@@ -104,8 +104,9 @@
                               <div class="form-col-12">
                                 <select name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
                                   <option value="pending">Pending</option>
+                                  <option value="created">Created</option>
                                   <option value="completed">Completed</option>
-                                  //completed/pending
+                                  //completed/pending/created
                                 </select>
                                 @include('alerts.feedback', ['field' => 'sale_status'])
                               </div>
@@ -206,57 +207,6 @@
                                 </tr>
                               </thead>
                               <tbody class="sale-product">
-                                <tr class="row table-info" >
-                                  <td class="col-2 firstcol" scope="col">
-                                    <input type="text" name="sale_products_barcode_i" id="sale_products_barcode_i" class="form-control col-12" placeholder="Barcode Search/Scan" value="{{ old('sale_products_barcode_i', '') }}">
-                                  </td>
-                                  <td class="col-3 mycol" scope="col">
-                                    <div class="col-12 mytblcol input-group">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text barcode">
-                                          <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
-                                        </span>
-                                      </div>
-                                      <input type="text" name="product_name_i" id="product_name_i" class="form-control col-12" placeholder="Product search by name/code" value="{{ old('product_name_i', '') }}">
-                                      <input type="hidden" name="product_code_i" id="product_code_i" value="{{ old('product_code_i', '') }}">
-                                      <input type="hidden" name="product_id_i" id="product_id_i" value="{{ old('product_id_i', '') }}">
-                                      {{-- <select placeholder="Scan/Search product by name/code" name="product_code_name" id="product_code_name" class="form-control select2-single col-10">
-                                        select2-single
-                                        c-multi-select
-                                        js-example-basic-single my-class
-                                        <option class="" value="">Scan/Search product by name/code</option>
-                                        @foreach($products as $one_product)
-                                          <option class="" value="{{ $one_product->product_id }}">{{ $one_product->product_name }}</option>
-                                        @endforeach
-                                      </select> --}}
-                                    </div>
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="sale_products_pieces_i" min="0" id="sale_products_pieces_i" class="form-control col-12" min="0" value="{{ old('sale_products_pieces_i', '0') }}">
-                                    <input type="hidden" name="sale_pieces_per_packet_i" min="0" id="sale_pieces_per_packet_i" class="form-control col-12" min="0" value="{{ old('sale_pieces_per_packet_i', '5') }}">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="sale_products_packets_i" min="0" id="sale_products_packets_i" class="form-control col-12" min="0" value="{{ old('sale_products_packets_i', '0') }}">
-                                    <input type="hidden" name="sale_packets_per_carton_i" min="0" id="sale_packets_per_carton_i" class="form-control col-12" min="0" value="{{ old('sale_packets_per_carton_i', '4') }}">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="sale_products_cartons_i" min="0" id="sale_products_cartons_i" class="form-control col-12" min="0" value="{{ old('sale_products_cartons_i', '0') }}">
-                                    <input type="hidden" name="sale_pieces_per_carton_i" min="0" id="sale_pieces_per_carton_i" class="form-control col-12" min="0" value="{{ old('sale_pieces_per_carton_i', '20') }}">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input readonly type="number" name="sale_products_unit_price_i" min="0" id="sale_products_unit_price_i" class="form-control col-12"  value="{{ old('sale_products_unit_price_i', '0') }}">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="sale_products_discount_i" min="0" id="sale_products_discount_i" class="form-control col-12"  value="{{ old('sale_products_discount_i', '0') }}">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input readonly type="number" name="sale_products_sub_total_i" min="0" id="sale_products_sub_total_i" class="form-control col-12"  value="{{ old('sale_products_sub_total_i', '') }}">
-                                  </td>
-                                  <td class="col-1 lastcol" scope="col">
-                                      {{-- <button id="add_button" type="button" class="btn btn-info btn-round pull-right">{{__('Add')}}</button> --}}
-                                      <button id="add_button" type="button" rel="tooltip" class="btn btn-info btn-round pull-right " data-original-title="+" title="+"><i class="fa fa-plus"></i></button>
-                                  </td>
-                                </tr>
                                 <?php $i=1; $j = 1; $mytotal_quantity = 0; $mytotal_discount = 0; $mysubtotal_amount = 0; $mygrandtotal_amount = 0; ?>
                                 @foreach($saleproducts as $singlesaleproduct)
                                   <?php
@@ -311,6 +261,57 @@
                                   </tr>
                                   <?php $i++; ?>
                                 @endforeach
+                                <tr class="row table-info" >
+                                  <td class="col-2 firstcol" scope="col">
+                                    <input type="text" name="sale_products_barcode_i" id="sale_products_barcode_i" class="form-control col-12" placeholder="Barcode Search/Scan" value="{{ old('sale_products_barcode_i', '') }}">
+                                  </td>
+                                  <td class="col-3 mycol" scope="col">
+                                    <div class="col-12 mytblcol input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text barcode">
+                                          <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
+                                        </span>
+                                      </div>
+                                      <input type="text" name="product_name_i" id="product_name_i" class="form-control col-12" placeholder="Product search by name/code" value="{{ old('product_name_i', '') }}">
+                                      <input type="hidden" name="product_code_i" id="product_code_i" value="{{ old('product_code_i', '') }}">
+                                      <input type="hidden" name="product_id_i" id="product_id_i" value="{{ old('product_id_i', '') }}">
+                                      {{-- <select placeholder="Scan/Search product by name/code" name="product_code_name" id="product_code_name" class="form-control select2-single col-10">
+                                        select2-single
+                                        c-multi-select
+                                        js-example-basic-single my-class
+                                        <option class="" value="">Scan/Search product by name/code</option>
+                                        @foreach($products as $one_product)
+                                          <option class="" value="{{ $one_product->product_id }}">{{ $one_product->product_name }}</option>
+                                        @endforeach
+                                      </select> --}}
+                                    </div>
+                                  </td>
+                                  <td class="col-1 mycol" scope="col">
+                                    <input type="number" name="sale_products_pieces_i" min="0" id="sale_products_pieces_i" class="form-control col-12" min="0" value="{{ old('sale_products_pieces_i', '0') }}">
+                                    <input type="hidden" name="sale_pieces_per_packet_i" min="0" id="sale_pieces_per_packet_i" class="form-control col-12" min="0" value="{{ old('sale_pieces_per_packet_i', '5') }}">
+                                  </td>
+                                  <td class="col-1 mycol" scope="col">
+                                    <input type="number" name="sale_products_packets_i" min="0" id="sale_products_packets_i" class="form-control col-12" min="0" value="{{ old('sale_products_packets_i', '0') }}">
+                                    <input type="hidden" name="sale_packets_per_carton_i" min="0" id="sale_packets_per_carton_i" class="form-control col-12" min="0" value="{{ old('sale_packets_per_carton_i', '4') }}">
+                                  </td>
+                                  <td class="col-1 mycol" scope="col">
+                                    <input type="number" name="sale_products_cartons_i" min="0" id="sale_products_cartons_i" class="form-control col-12" min="0" value="{{ old('sale_products_cartons_i', '0') }}">
+                                    <input type="hidden" name="sale_pieces_per_carton_i" min="0" id="sale_pieces_per_carton_i" class="form-control col-12" min="0" value="{{ old('sale_pieces_per_carton_i', '20') }}">
+                                  </td>
+                                  <td class="col-1 mycol" scope="col">
+                                    <input readonly type="number" name="sale_products_unit_price_i" min="0" id="sale_products_unit_price_i" class="form-control col-12"  value="{{ old('sale_products_unit_price_i', '0') }}">
+                                  </td>
+                                  <td class="col-1 mycol" scope="col">
+                                    <input type="number" name="sale_products_discount_i" min="0" id="sale_products_discount_i" class="form-control col-12"  value="{{ old('sale_products_discount_i', '0') }}">
+                                  </td>
+                                  <td class="col-1 mycol" scope="col">
+                                    <input readonly type="number" name="sale_products_sub_total_i" min="0" id="sale_products_sub_total_i" class="form-control col-12"  value="'{{ old('sale_products_sub_total_i', '') }}'">
+                                  </td>
+                                  <td class="col-1 lastcol" scope="col">
+                                      {{-- <button id="add_button" type="button" class="btn btn-info btn-round pull-right">{{__('Add')}}</button> --}}
+                                      <button id="add_button" type="button" rel="tooltip" class="btn btn-info btn-round pull-right " data-original-title="+" title="+"><i class="fa fa-plus"></i></button>
+                                  </td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -425,7 +426,10 @@
                           <div class="product_array" style="display: none">{{ $productArray[] = $one_product }}</div>
                           <div class="productnames_array" style="display: none">{{ $nameArray[] = $one_product->product_name }}</div>
                           <div class="productnamecode_array" style="display: none">{{ $namecodeArray[] = $one_product->product_name.", ".($one_product->product_ref_no) }}</div>
-                          @endforeach 
+                          @endforeach
+                          @foreach($attachedbarcodes as $singlebarcode)
+                          <div class="productbarcodes_array" style="display: none">{{ $barcodeArray[] = "$singlebarcode->product_barcodes" }}</div>
+                          @endforeach
                           {{-- <input type="hidden" name="sale_products_barcode_2" id="product_barcode2" value="{{ $one_product->product_barcode }}"/> --}}
                           <input type="hidden" name="pieces_per_packet" id="pieces_per_packet" value="{{ $one_product->product_piece_per_packet }}"/>
                           <input type="hidden" name="pieces_per_carton" id="pieces_per_carton" value="{{ $one_product->product_piece_per_carton }}"/>
@@ -960,7 +964,7 @@
       subtotal_amount = Number(subtotal_amount) + Number(product_sub_total);
       grandtotal_amount = Number(subtotal_amount) + Number(sale_free_amount) + Number(sale_add_amount);
       
-      $('.sale-product').append('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'><input readonly type="hidden" name="sale_packets_per_carton[]" id="sale_packets_per_carton'+rownum+'" class="form-control col-12" value='+packets_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
+      $('.sale-product').prepend('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'><input readonly type="hidden" name="sale_packets_per_carton[]" id="sale_packets_per_carton'+rownum+'" class="form-control col-12" value='+packets_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
       // alert(rownum);
       rownum++;
       // alert(rownum);
@@ -1061,6 +1065,25 @@
     // calculateTotal();
   });
 
+  $(document).on('change', "#sale_products_pieces_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch2(data);
+  });
+  $(document).on('change', "#sale_products_packets_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch3(data);
+  });
+  $(document).on('change', "#sale_products_cartons_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch4(data);
+  });
+
   var productsnames_array = <?php echo json_encode($nameArray); ?>;
   var productsnamescodes_array = <?php echo json_encode($namecodeArray); ?>;
 
@@ -1105,51 +1128,299 @@
     // $(this).autocomplete("search", "");
 
   });
-
   function productSearch(data) {
-    // alert(data);
     $.ajax({
-        type: 'GET',
-        // url: 'searchproduct',
-        url: "{{ route('searchproduct2')  }}",
-        data: {
-            data: data,
-            // '_token': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(data) {
-          // alert(data[0]['product_barcode']);
-          var catchbarcode = data[0]['product_barcode'];
-          var catchproduct_code = data[0]['product_ref_no'];
-          var catchproduct_id = data[0]['product_id'];
-          var catchproduct_pieces = data[0]['product_pieces_available'];
-          var catchproduct_packets = data[0]['product_packets_available'];
-          var catchproduct_cartons = data[0]['product_cartons_available'];
-          var pieces_per_carton = data[0]['product_piece_per_carton'];
-          var pieces_per_packet = data[0]['product_piece_per_packet'];
-          var packets_per_carton = data[0]['product_packet_per_carton'];
-          var product_cash_price_piece = data[0]['product_cash_price_piece'];
-          var product_credit_price_piece = data[0]['product_credit_price_piece'];
-          $('#sale_products_barcode_i').val('');
-          $('#sale_products_barcode_i').val(catchbarcode);
-          $('#product_code_i').val('');
-          $('#product_code_i').val(catchproduct_code);
-          $('#product_id_i').val('');
-          $('#product_id_i').val(catchproduct_id);
-          $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
-          $('#sale_products_packets_i').attr('max', catchproduct_packets);
-          $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
-          $('#pieces_per_carton').val('');
-          $('#pieces_per_carton').val(pieces_per_carton);
-          $('#pieces_per_packet').val('');
-          $('#pieces_per_packet').val(pieces_per_packet);
-          $('#packets_per_carton').val('');
-          $('#packets_per_carton').val(packets_per_carton);
-          $('#sale_products_unit_price_i').val('');
-          $('#sale_products_unit_price_i').val(product_cash_price_piece)
-          // $('#sale_products_unit_price_i').val('');
-          // $('#sale_products_unit_price_i').val(product_credit_price_piece)
-          // $('#product_barcode2').val(data[0]['product_barcode']);
-        }
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        // console.log(data);
+        // var catchbarcode = data[0]['product_barcode'];
+        var catchproduct_name = data[0]['product_name'];
+        var catchproduct_code = data[0]['product_ref_no'];
+        catchproduct_name = catchproduct_name+", "+catchproduct_code;
+        var catchproduct_id = data[0]['product_id'];
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        var maxproduct_pieces  = catchproduct_pieces;//+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        var maxproduct_packets = catchproduct_packets;//+(catchproduct_cartons*packets_per_carton);
+        var maxproduct_cartons = catchproduct_cartons;
+        // $('#sale_products_barcode_i').val('');
+        // $('#sale_products_barcode_i').val(catchbarcode);
+        $('#product_name_i').val('');
+        $('#product_name_i').val(catchproduct_name);
+        $('#product_code_i').val('');
+        $('#product_code_i').val(catchproduct_code);
+        $('#product_id_i').val('');
+        $('#product_id_i').val(catchproduct_id);
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+        $('#pieces_per_carton').val('');
+        $('#pieces_per_carton').val(pieces_per_carton);
+        $('#pieces_per_packet').val('');
+        $('#pieces_per_packet').val(pieces_per_packet);
+        $('#packets_per_carton').val('');
+        $('#packets_per_carton').val(packets_per_carton);
+        $('#sale_products_unit_price_i').val('');
+        $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+        barcodeSearch2(catchproduct_id);
+      }
+    });
+  }
+  function productSearch2(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_cartons > 0){
+        //   var netcartons=catchproduct_cartons-sale_products_cartons;
+        //   var maxproduct_pieces  = catchproduct_pieces+(netcartons*pieces_per_carton);
+        //   var maxproduct_packets = catchproduct_packets+(netcartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+
+      }
+    });
+  }
+  function productSearch3(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_packets > 0){
+          var netpackets=catchproduct_packets-sale_products_packets;
+          var netcartons=catchproduct_cartons-sale_products_cartons;
+          var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          var maxproduct_packets = catchproduct_packets
+          var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+
+      }
+    });
+  }
+  function productSearch4(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_cartons > 0){
+          var netpackets=catchproduct_packets-sale_products_packets;
+          var netcartons=catchproduct_cartons-sale_products_cartons;
+          var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          // var maxproduct_packets = catchproduct_packets+(netcartons*packets_per_carton);
+          var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+      }
+    });
+  }
+
+  $("#sale_products_barcode_i").on('focus', function () {
+    // $( "product_name" ).autocomplete({
+    $(this).autocomplete({
+      source: productsbarcodes_array,
+      autoFocus:true,
+      minLength: 0,
+      // select: $('#sale_product_barcode').val();
+      // source: function(request, response) {
+      //   var matcher = new RegExp(".?" + $.ui.autocomplete.escapeRegex(request.term), "i");
+      //     response($.grep(productsnamescodes_array, function(item) {
+      //     return matcher.test(item);
+      //   }));
+      // },
+      // response: function(event, ui) {
+      //   if (ui.content.length == 1) {
+      //         var data = ui.content[0].value;
+      //         $(this).autocomplete( "close" );
+      //         // productSearch(data);
+      //   };
+      // },
+      select: function(event, ui) {
+        var data = ui.item.value;
+        // console.log(data);
+        barcodeSearch(data);
+      },
+      // change: function(event, ui) {
+      //   var data = ui.item;
+      //   console.log(data);
+      //   if (ui.item == null) {
+      //       this.setCustomValidity("You must select a product");
+      //   }
+      // }
+    }).on('click', function(event) {  
+            // $(this).trigger('keydown.autocomplete');
+            $(this).autocomplete("search", $(this).val());
+            // .focus(function(){
+    });
+    // $(this).autocomplete("search", "");
+
+  });
+  function barcodeSearch(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchbarcode2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        productSearch(data[0]['product_id']);
+        // var catchname = data[0]['product_name'];
+        // var catchproduct_code = data[0]['product_ref_no'];
+        // catchname = catchname+", "+catchproduct_code;
+        // var catchproduct_id = data[0]['product_id'];
+        // var catchproduct_pieces = data[0]['product_pieces_available'];
+        // var catchproduct_packets = data[0]['product_packets_available'];
+        // var catchproduct_cartons = data[0]['product_cartons_available'];
+        // var pieces_per_carton = data[0]['product_piece_per_carton'];
+        // var pieces_per_packet = data[0]['product_piece_per_packet'];
+        // var packets_per_carton = data[0]['product_packet_per_carton'];
+        // var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        // var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        // $('#product_name_i').val('');
+        // $('#product_name_i').val(catchname);
+        // $('#product_code_i').val('');
+        // $('#product_code_i').val(catchproduct_code);
+        // $('#product_id_i').val('');
+        // $('#product_id_i').val(catchproduct_id);
+        // $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', catchproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        // $('#pieces_per_carton').val('');
+        // $('#pieces_per_carton').val(pieces_per_carton);
+        // $('#pieces_per_packet').val('');
+        // $('#pieces_per_packet').val(pieces_per_packet);
+        // $('#packets_per_carton').val('');
+        // $('#packets_per_carton').val(packets_per_carton);
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+      }
+    });
+  }
+  function barcodeSearch2(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchbarcode3')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchattachedbarcode = data[0]['product_barcodes'];
+        // var catchname = data[0]['product_name'];
+        // var catchproduct_code = data[0]['product_ref_no'];
+        // catchname = catchname+", "+catchproduct_code;
+        // var catchproduct_id = data[0]['product_id'];
+        // var catchproduct_pieces = data[0]['product_pieces_available'];
+        // var catchproduct_packets = data[0]['product_packets_available'];
+        // var catchproduct_cartons = data[0]['product_cartons_available'];
+        // var pieces_per_carton = data[0]['product_piece_per_carton'];
+        // var pieces_per_packet = data[0]['product_piece_per_packet'];
+        // var packets_per_carton = data[0]['product_packet_per_carton'];
+        // var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        // var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        $('#sale_products_barcode_i').val('');
+        $('#sale_products_barcode_i').val(catchattachedbarcode);
+        // $('#product_name_i').val('');
+        // $('#product_name_i').val(catchname);
+        // $('#product_code_i').val('');
+        // $('#product_code_i').val(catchproduct_code);
+        // $('#product_id_i').val('');
+        // $('#product_id_i').val(catchproduct_id);
+        // $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', catchproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        // $('#pieces_per_carton').val('');
+        // $('#pieces_per_carton').val(pieces_per_carton);
+        // $('#pieces_per_packet').val('');
+        // $('#pieces_per_packet').val(pieces_per_packet);
+        // $('#packets_per_carton').val('');
+        // $('#packets_per_carton').val(packets_per_carton);
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+      }
     });
   }
 

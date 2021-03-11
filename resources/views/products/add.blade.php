@@ -52,7 +52,7 @@
                           </div>
                       </div>
                     </div>
-                    <div class=" col-6 ">
+                    {{-- <div class=" col-6 ">
                         <div class="form-group">
                           <label for="product_barcode" class=" col-10 control-label">&nbsp;&nbsp;{{__(" General Barcode")}}</label>
                             <div class=" col-12">
@@ -60,7 +60,7 @@
                               @include('alerts.feedback', ['field' => 'product_barcode'])
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="row">
                     <div class=" col-6 ">
@@ -246,6 +246,15 @@
                       </div>
                     </div>
                   </div> --}}
+                  <div class="row">
+                    <div class=" col-6 ">
+                      <div class="form-group">
+                        <label for="attachedbarcodes" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Attached Barcodes")}}</label>
+                          <div class=" col-12">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="row">
                     <div class=" col-12 ">
                       <div class="form-group" id="parent_div">

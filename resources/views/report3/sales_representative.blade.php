@@ -11,23 +11,23 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.filters', ['title' => __('report.filters')])
               {!! Form::open(['url' => action('ReportController@getStockReport'), 'method' => 'get', 'id' => 'sales_representative_filter_form' ]) !!}
-                <div class="col-md-4">
+                <div class="col-4">
                     <div class="form-group">
                         {!! Form::label('sr_id',  __('report.user') . ':') !!}
                         {!! Form::select('sr_id', $users, null, ['class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => __('report.all_users')]); !!}
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
                     <div class="form-group">
                         {!! Form::label('sr_business_id',  __('business.business_location') . ':') !!}
                         {!! Form::select('sr_business_id', $business_locations, null, ['class' => 'form-control select2', 'style' => 'width:100%']); !!}
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
 
                         {!! Form::label('sr_date_filter', __('report.date_range') . ':') !!}
@@ -77,7 +77,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <!-- Custom Tabs -->
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">

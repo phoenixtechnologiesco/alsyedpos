@@ -11,47 +11,47 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.filters', ['title' => __('report.filters')])
               {!! Form::open(['url' => action('ReportController@getStockExpiryReport'), 'method' => 'get', 'id' => 'stock_report_filter_form' ]) !!}
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('location_id',  __('purchase.business_location') . ':') !!}
                         {!! Form::select('location_id', $business_locations, null, ['class' => 'form-control select2', 'style' => 'width:100%']); !!}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('category_id', __('product.category') . ':') !!}
                         {!! Form::select('category', $categories, null, ['placeholder' => __('lang_v1.all'), 'class' => 'form-control select2', 'style' => 'width:100%', 'id' => 'category_id']); !!}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('sub_category_id', __('product.sub_category') . ':') !!}
                         {!! Form::select('sub_category', array(), null, ['placeholder' => __('lang_v1.all'), 'class' => 'form-control select2', 'style' => 'width:100%', 'id' => 'sub_category_id']); !!}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('brand', __('product.brand') . ':') !!}
                         {!! Form::select('brand', $brands, null, ['placeholder' => __('lang_v1.all'), 'class' => 'form-control select2', 'style' => 'width:100%']); !!}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('unit', __('product.unit') . ':') !!}
                         {!! Form::select('unit', $units, null, ['placeholder' => __('lang_v1.all'), 'class' => 'form-control select2', 'style' => 'width:100%']); !!}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('view_stock_filter', __('report.view_stocks') . ':') !!}
                         {!! Form::select('view_stock_filter', $view_stock_filter, null, ['placeholder' => __('messages.all'), 'class' => 'form-control select2', 'style' => 'width:100%']); !!}
                     </div>
                 </div>
                 @if(Module::has('Manufacturing'))
-                    <div class="col-md-3">
+                    <div class="col-3">
                         <div class="form-group">
                             <br>
                             <div class="checkbox">
@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.widget', ['class' => 'box-primary'])
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="stock_expiry_report_table">

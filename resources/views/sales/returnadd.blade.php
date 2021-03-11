@@ -914,7 +914,25 @@
     // calculateTotal();
   });
 
-    
+  $(document).on('change', "#sale_products_pieces_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch2(data);
+  });
+  $(document).on('change', "#sale_products_packets_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch3(data);
+  });
+  $(document).on('change', "#sale_products_cartons_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch4(data);
+  });
+  
   var productsbarcodes_array = <?php echo json_encode($barcodeArray); ?>;
   var productsnames_array = <?php echo json_encode($nameArray); ?>;
   var productsnamescodes_array = <?php echo json_encode($namecodeArray); ?>;
@@ -960,7 +978,6 @@
     // $(this).autocomplete("search", "");
 
   });
-
   function productSearch(data) {
     $.ajax({
       type: 'GET',
@@ -970,8 +987,11 @@
           // '_token': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(data) {
-        var catchbarcode = data[0]['product_barcode'];
+        // console.log(data);
+        // var catchbarcode = data[0]['product_barcode'];
+        var catchproduct_name = data[0]['product_name'];
         var catchproduct_code = data[0]['product_ref_no'];
+        catchproduct_name = catchproduct_name+", "+catchproduct_code;
         var catchproduct_id = data[0]['product_id'];
         var catchproduct_pieces = data[0]['product_pieces_available'];
         var catchproduct_packets = data[0]['product_packets_available'];
@@ -981,15 +1001,20 @@
         var packets_per_carton = data[0]['product_packet_per_carton'];
         var product_cash_price_piece = data[0]['product_cash_price_piece'];
         var product_credit_price_piece = data[0]['product_credit_price_piece'];
-        $('#sale_products_barcode_i').val('');
-        $('#sale_products_barcode_i').val(catchbarcode);
+        var maxproduct_pieces  = catchproduct_pieces;//+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        var maxproduct_packets = catchproduct_packets;//+(catchproduct_cartons*packets_per_carton);
+        var maxproduct_cartons = catchproduct_cartons;
+        // $('#sale_products_barcode_i').val('');
+        // $('#sale_products_barcode_i').val(catchbarcode);
+        $('#product_name_i').val('');
+        $('#product_name_i').val(catchproduct_name);
         $('#product_code_i').val('');
         $('#product_code_i').val(catchproduct_code);
         $('#product_id_i').val('');
         $('#product_id_i').val(catchproduct_id);
-        $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
-        $('#sale_products_packets_i').attr('max', catchproduct_packets);
-        $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
         $('#pieces_per_carton').val('');
         $('#pieces_per_carton').val(pieces_per_carton);
         $('#pieces_per_packet').val('');
@@ -1000,7 +1025,119 @@
         $('#sale_products_unit_price_i').val(product_cash_price_piece)
         // $('#sale_products_unit_price_i').val('');
         // $('#sale_products_unit_price_i').val(product_credit_price_piece)
-        // $('#product_barcode2').val(data[0]['product_barcode']);
+        barcodeSearch2(catchproduct_id);
+      }
+    });
+  }
+  function productSearch2(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_cartons > 0){
+        //   var netcartons=catchproduct_cartons-sale_products_cartons;
+        //   var maxproduct_pieces  = catchproduct_pieces+(netcartons*pieces_per_carton);
+        //   var maxproduct_packets = catchproduct_packets+(netcartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+
+      }
+    });
+  }
+  function productSearch3(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_packets > 0){
+          var netpackets=catchproduct_packets-sale_products_packets;
+          var netcartons=catchproduct_cartons-sale_products_cartons;
+          var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          var maxproduct_packets = catchproduct_packets
+          var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+
+      }
+    });
+  }
+  function productSearch4(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_cartons > 0){
+          var netpackets=catchproduct_packets-sale_products_packets;
+          var netcartons=catchproduct_cartons-sale_products_cartons;
+          var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          // var maxproduct_packets = catchproduct_packets+(netcartons*packets_per_carton);
+          var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
       }
     });
   }
@@ -1027,7 +1164,7 @@
       // },
       select: function(event, ui) {
         var data = ui.item.value;
-        console.log(data);
+        // console.log(data);
         barcodeSearch(data);
       },
       // change: function(event, ui) {
@@ -1045,37 +1182,94 @@
     // $(this).autocomplete("search", "");
 
   });
-
   function barcodeSearch(data) {
     $.ajax({
       type: 'GET',
-      url: "{{ route('searchproduct2')  }}",
+      url: "{{ route('searchbarcode2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        productSearch(data[0]['product_id']);
+        // var catchname = data[0]['product_name'];
+        // var catchproduct_code = data[0]['product_ref_no'];
+        // catchname = catchname+", "+catchproduct_code;
+        // var catchproduct_id = data[0]['product_id'];
+        // var catchproduct_pieces = data[0]['product_pieces_available'];
+        // var catchproduct_packets = data[0]['product_packets_available'];
+        // var catchproduct_cartons = data[0]['product_cartons_available'];
+        // var pieces_per_carton = data[0]['product_piece_per_carton'];
+        // var pieces_per_packet = data[0]['product_piece_per_packet'];
+        // var packets_per_carton = data[0]['product_packet_per_carton'];
+        // var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        // var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        // $('#product_name_i').val('');
+        // $('#product_name_i').val(catchname);
+        // $('#product_code_i').val('');
+        // $('#product_code_i').val(catchproduct_code);
+        // $('#product_id_i').val('');
+        // $('#product_id_i').val(catchproduct_id);
+        // $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', catchproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        // $('#pieces_per_carton').val('');
+        // $('#pieces_per_carton').val(pieces_per_carton);
+        // $('#pieces_per_packet').val('');
+        // $('#pieces_per_packet').val(pieces_per_packet);
+        // $('#packets_per_carton').val('');
+        // $('#packets_per_carton').val(packets_per_carton);
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+      }
+    });
+  }
+  function barcodeSearch2(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchbarcode3')  }}",
       data: {
           data: data,
           // '_token': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(data) {
         console.log(data);
-        var catchname = data[0]['product_name'];
-        var catchproduct_code = data[0]['product_ref_no'];
-        catchname = catchname+", "+catchproduct_code;
-        var catchproduct_id = data[0]['product_id'];
-        var pieces_per_carton = data[0]['product_piece_per_carton'];
-        var pieces_per_packet = data[0]['product_piece_per_packet'];
-        var packets_per_carton = data[0]['product_packet_per_carton'];
-        // console.log(total_items);
-        $('#product_name_i').val('');
-        $('#product_name_i').val(catchname);
-        $('#product_code_i').val('');
-        $('#product_code_i').val(catchproduct_code);
-        $('#product_id_i').val('');
-        $('#product_id_i').val(catchproduct_id);
-        $('#pieces_per_carton').val('');
-        $('#pieces_per_carton').val(pieces_per_carton);
-        $('#pieces_per_packet').val('');
-        $('#pieces_per_packet').val(pieces_per_packet);
-        $('#packets_per_carton').val('');
-        $('#packets_per_carton').val(packets_per_carton);
+        var catchattachedbarcode = data[0]['product_barcodes'];
+        // var catchname = data[0]['product_name'];
+        // var catchproduct_code = data[0]['product_ref_no'];
+        // catchname = catchname+", "+catchproduct_code;
+        // var catchproduct_id = data[0]['product_id'];
+        // var catchproduct_pieces = data[0]['product_pieces_available'];
+        // var catchproduct_packets = data[0]['product_packets_available'];
+        // var catchproduct_cartons = data[0]['product_cartons_available'];
+        // var pieces_per_carton = data[0]['product_piece_per_carton'];
+        // var pieces_per_packet = data[0]['product_piece_per_packet'];
+        // var packets_per_carton = data[0]['product_packet_per_carton'];
+        // var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        // var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        $('#sale_products_barcode_i').val('');
+        $('#sale_products_barcode_i').val(catchattachedbarcode);
+        // $('#product_name_i').val('');
+        // $('#product_name_i').val(catchname);
+        // $('#product_code_i').val('');
+        // $('#product_code_i').val(catchproduct_code);
+        // $('#product_id_i').val('');
+        // $('#product_id_i').val(catchproduct_id);
+        // $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', catchproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        // $('#pieces_per_carton').val('');
+        // $('#pieces_per_carton').val(pieces_per_carton);
+        // $('#pieces_per_packet').val('');
+        // $('#pieces_per_packet').val(pieces_per_packet);
+        // $('#packets_per_carton').val('');
+        // $('#packets_per_carton').val(packets_per_carton);
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
       }
     });
   }

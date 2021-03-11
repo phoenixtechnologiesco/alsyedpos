@@ -4,8 +4,8 @@
 	<div class="container-fluid">
         <div class="card">
             <div class="card-body">
-				<div class="col-md-12">
-					<div class="col-md-6 offset-md-3 mt-3 text-center">
+				<div class="col-12">
+					<div class="col-6 offset-md-3 mt-3 text-center">
 						{{ Form::open(['route' => 'report.warehouseStock', 'method' => 'post', 'id' => 'report-form']) }}
 						<input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}">
 						<h3>{{trans('file.Stock Chart')}} </h3>
@@ -19,20 +19,20 @@
 						{{ Form::close() }}
 					</div>
 					
-					<div class="col-md-6 offset-md-3 mt-3 mb-3">
+					<div class="col-6 offset-md-3 mt-3 mb-3">
 						<div class="row">
-							<div class="col-md-6">
+							<div class="col-6">
 								<span>Total {{trans('file.Items')}}</span>
 								<h2><strong>{{number_format((float)$total_item, 2, '.', '') }}</strong></h2>
 							</div>
-							<div class="col-md-6">
+							<div class="col-6">
 								<span>Total {{trans('file.Quantity')}}</span>
 								<h2><strong>{{number_format((float)$total_qty, 2, '.', '') }}</strong></h2>
 							</div>	
 						</div>		
 					</div>
 						
-					<div class="col-md-5 offset-md-3 mt-2">
+					<div class="col-5 offset-md-3 mt-2">
 						<div class="pie-chart">
 							@php
 			                    if($general_setting->theme == 'default.css'){

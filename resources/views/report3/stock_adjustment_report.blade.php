@@ -12,7 +12,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-3 col-md-offset-7 col-xs-6">
+        <div class="col-3 col-offset-7 col-xs-6">
             <div class="input-group">
                 <span class="input-group-addon bg-light-blue"><i class="fa fa-map-marker"></i></span>
                  <select class="form-control select2" id="stock_adjustment_location_filter">
@@ -22,7 +22,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-2 col-xs-6">
+        <div class="col-2 col-xs-6">
             <div class="form-group pull-right">
                 <div class="input-group">
                   <button type="button" class="btn btn-primary" id="stock_adjustment_date_filter">

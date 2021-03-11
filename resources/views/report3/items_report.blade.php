@@ -11,9 +11,9 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.filters', ['title' => __('report.filters')])
-            <div class="col-md-3">
+            <div class="col-3">
                 <div class="form-group">
                     {!! Form::label('ir_supplier_id', __('purchase.supplier') . ':') !!}
                     <div class="input-group">
@@ -24,13 +24,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-3">
                 <div class="form-group">
                     {!! Form::label('ir_purchase_date_filter', __('purchase.purchase_date') . ':') !!}
                     {!! Form::text('ir_purchase_date_filter', null, ['placeholder' => __('lang_v1.select_a_date_range'), 'class' => 'form-control', 'readonly']); !!}
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-3">
                 <div class="form-group">
                     {!! Form::label('ir_customer_id', __('contact.customer') . ':') !!}
                     <div class="input-group">
@@ -41,13 +41,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-3">
                 <div class="form-group">
                     {!! Form::label('ir_sale_date_filter', __('lang_v1.sell_date') . ':') !!}
                     {!! Form::text('ir_sale_date_filter', null, ['placeholder' => __('lang_v1.select_a_date_range'), 'class' => 'form-control', 'readonly']); !!}
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-3">
                 <div class="form-group">
                     {!! Form::label('ir_location_id', __('purchase.business_location').':') !!}
                     <div class="input-group">
@@ -59,7 +59,7 @@
                 </div>
             </div>
             @if(Module::has('Manufacturing'))
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         <br>
                         <div class="checkbox">
@@ -75,7 +75,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.widget', ['class' => 'box-primary'])
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped" 

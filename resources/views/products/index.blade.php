@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="animated fadeIn">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-12">
         <div class="card">
           <div class="card-header">
             <a class="btn btn-info btn-round text-white pull-right" href="{{ route('product.create') }}">Add Product</a>
@@ -21,10 +21,8 @@
                 <tr>
                   {{-- <th>Ref.Id</th> --}}
                   <th></th>
-                  <th colspan="2">Product Info</th>
-                  {{-- <th>Barcode</th> --}}
-                  <th colspan="2">Company/Brand</th>
-                  {{-- <th>Brand</th> --}}
+                  <th colspan="3">Product Info</th>
+                  {{-- <th colspan="2">Company/Brand</th> --}}
                   <th colspan="3">Total Quantity</th>
                   {{-- <th>Totl.Pkt</th>
                   <th>Totl.Crt</th> --}}
@@ -50,7 +48,6 @@
                   {{-- <th>Ref.Id</th> --}}
                   <th></th>
                   <th>Name</th>
-                  <th>Barcode</th>
                   <th>Company</th>
                   <th>Brand</th>
                   <th>Pc</th>
@@ -109,7 +106,7 @@
 
             {{-- <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
               <div class="row">
-                <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-6">
                   <div class="dataTables_length" id="DataTables_Table_0_length">
                     <label>Show 
                       <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="custom-select custom-select-sm form-control form-control-sm">
@@ -121,7 +118,7 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-6">
                   <div id="DataTables_Table_0_filter" class="dataTables_filter">
                     <label>Search:
                       <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0">
@@ -372,12 +369,12 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-5">
                   <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">
                     Showing 1 to 10 of 32 entries
                   </div>
                 </div>
-                <div class="col-sm-12 col-md-7">
+                <div class="col-sm-12 col-7">
                   <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
                     <ul class="pagination">
                       <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">
@@ -860,7 +857,7 @@
         </div>
         <!--  end card  -->
       </div>
-      <!-- end col-md-12 -->
+      <!-- end col-12 -->
     </div>
     <!-- end row -->
   </div>
@@ -925,7 +922,6 @@
             "defaultContent": ''
           },
           { data: 'product_name', name: 'product_name', },
-          { data: 'product_barcode', name: 'product_barcode' },
           { data: 'product_company', name: 'product_company' },
           { data: 'product_brand', name: 'product_brand' },
           { data: 'product_pieces_total', name: 'product_pieces_total' },

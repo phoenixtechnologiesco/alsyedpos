@@ -7,7 +7,7 @@
                 <h3 class="text-center">{{trans('file.Payment Report')}}</h3>
             </div>
             {!! Form::open(['route' => 'report.paymentByDate', 'method' => 'post']) !!}
-            <div class="col-md-6 offset-md-3 mt-3 mb-3">
+            <div class="col-6 offset-md-3 mt-3 mb-3">
                 <div class="form-group row">
                     <label class="d-tc mt-2"><strong>{{trans('file.Choose Your Date')}}</strong> &nbsp;</label>
                     <div class="d-tc">

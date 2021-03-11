@@ -11,23 +11,23 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.filters', ['title' => __('report.filters')])
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('ssr_location_id',  __('purchase.business_location') . ':') !!}
                         {!! Form::select('ssr_location_id', $business_locations, null, ['class' => 'form-control select2', 'style' => 'width:100%']); !!}
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('service_staff_id',  __('restaurant.service_staff') . ':') !!}
                         {!! Form::select('service_staff_id', $waiters, null, ['class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => __('lang_v1.all')]); !!}
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('ssr_date_range', __('report.date_range') . ':') !!}
                         {!! Form::text('date_range', @format_date('first day of this month') . ' ~ ' . @format_date('last day of this month'), ['placeholder' => __('lang_v1.select_a_date_range'), 'class' => 'form-control', 'id' => 'ssr_date_range', 'readonly']); !!}
@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active">

@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-10 col-md-offset-1 col-xs-12">
+	<div class="col-10 col-offset-1 col-xs-12">
 		<div class="table-responsive">
 			<table class="table table-condensed bg-gray">
 				<tr>

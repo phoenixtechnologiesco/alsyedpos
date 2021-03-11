@@ -49,6 +49,12 @@
 
         table {width: 100%;}
         tfoot tr th:first-child {text-align: left;}
+        .custom-td2{
+            padding: 7px 0;width: 65%;
+        }
+        .custom-td3{
+            padding: 7px 0;width: 35%;
+        }
 
         .centered {
             text-align: center;
@@ -161,43 +167,56 @@
   <body>
     <div style="max-width:400px;margin:0 auto">
         <div id="receipt-data">
-            <div class="centered">
+            {{-- <div class="centered">
                 <div class="row">
-                    <div class="form-col-12">
-                        <img src="{{asset('assets/img/alsyedstorelogo.png')}}" height="50" width="70" style="margin:5px 0;filter: brightness(0);">&nbsp;
-                        {{-- <strong style="vertical-align:top">{{__('Al-Syed General Store')}}</strong> --}}
+                    <div class="form-col-6">
+                        <img src="{{asset('assets/img/alsyedstorelogo.png')}}" height="60" width="84" style="margin:5px 0;filter: brightness(0);">&nbsp;
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <table >
                 <thead>
                     <tr class="custom-td">
-                        <th class="custom-td"><strong>{{__('Al-Syed General Store')}}</strong></th>
-                        <th class="custom-td">{{$warehouse_data->warehouse_name}}</th>
-                        {{-- <th class="custom-td">{{$warehouse_data->warehouse_name." ".$warehouse_data->warehouse_location}}</th> --}}
-                    </tr class="custom-td">
+                        <td class="custom-td" style="text-align:left"><img src="{{asset('assets/img/alsyedstorelogo.png')}}" height="60" width="84" style="margin:5px 0;filter: brightness(0);">&nbsp;</td>
+                        <td class="custom-td"><strong>{{__('Al-Syed General Store')}}</strong></td>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr class="custom-td">
-                        <td class="custom-td" style="text-align:left"><strong>{{"Invoice #: ".$sale_data->sale_invoice_id}}</strong></td>
-                        <td class="custom-td" style="text-align:right">{{$sale_data->sale_payment_method}}</td>
+                        <th class="custom-td" style="text-align:left">{{$warehouse_data->warehouse_name}}</th>
+                        {{-- <th class="custom-td" style="text-align:right">{{$warehouse_data->warehouse_location}}</th> --}}
+                        <th class="custom-td" style="text-align:right"><strong>{{"By: ".$user_data->name}}</strong></th>
+
                     </tr>
+                </tbody>
+            </table>
+            <hr>
+            <table >
+                <tbody>
+                    <tr class="custom-td">
+                        <td class="custom-td" style="text-align:left"><strong>{{"Invoice #: ".$sale_data->sale_invoice_id}}</strong></td>
+                        {{-- <td class="custom-td3" style="text-align:right"><strong>{{"By: ".$user_data->name}}</strong></td> --}}
+                    </tr>
+                </tbody>
+            </table>
+            <table >
+                <tbody>
                     <tr class="custom-td">
                         <td class="custom-td">{{$customer_data['customer_name']." ".$customer_data['customer_ref_no']}}</td>
                         <td class="custom-td" style="text-align:right">{{$sale_data->created_at}}</td>
                     </tr>
                 </tbody>
             </table>
-            <table>
+            <table class="table-bordered">
                 <thead class="thead-dark-custom">
                     <tr class="row">
-                        <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__('Product')}}</strong></th>
-                        <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__('Qty')}}</strong></th>
-                        <th colspan="1" class="mycol form-col-2" style="text-align:left"><strong>{{__('U.Price')}}</strong></th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Product')}}</strong></th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th>
-                        <th colspan="1" class="mycol form-col-2" style="text-align:left"><strong>{{__('Disc.')}}</strong></th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Qty')}}</strong></th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th>
-                        <th colspan="1" class="mycol form-col-3" style="text-align:left"><strong>{{__('Amount')}}</strong></th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Disc.')}}</strong></th>
+                        <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Amount')}}</strong></th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th>
                     </tr>
                 </thead>
@@ -211,22 +230,29 @@
                         // $unit_price_all += number_format((float)($sale_product->sale_product_sub_total / $sale_product->sale_quantity_total), 2, '.', '');
                     ?>
                     <tr class="row">
-                        <td colspan="1" class="mycol form-col-2" style="text-align:left;">{{$product_name}}</td>
-                        <td colspan="1" class="mycol form-col-2" style="text-align:left;">{{$sale_product->sale_quantity_total}}{{__('pcs')}}</td>
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$product_name}}</td>
+                        <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$sale_product->sale_quantity_total}}{{__('pcs')}}</td>
+                        <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                         {{-- {{number_format((float)($sale_product->sale_product_sub_total / $sale_product->sale_quantity_total), 2, '.', '')}} --}}
-                        <td colspan="2" class="mycol form-col-3" style="text-align:left;">{{number_format((float)$sale_product->sale_product_sub_total, 2, '.', '')}}</td>
                         <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$sale_product->sale_trade_discount}}</td>
-                        <td colspan="2" class="mycol form-col-3" style="text-align:left;">|{{number_format((float)($sale_product->sale_product_sub_total*$sale_product->sale_quantity_total), 2, '.', '')}}|</td>
+                        <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">|{{number_format((float)($sale_product->sale_product_sub_total*$sale_product->sale_quantity_total), 2, '.', '')}}|</td>
+                        <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
+
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr class="row">
-                        <th colspan="1" class="mycol form-col-2" style="text-align:left;">{{__('Total')}}</th>
-                        <th colspan="1" class="mycol form-col-2" style="text-align:left;">{{$sale_quantity_all}}{{__('pcs')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left;"></th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left;">{{__('Total')}}</th>
+                        <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left;"></th>
+                        <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                         <th colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((float)$sale_data->sale_discount, 2, '.', '')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left;">|{{number_format((float)$sale_data->sale_grandtotal_price, 2, '.', '')}}|</th>
+                        <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left;">|{{number_format((float)$sale_data->sale_grandtotal_price, 2, '.', '')}}|</th>
+                        <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                     </tr>
                     {{-- @if($sale_data->sale_discount)
                     <tr>
@@ -235,58 +261,61 @@
                     </tr>
                     @endif --}}
                     <tr>
-                        <th colspan="6" class="mycol form-col-1" style="text-align:left;">{{__('Grand total')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$sale_data->sale_grandtotal_price, 2, '.', '')}}</th>
+                        <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Previous Balance')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left;">{{number_format((float)$customer_data->customer_balance_dues, 2, '.', '')}}</th>
+                        <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                     <tr>
-                        <th colspan="2" class="mycol form-col-1" style="text-align:left;">{{__('In Words: ')}}</th>
-                        <th colspan="6" class="mycol form-col-3" style="text-align:left;"><span>{{str_replace("-"," ",$numberInWords)}}</span><span>{{__(' Rupees')}}</span></th>
-                    </tr>
-                    <tr>
-                        <th colspan="6" class="mycol form-col-1" style="text-align:left;">{{__('Previous Balance')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$customer_data->customer_balance_dues, 2, '.', '')}}</th>
-                    </tr>
-                    <tr>
-                        <th colspan="6" class="mycol form-col-1" style="text-align:left;">{{__('Net Balance')}}</th>
+                        <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Net Balance')}}</th>
                         <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$customer_data->customer_balance_dues+$sale_data->sale_grandtotal_price, 2, '.', '')}}</th>
+                        <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                     <tr>
-                        <th colspan="6" class="mycol form-col-1" style="text-align:left;">{{__('Payment Recieved')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$sale_data->sale_total_amount_paid, 2, '.', '')}}</th>
+                        <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Payment Recieved')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$sale_data->sale_amount_paid, 2, '.', '')}}</th>
+                        <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                     <tr>
-                        <th colspan="6" class="mycol form-col-1" style="text-align:left;">{{__('Payment Dues')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)($customer_data->customer_balance_dues+$sale_data->sale_grandtotal_price)-($sale_data->sale_total_amount_dues), 2, '.', '')}}</th>
+                        <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Payment Dues')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)($customer_data->customer_balance_dues)+($sale_data->sale_amount_dues), 2, '.', '')}}</th>
+                        <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                 </tfoot>
             </table>
             <table>
                 <tbody>
-                    @foreach($payment_data as $payment_data)
+                    {{-- @foreach($payment_data as $payment_data)
                     <tr style="background-color:#ddd;">
                         <td style="padding: 5px;width:30%">{{__('Paid By')}}: {{$payment_data->payment_method}}</td>
                         <td style="padding: 5px;width:40%">{{__('Amount')}}: {{number_format((float)$payment_data->payment_amount_paid, 2, '.', '')}}</td>
                         <td style="padding: 5px;width:30%">{{__('Change')}}: {{number_format((float)$payment_data->payment_amount_dues, 2, '.', '')}}</td>
                     </tr>                
-                    @endforeach
-                    <tr>
+                    @endforeach --}}
+                    {{-- <tr>
                         <td class="centered" colspan="3">{{__('Thank you for shopping with us. Please come again')}}</td>
-                    </tr>
-                    <tr>
+                    </tr> --}}
+                    {{-- <tr>
                         <td class="centered" colspan="3">
-                        <?php echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS1D::getBarcodePNG($sale_data->sale_ref_no, 'C128') . '" width="300" alt="barcode"   />';?>
-                        <br>
-                        <?php echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS2D::getBarcodePNG($sale_data->sale_ref_no, 'QRCODE') . '" alt="barcode"   />';?>    
+                            ?php echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS1D::getBarcodePNG($sale_data->sale_ref_no, 'C128') . '" width="300" alt="barcode" />';?>
                         </td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
-            <div class="centered" style="margin:30px 0 50px">
-                <small>{{__('Invoice Generated By')}} {{ $user_data->name }}.
-                </small>
+            <div class="centered" style="margin:0px 0 50px">
                 <p>
-                    <br>{{__(" Contact Number")}}: {{$warehouse_data->warehouse_phone_number}}
+                    {{__('Thank you for shopping with us. Please come again')}}
                 </p>
+                <p>
+                    {{__("Contact Number")}}: {{$warehouse_data->warehouse_phone_number}}
+                </p>
+                <hr>
+                <small>{{__("Powered By: Phoenix Technologies")}}</small>
+                <br>
+                <small>{{__("+923152776517")}}</small>
+                @php 
+                // $website = strtolower(lcfirst("www.phoenixtechnologies.co")); 
+                @endphp
+                <small>{{__("www.phoenixtechnologies.co")}}</small>
             </div>
             @if(preg_match('~[0-9]~', url()->previous()))
                 @php $url = '../../sale/pos'; @endphp

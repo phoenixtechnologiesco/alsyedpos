@@ -11,7 +11,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="box box-primary" id="accordion">
               <div class="box-header with-border">
                 <h3 class="box-title">
@@ -22,14 +22,14 @@
               </div>
               <div id="collapseFilter" class="panel-collapse active collapse in" aria-expanded="true">
                 <div class="box-body">
-                    <div class="col-md-3">
+                    <div class="col-3">
                         <div class="form-group">
                             {!! Form::label('tr_location_id',  __('purchase.business_location') . ':') !!}
                             {!! Form::select('tr_location_id', $business_locations, null, ['class' => 'form-control select2', 'style' => 'width:100%']); !!}
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-3">
                         <div class="form-group">
                             {!! Form::label('tr_date_range', __('report.date_range') . ':') !!}
                             {!! Form::text('date_range', @format_date('first day of this month') . ' ~ ' . @format_date('last day of this month'), ['placeholder' => __('lang_v1.select_a_date_range'), 'class' => 'form-control', 'id' => 'tr_date_range', 'readonly']); !!}
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="box">
                 <div class="box-body">
                     <div class="table-responsive">

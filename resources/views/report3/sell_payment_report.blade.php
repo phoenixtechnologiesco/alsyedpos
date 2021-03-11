@@ -11,10 +11,10 @@
 <!-- Main content -->
 <section class="content no-print">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
            @component('components.filters', ['title' => __('report.filters')])
               {!! Form::open(['url' => '#', 'method' => 'get', 'id' => 'sell_payment_report_form' ]) !!}
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('customer_id', __('contact.customer') . ':') !!}
                         <div class="input-group">
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('location_id', __('purchase.business_location').':') !!}
                         <div class="input-group">
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('payment_types', __('lang_v1.payment_method').':') !!}
                         <div class="input-group">
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('customer_group_filter', __('lang_v1.customer_group').':') !!}
                         <div class="input-group">
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
 
                         {!! Form::label('spr_date_filter', __('report.date_range') . ':') !!}
@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.widget', ['class' => 'box-primary'])
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped" 

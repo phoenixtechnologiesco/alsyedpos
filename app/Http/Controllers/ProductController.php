@@ -412,14 +412,14 @@ class ProductController extends Controller
 
     public function searchproduct(Request $request)
     {
-
         $getRecords = null;
         // $input = trim(filter_var($request['search_data'], FILTER_SANITIZE_STRING));
         $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
         //return response()->json(['input' => $request['input'],], 200);
         $records = Product::where(function($query)use($input){
+            $query->orWhere('product_id', "$input");
             $query->orWhere('product_name', 'LIKE', "%{$input}%");
-            $query->orWhere('product_barcode', 'LIKE', "%{$input}%");
+            // $query->orWhere('product_barcode', 'LIKE', "%{$input}%");
             // $query->orWhere('product_ref_no', 'LIKE', "%{$input}%");
         })
         ->get()->toArray();
@@ -435,37 +435,49 @@ class ProductController extends Controller
         return $records;
     }
 
-    public function addMore()
+    public function searchbarcode(Request $request)
     {
-        return view("products.add");
+        $getRecords = null;
+        // $input = trim(filter_var($request['search_data'], FILTER_SANITIZE_STRING));
+        $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
+        //return response()->json(['input' => $request['input'],], 200);
+        $records = ProductBarcodes::where(function($query)use($input){
+            $query->where('product_barcodes', 'LIKE', "%{$input}%");
+            // $query->orWhere('product_ref_no', 'LIKE', "%{$input}%");
+        })
+        ->get()->toArray();
+        
+        // send the response
+        //return Response::json([
+        // return response()->json([
+        //     'records' => $records->count() > 0
+        //         ? $records//$getRecords
+        //         : [],/*'Nothing to show.',*/
+        // ], 200);
+
+        return $records;
     }
 
-
-    public function addMoreBarcode(Request $request)
+    public function searchbarcode3(Request $request)
     {
-        // $rules = [];
+        $getRecords = null;
+        // $input = trim(filter_var($request['search_data'], FILTER_SANITIZE_STRING));
+        $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
+        //return response()->json(['input' => $request['input'],], 200);
+        $records = ProductBarcodes::where(function($query)use($input){
+            $query->where('product_id', $input);
+        })
+        ->get()->toArray();
+        
+        // send the response
+        //return Response::json([
+        // return response()->json([
+        //     'records' => $records->count() > 0
+        //         ? $records//$getRecords
+        //         : [],/*'Nothing to show.',*/
+        // ], 200);
 
-
-        // foreach($request->input('attachedbarcodes') as $key => $value) {
-        //     $rules["attachedbarcodes.{$key}"] = 'required';
-        // }
-
-
-        // $validator = Validator::make($request->all(), $rules);
-
-
-        // if ($validator->passes()) {
-
-
-            foreach($request->input('attachedbarcodes') as $key => $value) {
-                ProductBarcodes::create(['product_barcode'=>$value]);
-            }
-
-
-            return response()->json(['success'=>'done']);
-        // }
-
-
-        // return response()->json(['error'=>$validator->errors()->all()]);
+        return $records;
     }
+
 }

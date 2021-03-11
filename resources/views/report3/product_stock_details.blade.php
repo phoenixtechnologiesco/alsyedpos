@@ -11,7 +11,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="box box-primary" id="accordion">
               <div class="box-header with-border">
                 <h3 class="box-title">
@@ -24,7 +24,7 @@
                 <div class="box-body">
                     <div class="row">
                         {!! Form::open(['url' => action('ReportController@productStockDetails'), 'method' => 'get' ]) !!}
-                        <div class="col-md-4">
+                        <div class="col-4">
                             <div class="form-group">
                             {!! Form::label('search_product', __('lang_v1.search_product') . ':') !!}
                                 <div class="input-group">
@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         
-                        <div class="col-md-4">
+                        <div class="col-4">
                             <div class="form-group">
                                 {!! Form::label('location_id', __('purchase.business_location').':') !!}
                                 <div class="input-group">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-4">
                             <div class="form-group">
                                 <br>
                                 <button type="submit" class="btn btn-primary">@lang('lang_v1.search')</button>
@@ -57,7 +57,7 @@
                     </div>
 
                     @if(!empty($stock_details))
-                        <div class="col-md-12">
+                        <div class="col-12">
                         <hr>
                         <div class="row">
                             <div class="table-responsive">

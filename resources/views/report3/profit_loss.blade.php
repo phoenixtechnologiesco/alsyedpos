@@ -14,7 +14,7 @@
     <div class="print_section"><h2>{{session()->get('business.name')}} - @lang( 'report.profit_loss' )</h2></div>
     
     <div class="row no-print">
-        <div class="col-md-3 col-md-offset-7 col-xs-6">
+        <div class="col-3 col-offset-7 col-xs-6">
             <div class="input-group">
                 <span class="input-group-addon bg-light-blue"><i class="fa fa-map-marker"></i></span>
                  <select class="form-control select2" id="profit_loss_location_filter">
@@ -24,7 +24,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-2 col-xs-6">
+        <div class="col-2 col-xs-6">
             <div class="form-group pull-right">
                 <div class="input-group">
                   <button type="button" class="btn btn-primary" id="profit_loss_date_filter">
@@ -66,7 +66,7 @@
         </div>
     </div>
     <div class="row no-print">
-        <div class="col-md-12">
+        <div class="col-12">
            <!-- Custom Tabs -->
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">

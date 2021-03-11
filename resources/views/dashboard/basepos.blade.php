@@ -44,6 +44,7 @@
     <link href="{{ asset('css/select2.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/mydatatables.css') }}" rel="stylesheet">
     {{-- <link href="{{ asset('css/dataTables.bootstrap.min.css') }}" rel="stylesheet"> --}}
+    <link href="{{ asset('css/keyboard.css') }}" rel="stylesheet">
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
@@ -134,6 +135,9 @@
     {{-- <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.js"></script> --}}
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.js"></script> --}}
     <script src="{{ asset('js/mydatatables.js') }}"></script>
+    <script src="{{ asset('js/shortcut.js') }}"></script>
+    <script src="{{ asset('js/jquery.keyboard.js') }}"></script>  
+    <script src="{{ asset('js/jquery.keyboard.extension-autocomplete.js') }}"></script>
 
     <script>
       $(document).ready(function() {

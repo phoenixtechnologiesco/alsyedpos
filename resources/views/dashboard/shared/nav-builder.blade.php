@@ -39,7 +39,6 @@ if(!function_exists('renderDropdown')){
 }
 ?>
 
-
         <div class="c-sidebar-brand">
             <img class="c-sidebar-brand-full" src="{{ url('/assets/img/alsyedstorelogo.png') }}" width="80" height="63" alt="Al-Syed Logo">
             <div class="c-sidebar-brand-full text-right"><strong>Al-Syed POS</strong></div>

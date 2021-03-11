@@ -11,10 +11,10 @@
 <!-- Main content -->
 <section class="content no-print">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.filters', ['title' => __('report.filters')])
               {!! Form::open(['url' => action('ReportController@getStockReport'), 'method' => 'get', 'id' => 'product_sell_report_form' ]) !!}
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                     {!! Form::label('search_product', __('lang_v1.search_product') . ':') !!}
                         <div class="input-group">
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('customer_id', __('contact.customer') . ':') !!}
                         <div class="input-group">
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('location_id', __('purchase.business_location').':') !!}
                         <div class="input-group">
@@ -48,13 +48,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="form-group">
                         {!! Form::label('product_sr_date_filter', __('report.date_range') . ':') !!}
                         {!! Form::text('date_range', null, ['placeholder' => __('lang_v1.select_a_date_range'), 'class' => 'form-control', 'id' => 'product_sr_date_filter', 'readonly']); !!}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                     {!! Form::label('product_sr_start_time', __('lang_v1.time_range') . ':') !!}
                     @php
                         $startDay = Carbon::now()->startOfDay();
@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active">

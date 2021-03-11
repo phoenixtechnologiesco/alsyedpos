@@ -8,7 +8,7 @@
     <input type="hidden" value="{{$purchase_line->id}}" name="purchase_line_id">
     <div class="modal-body">
       <div class="row">
-      <div class="col-md-6">
+      <div class="col-6">
         <div class="form-group">
           {!! Form::label('exp_date', __( 'product.exp_date' ) . ':*') !!}
           {!! Form::text('exp_date', @format_date($purchase_line->exp_date), ['class' => 'form-control', 'required', 'id' => 'exp_date_expiry_modal', 'readonly']); !!}

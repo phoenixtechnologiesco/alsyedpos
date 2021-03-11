@@ -7,7 +7,7 @@
             </div>
             {!! Form::open(['route' => 'report.supplier', 'method' => 'post']) !!}
             <div class="row mb-3">
-                <div class="col-md-4 offset-md-1 mt-3">
+                <div class="col-4 offset-md-1 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong>{{trans('file.Choose Your Date')}}</strong> &nbsp;</label>
                         <div class="d-tc">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mt-3">
+                <div class="col-4 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong>{{trans('file.Choose Supplier')}}</strong> &nbsp;</label>
                         <div class="d-tc">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mt-3">
+                <div class="col-3 mt-3">
                     <div class="form-group">
                         <button class="btn btn-primary" type="submit">{{trans('file.submit')}}</button>
                     </div>

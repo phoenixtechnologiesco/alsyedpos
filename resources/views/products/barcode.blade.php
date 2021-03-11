@@ -8,7 +8,7 @@
 	}
 </style>
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-8 col-offset-2">
         <h1 class="text-primary" style="text-align: center;">Laravel 5 Barcode Generator Using milon/barcode</h1>
     </div>
 </div>

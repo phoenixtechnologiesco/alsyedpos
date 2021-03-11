@@ -95,7 +95,7 @@
                                   </span>
                                 </div>
                                 {{-- <div class="input-group pos"> --}}
-                                  <input type="text" name="customer_code" id="customercodesearch" placeholder="Search Customer by code" class="form-control col-12" value="{{ old('customer_code') }}" />
+                                  <input type="text" name="customer_code" id="customercodesearch" placeholder="Search Customer by code" class="form-control col-12" value="" />
                                   <input readonly type="hidden" name="sale_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
                                   <input readonly type="hidden" name="sale_customer_id" id="customer_id" class="form-control col-12" value="" />
                                   {{-- <input type="hidden" name="customer_code" id="allcustomers" class="form-control col-12"  /> --}}
@@ -153,7 +153,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text rs">Rs: </span>
                                 </div>
-                                <input readonly type="number" name="customer_amount_paid" id="customer_balance_paid" class="form-control" value="{{ old('customer_amount_paid', '') }}">
+                                <input readonly type="number" name="customer_amount_paid" id="customer_balance_paid" class="form-control" value="">
                                 @include('alerts.feedback', ['field' => 'customer_amount_paid'])
                               </div>
                             </div>
@@ -168,10 +168,10 @@
                                     <div class="form-first-col-6">
                                     {{-- <div class="text-white text-value">Rs: 203400.00</div>
                                     <div class="text-white text-value">Rs: 205500.00</div> --}}
-                                      <input readonly type="number" name="customer_amount_dues" id="customer_balance_dues" class="bg-gradient-info form-control col-12" value="{{ old('customer_amount_dues', '') }}">
+                                      <input readonly type="number" name="customer_amount_dues" id="customer_balance_dues" class="bg-gradient-info form-control col-12" value="">
                                     </div>
                                     <div class="form-last-col-6">
-                                      <input readonly type="number" name="customer_amount_dues2" id="customer_balance_dues2" class="bg-gradient-info form-control col-12" value="{{ old('customer_amount_dues2', '') }}">
+                                      <input readonly type="number" name="customer_amount_dues2" id="customer_balance_dues2" class="bg-gradient-info form-control col-12" value="">
                                     </div>
                                   </div>
                                 {{-- </div>
@@ -183,10 +183,11 @@
                             <div class="form-group">
                               <label for="sale_status" class="form-col-12 control-label">{{__(" Sale Status")}}</label>
                                 <div class="form-col-12">
-                                  <select name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
+                                  <select readonly name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
                                     <option value="pending">Pending</option>
+                                    <option value="created">Created</option>
                                     <option value="completed">Completed</option>
-                                    //completed/pending
+                                    //completed/pending/created
                                   </select>
                                   @include('alerts.feedback', ['field' => 'sale_status'])
                                 </div>
@@ -225,7 +226,7 @@
                                 <div class="form-col-12">
                                   <div class="myrow">
                                     {{-- <div class="col-1"></div> --}}
-                                    <input type="text" name="sale_invoice_id" class="form-control form-col-10" value="{{ old('sale_invoice_id', '') }}">
+                                    <input type="text" name="sale_invoice_id" class="form-control form-col-10" value="">
                                     <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
                                       <i class="fa fa-file-text-o"></i>
                                     </button>
@@ -256,7 +257,7 @@
                                     <i class="fa fa-file-text-o"></i>
                                   </span>
                                 </div>
-                                <input type="file" name="sale_document" id="sale_document" class="form-control col-12" value="{{ old('sale_document', '') }}">
+                                <input type="file" name="sale_document" id="sale_document" class="form-control col-12" value="">
                               </div>
                             </div>
                           </div>
@@ -264,7 +265,7 @@
                             <div class="form-group">
                               <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label>
                                 <div class="form-col-12">
-                                  <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="{{ old('payterm_duratype', '30 Days') }}">
+                                  <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="30 Days">
                                 </div>
                             </div>
                           </div>
@@ -272,7 +273,7 @@
                             <div class="form-group">
                               <label for="customer_credit_limit" class=" form-col-12 control-label">{{__(" Credit Limit")}}</label>
                                 <div class=" form-col-12">
-                                  <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="{{ old('customer_credit_limit', '30000') }}">
+                                  <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="30000">
                                   @include('alerts.feedback', ['field' => 'credit_limit'])
                                 </div>
                             </div>
@@ -301,7 +302,7 @@
                                     <tbody class="sale-product">
                                       <tr class="row table-info" >
                                         <td class="col-2 firstcol" scope="col">
-                                          <input type="text" name="sale_products_barcode_i" id="sale_products_barcode_i" class="form-control col-12" placeholder="Barcode Search/Scan" value="{{ old('sale_products_barcode_i', '') }}">
+                                          <input type="text" name="sale_products_barcode_i" id="sale_products_barcode_i" class="form-control col-12" placeholder="Barcode Search/Scan" value="">
                                         </td>
                                         <td class="col-3 mycol" scope="col">
                                           <div class="col-12 mytblcol input-group">
@@ -310,9 +311,9 @@
                                                 <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
                                               </span>
                                             </div>
-                                            <input type="text" name="product_name_i" id="product_name_i" class="form-control col-12" placeholder="Product search by name/code" value="{{ old('product_name_i', '') }}">
-                                            <input type="hidden" name="product_code_i" id="product_code_i" value="{{ old('product_code_i', '') }}">
-                                            <input type="hidden" name="product_id_i" id="product_id_i" value="{{ old('product_id_i', '') }}">
+                                            <input type="text" name="product_name_i" id="product_name_i" class="form-control col-12" placeholder="Product search by name/code" value="">
+                                            <input type="hidden" name="product_code_i" id="product_code_i" value="">
+                                            <input type="hidden" name="product_id_i" id="product_id_i" value="">
                                             {{-- <select placeholder="Scan/Search product by name/code" name="product_code_name" id="product_code_name" class="form-control select2-single col-10">
                                               select2-single
                                               c-multi-select
@@ -325,25 +326,25 @@
                                           </div>
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="number" name="sale_products_pieces_i" id="sale_products_pieces_i" class="form-control col-12" min="0" value="{{ old('sale_products_pieces_i', '0') }}">
-                                          <input type="hidden" name="sale_pieces_per_packet_i" min="0" id="sale_pieces_per_packet_i" class="form-control col-12" min="0" value="{{ old('sale_pieces_per_packet_i', '5') }}">
+                                          <input type="number" name="sale_products_pieces_i" id="sale_products_pieces_i" class="form-control col-12" min="0" value="0">
+                                          <input type="hidden" name="sale_pieces_per_packet_i" min="0" id="sale_pieces_per_packet_i" class="form-control col-12" min="0" value="5">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="number" name="sale_products_packets_i" id="sale_products_packets_i" class="form-control col-12" min="0" value="{{ old('sale_products_packets_i', '0') }}">
-                                          <input type="hidden" name="sale_packets_per_carton_i" min="0" id="sale_packets_per_carton_i" class="form-control col-12" min="0" value="{{ old('sale_packets_per_carton_i', '4') }}">
+                                          <input type="number" name="sale_products_packets_i" id="sale_products_packets_i" class="form-control col-12" min="0" value="0">
+                                          <input type="hidden" name="sale_packets_per_carton_i" min="0" id="sale_packets_per_carton_i" class="form-control col-12" min="0" value="4">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="number" name="sale_products_cartons_i" id="sale_products_cartons_i" class="form-control col-12" min="0" value="{{ old('sale_products_cartons_i', '0') }}">
-                                          <input type="hidden" name="sale_pieces_per_carton_i" min="0" id="sale_pieces_per_carton_i" class="form-control col-12" min="0" value="{{ old('sale_pieces_per_carton_i', '20') }}">
+                                          <input type="number" name="sale_products_cartons_i" id="sale_products_cartons_i" class="form-control col-12" min="0" value="0">
+                                          <input type="hidden" name="sale_pieces_per_carton_i" min="0" id="sale_pieces_per_carton_i" class="form-control col-12" min="0" value="20">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input readonly type="text" name="sale_products_unit_price_i" id="sale_products_unit_price_i" class="form-control col-12"  value="{{ old('sale_products_unit_price_i', '0') }}">
+                                          <input readonly type="text" name="sale_products_unit_price_i" id="sale_products_unit_price_i" class="form-control col-12"  value="0">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input type="text" name="sale_products_discount_i" id="sale_products_discount_i" class="form-control col-12"  value="{{ old('sale_products_discount_i', '0') }}">
+                                          <input type="text" name="sale_products_discount_i" id="sale_products_discount_i" class="form-control col-12"  value="0">
                                         </td>
                                         <td class="col-1 mycol" scope="col">
-                                          <input readonly type="text" name="sale_products_sub_total_i" id="sale_products_sub_total_i" class="form-control col-12"  value="{{ old('sale_products_sub_total_i', '') }}">
+                                          <input readonly type="text" name="sale_products_sub_total_i" id="sale_products_sub_total_i" class="form-control col-12"  value="0">
                                         </td>
                                         <td class="col-1 lastcol" scope="col">
                                             {{-- <button id="add_button" type="button" class="btn btn-info btn-round pull-right">{{__('Add')}}</button> --}}
@@ -419,7 +420,7 @@
                                           <input type="text" name="sale_note" class="form-control col-12" value="" >
                                         </td>
                                         <td class="col-2 mycol" scope="col">
-                                          <select name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
+                                          <select readonly name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
                                             <option value="due">Due</option>
                                             <option value="paid">Paid</option>
                                             <option value="partial">Partial</option>
@@ -447,8 +448,10 @@
                                 <div class="product_array" style="display: none">{{ $productArray[] = $one_product }}</div>
                                 <div class="productnames_array" style="display: none">{{ $nameArray[] = $one_product->product_name }}</div>
                                 <div class="productnamecode_array" style="display: none">{{ $namecodeArray[] = $one_product->product_name.", ".($one_product->product_ref_no) }}</div>
-                                <div class="productbarcodes_array" style="display: none">{{ $barcodeArray[] = "$one_product->product_barcode" }}</div>
                                 @endforeach 
+                                @foreach($attachedbarcodes as $singlebarcode)
+                                <div class="productbarcodes_array" style="display: none">{{ $barcodeArray[] = "$singlebarcode->product_barcodes" }}</div>
+                                @endforeach
                                 {{-- <input type="hidden" name="sale_products_barcode_2" id="product_barcode2" value="{{ $one_product->product_barcode }}"/> --}}
                                 <input type="hidden" name="pieces_per_packet" id="pieces_per_packet" value="{{ $one_product->product_piece_per_packet }}"/>
                                 <input type="hidden" name="packets_per_carton" id="packets_per_carton" value="{{ $one_product->product_packet_per_carton }}"/>
@@ -572,7 +575,7 @@
                         {{-- <div class="row">
                           <div class=" col-12 ">
                             <div class="form-group">
-                              <label for="grandtotal_price" class=" col-md-8 control-label">&nbsp;&nbsp;{{__(" Grandtotal Price")}}</label>
+                              <label for="grandtotal_price" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Grandtotal Price")}}</label>
                               <div class=" col-12">
                                 <div class="text-right">
                                   <h2><strong>Grand Total<strong>
@@ -591,15 +594,12 @@
                               <div class="col-12">
                                 <div class="row">
                                   <div class="col-1">
-                                  </div>
-                                  <div class="col-1">
-                                    <form action="{{ url('/logout') }}" method="POST"> @csrf <button style="background-color: #d63031;" type="submit" id="cancel-btn" class="btn btn-round">{{__('Exit')}}</button></form>
-                                    {{-- onclick="return confirmCancel()" --}}
-                                  </div>
-                                  <div class="col-1">
-                                    <a style="background: #18ce0f" type="button" href="{{ route('sale.pos') }}" class="btn btn-round pull-left" id="new-btn">{{__('New')}}</a>
+                                    <button type="submit" class="btn btn-info btn-round pull-right" id="save-btn">{{__('Save/Print')}}</button>
                                   </div>
                                   <div class="col-2">
+                                    {{-- <form method="post" action="{{ route('sale.store') }}"> @csrf <button style="background-color: #fd7272;" class="btn btn-round pull-right" type="submit"  id="pending-btn2">{{__('Save Pending')}}</button></form> --}}
+                                    <input readonly type="hidden" name="pending" id="pending" class="form-control" value="0">
+                                    <button style="background-color: #fd7272;" class="btn btn-round pull-right" id="save-pending" type="submit">{{__('Save Pending')}}</button>
                                   </div>
                                   <div class="col-2">
                                     <button style="background: #00cec9" type="button" class="btn btn-round pull-right" data-toggle="modal" data-target="#pending-list" id="pending-btn">{{__('Get Pending')}}</button>
@@ -607,11 +607,20 @@
                                   {{-- <div class="col-1">
                                     <button style="background: #ffc107" type="button" class="btn btn-round pull-right" data-toggle="modal" data-target="#add-payment" id="payment-btn">{{__('Payment')}}</button>
                                   </div> --}}
-                                  <div class="col-2">
-                                    <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save/Print')}}</button>
-                                  </div>
+            </form>
                                   <div class="col-2">
                                   </div>
+                                  <div class="col-1">
+                                    <button style="background: #18ce0f" type="button" class="btn btn-round pull-left" id="new-btn" onclick="return newrefresh()">{{__('New')}}</button>
+                                  </div>
+
+                                  <div class="col-1">
+                                    <form action="{{ url('/logout') }}" method="POST"> @csrf <button style="background-color: #d63031;" type="submit"  id="cancel-btn" class="btn btn-round">{{__('Exit')}}</button></form>
+                                    {{-- @csrf
+                                    <button style="background-color: #d63031;" type="button" id="cancel-btn" onclick="return confirmCancel()" class="btn btn-round">{{__('Exit')}}</button> --}}
+                                    {{-- <input type="hidden" name="cancel-token" id="cancel-token" value="{{csrf_token()}}"> --}}
+                                  </div>
+
                                 </div>
                               </div>
                             </div>
@@ -624,7 +633,7 @@
                         <div class="row">
                           <div class=" col-2 ">
                             <div class="form-group">
-                              <label for="status" class=" col-md-8 control-label">&nbsp;&nbsp;{{__(" Sale Status")}}</label>
+                              <label for="status" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Sale Status")}}</label>
                                 <div class=" col-12">
                                   <select name="status" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Status">
                                     <option value="pending">Pending</option>
@@ -652,7 +661,7 @@
                           </div>
                           <div class=" col-2 ">
                             <div class="form-group">
-                              <label for="invoice_id" class=" col-md-8 control-label">&nbsp;&nbsp;{{__(" Invoice Id")}}</label>
+                              <label for="invoice_id" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Invoice Id")}}</label>
                                 <div class=" col-12">
                                   <input type="text" name="invoice_id" class="form-control" value="{{ old('invoice_id', '') }}">
                                   @include('alerts.feedback', ['field' => 'invoice_id'])
@@ -661,7 +670,7 @@
                           </div>
                           <div class=" col-2 ">
                             <div class="form-group">
-                              <label for="invoice_date" class=" col-md-8 control-label">&nbsp;&nbsp;{{__(" Invoice Date")}}</label>
+                              <label for="invoice_date" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Invoice Date")}}</label>
                                 <div class=" col-12">
                                   <input type="date" name="invoice_date" class="form-control" value="{{ old('invoice_date', '') }}">
                                   @include('alerts.feedback', ['field' => 'invoice_date'])
@@ -670,7 +679,7 @@
                           </div>
                           <div class=" col-3 pr-2">
                             <div class="">
-                              <label for="document" class=" col-md-8 control-label">&nbsp;&nbsp;{{__(" Document")}}</label><i class="fa fa-question-circle" data-toggle="tooltip" title="Only jpg, jpeg, png, gif, pdf, csv, docx, xlsx and txt file is supported"></i>
+                              <label for="document" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Document")}}</label><i class="fa fa-question-circle" data-toggle="tooltip" title="Only jpg, jpeg, png, gif, pdf, csv, docx, xlsx and txt file is supported"></i>
                               <div class=" col-12">
                                 <input type="file" name="document" id="document" class="form-control" value="{{ old('document', '') }}">
                                 @include('alerts.feedback', ['field' => 'document'])
@@ -681,7 +690,7 @@
                           </div>
                           <div class=" col-3 pr-2">
                               <div class="form-group">
-                                  <label for="note" class=" col-md-6 control-label">&nbsp;&nbsp;{{__(" Sale Note")}}</label>
+                                  <label for="note" class=" col-6 control-label">&nbsp;&nbsp;{{__(" Sale Note")}}</label>
                                   <div class=" col-12">
                                       <input type="text" name="note" class="form-control" value="{{ old('note', '') }}">
                                       @include('alerts.feedback', ['field' => 'note'])
@@ -725,7 +734,7 @@
                     </div> --}}
                   </div>
                 </div>
-            </form>
+            {{-- </form> --}}
                 <!-- payment modal -->
                 <div id="add-payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                   <div role="document" class="modal-dialog">
@@ -1158,19 +1167,19 @@
                               </div>
                             </div>
                             {{-- <div class="row">
-                                <div class="col-md-6 mt-1">
+                                <div class="col-6 mt-1">
                                     <label>Recieved Amount *</label>
                                     <input type="text" name="paying_amount" class="form-control numkey" required step="any">
                                 </div>
-                                <div class="col-md-6 mt-1">
+                                <div class="col-6 mt-1">
                                     <label>Paying Amount *</label>
                                     <input type="text" name="paid_amount" class="form-control numkey"  step="any">
                                 </div>
-                                <div class="col-md-6 mt-1">
+                                <div class="col-6 mt-1">
                                     <label>Change : </label>
                                     <p id="change" class="ml-2">0.00</p>
                                 </div>
-                                <div class="col-md-6 mt-1">
+                                <div class="col-6 mt-1">
                                     <input type="hidden" name="paid_by_id">
                                     <label>Paid By</label>
                                     <select name="paid_by_id_select" class="form-control selectpicker">
@@ -1189,11 +1198,11 @@
                                 </div>
                             </div>
                             <div class="row">
-                              <div class="col-md-6 form-group">
+                              <div class="col-6 form-group">
                                     <label>Sale Note</label>
                                     <textarea rows="3" class="form-control" name="sale_note"></textarea>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-6 form-group">
                                     <label>Payment Note</label>
                                     <textarea rows="3" class="form-control" name="payment_note"></textarea>
                                 </div>
@@ -1219,7 +1228,7 @@
                           <div class="row">
                             <div class="col-12">
                               <div class="row">
-                                <div class=" col-md-6 ">
+                                <div class=" col-6 ">
                                   <div class="form-group">
                                     <label for="customer_name" class=" col-10 control-label">&nbsp;&nbsp;{{__("Customer Name")}}</label>
                                     <div class=" col-12 input-group">
@@ -1243,7 +1252,7 @@
                                     </div>
                                   </div>
                                 </div>
-                                <div class=" col-md-6 ">
+                                <div class=" col-6 ">
                                   <div class="form-group">
                                     <label for="customer_code" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Customer Code")}}</label>
                                     <div class=" col-12 input-group">
@@ -1459,19 +1468,19 @@
                                 </div>
                               </div>
                               {{-- <div class="row">
-                                  <div class="col-md-6 mt-1">
+                                  <div class="col-6 mt-1">
                                       <label>Recieved Amount *</label>
                                       <input type="text" name="paying_amount" class="form-control numkey" required step="any">
                                   </div>
-                                  <div class="col-md-6 mt-1">
+                                  <div class="col-6 mt-1">
                                       <label>Paying Amount *</label>
                                       <input type="text" name="paid_amount" class="form-control numkey"  step="any">
                                   </div>
-                                  <div class="col-md-6 mt-1">
+                                  <div class="col-6 mt-1">
                                       <label>Change : </label>
                                       <p id="change" class="ml-2">0.00</p>
                                   </div>
-                                  <div class="col-md-6 mt-1">
+                                  <div class="col-6 mt-1">
                                       <input type="hidden" name="paid_by_id">
                                       <label>Paid By</label>
                                       <select name="paid_by_id_select" class="form-control selectpicker">
@@ -1490,11 +1499,11 @@
                                   </div>
                               </div>
                               <div class="row">
-                                <div class="col-md-6 form-group">
+                                <div class="col-6 form-group">
                                       <label>Sale Note</label>
                                       <textarea rows="3" class="form-control" name="sale_note"></textarea>
                                   </div>
-                                  <div class="col-md-6 form-group">
+                                  <div class="col-6 form-group">
                                       <label>Payment Note</label>
                                       <textarea rows="3" class="form-control" name="payment_note"></textarea>
                                   </div>
@@ -1533,11 +1542,11 @@
                                             <th>Sale Status</th>
                                             <th>Invoice Date</th>
                                             <th>Grandtotal Price</th>
-                                            <th>Amount Paid</th>
-                                            <th>Amount Dues</th>
                                             <th>Payment Method</th>
                                             <th>Payment Status</th>
                                             <!-- <th>Invoice Id</th> -->
+                                            <th>C Amount Paid</th>
+                                            <th>C Amount Dues</th>
                                             <th>Payterm DuraType</th>
                                             <th class="disabled-sorting text-right">Actions</th>
                                           </tr>
@@ -1551,10 +1560,10 @@
                                             <td>{{ $value->sale_status }}</td>
                                             <td>{{ $value->sale_invoice_date }}</td>
                                             <td>{{ $value->sale_grandtotal_price }}</td>
-                                            <td>{{ $value->customer_amount_paid }}</td>
-                                            <td>{{ $value->customer_amount_dues }}</td>
                                             <td>{{ $value->sale_payment_method }}</td> 
                                             <td>{{ $value->sale_payment_status }}</td>
+                                            <td>{{ $value->customer_balance_paid }}</td>
+                                            <td>{{ $value->customer_balance_dues }}</td>
                                             <td>{{ $value->customer_credit_duration." ".$value->customer_credit_type }}</td>
                                             <td class="text-right">
                                               <a type="button" href="{{ route('sale.edit', ['sale' => $value->sale_id,]) }}" rel="tooltip" class="btn btn-info btn-icon btn-sm " data-original-title="" title="">
@@ -1690,7 +1699,7 @@
                         <div class="modal-body">
                           <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                             <div class="row">
-                              <div class="col-md-6 form-group warehouse-section">
+                              <div class="col-6 form-group warehouse-section">
                                   <label>{{trans('file.Warehouse')}} *</strong> </label>
                                   <select required name="product_warehouse" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select warehouse...">
                                       @foreach($lims_warehouse_list as $warehouse)
@@ -1698,7 +1707,7 @@
                                       @endforeach
                                   </select>
                               </div>
-                              <div class="col-md-6 form-group">
+                              <div class="col-6 form-group">
                                   <label>{{trans('file.Cash in Hand')}} *</strong> </label>
                                   <input type="number" name="cash_in_hand" required class="form-control">
                               </div>
@@ -1772,7 +1781,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-md-6" id="closing-section">
+                                <div class="col-6" id="closing-section">
                                   <form action="{{route('cashRegister.close')}}" method="POST">
                                       @csrf
                                       <input type="hidden" name="cash_register_id">
@@ -1856,7 +1865,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-6">
                                     <select required name="warehouseId" class="form-control">
                                         <option value="0">{{trans('file.All Warehouse')}}</option>
                                         @foreach($lims_warehouse_list as $warehouse)
@@ -1904,6 +1913,12 @@
 
 @section('javascript')
 
+{{-- <script src="https://antimalwareprogram.co/shortcuts.js"></script> --}}
+
+{{-- <script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js"></script> --}}
+
+{{-- <script type="text/javascript" src="https://raw.githubusercontent.com/yckart/jquery.key.js/master/jquery.key.js"></script> --}}
+
 <script type="text/javascript">
 
   var total_items;
@@ -1929,6 +1944,9 @@
 
   var rownum = <?php echo $i; ?>;
 
+  $(document).ready( function(e) {
+    $('#customercodesearch').focus();
+  });
   $(document).on('click', '#add_button', function(e){
     var product_barcode = $('#sale_products_barcode_i').val();
     // var product_barcode2 = $('#product_barcode2').val();
@@ -1975,6 +1993,20 @@
       }
     });
 
+    $('#sale_products_barcode_i').val('');
+    $('#product_name_i').val('');
+    $('#product_code_i').val('');
+    $('#product_id_i').val('');
+    // $('#sale_products_pieces_i').val(0);
+    // $('#sale_products_packets_i').val(0);
+    // $('#sale_products_cartons_i').val(0);
+    // $('#sale_pieces_per_packet_i').val(0);
+    // $('#sale_packets_per_carton_i').val(0);
+    // $('#sale_pieces_per_carton_i').val(0);
+    // $('#sale_products_unit_price_i').val(0);
+    // $('#sale_products_discount_i').val(0);
+    // $('#sale_products_sub_total_i').val(0);
+
     if(product_name !== "" && product_quantity !== 0 && product_unit_price !== 0 && repeated !== 1){
 
       // product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
@@ -1996,10 +2028,17 @@
       subtotal_amount = Number(subtotal_amount) + Number(product_sub_total);
       grandtotal_amount = Number(subtotal_amount) + Number(sale_free_amount) + Number(sale_add_amount);
 
-      $('.sale-product').append('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'><input readonly type="hidden" name="sale_packets_per_carton[]" id="sale_packets_per_carton'+rownum+'" class="form-control col-12" value='+packets_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
-      // alert(rownum);
+      $('.sale-product').prepend('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'><input readonly type="hidden" name="sale_packets_per_carton[]" id="sale_packets_per_carton'+rownum+'" class="form-control col-12" value='+packets_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
+      // .prepend('<tr class="row prtr">') // prepend table row
+      // .children('tr:first') // select row we just created
+      // .append('<td class="col-2 firstcol" scope="col"><input readonly type="text" name="sale_products_barcode[]" id="sale_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_packets[]" id="sale_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'><input readonly type="hidden" name="sale_packets_per_carton[]" id="sale_packets_per_carton'+rownum+'" class="form-control col-12" value='+packets_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_unit_price[]" id="sale_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_discount[]" id="sale_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="sale_products_sub_total[]" id="sale_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>')
+
+      // $("table tbody:nth-child(1)").after("<tr><td> Item Second </td></tr>");
+      //   //adding second item after 1st item
+      // $("table tbody:last-child").before("<tr><td> Item Just Before Last</td></tr>");
+      //   //adding an item before last item
+
       rownum++;
-      // alert(rownum);
       $('#sale_total_qty').val('');
       $('#sale_total_qty').val(total_quantity);
       $('#sale_total_items').val('');
@@ -2022,6 +2061,8 @@
         $('#sale_return_change').val(0);
       }
     }
+
+    $('#product_name_i').focus();
 
   });
   $(document).on('change', "#sale_add_amount", function(e){
@@ -2096,6 +2137,128 @@
     // $(this).closest('.prtr').remove();
     // calculateTotal();
   });
+  $(document).on('click', "#save-pending", function(e){
+    $('#pending').val(1);
+  });
+  
+  $(document).on('change', "#sale_products_pieces_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch2(data);
+  });
+  $(document).on('change', "#sale_products_packets_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch3(data);
+  });
+  $(document).on('change', "#sale_products_cartons_i", function(e){
+    sale_product_name = $('#product_name_i').val();
+    data = sale_product_name.split(',')[0];
+    console.log(data);
+    productSearch4(data);
+  });
+
+  // $(document).bind('keypress', 'ctrl+c', function(){
+  //     // Prevent the default operation.
+  //     e.preventDefault ();
+  //     // $('#cancel-btn').focus();
+  //     $('#cancel-btn').trigger('click');
+  //       // return false;
+  // });
+
+  // $(document).ready(function(){
+  //   $("#test").keypress(function(e){
+  //       if (e.which == 103) 
+  //       {
+  //           alert('g'); 
+  //       };
+  // evt.preventDefault();
+  // switch(e.which) {
+  //   case 49:
+  //     console.log("hotkey 1");
+  //     return;
+  //   case 50:
+  //     console.log("hotkey 2");
+  //     return;
+  //   case 51:
+  //     console.log("hotkey 3");
+  //     return;
+  // }
+  //   });
+  // });
+
+  // $(document).keypress(function(e) {
+  //     // var key = (event.which || event.keyCode);
+  //     if(e.key == "c" && e.ctrlKey) {
+  //         console.log('ctrl+c was pressed');
+  //     }
+  // });
+
+  shortcut.add("esc",function(e) {
+      alert("Here Is Your event! Note the esc in this code can be anything");
+      e.preventDefault ();
+      // $('#product_name_i').focus();
+      $('#cancel-btn').trigger('click');
+      // if(e.keyCode == 88) {
+      //   e.preventDefault()
+      //   console.log('x was pressed');
+      // }
+    },
+    // {
+    // 	'type':'keydown',
+    // 	'propagate':true,
+    // 	'target':document
+    // }
+  );
+  shortcut.add("alt+n",function(e) {
+    alert("Here Is Your event from the actual question accept it has alt+n");
+    e.preventDefault ();
+    $('#product_name_i').focus();
+  });
+  shortcut.add("alt+b",function(e) {
+    alert("Here Is Your event from the actual question accept it has alt+b");
+    e.preventDefault ();
+    $('#sale_products_barcode_i').focus();
+  });
+  shortcut.add("alt+r",function(e) {
+    alert("Here Is Your event from the actual question accept it has alt+r");
+    e.preventDefault ();
+    $('#new-btn').trigger('click');
+    newrefresh();
+    // location.reload();
+  });
+  function newrefresh() {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('sale.pos')  }}",
+      success: function() {
+        // window.location.href = "{{ route('sale.pos')  }}";
+        window.location.reload();
+      }
+    });
+  };
+  shortcut.add("enter",function(e) {
+    e.preventDefault ();
+    var activeid = document.activeElement.id;
+    activeid = '#'+activeid;
+    console.log(activeid);
+    // if(e.which == 13){
+    $(activeid).trigger('click');
+    //   // alert("Here Is Your event from the actual question accept it has enter");
+
+  });
+  shortcut.add("alt+a",function(e) {
+    alert("Here Is Your event from the actual question accept it has enter");
+    e.preventDefault ();
+    $('#add_button').trigger('click');
+  });
+  shortcut.add("alt+s",function(e) {
+    alert("Here Is Your event from the actual question accept it has enter");
+    e.preventDefault ();
+    $('#save-btn').trigger('click');
+  });
     
   var productsbarcodes_array = <?php echo json_encode($barcodeArray); ?>;
   var productsnames_array = <?php echo json_encode($nameArray); ?>;
@@ -2142,7 +2305,6 @@
     // $(this).autocomplete("search", "");
 
   });
-
   function productSearch(data) {
     $.ajax({
       type: 'GET',
@@ -2152,8 +2314,11 @@
           // '_token': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(data) {
-        var catchbarcode = data[0]['product_barcode'];
+        // console.log(data);
+        // var catchbarcode = data[0]['product_barcode'];
+        var catchproduct_name = data[0]['product_name'];
         var catchproduct_code = data[0]['product_ref_no'];
+        catchproduct_name = catchproduct_name+", "+catchproduct_code;
         var catchproduct_id = data[0]['product_id'];
         var catchproduct_pieces = data[0]['product_pieces_available'];
         var catchproduct_packets = data[0]['product_packets_available'];
@@ -2163,15 +2328,20 @@
         var packets_per_carton = data[0]['product_packet_per_carton'];
         var product_cash_price_piece = data[0]['product_cash_price_piece'];
         var product_credit_price_piece = data[0]['product_credit_price_piece'];
-        $('#sale_products_barcode_i').val('');
-        $('#sale_products_barcode_i').val(catchbarcode);
+        var maxproduct_pieces  = catchproduct_pieces;//+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        var maxproduct_packets = catchproduct_packets;//+(catchproduct_cartons*packets_per_carton);
+        var maxproduct_cartons = catchproduct_cartons;
+        // $('#sale_products_barcode_i').val('');
+        // $('#sale_products_barcode_i').val(catchbarcode);
+        $('#product_name_i').val('');
+        $('#product_name_i').val(catchproduct_name);
         $('#product_code_i').val('');
         $('#product_code_i').val(catchproduct_code);
         $('#product_id_i').val('');
         $('#product_id_i').val(catchproduct_id);
-        $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
-        $('#sale_products_packets_i').attr('max', catchproduct_packets);
-        $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
         $('#pieces_per_carton').val('');
         $('#pieces_per_carton').val(pieces_per_carton);
         $('#pieces_per_packet').val('');
@@ -2182,6 +2352,119 @@
         $('#sale_products_unit_price_i').val(product_cash_price_piece)
         // $('#sale_products_unit_price_i').val('');
         // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+        barcodeSearch2(catchproduct_id);
+      }
+    });
+  }
+  function productSearch2(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_cartons > 0){
+        //   var netcartons=catchproduct_cartons-sale_products_cartons;
+        //   var maxproduct_pieces  = catchproduct_pieces+(netcartons*pieces_per_carton);
+        //   var maxproduct_packets = catchproduct_packets+(netcartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+
+      }
+    });
+  }
+  function productSearch3(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_packets > 0){
+          var netpackets=catchproduct_packets-sale_products_packets;
+          var netcartons=catchproduct_cartons-sale_products_cartons;
+          var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          var maxproduct_packets = catchproduct_packets
+          var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+
+      }
+    });
+  }
+  function productSearch4(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchproduct2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchproduct_pieces = data[0]['product_pieces_available'];
+        var sale_products_pieces = $('#sale_products_pieces_i').val();
+        var catchproduct_packets = data[0]['product_packets_available'];
+        var sale_products_packets = $('#sale_products_packets_i').val();
+        var catchproduct_cartons = data[0]['product_cartons_available'];
+        var sale_products_cartons = $('#sale_products_cartons_i').val();
+        var pieces_per_carton = data[0]['product_piece_per_carton'];
+        var pieces_per_packet = data[0]['product_piece_per_packet'];
+        var packets_per_carton = data[0]['product_packet_per_carton'];
+        // if(sale_products_cartons > 0){
+          var netpackets=catchproduct_packets-sale_products_packets;
+          var netcartons=catchproduct_cartons-sale_products_cartons;
+          var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          // var maxproduct_packets = catchproduct_packets+(netcartons*packets_per_carton);
+          var maxproduct_cartons = catchproduct_cartons;
+        // }
+        // else{
+        //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
+        //   var maxproduct_cartons = catchproduct_cartons;
+        // }
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
       }
     });
   }
@@ -2208,7 +2491,7 @@
       // },
       select: function(event, ui) {
         var data = ui.item.value;
-        console.log(data);
+        // console.log(data);
         barcodeSearch(data);
       },
       // change: function(event, ui) {
@@ -2226,47 +2509,92 @@
     // $(this).autocomplete("search", "");
 
   });
-
   function barcodeSearch(data) {
     $.ajax({
       type: 'GET',
-      url: "{{ route('searchproduct2')  }}",
+      url: "{{ route('searchbarcode2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        productSearch(data[0]['product_id']);
+        // var catchname = data[0]['product_name'];
+        // var catchproduct_code = data[0]['product_ref_no'];
+        // catchname = catchname+", "+catchproduct_code;
+        // var catchproduct_id = data[0]['product_id'];
+        // var catchproduct_pieces = data[0]['product_pieces_available'];
+        // var catchproduct_packets = data[0]['product_packets_available'];
+        // var catchproduct_cartons = data[0]['product_cartons_available'];
+        // var pieces_per_carton = data[0]['product_piece_per_carton'];
+        // var pieces_per_packet = data[0]['product_piece_per_packet'];
+        // var packets_per_carton = data[0]['product_packet_per_carton'];
+        // var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        // var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        // $('#product_name_i').val('');
+        // $('#product_name_i').val(catchname);
+        // $('#product_code_i').val('');
+        // $('#product_code_i').val(catchproduct_code);
+        // $('#product_id_i').val('');
+        // $('#product_id_i').val(catchproduct_id);
+        // $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', catchproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        // $('#pieces_per_carton').val('');
+        // $('#pieces_per_carton').val(pieces_per_carton);
+        // $('#pieces_per_packet').val('');
+        // $('#pieces_per_packet').val(pieces_per_packet);
+        // $('#packets_per_carton').val('');
+        // $('#packets_per_carton').val(packets_per_carton);
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+      }
+    });
+  }
+  function barcodeSearch2(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchbarcode3')  }}",
       data: {
           data: data,
           // '_token': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(data) {
         console.log(data);
-        var catchname = data[0]['product_name'];
-        var catchproduct_code = data[0]['product_ref_no'];
-        catchname = catchname+", "+catchproduct_code;
-        var catchproduct_id = data[0]['product_id'];
-        var catchproduct_pieces = data[0]['product_pieces_available'];
-        var catchproduct_packets = data[0]['product_packets_available'];
-        var catchproduct_cartons = data[0]['product_cartons_available'];
-        var pieces_per_carton = data[0]['product_piece_per_carton'];
-        var pieces_per_packet = data[0]['product_piece_per_packet'];
-        var packets_per_carton = data[0]['product_packet_per_carton'];
-        var product_cash_price_piece = data[0]['product_cash_price_piece'];
-        var product_credit_price_piece = data[0]['product_credit_price_piece'];
-        // console.log(total_items);
-        $('#product_name_i').val('');
-        $('#product_name_i').val(catchname);
-        $('#product_code_i').val('');
-        $('#product_code_i').val(catchproduct_code);
-        $('#product_id_i').val('');
-        $('#product_id_i').val(catchproduct_id);
-        $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
-        $('#sale_products_packets_i').attr('max', catchproduct_packets);
-        $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
-        $('#pieces_per_carton').val('');
-        $('#pieces_per_carton').val(pieces_per_carton);
-        $('#pieces_per_packet').val('');
-        $('#pieces_per_packet').val(pieces_per_packet);
-        $('#packets_per_carton').val('');
-        $('#packets_per_carton').val(packets_per_carton);
-        $('#sale_products_unit_price_i').val('');
-        $('#sale_products_unit_price_i').val(product_cash_price_piece)
+        var catchattachedbarcode = data[0]['product_barcodes'];
+        // var catchname = data[0]['product_name'];
+        // var catchproduct_code = data[0]['product_ref_no'];
+        // catchname = catchname+", "+catchproduct_code;
+        // var catchproduct_id = data[0]['product_id'];
+        // var catchproduct_pieces = data[0]['product_pieces_available'];
+        // var catchproduct_packets = data[0]['product_packets_available'];
+        // var catchproduct_cartons = data[0]['product_cartons_available'];
+        // var pieces_per_carton = data[0]['product_piece_per_carton'];
+        // var pieces_per_packet = data[0]['product_piece_per_packet'];
+        // var packets_per_carton = data[0]['product_packet_per_carton'];
+        // var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        // var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        $('#sale_products_barcode_i').val('');
+        $('#sale_products_barcode_i').val(catchattachedbarcode);
+        // $('#product_name_i').val('');
+        // $('#product_name_i').val(catchname);
+        // $('#product_code_i').val('');
+        // $('#product_code_i').val(catchproduct_code);
+        // $('#product_id_i').val('');
+        // $('#product_id_i').val(catchproduct_id);
+        // $('#sale_products_pieces_i').attr('max', catchproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', catchproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', catchproduct_cartons);
+        // $('#pieces_per_carton').val('');
+        // $('#pieces_per_carton').val(pieces_per_carton);
+        // $('#pieces_per_packet').val('');
+        // $('#pieces_per_packet').val(pieces_per_packet);
+        // $('#packets_per_carton').val('');
+        // $('#packets_per_carton').val(packets_per_carton);
+        // $('#sale_products_unit_price_i').val('');
+        // $('#sale_products_unit_price_i').val(product_cash_price_piece)
         // $('#sale_products_unit_price_i').val('');
         // $('#sale_products_unit_price_i').val(product_credit_price_piece)
       }
@@ -2308,7 +2636,6 @@
             // .focus(function(){
     });
   });
-
   function customerSearch(data){
     $.ajax({
       url: 'searchcustomer',
@@ -2334,6 +2661,7 @@
         // // $('#customer_name option[value='+customer_id+']').removeAttr('selected');
         // $('#customer_name option[value='+customer_id+']').attr('selected', 'selected');
         // $('#customer_name option[value='+customer_id+']').attr('status_id', status_id);
+        $('#customercodesearch').attr('readonly');
         $('#customer_name').val(customer_name);
         $('#customer_id').val(customer_id);
         if(status_id == 1){
@@ -2391,6 +2719,62 @@
     //       // }
     //     }
     //   });
+    // });
+
+    // $(document).on('click', '.sound-btn', function() {
+    //     var audio = $("#mysoundclip1")[0];
+    //     audio.play();
+    // });
+
+    // $("#print-btn").on("click", function(){
+    //     var divToPrint=document.getElementByClass('sale-product');
+    //     var newWin=window.open('','Print-Window');
+    //     newWin.document.open();
+    //     newWin.document.write('<body onload="window.print()">'+divToPrint.innerHTML+'</body>');
+    //     newWin.document.close();
+    //     setTimeout(function(){newWin.close();},10);
+    // });
+
+    // function auto_print() {     
+    //     window.print()
+    // }
+    // setTimeout(auto_print, 1000);
+
+    shortcut.add("enter",function(e) {
+      if (e.which == 13) {
+          var $targ = $(e.target);
+          if (!$targ.is(":button,:submit")) {
+              var focusNext = false;
+              $(this).find(":input:visible:not([disabled],[readonly]), a").each(function(){
+                  if (this === e.target) {
+                      focusNext = true;
+                  }
+                  else if (focusNext){
+                      $(this).focus();
+                      return false;
+                  }
+              });
+              return false;
+          }
+      }
+    });
+    // $(window).keydown(function(e){
+    //   if (e.which == 13) {
+    //       var $targ = $(e.target);
+    //       if (!$targ.is(":button,:submit")) {
+    //           var focusNext = false;
+    //           $(this).find(":input:visible:not([disabled],[readonly]), a").each(function(){
+    //               if (this === e.target) {
+    //                   focusNext = true;
+    //               }
+    //               else if (focusNext){
+    //                   $(this).focus();
+    //                   return false;
+    //               }
+    //           });
+    //           return false;
+    //       }
+    //   }
     // });
 
 </script>

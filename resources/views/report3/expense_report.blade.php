@@ -11,23 +11,23 @@
 <!-- Main content -->
 <section class="content">
     <div class="row no-print">
-        <div class="col-md-12">
+        <div class="col-12">
             @component('components.filters', ['title' => __('report.filters')])
               {!! Form::open(['url' => action('ReportController@getExpenseReport'), 'method' => 'get' ]) !!}
-                <div class="col-md-4">
+                <div class="col-4">
                     <div class="form-group">
                         {!! Form::label('location_id',  __('purchase.business_location') . ':') !!}
                         {!! Form::select('location_id', $business_locations, null, ['class' => 'form-control select2', 'style' => 'width:100%']); !!}
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
                     <div class="form-group">
                         {!! Form::label('category_id', __('category.category').':') !!}
                         {!! Form::select('category', $categories, null, ['placeholder' =>
                         __('report.all'), 'class' => 'form-control select2', 'style' => 'width:100%', 'id' => 'category_id']); !!}
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
                     <div class="form-group">
                         {!! Form::label('trending_product_date_range', __('report.date_range') . ':') !!}
                         {!! Form::text('date_range', null , ['placeholder' => __('lang_v1.select_a_date_range'), 'class' => 'form-control', 'id' => 'trending_product_date_range', 'readonly']); !!}
@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
         @component('components.widget', ['class' => 'box-primary'])
             <table class="table" id="expense_report_table">
                 <thead>

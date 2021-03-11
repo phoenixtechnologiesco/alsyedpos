@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="animated fadeIn">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-12">
         <div class="card">
           <div class="card-header">
               <a class="btn btn-info btn-round text-white pull-right" href="{{ route('purchase.returnadd') }}">Add Purchase Return</a>
@@ -67,7 +67,7 @@
         </div>
         <!--  end card  -->
       </div>
-      <!-- end col-md-12 -->
+      <!-- end col-12 -->
     </div>
     <!-- end row -->
   </div>

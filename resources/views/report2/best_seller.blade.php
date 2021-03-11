@@ -1,7 +1,7 @@
 @extends('layout.main') @section('content')
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-12">
 			{{ Form::open(['route' => 'report.bestSellerByWarehouse', 'method' => 'post', 'id' => 'report-form']) }}
 			<input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}">
             <h4 class="text-center mt-3">{{trans('file.Best Seller')}} {{trans('file.From')}} {{$start_month.' - '.date("F Y")}} &nbsp;&nbsp;

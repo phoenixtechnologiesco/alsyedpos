@@ -7,7 +7,7 @@
                 <h4 class="text-center">{{trans('file.Due Report')}}</h4>
             </div>
             {!! Form::open(['route' => 'report.dueByDate', 'method' => 'post']) !!}
-            <div class="col-md-6 offset-md-3 mt-4 mb-3">
+            <div class="col-6 offset-md-3 mt-4 mb-3">
                 <div class="form-group row">
                     <label class="d-tc mt-2"><strong>{{trans('file.Choose Your Date')}}</strong> &nbsp;</label>
                     <div class="d-tc">

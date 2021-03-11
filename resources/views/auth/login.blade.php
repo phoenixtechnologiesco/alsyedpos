@@ -4,7 +4,7 @@
 
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-4">
           <div class="card-group">
             <div class="card p-4">
               <div class="card-header">

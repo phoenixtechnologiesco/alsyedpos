@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="animated fadeIn">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-12">
         <div class="card">
           <div class="card-header">
             <h5 class="title">{{__(" Edit Product")}}</h5>
@@ -52,7 +52,7 @@
                           </div>
                       </div>
                     </div>
-                    <div class=" col-6 ">
+                    {{-- <div class=" col-6 ">
                         <div class="form-group">
                           <label for="product_barcode" class=" col-10 control-label">&nbsp;&nbsp;{{__(" General Barcode")}}</label>
                             <div class=" col-12">
@@ -60,7 +60,7 @@
                               @include('alerts.feedback', ['field' => 'product_barcode'])
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="row">
                     <div class=" col-6 ">
@@ -261,6 +261,15 @@
                     </div>
                   </div> --}}
                   <div class="row">
+                    <div class=" col-6 ">
+                      <div class="form-group">
+                        <label for="attachedbarcodes" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Attached Barcodes")}}</label>
+                          <div class=" col-12">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
                     <div class=" col-12 ">
                       <div class="form-group" id="parent_div">
                         <div class=" col-12">
@@ -268,11 +277,9 @@
                             <table id="dynamic_field" class="table table-hover ">
                             {{-- <table id="dynamic_field" class="table table-hover table-striped table-fixed"> --}}
                               <tbody>
-                                <tr>
-                                </tr>
                                 @foreach($attached_barcodes as $single_barcode)
                                 <tr class="mytr">
-                                  <td class="col-md-12 mytbl">
+                                  <td class="col-12 mytbl">
                                     <div class="form-group child_div">
                                       {{-- <label for="attachedbarcodes" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Enter Barcode")}}</label> --}}
                                       <div class=" col-12 input-group ">
@@ -559,7 +566,7 @@
   $(document).ready(function(){    
     $('#add-barfield').click(function(e) {
       e.preventDefault();
-      $('table tbody').append('<tr class="mytr"><td class="col-md-12 mytbl"><div class="form-group"><div class="col-sm-10 col-12 input-group "><div class="input-group-prepend"><span class="input-group-text barcode"><a class=""><i class="fa fa-barcode"></i></a></span></div><input type="text" name="attachedbarcodes[]" placeholder="Scan/Enter Barcode" class="form-control"/><a type="button"  class="btn btn-danger btn-round text-white pull-right delete-barfield">X</a></div></div></td></tr>');
+      $('table tbody').append('<tr class="mytr"><td class="col-12 mytbl"><div class="form-group"><div class="col-12 input-group "><div class="input-group-prepend"><span class="input-group-text barcode"><a class=""><i class="fa fa-barcode"></i></a></span></div><input type="text" name="attachedbarcodes[]" placeholder="Scan/Enter Barcode" class="form-control"/><a type="button"  class="btn btn-danger btn-round text-white pull-right delete-barfield">X</a></div></div></td></tr>');
       var html = $('.child_div:first').parent().html();
       $(html).insertBefore(this);
     });

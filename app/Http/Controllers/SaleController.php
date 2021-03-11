@@ -6,17 +6,21 @@ use Yajra\Datatables\Datatables;
 use App\Models\Sale;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\ProductBarcodes;
 use App\Models\Payment;
 use App\Models\SaleProducts;
 use App\Models\SaleReturn;
 use App\Models\User;
 use App\Models\Warehouse;
+use App\Models\UserWarehouses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use NumberToWords\NumberToWords;
+// use NumberToWords\NumberToWords;
+use \stdClass;
+use Carbon\Carbon;
 use Auth;
 use DB;
 use Input;
@@ -76,7 +80,7 @@ class SaleController extends Controller
 
     public function returnadd(SaleReturn $model, Customer $model2, sale $model3)
     {
-        $salereturns = SaleReturn::all();
+        $salereturns = SaleReturn::join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->get();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
         return view('sales.returnadd', compact('salereturns', 'customers', 'products') );
@@ -89,10 +93,12 @@ class SaleController extends Controller
      */
     public function create(Sale $model, Customer $model2, Product $model3)
     {
-        $sales = Sale::all();
+        $sales = Sale::join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->get();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
-        return view('sales.add', compact('sales', 'customers', 'products') );
+        $attachedbarcodes = ProductBarcodes::get();
+
+        return view('sales.add', compact('sales', 'customers', 'products', 'attachedbarcodes') );
         // return view('sales.add', ['sales' => $model->paginate(15)->items(), 'customers' => $model2->paginate(15)->items(), 'sales' => $model3->paginate(15)->items()]);
     }
 
@@ -107,8 +113,9 @@ class SaleController extends Controller
         $pendingsales = Sale::where('sale_status', 'pending')->join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->get();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
+        $attachedbarcodes = ProductBarcodes::get();
 
-        return view('sales.pos', compact('sales', 'pendingsales', 'customers', 'products') );
+        return view('sales.pos', compact('sales', 'pendingsales', 'customers', 'products', 'attachedbarcodes') );
         // return view('sales.pos', ['sales' => $sales, 'pendingsales' => $pendingsales, 'customers' => $customers, 'sales' => $sales]);
     }
 
@@ -167,6 +174,12 @@ class SaleController extends Controller
         //    return response()->json("Fields Required", 400);
         // }
         $sale_ref_no = $random = Str::random(8); //str_random
+        $lastsale = DB::table('sales')->orderBy('sale_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastsale->sale_id+1;
+        $lastid = substr($lastid, -8);
+        $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
+        $year = (string)Carbon::now()->year;
+        $sale_invoice_id = 'sale-'.$year.'-'.$lastid;
         //$sale_adds = $request->except('document');
         //$sale_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $sale_grandtotal_price = $request->sale_grandtotal_price;
@@ -175,15 +188,31 @@ class SaleController extends Controller
         $customer_amount_dues = $request->customer_amount_dues;
         $sale_amount_dues = $sale_grandtotal_price;
 
-        if($sale_amount_recieved > $sale_grandtotal_price){
+        if($sale_amount_recieved >= $sale_grandtotal_price){
             $customer_amount_paid = $customer_amount_paid + $sale_amount_recieved;
             $customer_amount_dues = $customer_amount_dues - ($sale_amount_recieved - $sale_grandtotal_price);
             $sale_amount_dues = $sale_grandtotal_price - $sale_amount_recieved;
+            $sale_status = 'completed';
+            $sale_payment_status = 'paid';
+        }
+        elseif($sale_amount_recieved == 0){
+            $customer_amount_paid = $customer_amount_paid;
+            $customer_amount_dues = $customer_amount_dues + $sale_grandtotal_price;
+            $sale_amount_dues = $sale_grandtotal_price;
+            $sale_status = 'created';
+            $sale_payment_status = 'due';
         }
         else{
             $customer_amount_paid = $customer_amount_paid + $sale_amount_recieved;
             $customer_amount_dues = $customer_amount_dues + ($sale_grandtotal_price - $sale_amount_recieved);
             $sale_amount_dues = $sale_grandtotal_price - $sale_amount_recieved;
+            $sale_status = 'created';
+            $sale_payment_status = 'partial';
+        }
+
+        if($request->pending == 1){
+            $sale_status = 'pending';
+            $sale_payment_status = 'due';
         }
 
         $customer_id = $request->sale_customer_id;
@@ -196,6 +225,9 @@ class SaleController extends Controller
 
         $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
 
+        $userwarehouse = DB::table('user_warehouses')->where('user_id', Auth::user()->id)->get()->toArray();
+        // dd($userwarehouse[0]->warehouse_id);
+        
         $sale_adds = array(
             'sale_ref_no'           => $sale_ref_no,
             'sale_customer_id'      => $request->sale_customer_id,
@@ -203,7 +235,7 @@ class SaleController extends Controller
             'sale_total_quantity'   => $request->sale_total_qty,//'sale_product_quantity'
             'sale_free_piece'       => $request->sale_free_piece,
             'sale_free_amount'      => $request->sale_free_amount,
-            'sale_status'           => $request->sale_status,
+            'sale_status'           => $sale_status,
             'sale_note'             => $request->sale_note,
             // 'sale_date'             => $request->sale_date,
             'sale_total_price'      => $request->sale_total_price,
@@ -213,12 +245,12 @@ class SaleController extends Controller
             'sale_amount_paid'      => $sale_amount_recieved,
             'sale_amount_dues'      => $sale_amount_dues,
             'sale_payment_method'   => $request->sale_payment_method,
-            'sale_payment_status'   => $request->sale_payment_status,
+            'sale_payment_status'   => $sale_payment_status,
             'sale_document'         => $request->sale_document,
-            'sale_invoice_id'       => $request->sale_invoice_id,
+            'sale_invoice_id'       => $sale_invoice_id,
             'sale_invoice_date'     => $request->sale_invoice_date,
             // 'sale_payment_id'       => $request->sale_payment_id,
-            // 'warehouse_id'              => $request->warehouse_id,
+            'warehouse_id'          => $userwarehouse[0]->warehouse_id,
             'sale_added_by' 	    => Auth::user()->id,
             'created_at'	 			=> date('Y-m-d h:i:s'),
         );
@@ -243,9 +275,9 @@ class SaleController extends Controller
 
         $product_barcodes = $request->sale_products_barcode;
         // $sale_warehouses = $request->sale_products_warehouse;
-        $product_names = $request->sale_name;
-        $product_codes = $request->sale_code;
-        $product_ids = $request->sale_id;
+        $product_names = $request->product_name;
+        $product_codes = $request->product_code;
+        $product_ids = $request->product_id;
         $products_pieces = $request->sale_products_pieces;
         $pieces_per_packet = $request->sale_pieces_per_packet;
         $products_packets = $request->sale_products_packets;
@@ -265,7 +297,7 @@ class SaleController extends Controller
             $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
 
             $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
-
+            
             $sale_product_adds[$key] = array(
                 'sale_id'                    => $id,
                 'product_id'                 => $single_id,
@@ -319,11 +351,14 @@ class SaleController extends Controller
             $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
         }
 
-		if($save){
-			return response()->json(['data' => $sale_adds, 'sale_products' => $sale_products_save, 'message' => 'Sale Created Successfully'], 200);
-		}else{
-			return response()->json("Oops! Something Went Wrong", 400);
-		}
+		// $this->genInvoice($id);
+        // return redirect()->url('sale/gen_invoice/'.$id);
+        return redirect('sale/gen_invoice/'.$id);
+        // if($save){
+		// 	return response()->json(['data' => $sale_adds, 'sale_products' => $sale_products_save, 'message' => 'Sale Created Successfully'], 200);
+		// }else{
+		// 	return response()->json("Oops! Something Went Wrong", 400);
+		// }
     }
 
     public function storereturn(Request $request)
@@ -356,6 +391,12 @@ class SaleController extends Controller
         //    return response()->json("Fields Required", 400);
         // }
         $sale_return_ref_no = $random = Str::random(8); //str_random
+        $lastsale = DB::table('sales')->orderBy('sale_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastsale->sale_id+1;
+        $lastid = substr($lastid, -8);
+        $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
+        $year = (string)Carbon::now()->year;
+        $sale_return_invoice_id = 's.return-'.$year.'-'.$lastid;
         //$sale_return_adds = $request->except('document');
         //$sale_return_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $sale_return_grandtotal_price = $request->sale_grandtotal_price;
@@ -402,7 +443,7 @@ class SaleController extends Controller
             'sale_return_amount_dues'      => $sale_return_amount_dues,
             'sale_return_payment_method'   => $request->sale_payment_method,
             'sale_return_payment_status'   => $request->sale_payment_status,
-            'sale_return_invoice_id'       => $request->sale_invoice_id,
+            'sale_return_invoice_id'       => $sale_return_invoice_id,
             'sale_return_invoice_date'     => $request->sale_invoice_date,
             'sale_return_document'         => $request->sale_document,
             'sale_return_note'             => $request->sale_note,
@@ -545,9 +586,11 @@ class SaleController extends Controller
         $sale = Sale::where('sale_id', $id)->get();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
-        $saleproducts = SaleProducts::where('sale_id', $id)->get();    
+        $attachedbarcodes = ProductBarcodes::get();
 
-        return view('sales.edit', compact('sale', 'customers', 'products', 'saleproducts', 'customer') );//'selectedsales'
+        $saleproducts = SaleProducts::where('sale_id', $id)->orderBy('sale_products_id', 'desc')->get();    
+
+        return view('sales.edit', compact('sale', 'customers', 'products', 'attachedbarcodes', 'saleproducts', 'customer') );//'selectedsales'
         // return view('sales.edit', ['sales' => $model->paginate(15)->items()[$id-1], 'customers' => $model2->paginate(15)->items(), 'products' => $model3->paginate(15)->items()]);
     }
 
@@ -645,8 +688,8 @@ class SaleController extends Controller
             'sale_payment_method'   => $request->sale_payment_method,
             'sale_payment_status'   => $request->sale_payment_status,
             // 'sale_document'      => $request->sale_document,
-            'sale_invoice_id'       => $request->sale_invoice_id,
-            'sale_invoice_date'     => $request->sale_invoice_date,
+            // 'sale_invoice_id'       => $request->sale_invoice_id,
+            // 'sale_invoice_date'     => $request->sale_invoice_date,
             // 'sale_payment_id'       => $request->sale_payment_id,
             // 'warehouse_id'              => $request->warehouse_id,
 
@@ -921,10 +964,10 @@ class SaleController extends Controller
         $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
         $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
         $payment_data = Payment::where('sale_id', $id)->get();
-        $numberToWords = new NumberToWords();
-        $numberTransformer = $numberToWords->getNumberTransformer('en');
-        $numberInWords = $numberTransformer->toWords($sale_data->sale_grandtotal_price);
+        // $numberToWords = new NumberToWords();
+        // $numberTransformer = $numberToWords->getNumberTransformer('en');
+        // $numberInWords = $numberTransformer->toWords($sale_data->sale_grandtotal_price);
 
-        return view('sales.invoice', compact('sale_data', 'sale_products_data', 'user_data', 'warehouse_data', 'customer_data', 'payment_data', 'numberInWords'));
+        return view('sales.invoice', compact('sale_data', 'sale_products_data', 'user_data', 'warehouse_data', 'customer_data', 'payment_data',));
     }
 }

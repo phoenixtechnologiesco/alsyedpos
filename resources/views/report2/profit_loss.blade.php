@@ -3,7 +3,7 @@
 <section>
 	<h3 class="text-center">{{trans('file.Summary Report')}}</h3>
 	{!! Form::open(['route' => 'report.profitLoss', 'method' => 'post']) !!}
-	<div class="col-md-6 offset-md-3 mt-4">
+	<div class="col-6 offset-md-3 mt-4">
         <div class="form-group row">
             <label class="d-tc mt-2"><strong>{{trans('file.Choose Your Date')}}</strong> &nbsp;</label>
             <div class="d-tc">
@@ -21,7 +21,7 @@
 	{{Form::close()}}
 	<div class="container-fluid">
 		<div class="row mt-4">
-			<div class="col-md-3">
+			<div class="col-3">
 				<div class="colored-box">
 					<i class="fa fa-heart"></i>
 					<h3>{{trans('file.Purchase')}}</h3>
@@ -34,7 +34,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-3">
 				<div class="colored-box">
 					<i class="fa fa-shopping-cart"></i>
 					<h3>{{trans('file.Sale')}}</h3>
@@ -47,7 +47,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-3">
 				<div class="colored-box">
 					<i class="fa fa-random "></i>
 					<h3>{{trans('file.Sale Return')}}</h3>
@@ -59,7 +59,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-3">
 				<div class="colored-box">
 					<i class="fa fa-random "></i>
 					<h3>{{trans('file.Purchase Return')}}</h3>
@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		<div class="row mt-2">
-			<div class="col-md-4">
+			<div class="col-4">
 				<div class="colored-box">
 					<i class="fa fa-money"></i>
 					<h3>{{trans('file.profit')}} / {{trans('file.Loss')}}</h3>
@@ -85,7 +85,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-4">
 				<div class="colored-box">
 					<i class="fa fa-money"></i>
 					<h3>{{trans('file.profit')}} / {{trans('file.Loss')}}</h3>
@@ -99,7 +99,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-4">
 				<div class="colored-box">
 					<i class="fa fa-money "></i>
 					<h3>{{trans('file.Net Profit')}} / {{trans('file.Net Loss')}}</h3>
@@ -112,7 +112,7 @@
 			</div>
 		</div>
 		<div class="row mt-2">
-			<div class="col-md-3">
+			<div class="col-3">
 				<div class="colored-box">
 					<i class="fa fa-dollar"></i>
 					<h3>{{trans('file.Payment Recieved')}}</h3>
@@ -129,7 +129,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-3">
 				<div class="colored-box">
 					<i class="fa fa-dollar"></i>
 					<h3>{{trans('file.Payment Sent')}}</h3>
@@ -143,7 +143,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-3">
 				<div class="colored-box">
 					<i class="fa fa-dollar"></i>
 					<h3>{{trans('file.Expense')}}</h3>
@@ -154,7 +154,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-3">
 				<div class="colored-box">
 					<i class="fa fa-dollar"></i>
 					<h3>{{trans('file.Payroll')}}</h3>
@@ -167,7 +167,7 @@
 			</div>
 		</div>
 		<div class="row mt-2">
-			<div class="col-md-4 offset-md-4">
+			<div class="col-4 offset-md-4">
 				<div class="colored-box">
 					<i class="fa fa-dollar"></i>
 					<h3>{{trans('file.Cash in Hand')}}</h3>
@@ -186,7 +186,7 @@
 		</div>
 		<div class="row mt-2">
 			@foreach($warehouse_name as $key => $name)
-				<div class="col-md-4">
+				<div class="col-4">
 					<div class="colored-box">
 						<i class="fa fa-money"></i>
 						<h3>{{$name}}</h3>
