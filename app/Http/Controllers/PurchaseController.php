@@ -191,6 +191,12 @@ class PurchaseController extends Controller
            return response()->json("Fields Required", 400);
         }
         $purchase_ref_no = $random = Str::random(8); //str_random
+        $lastpurchase = DB::table('purchases')->orderBy('purchase_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastpurchase->purchase_id+1;
+        $lastid = substr($lastid, -8);
+        $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
+        $year = (string)Carbon::now()->year;
+        $purchase_invoice_id = 'purchase-'.$year.'-'.$lastid;
         //$purchase_adds = $request->except('document');
         //$purchase_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $purchase_grandtotal_price = $request->purchase_grandtotal_price;
@@ -239,7 +245,7 @@ class PurchaseController extends Controller
             'purchase_payment_method'   => $request->purchase_payment_method,
             'purchase_payment_status'   => $request->purchase_payment_status,
             'purchase_document'         => $request->purchase_document,
-            'purchase_invoice_id'       => $request->purchase_invoice_id,
+            'purchase_invoice_id'       => $purchase_invoice_id,
             'purchase_invoice_date'     => $request->purchase_invoice_date,
             // 'purchase_payment_id'       => $request->purchase_payment_id,
             // 'warehouse_id'              => $request->warehouse_id,
@@ -384,6 +390,12 @@ class PurchaseController extends Controller
         //    return response()->json("Fields Required", 400);
         // }
         $purchase_return_ref_no = $random = Str::random(8); //str_random
+        $lastpurchasereturn = DB::table('purchase_returns')->orderBy('purchase_return_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastpurchasereturn->purchase_return_id+1;
+        $lastid = substr($lastid, -8);
+        $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
+        $year = (string)Carbon::now()->year;
+        $purchase_return_invoice_id = 'p.return-'.$year.'-'.$lastid;
         //$purchase_adds = $request->except('document');
         //$purchase_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $purchase_return_grandtotal_price = $request->purchase_grandtotal_price;

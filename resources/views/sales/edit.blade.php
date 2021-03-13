@@ -102,7 +102,7 @@
                           <div class="form-group">
                             <label for="sale_status" class="form-col-12 control-label">{{__(" Sale Status")}}</label>
                               <div class="form-col-12">
-                                <select name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
+                                <select readonly name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
                                   <option value="pending">Pending</option>
                                   <option value="created">Created</option>
                                   <option value="completed">Completed</option>
@@ -127,12 +127,11 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        {{-- <div class="form-col-2">
                           <div class="form-group">
                             <label for="sale_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Invoice ID")}}</label>
                               <div class="form-col-12">
                                 <div class="myrow">
-                                  {{-- <div class="col-1"></div> --}}
                                   <input readonly type="text" name="sale_invoice_id" class="form-control form-col-10" value="{{ $sale[0]->sale_invoice_id }}">
                                   <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
                                     <i class="fa fa-file-text-o"></i>
@@ -140,6 +139,25 @@
                                 </div>
                                 @include('alerts.feedback', ['field' => 'sale_invoice_id'])
                               </div>
+                          </div>
+                        </div> --}}
+                        <div class="form-col-3">
+                          <div class="form-group">
+                            {{-- <label for="available_stock" class=" form-col-12 control-label">{{__(" Available Pcs/Pkts/Crtns")}}</label> --}}
+                            <div class="row">
+                              <div class=" form-first-col-4">
+                                <label for="" class=" form-col-12 control-label">{{__(" Avail.Pcs")}}</label>
+                                <input readonly type="number" name="available_pcs" id="available_pcs" class="form-control col-12" value="">
+                              </div>
+                              <div class=" form-col-4">
+                                <label for="" class=" form-col-12 control-label">{{__(" Avail.Pkts")}}</label>
+                                <input readonly type="number" name="available_pkts" id="available_pkts" class="form-control col-12" value="">
+                              </div>
+                              <div class=" form-last-col-4">
+                                <label for="" class=" form-col-12 control-label">{{__(" Aval.Crtns")}}</label>
+                                <input readonly type="number" name="available_crtns" id="available_crtns" class="form-control col-12" value="">
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="form-col-2">
@@ -154,7 +172,23 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        <div class="form-col-3">
+                          <div class="row">
+                            <div class="form-col-6">
+                              <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label>
+                                <div class="form-col-12">
+                                  <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="30 Days">
+                                </div>
+                            </div>
+                            <div class="form-col-6">
+                              <label for="customer_credit_limit" class=" form-col-12 control-label">{{__(" Credit Limit")}}</label>
+                                <div class=" form-col-12">
+                                  <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="30000">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-last-col-2">
                           <div class="form-group">
                             <label for="sale_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
                             <div class="form-col-12 input-group">
@@ -165,23 +199,6 @@
                               </div>
                               <input type="file" name="sale_document" id="sale_document" class="form-control col-12" value="{{ $sale[0]->sale_document }}">
                             </div>
-                          </div>
-                        </div>
-                        <div class="form-col-2">
-                          <div class="form-group">
-                            <label for="payterm_duratype" class="col-12 control-label">{{__("Payterm")}}</label>
-                              <div class="form-col-12">
-                                <input readonly type="text" name="payterm_duratype" class="form-control col-12" value="{{ old('payterm_duratype', '30 Days') }}">
-                              </div>
-                          </div>
-                        </div>
-                        <div class="form-last-col-2">
-                          <div class="form-group">
-                            <label for="credit_limit" class=" col-12 control-label">{{__(" Credit Limit")}}</label>
-                              <div class=" form-col-12">
-                                <input readonly type="number" name="credit_limit" class="form-control col-12" value="{{ old('credit_limit', '30000') }}">
-                                @include('alerts.feedback', ['field' => 'credit_limit'])
-                              </div>
                           </div>
                         </div>
                       </div>
@@ -377,7 +394,7 @@
                                   {{-- <th class="col-2 mycol" scope="col">Document</th> --}}
                                   <th class="col-8 firstcol" scope="col">Remarks</th>
                                   <th class="col-2 mycol" scope="col">Payment Status</th>
-                                  <th class="col-2 lastcol" scope="col">Return Change</th>
+                                  <th class="col-2 lastcol" scope="col">Invoice ID</th>
                                 </tr>
                                 <tr class="row table-info" >
                                   {{-- <td class="col-1 mycol" scope="col">
@@ -398,7 +415,7 @@
                                     <input type="text" name="sale_note" class="form-control col-12" value="{{ $sale[0]->sale_note }}" >
                                   </td>
                                   <td class="col-2 mycol" scope="col">
-                                    <select name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
+                                    <select readonly name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
                                       <option value="due">Due</option>
                                       <option value="paid">Paid</option>
                                       <option value="partial">Partial</option>
@@ -407,7 +424,10 @@
                                     </select>
                                   </td>
                                   <td class="col-2 lastcol" scope="col">
-                                    <input readonly type="number" min="0" name="sale_return_change" id="sale_return_change" class="form-control col-12" value="0">
+                                    <input readonly type="text" name="sale_invoice_id" class="form-control form-col-12" value="{{ $sale[0]->sale_invoice_id }}">
+                                    {{-- <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
+                                      <i class="fa fa-file-text-o"></i>
+                                    </button> --}}
                                   </td>
                                 </tr>
                               </tfoot>
@@ -944,6 +964,20 @@
       }
     });
 
+    $('#sale_products_barcode_i').val('');
+    $('#product_name_i').val('');
+    $('#product_code_i').val('');
+    $('#product_id_i').val('');
+    // $('#sale_products_pieces_i').val('0');
+    // $('#sale_products_packets_i').val('0');
+    // $('#sale_products_cartons_i').val('0');
+    // $('#sale_pieces_per_packet_i').val('0');
+    // $('#sale_packets_per_carton_i').val('0');
+    // $('#sale_pieces_per_carton_i').val('0');
+    // $('#sale_products_unit_price_i').val('0');
+    // $('#sale_products_discount_i').val('0');
+    // $('#sale_products_sub_total_i').val('0');
+
     if(product_name !== "" && product_quantity !== 0 && product_unit_price !== 0 && repeated !== 1){
 
       product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
@@ -989,6 +1023,8 @@
       }
     }
 
+    $('#product_name_i').focus();
+
   });
   $(document).on('change', '#sale_add_amount', function(e){
     grandtotal_amount = Number(grandtotal_amount) - Number(sale_add_amount);
@@ -1007,62 +1043,58 @@
   $(document).on('change', "#sale_amount_recieved", function(e){
     grandtotal_amount = $('#sale_grandtotal_price').val();
     sale_amount_recieved = $('#sale_amount_recieved').val();
-
-    if(sale_amount_recieved >= grandtotal_amount){
+    if(Number(sale_amount_recieved) >= Number(grandtotal_amount)){
       sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
       $('#sale_return_change').val(sale_return_change);
+    }
+    if(Number(sale_amount_recieved) < Number(grandtotal_amount)){
+      alert('Amount recieved should be greater than the Grand Total Amount');
+      $('#sale_amount_recieved').val(0);
     }
   });
   $(document).on("click", ".delete-productfield", function(event) {
 
-    rowid = $(this).attr('row-id');
-    thisproduct_discount = $('#sale_products_discount'+rowid).val();
-    thisproduct_sub_total = $('#sale_products_sub_total'+rowid).val();
-    thisproduct_pieces = $('#sale_products_pieces'+rowid).val();
-    thisproduct_packets = $('#sale_products_packets'+rowid).val();
-    thisproduct_cartons = $('#sale_products_cartons'+rowid).val();
-    thispieces_per_packet = $('#sale_pieces_per_packet'+rowid).val();
-    thispieces_per_carton = $('#sale_pieces_per_carton'+rowid).val();
-    sale_amount_recieved = $('#sale_amount_recieved').val();
+    if(confirm('Do you really want to delete this?')){
+      rowid = $(this).attr('row-id');
+      thisproduct_discount = $('#sale_products_discount'+rowid).val();
+      thisproduct_sub_total = $('#sale_products_sub_total'+rowid).val();
+      thisproduct_pieces = $('#sale_products_pieces'+rowid).val();
+      thisproduct_packets = $('#sale_products_packets'+rowid).val();
+      thisproduct_cartons = $('#sale_products_cartons'+rowid).val();
+      thispieces_per_packet = $('#sale_pieces_per_packet'+rowid).val();
+      thispieces_per_carton = $('#sale_pieces_per_carton'+rowid).val();
+      sale_amount_recieved = $('#sale_amount_recieved').val();
 
-    // rowindex = $(this).closest('tr').index();
-    total_quantity = Number(total_quantity) - (Number(thisproduct_pieces)+(thisproduct_packets*thispieces_per_packet)+(thisproduct_cartons*thispieces_per_carton));
-    total_items = Number(total_items) - 1;
-    total_discount = Number(total_discount) - Number(thisproduct_discount);
-    // var product_sub_total = $('#sale_products_sub_total').val();
-    subtotal_amount = Number(subtotal_amount) - Number(thisproduct_sub_total);
-    grandtotal_amount = Number(grandtotal_amount) - Number(thisproduct_sub_total);
+      // rowindex = $(this).closest('tr').index();
+      total_quantity = Number(total_quantity) - (Number(thisproduct_pieces)+(thisproduct_packets*thispieces_per_packet)+(thisproduct_cartons*thispieces_per_carton));
+      total_items = Number(total_items) - 1;
+      total_discount = Number(total_discount) - Number(thisproduct_discount);
+      // var product_sub_total = $('#sale_products_sub_total').val();
+      subtotal_amount = Number(subtotal_amount) - Number(thisproduct_sub_total);
+      grandtotal_amount = Number(grandtotal_amount) - Number(thisproduct_sub_total);
 
-    $('#sale_total_qty').val('');
-    $('#sale_total_qty').val(total_quantity);
-    $('#sale_total_items').val('');
-    $('#sale_total_items').val(total_items);
-    $('#sale_discount').val('');
-    $('#sale_discount').val(total_discount);
-    $('#sale_total_price').val('');
-    $('#sale_total_price').val(subtotal_amount);
-    $('#sale_grandtotal_price').val('');
-    $('#sale_grandtotal_price').val(grandtotal_amount);
-    if(sale_amount_recieved >= grandtotal_amount){
-      sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
-      $('#sale_return_change').val(sale_return_change);
+      $('#sale_total_qty').val('');
+      $('#sale_total_qty').val(total_quantity);
+      $('#sale_total_items').val('');
+      $('#sale_total_items').val(total_items);
+      $('#sale_discount').val('');
+      $('#sale_discount').val(total_discount);
+      $('#sale_total_price').val('');
+      $('#sale_total_price').val(subtotal_amount);
+      $('#sale_grandtotal_price').val('');
+      $('#sale_grandtotal_price').val(grandtotal_amount);
+      if(sale_amount_recieved >= grandtotal_amount){
+        sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
+        $('#sale_return_change').val(sale_return_change);
+      }
+      else{
+          $('#sale_return_change').val(0);
+      }
+
+      $(this).closest('.prtr').remove();
+
     }
-    else{
-        $('#sale_return_change').val(0);
-    }
 
-    $(this).closest('.prtr').remove();
-
-    // product_barcode.splice(rowindex, 1);
-    // product_name.splice(rowindex, 1);
-    // product_pieces.splice(rowindex, 1);
-    // product_packets.splice(rowindex, 1);
-    // product_cartons.splice(rowindex, 1);
-    // product_unit_price.splice(rowindex, 1);
-    // product_discount.splice(rowindex, 1);
-    // product_total_price.splice(rowindex, 1);
-    // $(this).closest('.prtr').remove();
-    // calculateTotal();
   });
 
   $(document).on('change', "#sale_products_pieces_i", function(e){
@@ -1175,6 +1207,9 @@
         $('#sale_products_unit_price_i').val(product_cash_price_piece)
         // $('#sale_products_unit_price_i').val('');
         // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+        $('#available_pcs').val(catchproduct_pieces);
+        $('#available_pkts').val(catchproduct_packets);
+        $('#available_crtns').val(catchproduct_cartons);
         barcodeSearch2(catchproduct_id);
       }
     });
@@ -1462,7 +1497,7 @@
 
   function customerSearch(data){
     $.ajax({
-      url: 'searchcustomer',
+      url: '{{ route("searchcustomer") }}',
       type: "GET",
       data: {
         data: data,

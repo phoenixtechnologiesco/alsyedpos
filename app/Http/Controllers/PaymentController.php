@@ -140,6 +140,12 @@ class PaymentController extends Controller
         //    return response()->json("Fields Required", 400);
         // }
         $payment_ref_no = $random = Str::random(8); //str_random
+        $lastpayment = DB::table('sales')->orderBy('sale_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastpayment->sale_id+1;
+        $lastid = substr($lastid, -8);
+        $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
+        $year = (string)Carbon::now()->year;
+        $payment_invoice_id = 'payment-'.$year.'-'.$lastid;
         $payment_type = 'credit';
         //$payment_adds = $request->except('document');
         //$payment_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
@@ -187,7 +193,7 @@ class PaymentController extends Controller
             'payment_cheque_no'        => $request->payment_cheque_no,
             // 'payment_document'         => $request->payment_document,
             // 'account_id'               => $request->account_id,
-            'payment_invoice_id'       => $request->payment_invoice_id,
+            'payment_invoice_id'       => $payment_invoice_id,
             'payment_invoice_date'     => $request->payment_invoice_date,
             // 'payment_date'             => $request->payment_date,
             'payment_created_by' 	   => Auth::user()->id,
@@ -248,6 +254,12 @@ class PaymentController extends Controller
         //    return response()->json("Fields Required", 400);
         // }
         $payment_ref_no = $random = Str::random(8); //str_random
+        $lastpayment = DB::table('purchases')->orderBy('purchase_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastpayment->purchase_id+1;
+        $lastid = substr($lastid, -8);
+        $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
+        $year = (string)Carbon::now()->year;
+        $payment_invoice_id = 'payment-'.$year.'-'.$lastid;
         $payment_type = 'debit';
         //$payment_adds = $request->except('document');
         //$payment_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
@@ -293,7 +305,7 @@ class PaymentController extends Controller
             'payment_cheque_no'        => $request->payment_cheque_no,
             // 'payment_document'         => $request->payment_document,
             // 'account_id'               => $request->account_id,
-            'payment_invoice_id'       => $request->payment_invoice_id,
+            'payment_invoice_id'       => $payment_invoice_id,
             'payment_invoice_date'     => $request->payment_invoice_date,
             // 'payment_date'             => $request->payment_date,
             'payment_created_by' 	   => Auth::user()->id,

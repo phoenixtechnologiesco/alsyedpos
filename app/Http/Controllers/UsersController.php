@@ -64,11 +64,11 @@ class UsersController extends Controller
         $validate = Validator::make($request->all(), [ 
             'name'       => 'required|min:1|max:256',
             'email'      => 'required|min:1|max:256|unique:users',
-            'password'   => 'required|password|max:256|confirmed',
-            //password_confirmation
+            'password'   => 'required_with:password_confirmation|same:password_confirmation|max:256|',
+            'password_confirmation' => 'required_with:password|same:password|min:1|max:256'
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+           return response()->json("Fields Requireds", 400);
         }
 
         // $user_add = array(

@@ -266,7 +266,6 @@ class CustomerController extends Controller
 
     public function searchcustomerpayments(Request $request)
     {
-
         $getRecords = NULL;
         $myvar = NULL;
         // $input = trim(filter_var($request['search_data'], FILTER_SANITIZE_STRING));
@@ -289,14 +288,11 @@ class CustomerController extends Controller
             $myvar .= '<tr class="row table-info"><td class="col-1 firstcol text-center">'.$one_payment['payment_invoice_id'].'</td><td class="col-1 mycol text-center">'.$one_payment['payment_invoice_date'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_id'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_amount_paid'].'</td><td class="col-2 mycol text-center"   >'.$one_payment['payment_id'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_method'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_type'].'</td><td class="col-1 mycol text-center"   >'.$one_payment['payment_id'].'</td> <td class="col-1 lastcol text-center" >'.$one_payment['customer_amount_dues'].'</td></tr>';
         }
 
-
         $records3 = array(
             'customer' => $records,
             'payments' => $myvar
         );
         
-        // dd($records3);
-
         return $records3;
     }
 }

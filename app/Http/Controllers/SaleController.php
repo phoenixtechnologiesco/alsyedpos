@@ -391,8 +391,8 @@ class SaleController extends Controller
         //    return response()->json("Fields Required", 400);
         // }
         $sale_return_ref_no = $random = Str::random(8); //str_random
-        $lastsale = DB::table('sales')->orderBy('sale_id', 'desc')->limit(1)->first();
-        $lastid = (string)$lastsale->sale_id+1;
+        $lastsalereturn = DB::table('sale_returns')->orderBy('sale_return_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastsalereturn->sale_return_id+1;
         $lastid = substr($lastid, -8);
         $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
         $year = (string)Carbon::now()->year;

@@ -13,7 +13,7 @@
             font-size: 14px;
             line-height: 24px;
             font-family: 'Ubuntu', sans-serif;
-            text-transform: capitalize;
+            text-transform: "text-lowercase";
         }
         .btn {
             padding: 7px 10px;
@@ -149,6 +149,7 @@
             padding-right: 5px;
             padding-left: 5px;
         }
+
 
         @media print {
             * {
@@ -302,8 +303,12 @@
                 </tbody>
             </table>
             <div class="centered" style="margin:0px 0 50px">
-                <p>
-                    {{__('Thank you for shopping with us. Please come again')}}
+                <p class="text-lowercase">
+                    {{__('Thanks for shopping! No return No exchange after 15 days or without receipt. (T & C apply).')}}                    
+                    <br>
+                    {{__('To order online visit our website www.alsyedstore.com.')}}
+                    <br>
+                    {{__('For retailers: www.alsyedwholesale.pk.')}}
                 </p>
                 <p>
                     {{__("Contact Number")}}: {{$warehouse_data->warehouse_phone_number}}

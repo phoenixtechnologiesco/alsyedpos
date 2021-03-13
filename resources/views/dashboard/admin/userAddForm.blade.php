@@ -42,7 +42,7 @@
                                           <a class="" id="user-list-btn"><i class="fa fa-user"></i></a>
                                         </span>
                                       </div>
-                                      <input class="form-control col-12" type="text" placeholder="{{ __('Username') }}" name="email" value="{{ old('email', '') }}" required>
+                                      <input required class="form-control col-12" type="text" placeholder="{{ __('Username') }}" name="email" value="{{ old('email', '') }}" required>
                                   </div>
                                 </div>
                               </div>
@@ -58,7 +58,7 @@
                                         </a>
                                       </span>
                                     </div>
-                                    <input class="form-control col-12" type="password" placeholder="{{ __('Password') }}" name="password" value="{{ old('password', '') }}" required>
+                                    <input required class="form-control col-12" type="password" placeholder="{{ __('Password') }}" name="password" value="{{ old('password', '') }}" required>
                                   </div>
                                 </div>
                               </div>

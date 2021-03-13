@@ -194,7 +194,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input type="text" name="payment_amount_recieved" class="form-control form-col-12"  value="{{ old('payment_amount_recieved', '100') }}">
+                              <input type="text" name="payment_amount_recieved" class="form-control form-col-12"  value="{{ old('payment_amount_recieved', '') }}">
                               @include('alerts.feedback', ['field' => 'payment_amount_recieved'])
                             </div>
                           </div>
@@ -282,10 +282,9 @@
             // .focus(function(){
     });
   });
-
   function customerSearch(data){
     $.ajax({
-      url: 'searchcustomer',
+      url: '{{ route("searchcustomer") }}',
       type: "GET",
       data: {
         data: data,
@@ -301,8 +300,8 @@
         var customer_credit_duration = data[0]["customer_credit_duration"];
         var customer_credit_type = data[0]["customer_credit_type"];
         var payterm_duratype = customer_credit_duration+' '+customer_credit_type;
-        console.log(payterm_duratype);
         var customer_credit_limit = data[0]["customer_credit_limit"];
+        var customer_sale_rate = data[0]["customer_sale_rate"];
         // $('#customer_name option').removeAttr('selected');
         // // $('#customer_name option[value='+customer_id+']').removeAttr('selected');
         // $('#customer_name option[value='+customer_id+']').attr('selected', 'selected');
@@ -322,6 +321,8 @@
         // $('#customer_credit_type').val(customer_credit_type);
         $('#payterm_duratype').val(payterm_duratype);
         $('#customer_credit_limit').val(customer_credit_limit);
+        $('#payment_method').val(customer_sale_rate);
+
       }
     });
   }
