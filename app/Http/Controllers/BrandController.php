@@ -72,11 +72,13 @@ class BrandController extends Controller
         $save = DB::table('brands')->insert($brand_adds);
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('brands')->insertGetId($brand_adds);
-		if($save){
-			return response()->json(['data' => $brand_adds, 'message' => 'Brand Created Successfully'], 200);
-		}else{
-			return response()->json("Oops! Something Went Wrong", 400);
-		}
+        return redirect()->back();
+
+        // if($save){
+		// 	return response()->json(['data' => $brand_adds, 'message' => 'Brand Created Successfully'], 200);
+		// }else{
+		// 	return response()->json("Oops! Something Went Wrong", 400);
+		// }
     }
 
     /**
@@ -117,9 +119,9 @@ class BrandController extends Controller
         $brand_id = $id; //OR $request->brand_id;
 
         $validate = Validator::make($request->all(), [ 
-            'brand_ref_no'            => 'required',
+            'brand_ref_no'            => '',
             'parent_company'            => '',
-            'brand_name'              => 'required',
+            'brand_name'              => '',
             'brand_description'       => '',
             // 'status_id'                 => 'required',
         ]);

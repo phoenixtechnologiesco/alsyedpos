@@ -80,7 +80,8 @@ class SaleController extends Controller
 
     public function returnadd(SaleReturn $model, Customer $model2, sale $model3)
     {
-        $salereturns = SaleReturn::join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->get();
+        $salereturns = SaleReturn::join('customers', 'sale_returns.sale_return_customer_id', '=', 'customers.customer_id')->get();
+
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
         return view('sales.returnadd', compact('salereturns', 'customers', 'products') );
@@ -215,150 +216,157 @@ class SaleController extends Controller
             $sale_payment_status = 'due';
         }
 
-        $customer_id = $request->sale_customer_id;
-        $customer_name = $request->sale_customer_name;
-        $customer_edits = array(
-            'customer_balance_paid' 	=> $customer_amount_paid,
-            'customer_balance_dues' 	=> $customer_amount_dues,
-            // 'customer_total_balance'    => $request->customer_total_balance,
-        );
+        if($request->product_name !== NULL){
 
-        $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
-
-        $userwarehouse = DB::table('user_warehouses')->where('user_id', Auth::user()->id)->get()->toArray();
-        // dd($userwarehouse[0]->warehouse_id);
-        
-        $sale_adds = array(
-            'sale_ref_no'           => $sale_ref_no,
-            'sale_customer_id'      => $request->sale_customer_id,
-            'sale_total_items'      => $request->sale_total_items,//'sale_product_items'
-            'sale_total_quantity'   => $request->sale_total_qty,//'sale_product_quantity'
-            'sale_free_piece'       => $request->sale_free_piece,
-            'sale_free_amount'      => $request->sale_free_amount,
-            'sale_status'           => $sale_status,
-            'sale_note'             => $request->sale_note,
-            // 'sale_date'             => $request->sale_date,
-            'sale_total_price'      => $request->sale_total_price,
-            'sale_add_amount'       => $request->sale_add_amount,
-            'sale_discount'         => $request->sale_discount,
-            'sale_grandtotal_price' => $sale_grandtotal_price,
-            'sale_amount_paid'      => $sale_amount_recieved,
-            'sale_amount_dues'      => $sale_amount_dues,
-            'sale_payment_method'   => $request->sale_payment_method,
-            'sale_payment_status'   => $sale_payment_status,
-            'sale_document'         => $request->sale_document,
-            'sale_invoice_id'       => $sale_invoice_id,
-            'sale_invoice_date'     => $request->sale_invoice_date,
-            // 'sale_payment_id'       => $request->sale_payment_id,
-            'warehouse_id'          => $userwarehouse[0]->warehouse_id,
-            'sale_added_by' 	    => Auth::user()->id,
-            'created_at'	 			=> date('Y-m-d h:i:s'),
-        );
-        $document = $request->sale_document;
-        if($document){
-            $v = Validator::make([
-                    'extension' => strtolower($request->sale_document->getClientOriginalExtension()),
-                ],
-                [
-                    'extension' => 'in:pdf,csv,docx,pptx,xlsx,txt',
-            ]);
-            if($v->fails()) {
-                return redirect()->back()->withErrors($v->errors());
-            }
-            $documentName = $document->getClientOriginalName();
-            // dd($documentName);
-            // $document->move('public/documents/sale', $documentName);
-            Storage::disk('documents')->put('/', $document);
-            // Storage::putFile('documents', $document, $documentName);
-            $sale_adds['sale_document'] = $documentName;
-        }
-
-        $product_barcodes = $request->sale_products_barcode;
-        // $sale_warehouses = $request->sale_products_warehouse;
-        $product_names = $request->product_name;
-        $product_codes = $request->product_code;
-        $product_ids = $request->product_id;
-        $products_pieces = $request->sale_products_pieces;
-        $pieces_per_packet = $request->sale_pieces_per_packet;
-        $products_packets = $request->sale_products_packets;
-        $packets_per_carton = $request->sale_packets_per_carton;
-        $products_cartons = $request->sale_products_cartons;
-        $pieces_per_carton = $request->sale_pieces_per_carton;
-        $products_unit_prices = $request->sale_products_unit_price;
-        $products_discounts = $request->sale_products_discount;
-        $products_sub_totals = $request->sale_products_sub_total;
-
-        $save = DB::table('sales')->insert($sale_adds);
-        $id = DB::getPdo()->lastInsertId();
-        // $add_id = DB::table('sales')->insertGetId($sale_adds)
-        
-        foreach($product_ids as $key => $single_id){
-
-            $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-
-            $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+            $customer_id = $request->sale_customer_id;
+            $customer_name = $request->sale_customer_name;
+            $customer_edits = array(
+                'customer_balance_paid' 	=> $customer_amount_paid,
+                'customer_balance_dues' 	=> $customer_amount_dues,
+                // 'customer_total_balance'    => $request->customer_total_balance,
+            );
+    
+            $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
+    
+            $userwarehouse = DB::table('user_warehouses')->where('user_id', Auth::user()->id)->get()->toArray();
+            // dd($userwarehouse[0]->warehouse_id);
             
-            $sale_product_adds[$key] = array(
-                'sale_id'                    => $id,
-                'product_id'                 => $single_id,
-                'sale_product_ref_no'        => $product_codes[$key],
-                'sale_product_name'          => $product_names[$key],
-                'sale_product_barcode'       => $product_barcodes[$key],
-                'warehouse_id'               => $product[$key]->warehouse_id,
-                'sale_piece_per_packet'      => $pieces_per_packet[$key],
-                'sale_packet_per_carton'     => $packets_per_carton[$key],
-                'sale_piece_per_carton'      => $pieces_per_carton[$key],
-                'sale_pieces_total'          => $products_pieces[$key],
-                'sale_packets_total'         => $products_packets[$key],
-                'sale_cartons_total'         => $products_cartons[$key],
-                'sale_quantity_total'        => $products_quantity_total[$key],
-                'sale_trade_discount'        => $products_discounts[$key],
-                'sale_trade_price_piece'     => $products_unit_prices[$key],
-                'sale_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                'sale_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
-                'sale_product_sub_total'     => $products_sub_totals[$key]
+            $sale_adds = array(
+                'sale_ref_no'           => $sale_ref_no,
+                'sale_customer_id'      => $request->sale_customer_id,
+                'sale_total_items'      => $request->sale_total_items,//'sale_product_items'
+                'sale_total_quantity'   => $request->sale_total_qty,//'sale_product_quantity'
+                'sale_free_piece'       => $request->sale_free_piece,
+                'sale_free_amount'      => $request->sale_free_amount,
+                'sale_status'           => $sale_status,
+                'sale_note'             => $request->sale_note,
+                // 'sale_date'             => $request->sale_date,
+                'sale_total_price'      => $request->sale_total_price,
+                'sale_add_amount'       => $request->sale_add_amount,
+                'sale_discount'         => $request->sale_discount,
+                'sale_grandtotal_price' => $sale_grandtotal_price,
+                'sale_amount_paid'      => $sale_amount_recieved,
+                'sale_amount_dues'      => $sale_amount_dues,
+                'sale_payment_method'   => $request->sale_payment_method,
+                'sale_payment_status'   => $sale_payment_status,
+                'sale_document'         => $request->sale_document,
+                'sale_invoice_id'       => $sale_invoice_id,
+                'sale_invoice_date'     => $request->sale_invoice_date,
+                // 'sale_payment_id'       => $request->sale_payment_id,
+                'warehouse_id'          => $userwarehouse[0]->warehouse_id,
+                'sale_added_by' 	    => Auth::user()->id,
+                'created_at'	 		=> date('Y-m-d h:i:s'),
             );
-            $sale_products_save = DB::table('sale_products')->insert($sale_product_adds[$key]);
+            $document = $request->sale_document;
+            if($document){
+                $v = Validator::make([
+                        'extension' => strtolower($request->sale_document->getClientOriginalExtension()),
+                    ],
+                    [
+                        'extension' => 'in:pdf,csv,docx,pptx,xlsx,txt',
+                ]);
+                if($v->fails()) {
+                    return redirect()->back()->withErrors($v->errors());
+                }
+                $documentName = $document->getClientOriginalName();
+                // dd($documentName);
+                // $document->move('public/documents/sale', $documentName);
+                Storage::disk('documents')->put('/', $document);
+                // Storage::putFile('documents', $document, $documentName);
+                $sale_adds['sale_document'] = $documentName;
+            }
+    
+            $product_barcodes = $request->sale_products_barcode;
+            // $sale_warehouses = $request->sale_products_warehouse;
+            $product_names = $request->product_name;
+            $product_codes = $request->product_code;
+            $product_ids = $request->product_id;
+            $products_pieces = $request->sale_products_pieces;
+            $pieces_per_packet = $request->sale_pieces_per_packet;
+            $products_packets = $request->sale_products_packets;
+            $packets_per_carton = $request->sale_packets_per_carton;
+            $products_cartons = $request->sale_products_cartons;
+            $pieces_per_carton = $request->sale_pieces_per_carton;
+            $products_unit_prices = $request->sale_products_unit_price;
+            $products_discounts = $request->sale_products_discount;
+            $products_sub_totals = $request->sale_products_sub_total;
+    
+            $save = DB::table('sales')->insert($sale_adds);
+            $id = DB::getPdo()->lastInsertId();
+            // $add_id = DB::table('sales')->insertGetId($sale_adds)
+            
+            foreach($product_ids as $key => $single_id){
+    
+                $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+    
+                $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+                
+                $sale_product_adds[$key] = array(
+                    'sale_id'                    => $id,
+                    'product_id'                 => $single_id,
+                    'sale_product_ref_no'        => $product_codes[$key],
+                    'sale_product_name'          => $product_names[$key],
+                    'sale_product_barcode'       => $product_barcodes[$key],
+                    'warehouse_id'               => $product[$key]->warehouse_id,
+                    'sale_piece_per_packet'      => $pieces_per_packet[$key],
+                    'sale_packet_per_carton'     => $packets_per_carton[$key],
+                    'sale_piece_per_carton'      => $pieces_per_carton[$key],
+                    'sale_pieces_total'          => $products_pieces[$key],
+                    'sale_packets_total'         => $products_packets[$key],
+                    'sale_cartons_total'         => $products_cartons[$key],
+                    'sale_quantity_total'        => $products_quantity_total[$key],
+                    'sale_trade_discount'        => $products_discounts[$key],
+                    'sale_trade_price_piece'     => $products_unit_prices[$key],
+                    'sale_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                    'sale_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                    'sale_product_sub_total'     => $products_sub_totals[$key]
+                );
+                $sale_products_save = DB::table('sale_products')->insert($sale_product_adds[$key]);
+            }
+    
+            foreach($product_ids as $key => $single_id){
+    
+                $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_available[$key] = $products_quantity_total[$key];
+    
+                $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+    
+                $product_edits = array(
+                    // 'product_ref_no'                => $product_codes[$key],
+                    // 'product_name'                  => $product_names[$key],
+                    // 'product_barcode'               => $product_barcodes[$key],
+                    // 'warehouse_id'                  => $product_warehouses[$key],
+                    // 'product_piece_per_packet'      => $pieces_per_packet[$key],
+                    // 'product_piece_per_carton'      => $pieces_per_carton[$key],
+                    'product_pieces_total'          => $product[$key]->product_pieces_total-$products_pieces[$key],
+                    'product_pieces_available'      => $product[$key]->product_pieces_available-$products_pieces[$key],
+                    'product_packets_total'         => $product[$key]->product_packets_total-$products_packets[$key],
+                    'product_packets_available'     => $product[$key]->product_packets_available-$products_packets[$key],
+                    'product_cartons_total'         => $product[$key]->product_cartons_total-$products_cartons[$key],
+                    'product_cartons_available'     => $product[$key]->product_cartons_available-$products_cartons[$key],
+                    'product_quantity_total'        => $product[$key]->product_quantity_total-$products_quantity_total[$key],
+                    'product_quantity_available'    => $product[$key]->product_quantity_available-$products_quantity_available[$key],
+                    // 'product_trade_discount'        => $products_discounts[$key],
+                    // 'product_trade_price_piece'     => $products_unit_prices[$key],
+                    // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                    // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                );
+                $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
+            }
+    
+            // $this->genInvoice($id);
+            // return redirect()->url('sale/gen_invoice/'.$id);
+            return redirect('sale/gen_invoice/'.$id);
+            // if($save){
+            // 	return response()->json(['data' => $sale_adds, 'sale_products' => $sale_products_save, 'message' => 'Sale Created Successfully'], 200);
+            // }else{
+            // 	return response()->json("Oops! Something Went Wrong", 400);
+            // }
+        }
+        else{
+            return response()->json("Add atleast one product", 400);
         }
 
-        foreach($product_ids as $key => $single_id){
-
-            $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-            $products_quantity_available[$key] = $products_quantity_total[$key];
-
-            $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
-
-            $product_edits = array(
-                // 'product_ref_no'                => $product_codes[$key],
-                // 'product_name'                  => $product_names[$key],
-                // 'product_barcode'               => $product_barcodes[$key],
-                // 'warehouse_id'                  => $product_warehouses[$key],
-                // 'product_piece_per_packet'      => $pieces_per_packet[$key],
-                // 'product_piece_per_carton'      => $pieces_per_carton[$key],
-                'product_pieces_total'          => $product[$key]->product_pieces_total-$products_pieces[$key],
-                'product_pieces_available'      => $product[$key]->product_pieces_available-$products_pieces[$key],
-                'product_packets_total'         => $product[$key]->product_packets_total-$products_packets[$key],
-                'product_packets_available'     => $product[$key]->product_packets_available-$products_packets[$key],
-                'product_cartons_total'         => $product[$key]->product_cartons_total-$products_cartons[$key],
-                'product_cartons_available'     => $product[$key]->product_cartons_available-$products_cartons[$key],
-                'product_quantity_total'        => $product[$key]->product_quantity_total-$products_quantity_total[$key],
-                'product_quantity_available'    => $product[$key]->product_quantity_available-$products_quantity_available[$key],
-                // 'product_trade_discount'        => $products_discounts[$key],
-                // 'product_trade_price_piece'     => $products_unit_prices[$key],
-                // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
-            );
-            $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
-        }
-
-		// $this->genInvoice($id);
-        // return redirect()->url('sale/gen_invoice/'.$id);
-        return redirect('sale/gen_invoice/'.$id);
-        // if($save){
-		// 	return response()->json(['data' => $sale_adds, 'sale_products' => $sale_products_save, 'message' => 'Sale Created Successfully'], 200);
-		// }else{
-		// 	return response()->json("Oops! Something Went Wrong", 400);
-		// }
     }
 
     public function storereturn(Request $request)
@@ -416,143 +424,151 @@ class SaleController extends Controller
             $sale_return_amount_dues = $sale_return_grandtotal_price - $sale_return_amount_return;
         }
 
-        $customer_id = $request->sale_customer_id;
-        $customer_name = $request->sale_customer_name;
-        $customer_edits = array(
-            'customer_balance_paid' 	=> $customer_amount_paid,
-            'customer_balance_dues' 	=> $customer_amount_dues,
-            // 'customer_total_balance'    => $request->customer_total_balance,
-        );
+        if($request->product_name !== NULL){
 
-        $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
-
-        $salereturn_adds = array(
-            'sale_return_ref_no'           => $sale_return_ref_no,
-            'sale_return_customer_id'      => $request->sale_customer_id,
-            'sale_return_total_items'      => $request->sale_total_items,//'sale_product_items'
-            'sale_return_total_quantity'   => $request->sale_total_qty,//'sale_product_quantity'
-            'sale_return_free_piece'       => $request->sale_free_piece,
-            'sale_return_free_amount'      => $request->sale_free_amount,
-            'sale_return_status'           => $request->sale_status,
-            'sale_return_date'             => $request->sale_invoice_date,
-            'sale_return_total_price'      => $request->sale_total_price,
-            'sale_return_add_amount'       => $request->sale_add_amount,
-            'sale_return_discount'         => $request->sale_discount,
-            'sale_return_grandtotal_price' => $sale_return_grandtotal_price,
-            'sale_return_amount_return'    => $sale_return_amount_return,
-            'sale_return_amount_dues'      => $sale_return_amount_dues,
-            'sale_return_payment_method'   => $request->sale_payment_method,
-            'sale_return_payment_status'   => $request->sale_payment_status,
-            'sale_return_invoice_id'       => $sale_return_invoice_id,
-            'sale_return_invoice_date'     => $request->sale_invoice_date,
-            'sale_return_document'         => $request->sale_document,
-            'sale_return_note'             => $request->sale_note,
-            'sale_return_returned_by' 	   => Auth::user()->id,
-            'created_at'	 			   => date('Y-m-d h:i:s'),
-        );
-        $document = $request->sale_document;
-        if($document){
-            $v = Validator::make([
-                    'extension' => strtolower($request->sale_document->getClientOriginalExtension()),
-                ],
-                [
-                    'extension' => 'in:pdf,csv,docx,pptx,xlsx,txt',
-            ]);
-            if($v->fails()) {
-                return redirect()->back()->withErrors($v->errors());
+            $customer_id = $request->sale_customer_id;
+            $customer_name = $request->sale_customer_name;
+            $customer_edits = array(
+                'customer_balance_paid' 	=> $customer_amount_paid,
+                'customer_balance_dues' 	=> $customer_amount_dues,
+                // 'customer_total_balance'    => $request->customer_total_balance,
+            );
+    
+            $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
+    
+            $salereturn_adds = array(
+                'sale_return_ref_no'           => $sale_return_ref_no,
+                'sale_return_customer_id'      => $request->sale_customer_id,
+                'sale_return_total_items'      => $request->sale_total_items,//'sale_product_items'
+                'sale_return_total_quantity'   => $request->sale_total_qty,//'sale_product_quantity'
+                'sale_return_free_piece'       => $request->sale_free_piece,
+                'sale_return_free_amount'      => $request->sale_free_amount,
+                'sale_return_status'           => $request->sale_status,
+                'sale_return_date'             => $request->sale_invoice_date,
+                'sale_return_total_price'      => $request->sale_total_price,
+                'sale_return_add_amount'       => $request->sale_add_amount,
+                'sale_return_discount'         => $request->sale_discount,
+                'sale_return_grandtotal_price' => $sale_return_grandtotal_price,
+                'sale_return_amount_return'    => $sale_return_amount_return,
+                'sale_return_amount_dues'      => $sale_return_amount_dues,
+                'sale_return_payment_method'   => $request->sale_payment_method,
+                'sale_return_payment_status'   => $request->sale_payment_status,
+                'sale_return_invoice_id'       => $sale_return_invoice_id,
+                'sale_return_invoice_date'     => $request->sale_invoice_date,
+                'sale_return_document'         => $request->sale_document,
+                'sale_return_note'             => $request->sale_note,
+                'sale_return_returned_by' 	   => Auth::user()->id,
+                'created_at'	 			   => date('Y-m-d h:i:s'),
+            );
+            $document = $request->sale_document;
+            if($document){
+                $v = Validator::make([
+                        'extension' => strtolower($request->sale_document->getClientOriginalExtension()),
+                    ],
+                    [
+                        'extension' => 'in:pdf,csv,docx,pptx,xlsx,txt',
+                ]);
+                if($v->fails()) {
+                    return redirect()->back()->withErrors($v->errors());
+                }
+                $documentName = $document->getClientOriginalName();
+                // dd($documentName);
+                // $document->move('public/documents/sale', $documentName);
+                Storage::disk('documents')->put('/', $document);
+                // Storage::putFile('documents', $document, $documentName);
+                $sale_adds['sale_document'] = $documentName;
             }
-            $documentName = $document->getClientOriginalName();
-            // dd($documentName);
-            // $document->move('public/documents/sale', $documentName);
-            Storage::disk('documents')->put('/', $document);
-            // Storage::putFile('documents', $document, $documentName);
-            $sale_adds['sale_document'] = $documentName;
+    
+            $product_barcodes = $request->sale_products_barcode;
+            // $product_warehouses = $request->sale_products_warehouse;
+            $product_names = $request->product_name;
+            $product_codes = $request->product_code;
+            $product_ids = $request->product_id;
+            $products_pieces = $request->sale_products_pieces;
+            $pieces_per_packet = $request->sale_pieces_per_packet;
+            $products_packets = $request->sale_products_packets;
+            $packets_per_carton = $request->sale_packets_per_carton;
+            $products_cartons = $request->sale_products_cartons;
+            $pieces_per_carton = $request->sale_pieces_per_carton;
+            $products_unit_prices = $request->sale_products_unit_price;
+            $products_discounts = $request->sale_products_discount;
+            $products_sub_totals = $request->sale_products_sub_total;
+    
+            $save = DB::table('sale_returns')->insert($salereturn_adds);
+            $id = DB::getPdo()->lastInsertId();
+            // $add_id = DB::table('salereturns')->insertGetId($sale_adds)
+            
+            foreach($product_ids as $key => $single_id){
+    
+                $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+    
+                $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+    
+                $salereturn_product_adds[$key] = array(
+                    'sale_return_id'                   => $id,
+                    'product_id'                       => $single_id,
+                    'salereturn_product_ref_no'        => $product_codes[$key],
+                    'salereturn_product_name'          => $product_names[$key],
+                    'salereturn_product_barcode'       => $product_barcodes[$key],
+                    'warehouse_id'                     => $product[$key]->warehouse_id,
+                    'salereturn_piece_per_packet'      => $pieces_per_packet[$key],
+                    'salereturn_packet_per_carton'     => $packets_per_carton[$key],
+                    'salereturn_piece_per_carton'      => $pieces_per_carton[$key],
+                    'salereturn_pieces_total'          => $products_pieces[$key],
+                    'salereturn_packets_total'         => $products_packets[$key],
+                    'salereturn_cartons_total'         => $products_cartons[$key],
+                    'salereturn_quantity_total'        => $products_quantity_total[$key],
+                    'salereturn_trade_discount'        => $products_discounts[$key],
+                    'salereturn_trade_price_piece'     => $products_unit_prices[$key],
+                    'salereturn_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                    'salereturn_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                    'salereturn_product_sub_total'     => $products_sub_totals[$key]
+                );
+                $salereturn_products_save = DB::table('salereturn_products')->insert($salereturn_product_adds[$key]);
+            }
+    
+            foreach($product_ids as $key => $single_id){
+    
+                $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_available[$key] = $products_quantity_total[$key];
+    
+                $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+    
+                $product_edits = array(
+                    // 'product_id'                    => $single_id,
+                    // 'product_ref_no'                => $product_codes[$key],
+                    // 'product_name'                  => $product_names[$key],
+                    // 'product_barcode'               => $product_barcodes[$key],
+                    // 'warehouse_id'                  => $product_warehouses[$key],
+                    // 'product_piece_per_packet'      => $pieces_per_packet[$key],
+                    // 'product_piece_per_carton'      => $pieces_per_carton[$key],
+                    'product_pieces_total'          => $product[$key]->product_pieces_total+$products_pieces[$key],
+                    'product_pieces_available'      => $product[$key]->product_pieces_available+$products_pieces[$key],
+                    'product_packets_total'         => $product[$key]->product_packets_total+$products_packets[$key],
+                    'product_packets_available'     => $product[$key]->product_packets_available+$products_packets[$key],
+                    'product_cartons_total'         => $product[$key]->product_cartons_total+$products_cartons[$key],
+                    'product_cartons_available'     => $product[$key]->product_cartons_available+$products_cartons[$key],
+                    'product_quantity_total'        => $product[$key]->product_quantity_total+$products_quantity_total[$key],
+                    'product_quantity_available'    => $product[$key]->product_quantity_available+$products_quantity_available[$key],
+                    // 'product_trade_discount'        => $products_discounts[$key],
+                    // 'product_trade_price_piece'     => $products_unit_prices[$key],
+                    // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                    // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                );
+                $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
+            }
+    
+            return redirect()->back();
+            // if($save){
+            //     return response()->json(['data' => $salereturn_adds, 'salereturn_products' => $salereturn_products_save, 'message' => 'Sale Returned Successfully'], 200);
+            // }else{
+            //     return response()->json("Oops! Something Went Wrong", 400);
+            // }
+        }
+        else{
+            return response()->json("Add atleast one product", 400);
         }
 
-        $product_barcodes = $request->sale_products_barcode;
-        // $product_warehouses = $request->sale_products_warehouse;
-        $product_names = $request->sale_name;
-        $product_codes = $request->sale_code;
-        $product_ids = $request->sale_id;
-        $products_pieces = $request->sale_products_pieces;
-        $pieces_per_packet = $request->sale_pieces_per_packet;
-        $products_packets = $request->sale_products_packets;
-        $packets_per_carton = $request->sale_packets_per_carton;
-        $products_cartons = $request->sale_products_cartons;
-        $pieces_per_carton = $request->sale_pieces_per_carton;
-        $products_unit_prices = $request->sale_products_unit_price;
-        $products_discounts = $request->sale_products_discount;
-        $products_sub_totals = $request->sale_products_sub_total;
-
-        $save = DB::table('sale_returns')->insert($salereturn_adds);
-        $id = DB::getPdo()->lastInsertId();
-        // $add_id = DB::table('salereturns')->insertGetId($sale_adds)
-        
-        foreach($product_ids as $key => $single_id){
-
-            $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-
-            $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
-
-            $salereturn_product_adds[$key] = array(
-                'sale_return_id'                   => $id,
-                'product_id'                       => $single_id,
-                'salereturn_product_ref_no'        => $product_codes[$key],
-                'salereturn_product_name'          => $product_names[$key],
-                'salereturn_product_barcode'       => $product_barcodes[$key],
-                'warehouse_id'                     => $product[$key]->warehouse_id,
-                'salereturn_piece_per_packet'      => $pieces_per_packet[$key],
-                'salereturn_packet_per_carton'     => $packets_per_carton[$key],
-                'salereturn_piece_per_carton'      => $pieces_per_carton[$key],
-                'salereturn_pieces_total'          => $products_pieces[$key],
-                'salereturn_packets_total'         => $products_packets[$key],
-                'salereturn_cartons_total'         => $products_cartons[$key],
-                'salereturn_quantity_total'        => $products_quantity_total[$key],
-                'salereturn_trade_discount'        => $products_discounts[$key],
-                'salereturn_trade_price_piece'     => $products_unit_prices[$key],
-                'salereturn_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                'salereturn_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
-                'salereturn_product_sub_total'     => $products_sub_totals[$key]
-            );
-            $salereturn_products_save = DB::table('salereturn_products')->insert($salereturn_product_adds[$key]);
-        }
-
-        foreach($product_ids as $key => $single_id){
-
-            $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-            $products_quantity_available[$key] = $products_quantity_total[$key];
-
-            $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
-
-            $product_edits = array(
-                // 'product_id'                    => $single_id,
-                // 'product_ref_no'                => $product_codes[$key],
-                // 'product_name'                  => $product_names[$key],
-                // 'product_barcode'               => $product_barcodes[$key],
-                // 'warehouse_id'                  => $product_warehouses[$key],
-                // 'product_piece_per_packet'      => $pieces_per_packet[$key],
-                // 'product_piece_per_carton'      => $pieces_per_carton[$key],
-                'product_pieces_total'          => $product[$key]->product_pieces_total+$products_pieces[$key],
-                'product_pieces_available'      => $product[$key]->product_pieces_available+$products_pieces[$key],
-                'product_packets_total'         => $product[$key]->product_packets_total+$products_packets[$key],
-                'product_packets_available'     => $product[$key]->product_packets_available+$products_packets[$key],
-                'product_cartons_total'         => $product[$key]->product_cartons_total+$products_cartons[$key],
-                'product_cartons_available'     => $product[$key]->product_cartons_available+$products_cartons[$key],
-                'product_quantity_total'        => $product[$key]->product_quantity_total+$products_quantity_total[$key],
-                'product_quantity_available'    => $product[$key]->product_quantity_available+$products_quantity_available[$key],
-                // 'product_trade_discount'        => $products_discounts[$key],
-                // 'product_trade_price_piece'     => $products_unit_prices[$key],
-                // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
-            );
-            $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
-        }
-
-		if($save){
-			return response()->json(['data' => $salereturn_adds, 'salereturn_sales' => $salereturn_sales_save, 'message' => 'Sale Returned Successfully'], 200);
-		}else{
-			return response()->json("Oops! Something Went Wrong", 400);
-		}
     }
 
     /**
@@ -580,10 +596,12 @@ class SaleController extends Controller
         $subtotal_amount = 0;
         $grandtotal_amount = 0;
         // $s_name = $model->paginate(15)->items()[$id-1]->customer_name;
-        $s_id = $model->paginate(15)->items()[$id-1]->sale_customer_id;
-        $customer = DB::table('customers')->where('customer_id','=', $s_id)->first();
+        // $s_id = $model->paginate(15)->items()[$id-1]->sale_customer_id;
+        // $s_id = DB::table('sales')->where('sale_id','=', $id)->first();
         // $sale = $model->paginate(15)->items()[$id-1];
-        $sale = Sale::where('sale_id', $id)->get();
+        $sale = DB::table('sales')->where('sale_id', $id)->first();
+        $s_id = $sale->sale_customer_id;
+        $customer = DB::table('customers')->where('customer_id','=', $s_id)->first();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
         $attachedbarcodes = ProductBarcodes::get();
@@ -607,7 +625,6 @@ class SaleController extends Controller
 
         $get_sale = DB::table('sales')->where('sale_id', $sale_id)->first();
         $get_customer = DB::table('customers')->where('customer_id', $request->sale_customer_id)->first();
-
 
         // $validate = Validator::make($request->all(), [ 
         //     'sale_customer_id'         => 'required',
@@ -658,229 +675,268 @@ class SaleController extends Controller
             $customer_amount_dues_new = $get_customer->customer_balance_dues;
         }
 
-        $customer_id = $request->sale_customer_id;
-        // dd($customer_id);
-        $customer_name = $request->sale_customer_name;
+        if($request->product_name !== NULL){
 
-        $customer_edits = array(
-            'customer_balance_paid' 	=> $customer_amount_paid_new,
-            'customer_balance_dues' 	=> $customer_amount_dues_new,
-            // 'customer_total_balance'    => $request->customer_total_balance,
-        );
-
-        $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
-
-        $sale_edits = array(
-            'sale_customer_id'      => $request->sale_customer_id,
-            'sale_total_items'      => $request->sale_total_items,//'sale_product_items'
-            'sale_total_quantity'   => $request->sale_total_qty,//'sale_product_quantity'
-            'sale_free_piece'       => $request->sale_free_piece,
-            'sale_free_amount'      => $request->sale_free_amount,
-            'sale_status'           => $request->sale_status,
-            'sale_note'             => $request->sale_note,
-            // 'sale_date'          => $request->sale_date,
-            'sale_total_price'      => $request->sale_total_price,
-            'sale_add_amount'       => $request->sale_add_amount,
-            'sale_discount'         => $request->sale_discount,
-            'sale_grandtotal_price' => $sale_grandtotal_price,
-            'sale_amount_paid'      => $sale_amount_paid_new,
-            'sale_amount_dues'      => $sale_amount_dues_new,
-            'sale_payment_method'   => $request->sale_payment_method,
-            'sale_payment_status'   => $request->sale_payment_status,
-            // 'sale_document'      => $request->sale_document,
-            // 'sale_invoice_id'       => $request->sale_invoice_id,
-            // 'sale_invoice_date'     => $request->sale_invoice_date,
-            // 'sale_payment_id'       => $request->sale_payment_id,
-            // 'warehouse_id'              => $request->warehouse_id,
-
-        );
-
-        $document = $request->sale_document;
-        if($document){
-            $v = Validator::make([
-                    'extension' => strtolower($request->sale_document->getClientOriginalExtension()),
-                ],
-                [
-                    'extension' => 'in:pdf,csv,docx,pptx,xlsx,txt',
-            ]);
-            if($v->fails()) {
-                return redirect()->back()->withErrors($v->errors());
+            $customer_id = $request->sale_customer_id;
+            $customer_name = $request->sale_customer_name;
+    
+            $customer_edits = array(
+                'customer_balance_paid' 	=> $customer_amount_paid_new,
+                'customer_balance_dues' 	=> $customer_amount_dues_new,
+                // 'customer_total_balance'    => $request->customer_total_balance,
+            );
+    
+            $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
+    
+            $sale_edits = array(
+                'sale_customer_id'      => $request->sale_customer_id,
+                'sale_total_items'      => $request->sale_total_items,//'sale_product_items'
+                'sale_total_quantity'   => $request->sale_total_qty,//'sale_product_quantity'
+                'sale_free_piece'       => $request->sale_free_piece,
+                'sale_free_amount'      => $request->sale_free_amount,
+                'sale_status'           => $request->sale_status,
+                'sale_note'             => $request->sale_note,
+                // 'sale_date'          => $request->sale_date,
+                'sale_total_price'      => $request->sale_total_price,
+                'sale_add_amount'       => $request->sale_add_amount,
+                'sale_discount'         => $request->sale_discount,
+                'sale_grandtotal_price' => $sale_grandtotal_price,
+                'sale_amount_paid'      => $sale_amount_paid_new,
+                'sale_amount_dues'      => $sale_amount_dues_new,
+                'sale_payment_method'   => $request->sale_payment_method,
+                'sale_payment_status'   => $request->sale_payment_status,
+                // 'sale_document'      => $request->sale_document,
+                // 'sale_invoice_id'       => $request->sale_invoice_id,
+                // 'sale_invoice_date'     => $request->sale_invoice_date,
+                // 'sale_payment_id'       => $request->sale_payment_id,
+                // 'warehouse_id'              => $request->warehouse_id,
+    
+            );
+    
+            $document = $request->sale_document;
+            if($document){
+                $v = Validator::make([
+                        'extension' => strtolower($request->sale_document->getClientOriginalExtension()),
+                    ],
+                    [
+                        'extension' => 'in:pdf,csv,docx,pptx,xlsx,txt',
+                ]);
+                if($v->fails()) {
+                    return redirect()->back()->withErrors($v->errors());
+                }
+                $documentName = $document->getClientOriginalName();
+                // dd($documentName);
+                // $document->move('public/documents/sale', $documentName);
+                Storage::disk('documents')->put('/', $document);
+                // Storage::putFile('documents', $document, $documentName);
+                $sale_edits['sale_document'] = $documentName;
             }
-            $documentName = $document->getClientOriginalName();
-            // dd($documentName);
-            // $document->move('public/documents/sale', $documentName);
-            Storage::disk('documents')->put('/', $document);
-            // Storage::putFile('documents', $document, $documentName);
-            $sale_edits['sale_document'] = $documentName;
-        }
-
-        $product_barcodes = $request->sale_products_barcode;
-        // $product_warehouses = $request->sale_products_warehouse;
-        $product_names = $request->product_name;
-        $product_codes = $request->product_code;
-        $product_ids = $request->product_id;
-        $products_pieces = $request->sale_products_pieces;
-        $pieces_per_packet = $request->sale_pieces_per_packet;
-        $products_packets = $request->sale_products_packets;
-        $packets_per_carton = $request->sale_packets_per_carton;
-        $products_cartons = $request->sale_products_cartons;
-        $pieces_per_carton = $request->sale_pieces_per_carton;
-        $products_unit_prices = $request->sale_products_unit_price;
-        $products_discounts = $request->sale_products_discount;
-        $products_sub_totals = $request->sale_products_sub_total;
-
-        foreach($product_ids as $key => $single_id){
-
-            $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-
-            $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
-            
-            $product_products_get[$key] = DB::table('sale_products')->where('sale_id', $sale_id)->where('sale_id','=', $single_id)->first();
-
-            // if($key == 0){
-            //     $sale_products_delete = DB::table('sale_products')->where('sale_id','=', $sale_id)->delete();
+    
+            $product_barcodes = $request->sale_products_barcode;
+            // $product_warehouses = $request->sale_products_warehouse;
+            $product_names = $request->product_name;
+            $product_codes = $request->product_code;
+            $product_ids = $request->product_id;
+            $products_pieces = $request->sale_products_pieces;
+            $pieces_per_packet = $request->sale_pieces_per_packet;
+            $products_packets = $request->sale_products_packets;
+            $packets_per_carton = $request->sale_packets_per_carton;
+            $products_cartons = $request->sale_products_cartons;
+            $pieces_per_carton = $request->sale_pieces_per_carton;
+            $products_unit_prices = $request->sale_products_unit_price;
+            $products_discounts = $request->sale_products_discount;
+            $products_sub_totals = $request->sale_products_sub_total;
+    
+            $sale_products_delete = array();
+            $sale_products_delete = DB::table('sale_products')->where('sale_id', $sale_id)->whereNotIn('product_id', $product_ids)->get();
+    
+            foreach($sale_products_delete as $sale_product_delete){
+                if($sale_product_delete !== NULL){
+                    DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $sale_product_delete->product_id)->delete();
+                }
+            }
+    
+            foreach($product_ids as $key => $single_id){
+    
+                $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+    
+                $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+                
+                $sale_products_get[$key] = DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $single_id)->first();
+    
+                // if($key == 0){
+                //     $sale_products_delete = DB::table('sale_products')->where('sale_id','=', $sale_id)->delete();
+                // }
+    
+                if($sale_products_get[$key] == NULL){
+    
+                    $sale_product_adds[$key] = array(
+                        'sale_id'                    => $sale_id,
+                        'product_id'                 => $single_id,
+                        'sale_product_ref_no'        => $product_codes[$key],
+                        'sale_product_name'          => $product_names[$key],
+                        'sale_product_barcode'       => $product_barcodes[$key],
+                        'warehouse_id'               => $product[$key]->warehouse_id,
+                        'sale_piece_per_packet'      => $pieces_per_packet[$key],
+                        'sale_packet_per_carton'     => $packets_per_carton[$key],
+                        'sale_piece_per_carton'      => $pieces_per_carton[$key],
+                        'sale_pieces_total'          => $products_pieces[$key],
+                        'sale_packets_total'         => $products_packets[$key],
+                        'sale_cartons_total'         => $products_cartons[$key],
+                        'sale_quantity_total'        => $products_quantity_total[$key],
+                        'sale_trade_discount'        => $products_discounts[$key],
+                        'sale_trade_price_piece'     => $products_unit_prices[$key],
+                        'sale_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                        'sale_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                        'sale_product_sub_total'     => $products_sub_totals[$key]
+                    );
+        
+                    $sale_product_save[$key] = DB::table('sale_products')->insert($sale_product_adds[$key]);
+        
+                }
+                else{
+    
+                    $sale_product_edits[$key] = array(
+                        'sale_product_name'          => $product_names[$key],
+                        'sale_piece_per_packet'      => $pieces_per_packet[$key],
+                        'sale_packet_per_carton'     => $packets_per_carton[$key],
+                        'sale_piece_per_carton'      => $pieces_per_carton[$key],
+                        'sale_pieces_total'          => $products_pieces[$key],
+                        'sale_packets_total'         => $products_packets[$key],
+                        'sale_cartons_total'         => $products_cartons[$key],
+                        'sale_quantity_total'        => $products_quantity_total[$key],
+                        'sale_trade_discount'        => $products_discounts[$key],
+                        'sale_trade_price_piece'     => $products_unit_prices[$key],
+                        'sale_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                        'sale_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                        'sale_product_sub_total'     => $products_sub_totals[$key]
+                    );
+        
+                    $sale_products_update = DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $single_id)->update($sale_product_edits[$key]);
+        
+                }
+    
+            }
+            foreach($product_ids as $key => $single_id){
+    
+                $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_available[$key] = $products_quantity_total[$key];
+    
+                $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+    
+                $sale_products_get[$key] = DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $single_id)->first();
+    
+                if($sale_products_get[$key] !== NULL){
+                    if($sale_products_get[$key]->sale_pieces_total >= $products_pieces[$key]){
+                        $diff_sale_pieces_total =  $sale_products_get[$key]->sale_pieces_total-$products_pieces[$key];
+                        // dd($diff_sale_pieces_total);
+                    }
+                    else{
+                        $diff_sale_pieces_total =  $sale_products_get[$key]->sale_pieces_total-$products_pieces[$key];
+                        // $diff_sale_pieces_total =  $products_pieces[$key]-$sale_products_get[$key]->sale_pieces_total;
+                    }
+                    if($sale_products_get[$key]->sale_pieces_total >= $products_pieces[$key]){
+                        $diff_sale_pieces_available = $sale_products_get[$key]->sale_pieces_total-$products_pieces[$key];
+                    }
+                    else{
+                        $diff_sale_pieces_available = $sale_products_get[$key]->sale_pieces_total-$products_pieces[$key];
+                        // $diff_sale_pieces_available = $products_pieces[$key]-$sale_products_get[$key]->sale_pieces_total;
+                    }
+                    if($sale_products_get[$key]->sale_packets_total >= $products_packets[$key]){
+                        $diff_sale_packets_total = $sale_products_get[$key]->sale_packets_total-$products_packets[$key];
+                    }
+                    else{
+                        $diff_sale_packets_total = $sale_products_get[$key]->sale_packets_total-$products_packets[$key];
+                        // $diff_sale_packets_total = $sales_packets[$key]-$sale_products_get[$key]->sale_packets_total;
+                    }
+                    if($sale_products_get[$key]->sale_packets_total >= $products_packets[$key]){
+                        $diff_sale_packets_available   = $sale_products_get[$key]->sale_packets_total-$products_packets[$key];
+                    }
+                    else{
+                        $diff_sale_packets_available   = $sale_products_get[$key]->sale_packets_total-$products_packets[$key];
+                        // $diff_sale_packets_available   = $products_packets[$key]-$sale_products_get[$key]->sale_packets_total;
+                    }
+                    if($sale_products_get[$key]->sale_cartons_total >= $products_cartons[$key]){
+                        $diff_sale_cartons_total       = $sale_products_get[$key]->sale_cartons_total-$products_cartons[$key];
+                    }
+                    else{
+                        $diff_sale_cartons_total       = $sale_products_get[$key]->sale_cartons_total-$products_cartons[$key];
+                        // $diff_sale_cartons_total       = $sales_cartons[$key]-$sale_products_get[$key]->sale_cartons_total;
+                    }
+                    if($sale_products_get[$key]->sale_cartons_total >= $products_cartons[$key]){
+                        $diff_sale_cartons_available   = $sale_products_get[$key]->sale_cartons_total-$products_cartons[$key];
+                    }
+                    else{
+                        $diff_sale_cartons_available   = $sale_products_get[$key]->sale_cartons_total-$products_cartons[$key];
+                        // $diff_sale_cartons_available   = $products_cartons[$key]-$sale_products_get[$key]->sale_cartons_total;
+                    }
+                    if($sale_products_get[$key]->sale_quantity_total >= $products_quantity_total[$key]){
+                        $diff_sale_quantity_total      = $sale_products_get[$key]->sale_quantity_total-$products_quantity_total[$key];
+                    }
+                    else{
+                        $diff_sale_quantity_total      = $sale_products_get[$key]->sale_quantity_total-$products_quantity_total[$key];
+                        // $diff_sale_quantity_total      = $sales_quantity_total[$key]-$sale_products_get[$key]->sale_quantity_total;
+                    }
+                    if($sale_products_get[$key]->sale_quantity_total >= $products_quantity_available[$key]){
+                        $diff_sale_quantity_available  = $sale_products_get[$key]->sale_quantity_total-$products_quantity_available[$key];
+                    }
+                    else{
+                        $diff_sale_quantity_available  = $sale_products_get[$key]->sale_quantity_total-$products_quantity_available[$key];
+                        // $diff_sale_quantity_available  = $sales_quantity_available[$key]-$sale_products_get[$key]->sale_quantity_total;
+                    }
+                }
+                else{
+                    $diff_sale_pieces_total = 0;
+                    $diff_sale_pieces_available = 0;
+                    $diff_sale_packets_total = 0;
+                    $diff_sale_packets_available = 0;
+                    $diff_sale_cartons_total = 0;
+                    $diff_sale_cartons_available = 0;
+                    $diff_sale_quantity_total = 0;
+                    $diff_sale_quantity_available = 0;
+                }
+    
+                // dd($sale[$key]->sale_pieces_total);
+                $product_edits[$key] = array(
+                    // 'product_ref_no'                => $product_codes[$key],
+                    // 'product_name'                  => $product_names[$key],
+                    // 'product_barcode'               => $product_barcodes[$key],
+                    // 'warehouse_id'                  => $product_warehouses[$key],
+                    // 'product_piece_per_packet'      => $pieces_per_packet[$key],
+                    // 'product_piece_per_carton'      => $pieces_per_carton[$key],
+                    'product_pieces_total'          => $product[$key]->product_pieces_total+$diff_sale_pieces_total,
+                    'product_pieces_available'      => $product[$key]->product_pieces_available+$diff_sale_pieces_available,
+                    'product_packets_total'         => $product[$key]->product_packets_total+$diff_sale_packets_total,
+                    'product_packets_available'     => $product[$key]->product_packets_available+$diff_sale_packets_available,
+                    'product_cartons_total'         => $product[$key]->product_cartons_total+$diff_sale_cartons_total,
+                    'product_cartons_available'     => $product[$key]->product_cartons_available+$diff_sale_cartons_available,
+                    'product_quantity_total'        => $product[$key]->product_quantity_total+$diff_sale_quantity_total,
+                    'product_quantity_available'    => $product[$key]->product_quantity_available+$diff_sale_quantity_available,
+                    // 'product_trade_discount'        => $products_discounts[$key],
+                    // 'product_trade_price_piece'     => $products_unit_prices[$key],
+                    // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                    // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                );
+                $update = DB::table('products')->where('product_id', $single_id)->update($product_edits[$key]);
+            }
+    
+            $update = DB::table('sales')->where('sale_id', $sale_id)->update($sale_edits);
+    
+            return redirect()->back();
+            // return redirect('/sale')->with(['message' => 'Sale Edited Successfully'], 200);
+            // if($update){
+            // 	return response()->json(['data' => $sale_edits, /*'sale_products' => $sale_products_update,*/ 'message' => 'Sale Edited Successfully'], 200);
+            // }else{
+            // 	return response()->json("Oops! Something Went Wrong", 400);
             // }
+            // return redirect('sales/'.$sale_id.'/edit');
 
-            $sale_product_adds[$key] = array(
-                // 'sale_id'                    => $sale_id,
-                // 'product_id'                 => $single_id,
-                // 'sale_product_ref_no'        => $product_codes[$key],
-                // 'sale_product_name'          => $product_names[$key],
-                // 'sale_product_barcode'       => $product_barcodes[$key],
-                // 'warehouse_id'               => $product[$key]->warehouse_id,
-                // 'sale_piece_per_packet'      => $pieces_per_packet[$key],
-                // 'sale_packet_per_carton'     => $packets_per_carton[$key],
-                // 'sale_piece_per_carton'      => $pieces_per_carton[$key],
-                // 'sale_pieces_total'          => $sales_pieces[$key],
-                // 'sale_packets_total'         => $sales_packets[$key],
-                // 'sale_cartons_total'         => $sales_cartons[$key],
-                // 'sale_quantity_total'        => $sales_quantity_total[$key],
-                // 'sale_trade_discount'        => $sales_discounts[$key],
-                // 'sale_trade_price_piece'     => $sales_unit_prices[$key],
-                // 'sale_trade_price_packet'    => $sales_unit_prices[$key]*$pieces_per_packet[$key],
-                // 'sale_trade_price_carton'    => $sales_unit_prices[$key]*$pieces_per_carton[$key],
-                // 'sale_product_sub_total'     => $sales_sub_totals[$key]
-            );
-
-            // $sale_product_save[$key] = DB::table('sale_products')->insert($sale_product_adds[$key]);
-
-            $sale_product_edits[$key] = array(
-                'sale_product_name'          => $product_names[$key],
-                'sale_piece_per_packet'      => $pieces_per_packet[$key],
-                'sale_packet_per_carton'     => $packets_per_carton[$key],
-                'sale_piece_per_carton'      => $pieces_per_carton[$key],
-                'sale_pieces_total'          => $products_pieces[$key],
-                'sale_packets_total'         => $products_packets[$key],
-                'sale_cartons_total'         => $products_cartons[$key],
-                'sale_quantity_total'        => $products_quantity_total[$key],
-                'sale_trade_discount'        => $products_discounts[$key],
-                'sale_trade_price_piece'     => $products_unit_prices[$key],
-                'sale_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                'sale_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
-                'sale_product_sub_total'     => $products_sub_totals[$key]
-            );
-
-            $sale_products_update = DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $single_id)->update($sale_product_edits[$key]);
         }
-        foreach($product_ids as $key => $single_id){
+        else{
 
-            $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-            $products_quantity_available[$key] = $products_quantity_total[$key];
-
-            $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
-
-            if($sale_products_get[$key]->sale_pieces_total >= $sales_pieces[$key]){
-                $diff_sale_pieces_total =  $sale_products_get[$key]->sale_pieces_total-$sales_pieces[$key];
-                // dd($diff_sale_pieces_total);
-            }
-            else{
-                $diff_sale_pieces_total =  $sale_products_get[$key]->sale_pieces_total-$sales_pieces[$key];
-                // $diff_sale_pieces_total =  $sales_pieces[$key]-$sale_products_get[$key]->sale_pieces_total;
-            }
-            if($sale_products_get[$key]->sale_pieces_total >= $sales_pieces[$key]){
-                $diff_sale_pieces_available = $sale_products_get[$key]->sale_pieces_total-$sales_pieces[$key];
-            }
-            else{
-                $diff_sale_pieces_available = $sale_products_get[$key]->sale_pieces_total-$sales_pieces[$key];
-                // $diff_sale_pieces_available = $sales_pieces[$key]-$sale_products_get[$key]->sale_pieces_total;
-            }
-            if($sale_products_get[$key]->sale_packets_total >= $sales_packets[$key]){
-                $diff_sale_packets_total = $sale_products_get[$key]->sale_packets_total-$sales_packets[$key];
-            }
-            else{
-                $diff_sale_packets_total = $sale_products_get[$key]->sale_packets_total-$sales_packets[$key];
-                // $diff_sale_packets_total = $sales_packets[$key]-$sale_products_get[$key]->sale_packets_total;
-            }
-            if($sale_products_get[$key]->sale_packets_total >= $sales_packets[$key]){
-                $diff_sale_packets_available   = $sale_products_get[$key]->sale_packets_total-$sales_packets[$key];
-            }
-            else{
-                $diff_sale_packets_available   = $sale_products_get[$key]->sale_packets_total-$sales_packets[$key];
-                // $diff_sale_packets_available   = $sales_packets[$key]-$sale_products_get[$key]->sale_packets_total;
-            }
-            if($sale_products_get[$key]->sale_cartons_total >= $sales_cartons[$key]){
-                $diff_sale_cartons_total       = $sale_products_get[$key]->sale_cartons_total-$sales_cartons[$key];
-            }
-            else{
-                $diff_sale_cartons_total       = $sale_products_get[$key]->sale_cartons_total-$sales_cartons[$key];
-                // $diff_sale_cartons_total       = $sales_cartons[$key]-$sale_products_get[$key]->sale_cartons_total;
-            }
-            if($sale_products_get[$key]->sale_cartons_total >= $sales_cartons[$key]){
-                $diff_sale_cartons_available   = $sale_products_get[$key]->sale_cartons_total-$sales_cartons[$key];
-            }
-            else{
-                $diff_sale_cartons_available   = $sale_products_get[$key]->sale_cartons_total-$sales_cartons[$key];
-                // $diff_sale_cartons_available   = $sales_cartons[$key]-$sale_products_get[$key]->sale_cartons_total;
-            }
-            if($sale_products_get[$key]->sale_quantity_total >= $sales_quantity_total[$key]){
-                $diff_sale_quantity_total      = $sale_products_get[$key]->sale_quantity_total-$sales_quantity_total[$key];
-            }
-            else{
-                $diff_sale_quantity_total      = $sale_products_get[$key]->sale_quantity_total-$sales_quantity_total[$key];
-                // $diff_sale_quantity_total      = $sales_quantity_total[$key]-$sale_products_get[$key]->sale_quantity_total;
-            }
-            if($sale_products_get[$key]->sale_quantity_total >= $sales_quantity_available[$key]){
-                $diff_sale_quantity_available  = $sale_products_get[$key]->sale_quantity_total-$sales_quantity_available[$key];
-            }
-            else{
-                $diff_sale_quantity_available  = $sale_products_get[$key]->sale_quantity_total-$sales_quantity_available[$key];
-                // $diff_sale_quantity_available  = $sales_quantity_available[$key]-$sale_products_get[$key]->sale_quantity_total;
-            }
-
-            // dd($sale[$key]->sale_pieces_total);
-            $product_edits[$key] = array(
-                // 'product_ref_no'                => $product_codes[$key],
-                // 'product_name'                  => $product_names[$key],
-                // 'product_barcode'               => $product_barcodes[$key],
-                // 'warehouse_id'                  => $product_warehouses[$key],
-                // 'product_piece_per_packet'      => $pieces_per_packet[$key],
-                // 'product_piece_per_carton'      => $pieces_per_carton[$key],
-                'product_pieces_total'          => $product[$key]->product_pieces_total+$diff_sale_pieces_total,
-                'product_pieces_available'      => $product[$key]->product_pieces_available+$diff_sale_pieces_available,
-                'product_packets_total'         => $product[$key]->product_packets_total+$diff_sale_packets_total,
-                'product_packets_available'     => $product[$key]->product_packets_available+$diff_sale_packets_available,
-                'product_cartons_total'         => $product[$key]->product_cartons_total+$diff_sale_cartons_total,
-                'product_cartons_available'     => $product[$key]->product_cartons_available+$diff_sale_cartons_available,
-                'product_quantity_total'        => $product[$key]->product_quantity_total+$diff_sale_quantity_total,
-                'product_quantity_available'    => $product[$key]->product_quantity_available+$diff_sale_quantity_available,
-                // 'product_trade_discount'        => $products_discounts[$key],
-                // 'product_trade_price_piece'     => $products_unit_prices[$key],
-                // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
-            );
-            $update = DB::table('products')->where('product_id', $single_id)->update($product_edits[$key]);
+            return response()->json("Add atleast one product", 400);
+            
         }
-
-        $update = DB::table('sales')->where('sale_id', $sale_id)->update($sale_edits);
-
-        // return redirect()->back();
-        // return redirect('/sale')->with(['message' => 'Sale Edited Successfully'], 200);
-        if($update){
-			return response()->json(['data' => $sale_edits, /*'sale_products' => $sale_products_update,*/ 'message' => 'Sale Edited Successfully'], 200);
-		}else{
-			return response()->json("Oops! Something Went Wrong", 400);
-		}
-        // return redirect('sales/'.$sale_id.'/edit');
 
     }
 

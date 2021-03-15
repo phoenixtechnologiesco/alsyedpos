@@ -10,7 +10,7 @@
             <h5 class="title">{{__(" Add Sale")}}</h5>
           </div>
           <div class="card-body-custom">
-            <form method="post" action="{{ route('sale.store') }}" autocomplete="off" enctype="multipart/form-data">
+            <form id="sale_store" method="post" action="{{ route('sale.store') }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @method('post')
               @include('alerts.success')
@@ -822,6 +822,57 @@
 @endsection
 
 @section('javascript')
+
+<script type="text/javascript">
+  $(function (){
+    $('#sale_store').validate({
+      rules: {
+        customer_code: 'required',
+        sale_payment_method: 'required',
+        // product_name: 'required',
+        // product_code: 'required',
+        // sale_grandtotal_price: 'required',
+        sale_amount_recieved: 'required',
+      },
+      messages: {
+        customer_code:  'Please Enter Supplier Name',
+        sale_payment_method:  'Please Enter Sale Payment Method',
+        // product_name:  'Please Enter Product Name',
+        // product_code:  'Please Enter Product Code',
+        // sale_grandtotal_price:  'Please Enter Product',
+        sale_amount_recieved:  'Please Enter Amount Paid',
+      },
+      errorElement: 'em',
+      errorPlacement: function ( error, element ) {
+        error.addClass( 'invalid-feedback' );
+        if ( element.prop( 'type' ) === 'checkbox' ) {
+          error.insertAfter( element.parent( 'label' ) );
+        } else {
+          error.insertAfter( element );
+        }
+      },
+      errorClass: "error fail-alert",
+      validClass: "valid success-alert",
+      highlight: function ( element, errorClass, validClass ) {
+        $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        // $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+        $( element ).removeClass( 'is-invalid' );
+      }
+    });
+    $.validator.setDefaults( {
+      // debug: true,
+      // success: "valid",
+      // submitHandler: function () {
+      //   alert( 'submitted!' );
+      // },
+      submitHandler: function(form) {
+        form.submit();
+      }
+    });
+  });
+</script>
 
 <script type="text/javascript">
 

@@ -70,11 +70,13 @@ class CompanyController extends Controller
         $save = DB::table('companies')->insert($company_adds);
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('companies')->insertGetId($company_adds);
-		if($save){
-			return response()->json(['data' => $company_adds, 'message' => 'Company Created Successfully'], 200);
-		}else{
-			return response()->json("Oops! Something Went Wrong", 400);
-		}
+
+        return redirect()->back();
+		// if($save){
+		// 	return response()->json(['data' => $company_adds, 'message' => 'Company Created Successfully'], 200);
+		// }else{
+		// 	return response()->json("Oops! Something Went Wrong", 400);
+		// }
     }
 
     /**
@@ -115,9 +117,9 @@ class CompanyController extends Controller
         $company_id = $id; //OR $request->company_id;
 
         $validate = Validator::make($request->all(), [ 
-            'company_ref_no'            => 'required',
+            'company_ref_no'            => '',
             'company_parent'            => '',
-            'company_name'              => 'required',
+            'company_name'              => '',
             'company_description'       => '',
             // 'status_id'                 => 'required',
         ]);

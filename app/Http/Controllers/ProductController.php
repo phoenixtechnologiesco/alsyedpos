@@ -102,7 +102,6 @@ class ProductController extends Controller
             'product_ref_no'                => '',
             'warehouse_id'                  => 'required',
             'product_name'                  => 'required',
-            'product_barcode'               => 'required',
             'product_company'               => 'required',
             'product_brand'                 => '',
             'product_piece_per_packet'      => '',
@@ -117,10 +116,10 @@ class ProductController extends Controller
             'product_quantity_total'        => 'required',
             'product_quantity_available'    => 'required',
             'product_quantity_damage'       => '',
-            'product_alert_quantity'        => 'required',
-            'product_trade_price_piece'     => '',
+            'product_alert_quantity'        => '',
+            'product_trade_price_piece'     => 'required',
             'product_trade_price_packet'    => '',
-            'product_trade_price_carton'    => 'required',
+            'product_trade_price_carton'    => '',
             'product_credit_price_piece'    => 'required',
             'product_credit_price_packet'   => '',
             'product_credit_price_carton'   => '',
@@ -142,7 +141,6 @@ class ProductController extends Controller
             'product_ref_no'                => $request->product_ref_no,
             'warehouse_id'                  => $request->warehouse_id,
             'product_name'                  => $request->product_name,
-            'product_barcode'               => $request->product_barcode,
             'product_company'               => $request->product_company,
             'product_brand'                 => $request->product_brand,
             'product_piece_per_packet'      => $request->product_piece_per_packet,
@@ -184,7 +182,7 @@ class ProductController extends Controller
             foreach($product_barcodes as $key => $value){
                 $barcodes_adds[$key] = array(
                     'product_id'        => $id,
-                    'product_barcode'   => $value,
+                    'product_barcodes'   => $value,
                 );
                 $barcodes_save[$key] = DB::table('product_barcodes')->insert($barcodes_adds[$key]);
             }
@@ -239,7 +237,6 @@ class ProductController extends Controller
             'product_ref_no'                => '',
             'warehouse_id'                  => 'required',
             'product_name'                  => 'required',
-            'product_barcode'               => 'required',
             'product_company'               => 'required',
             'product_brand'                 => '',
             'product_piece_per_packet'      => '',
@@ -279,7 +276,6 @@ class ProductController extends Controller
             'product_ref_no'                => $request->product_ref_no,
             'warehouse_id'                  => $request->warehouse_id,
             'product_name'                  => $request->product_name,
-            'product_barcode'               => $request->product_barcode,
             'product_company'               => $request->product_company,
             'product_brand'                 => $request->product_brand,
             'product_piece_per_packet'      => $request->product_piece_per_packet,

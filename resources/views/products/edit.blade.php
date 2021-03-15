@@ -10,7 +10,7 @@
             <h5 class="title">{{__(" Edit Product")}}</h5>
           </div>
           <div class="card-body-custom">
-            <form method="post" action="{{ route('product.update', ['product' => $product[0]->product_id,]) }}" autocomplete="off" enctype="multipart/form-data">
+            <form id="product_update" method="post" action="{{ route('product.update', ['product' => $product[0]->product_id,]) }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @method('put')
               @include('alerts.success')
@@ -575,6 +575,72 @@
       // $(this).closest('.tr').remove();
     });
   }); 
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function (){
+    $.validator.setDefaults( {
+      // debug: true,
+      // success: "valid",
+      submitHandler: function () {
+        alert( 'submitted!' );
+      }
+    });
+    $("#product_update").validate({
+      rules: {
+        product_ref_no: 'required',
+        product_name: 'required',
+        product_quantity_total: 'required',
+        product_quantity_available: 'required',
+        // product_pieces_total: 'required'
+        attachedbarcodes: 'required',
+        product_trade_price_piece: 'required',
+        product_credit_price_piece: 'required',
+        product_cash_price_piece: 'required',
+        status_id: 'required'
+      },
+      messages: {
+        product_ref_no:  'Please Enter Product Ref No',
+        product_name:  'Please Enter Product Name',
+        product_quantity_total:  'Please Enter Product Total Quantity',
+        product_quantity_available:  'Please Enter Product Available Quantity',
+        // product_pieces_total: 'Please Enter Total Product Pieces',
+        attachedbarcodes:  'Please Enter Attached Barcodes',
+        product_trade_price_piece:  'Please Piece Trade Price',
+        product_credit_price_piece:  'Please Enter Piece Credit Price',
+        product_cash_price_piece:  'Please Enter Piece Cash Price',
+        status_id: 'Please Select Status'
+      },
+      errorElement: 'em',
+      errorPlacement: function ( error, element ) {
+        error.addClass( 'invalid-feedback' );
+        if( element.prop( 'type' ) === 'checkbox' ) {
+          error.insertAfter( element.parent( 'label' ) );
+        }
+        else {
+          error.insertAfter( element );
+        }
+      },
+      // errorElement: 'span',
+      // errorPlacement: function (error, element) {
+      //   error.addClass('invalid-feedback');
+      //   element.closest('.form-group').append(error);
+      // },
+      errorClass: "error fail-alert",
+      errorClass: "invalid",
+      // validClass: "valid success-alert",
+      // validClass: "success"
+      highlight: function ( element, errorClass, validClass ) {
+        $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+      },
+      // submitHandler: function(form) {
+      //   form.submit();
+      // },
+    });
+  });
 </script>
 
 @endsection

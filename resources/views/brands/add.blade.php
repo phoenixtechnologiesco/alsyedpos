@@ -10,7 +10,7 @@
             <h5 class="title">{{__(" Add Brand")}}</h5>
           </div>
           <div class="card-body">
-            <form method="post" action="{{ route('brand.store') }}" autocomplete="off" enctype="multipart/form-data">
+            <form id="brand_store" method="post" action="{{ route('brand.store') }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @method('post')
               @include('alerts.success')
@@ -31,13 +31,13 @@
                   </div>
                   <div class="col-4">
                     <div class="form-group">
-                      <label for="parent_company">{{__(" Parent Company")}}</label>
-                      {{-- <input type="text" id="parent_company" name="parent_company" class="form-control" placeholder="Parent Company" value="{{ old('parent_company', '')}}">
-                      @include('alerts.feedback', ['field' => 'parent_company']) --}}
-                      <select name="parent_company" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Company...">
+                      <label for="parent_brand">{{__(" Parent brand")}}</label>
+                      {{-- <input type="text" id="parent_brand" name="parent_brand" class="form-control" placeholder="Parent brand" value="{{ old('parent_brand', '')}}">
+                      @include('alerts.feedback', ['field' => 'parent_brand']) --}}
+                      <select name="parent_brand" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select brand...">
                           <option selected value="NULL">Select</option>
-                        @foreach($companies as $single_company)
-                          <option value="{{ $single_company->company_name }}">{{ $single_company->company_name }}</option>
+                        @foreach($companies as $single_brand)
+                          <option value="{{ $single_brand->brand_name }}">{{ $single_brand->brand_name }}</option>
                         @endforeach
                       </select>
                     </div>
@@ -72,4 +72,50 @@
 @endsection
 
 @section('javascript')
+
+<script type="text/javascript">
+  $(function (){
+    $('#brand_store').validate({
+      rules: {
+        brand_name: 'required',
+        brand_ref_no: 'required',
+        brand_description: 'required',
+      },
+      messages: {
+        brand_name:  'Please Enter brand Name',
+        brand_ref_no:  'Please Enter brand Ref No',
+        brand_description:  'Please brand Description',
+      },
+      errorElement: 'em',
+      errorPlacement: function ( error, element ) {
+        error.addClass( 'invalid-feedback' );
+        if ( element.prop( 'type' ) === 'checkbox' ) {
+          error.insertAfter( element.parent( 'label' ) );
+        } else {
+          error.insertAfter( element );
+        }
+      },
+      errorClass: "error fail-alert",
+      validClass: "valid success-alert",
+      highlight: function ( element, errorClass, validClass ) {
+        $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        // $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+        $( element ).removeClass( 'is-invalid' );
+      }
+    });
+    $.validator.setDefaults( {
+      // debug: true,
+      // success: "valid",
+      // submitHandler: function () {
+      //   alert( 'submitted!' );
+      // },
+      submitHandler: function(form) {
+        form.submit();
+      }
+    });
+  });
+</script>
+
 @endsection

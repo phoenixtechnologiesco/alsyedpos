@@ -112,7 +112,7 @@ class CustomerController extends Controller
             'customer_credit_limit' 	=> $request->customer_credit_limit,
             'customer_sale_rate' 	    => $request->customer_sale_rate,
             'status_id' 	            => $request->status_id,
-            'created_by' 	            => Auth::user()->id,
+            'customer_created_by' 	            => Auth::user()->id,
             // 'created_at'	 			=> date('Y-m-d h:i:s'),
         );
         $save = DB::table('customers')->insert($customer_adds);

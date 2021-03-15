@@ -10,7 +10,7 @@
             <h5 class="title">{{__(" Edit Supplier")}}</h5>
           </div>
           <div class="card-body-custom">
-            <form method="post" action="{{ route('supplier.update', ['supplier' => $supplier[0]->supplier_id,]) }}" autocomplete="off"
+            <form id="supplier_update" method="post" action="{{ route('supplier.update', ['supplier' => $supplier[0]->supplier_id,]) }}" autocomplete="off"
             enctype="multipart/form-data">
               @csrf
               @method('put')
@@ -242,4 +242,56 @@
 @endsection
 
 @section('javascript')
+<script>
+  $(function (){
+    $('#supplier_update').validate({
+      rules: {
+        supplier_ref_no: 'required',
+        supplier_name: 'required',
+        supplier_balance_paid: 'required',
+        supplier_balance_dues: 'required',
+        status_id: 'required',
+      },
+      messages: {
+        supplier_ref_no: 'Please Enter Supplier Ref No',
+        supplier_name: 'Please Enter Supplier Name',
+        supplier_balance_paid: 'Please Enter Supplier Balance Paid',
+        supplier_balance_dues: 'Please Enter Supplier Balance Dues',
+        status_id: 'Please Select Status',
+      },
+      errorElement: 'em',
+      errorPlacement: function ( error, element ) {
+        error.addClass( 'invalid-feedback' );
+        if ( element.prop( 'type' ) === 'checkbox' ) {
+          error.insertAfter( element.parent( 'label' ) );
+        } else {
+          error.insertAfter( element );
+        }
+      },
+      // errorElement: 'span',
+      // errorPlacement: function (error, element) {
+      //   error.addClass('invalid-feedback');
+      //   element.closest('.form-group').append(error);
+      // },
+      errorClass: "error fail-alert",
+      validClass: "valid success-alert",
+      highlight: function ( element, errorClass, validClass ) {
+        $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+      }
+    });
+    $.validator.setDefaults( {
+      // debug: true,
+      // success: "valid",
+      // submitHandler: function () {
+      //   alert( 'submitted!' );
+      // },
+      submitHandler: function(form) {
+        form.submit();
+      }
+    });
+  });
+</script>
 @endsection

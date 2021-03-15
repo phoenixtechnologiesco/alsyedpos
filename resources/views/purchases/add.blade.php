@@ -10,7 +10,7 @@
             <h5 class="title">{{__(" Add Purchase")}}</h5>
           </div>
           <div class="card-body-custom">
-            <form method="post" action="{{ route('purchase.store') }}" autocomplete="off" enctype="multipart/form-data">
+            <form id="purchase_store" method="post" action="{{ route('purchase.store') }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @method('post')
               @include('alerts.success')
@@ -29,7 +29,7 @@
                                 </span>
                               </div>
                               {{-- <div class="input-group pos"> --}}
-                                <input type="text" name="supplier_code" id="suppliercodesearch" placeholder="Search supplier by code" class="form-control col-12" value="{{ old('supplier_code') }}" />
+                                <input type="text" name="supplier_code" id="suppliercodesearch" placeholder="Search supplier by code" class="form-control col-12" value=""/>
                                 <input readonly type="hidden" name="purchase_supplier_name" id="supplier_name" placeholder="Supplier Name" class="form-control col-12" value="" />
                                 <input readonly type="hidden" name="purchase_supplier_id" id="supplier_id" class="form-control col-12" value="" />
 
@@ -87,7 +87,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="purchase_amount_paid" id="supplier_balance_paid" class="form-control" value="{{ old('purchase_amount_paid', '') }}">
+                              <input readonly type="number" name="purchase_amount_paid" id="supplier_balance_paid" class="form-control col-12" value="">
                               @include('alerts.feedback', ['field' => 'purchase_amount_paid'])
                             </div>
                           </div>
@@ -99,7 +99,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="purchase_amount_dues" id="supplier_balance_dues" class="form-control" value="{{ old('purchase_amount_dues', '') }}">
+                              <input readonly type="number" name="purchase_amount_dues" id="supplier_balance_dues" class="form-control col-12" value="">
                               @include('alerts.feedback', ['field' => 'purchase_amount_dues'])
                             </div>
                           </div>
@@ -124,7 +124,7 @@
                             <label for="purchase_payment_method" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment Method")}}</label>
                               <div class="form-col-12">
                                 {{-- <input readonly type="text" name="purchase_payment_method" class="form-control col-12" value="{{ old('purchase_payment_method', 'Cash') }}"> --}}
-                                <select required id="purchase_payment_method" name="purchase_payment_method" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Method...">
+                                <select id="purchase_payment_method" name="purchase_payment_method" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Method...">
                                   <option value="cash">Cash</option>
                                   <option value="credit">Credit</option>
                                 </select>
@@ -161,7 +161,7 @@
                         </div>
                         <div class="form-last-col-4">
                           <div class="form-group">
-                            <label for="purchse_document" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
+                            <label for="purchase_document" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text barcode">
@@ -197,7 +197,7 @@
                               <tbody class="purchase-product">
                                 <tr class="row table-info" >
                                   <td class="col-2 firstcol" scope="col">
-                                    <input type="text" name="purchase_products_barcode_i" id="purchase_products_barcode_i" class="form-control col-12" placeholder="Barcode Search/Scan" value="{{ old('purchase_products_barcode_i', '') }}">
+                                    <input type="text" name="purchase_products_barcode_i" id="purchase_products_barcode_i" class="form-control col-12" placeholder="Barcode Search/Scan" value="">
                                   </td>
                                   <td class="col-3 mycol" scope="col">
                                     <div class="col-12 mytblcol input-group">
@@ -206,7 +206,7 @@
                                           <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
                                         </span>
                                       </div>
-                                      <input type="text" name="product_name_i" id="product_name_i" class="form-control col-12" placeholder="Product search by name/code" value="{{ old('product_name_i', '') }}">
+                                      <input type="text" name="product_name_i" id="product_name_i" class="form-control col-12" placeholder="Product search by name/code" value="{{ old('product_name_i', '') }}" >
                                       <input type="hidden" name="product_code_i" id="product_code_i" value="{{ old('product_code_i', '') }}">
                                       <input type="hidden" name="product_id_i" id="product_id_i" value="{{ old('product_id_i', '') }}">
                                       {{-- <select placeholder="Scan/Search product by name/code" name="product_code_name" id="product_code_name" class="form-control select2-single col-10">
@@ -221,22 +221,22 @@
                                     </div>
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_products_pieces_i" id="purchase_products_pieces_i" class="form-control col-12" min="0" value="{{ old('purchase_products_pieces_i', '0') }}">
+                                    <input type="number" name="purchase_products_pieces_i" id="purchase_products_pieces_i" class="form-control col-12" min="0" value="0">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_products_packets_i" id="purchase_products_packets_i" class="form-control col-12" min="0" value="{{ old('purchase_products_packets_i', '0') }}">
+                                    <input type="number" name="purchase_products_packets_i" id="purchase_products_packets_i" class="form-control col-12" min="0" value="0">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_products_cartons_i" id="purchase_products_cartons_i" class="form-control col-12" min="0" value="{{ old('purchase_products_cartons_i', '0') }}">
+                                    <input type="number" name="purchase_products_cartons_i" id="purchase_products_cartons_i" class="form-control col-12" min="0" value="0">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="text" name="purchase_products_unit_price_i" id="purchase_products_unit_price_i" class="form-control col-12"  value="{{ old('purchase_products_unit_price_i', '0') }}">
+                                    <input type="number" name="purchase_products_unit_price_i" id="purchase_products_unit_price_i" class="form-control col-12" min="0"  value="0">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="text" name="purchase_products_discount_i" id="purchase_products_discount_i" class="form-control col-12"  value="{{ old('purchase_products_discount_i', '0') }}">
+                                    <input type="number" name="purchase_products_discount_i" id="purchase_products_discount_i" class="form-control col-12" min="0"  value="0">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input readonly type="text" name="purchase_products_sub_total_i" id="purchase_products_sub_total_i" class="form-control col-12"  value="{{ old('purchase_products_sub_total_i', '') }}">
+                                    <input readonly type="number" name="purchase_products_sub_total_i" id="purchase_products_sub_total_i" class="form-control col-12"  value="">
                                   </td>
                                   <td class="col-1 lastcol" scope="col">
                                       {{-- <button id="add_button" type="button" class="btn btn-info btn-round pull-right">{{__('Add')}}</button> --}}
@@ -269,7 +269,7 @@
                                     <input type="file" name="purchase_document" id="purchase_document" class="form-control col-12" value="{{ old('purchase_document', '') }}">
                                   </td> --}}
                                   <td class="col-8 firstcol" scope="col">
-                                    <input type="text" name="purchase_note" class="form-control col-12" value="{{ old('purchase_note'), '' }}" >
+                                    <input type="text" name="purchase_note" class="form-control col-12" value="" >
                                   </td>
                                   <td class="col-2 mycol" scope="col">
                                     <select name="purchase_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
@@ -281,7 +281,7 @@
                                     </select>
                                   </td>
                                   <td class="col-2 lastcol" scope="col">
-                                    <input type="number" min="0" name="purchase_return_change" class="form-control col-12"  value="0">
+                                    <input type="number" min="0" name="purchase_return_change" class="form-control col-12"  value="">
                                   </td>
                                 </tr>
                               </tfoot>
@@ -299,31 +299,31 @@
                                 </tr>
                                 <tr class="row table-info" >
                                   <td class="col-1 firstcol" scope="col">
-                                    <input readonly type="text" name="purchase_total_items" id="purchase_total_items" class="form-control col-12" value="{{ old('purchase_total_items', '') }}">
+                                    <input readonly type="number" name="purchase_total_items" id="purchase_total_items" class="form-control col-12" value="">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input readonly type="text" name="purchase_total_qty" id="purchase_total_qty" class="form-control col-12" value="{{ old('purchase_total_qty', '') }}">
+                                    <input readonly type="number" name="purchase_total_qty" id="purchase_total_qty" class="form-control col-12" value="">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_free_piece" class="form-control col-12" value="{{ old('purchase_free_piece', '0') }}">
+                                    <input type="number" name="purchase_free_piece" class="form-control col-12" value="">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_free_amount" id="purchase_free_amount" class="form-control col-12"  value="{{ old('purchase_free_amount', '0.00') }}">
+                                    <input type="number" name="purchase_free_amount" id="purchase_free_amount_i" class="form-control col-12" value="">
                                   </td>
                                   <td class="col-2 mycol" scope="col">
-                                    <input readonly type="number" name="purchase_total_price" id="purchase_total_price" class="form-control col-12"  value="{{ old('purchase_total_price', '') }}">
+                                    <input readonly type="number" name="purchase_total_price" id="purchase_total_price_i" class="form-control col-12"  value="">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input type="text" name="purchase_add_amount" id="purchase_add_amount" class="form-control col-12"  value="{{ old('purchase_add_amount', '0.00') }}">
+                                    <input type="number" name="purchase_add_amount" id="purchase_add_amount_i" class="form-control col-12"  value="">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input readonly type="text" name="purchase_discount" id="purchase_discount" class="form-control col-12"  value="{{ old('purchase_discount', '') }}">
+                                    <input readonly type="number" name="purchase_discount" id="purchase_discount" class="form-control col-12"  value="">
                                   </td>
                                   <td class="col-2 mycol" scope="col">
-                                    <input readonly type="text" name="purchase_grandtotal_price" id="purchase_grandtotal_price" id="purchase_grandtotal_price" class="form-control col-12"  value="{{ old('purchase_grandtotal_price', '') }}">
+                                    <input readonly type="number" name="purchase_grandtotal_price" id="purchase_grandtotal_price" id="purchase_grandtotal_price" class="form-control col-12"  value="">
                                   </td>
                                   <td class="col-2 lastcol" scope="col">
-                                    <input type="text" name="purchase_amount_recieved" class="form-control col-12"  value="{{ old('purchase_amount_recieved', '100') }}">
+                                    <input type="number" name="purchase_amount_recieved" class="form-control col-12"  value="">
                                   </td>
                                 </tr>
                               </tfoot>
@@ -337,12 +337,15 @@
                     <div class="col-12">
                       <div class="form-group">
                         <div class="col-12">
-                          <?php $productArray = []; $nameArray = []; $codeArray = []; ?>
+                          <?php $productArray = []; $nameArray = []; $codeArray = []; $barcodeArray = []; ?>
                           @foreach($products as $one_product) 
                           <div class="product_array" style="display: none">{{ $productArray[] = $one_product }}</div>
                           <div class="productnames_array" style="display: none">{{ $nameArray[] = $one_product->product_name }}</div>
                           <div class="productnamecode_array" style="display: none">{{ $namecodeArray[] = $one_product->product_name.", ".($one_product->product_ref_no) }}</div>
                           @endforeach 
+                          @foreach($attachedbarcodes as $singlebarcode)
+                          <div class="productbarcodes_array" style="display: none">{{ $barcodeArray[] = "$singlebarcode->product_barcodes" }}</div>
+                          @endforeach
                           {{-- <input type="hidden" name="purchase_products_barcode_2" id="product_barcode2" value="{{ $one_product->product_barcode }}"/> --}}
                           <input type="hidden" name="pieces_per_packet" id="pieces_per_packet" value="{{ $one_product->product_piece_per_packet }}"/>
                           <input type="hidden" name="packets_per_carton" id="packets_per_carton" value="{{ $one_product->product_packet_per_carton }}"/>
@@ -783,6 +786,66 @@
 @section('javascript')
 
 <script type="text/javascript">
+  $(document).ready(function (){
+
+    $("#purchase_store").validate({
+      rules: {
+        supplier_code: 'required',
+        purchase_payment_method: 'required',
+        // product_name: 'required',
+        // product_code: 'required',
+        // purchase_grandtotal_price: 'required',
+        purchase_amount_recieved: 'required',
+      },
+      messages: {
+        supplier_code:  'Please Enter Supplier Name',
+        purchase_payment_method:  'Please Enter Purchase Payment Method',
+        // product_name:  'Please Enter Product Name',
+        // product_code:  'Please Enter Product Code',
+        // purchase_grandtotal_price:  'Please Enter Product',
+        purchase_amount_recieved:  'Please Enter Amount Paid',
+      },
+      errorElement: 'em',
+      errorPlacement: function ( error, element ) {
+        error.addClass( 'invalid-feedback' );
+        if( element.prop( 'type' ) === 'checkbox' ) {
+          error.insertAfter( element.parent( 'label' ) );
+        }
+        // if( element.prop( 'readonly' )){
+
+        // }
+        else {
+          error.insertAfter( element );
+        }
+      },
+
+      errorClass: "error fail-alert",
+      errorClass: "invalid",
+
+      highlight: function ( element, errorClass, validClass ) {
+        $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        // $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+        $( element ).removeClass( 'is-invalid' );
+      },
+
+    });
+    $.validator.setDefaults( {
+      // debug: true,
+      // success: "valid",
+      // submitHandler: function () {
+      //   alert( 'submitted!' );
+      // },
+      submitHandler: function(form) {
+        form.submit();
+      }
+    });
+
+  });
+</script>
+
+<script type="text/javascript">
 
   var total_items = [];
   var total_quantity = [];
@@ -813,195 +876,12 @@
   var temp_unit_operation_value = [];
 
   var rowindex;
-  var customer_sale_rate;
+  var supplier_purchase_rate;
   var row_product_price;
   var pos;
   // <?php $productArray = []; ?>
 
-  // $(document).ready(function() {
-  //   // $('.js-example-basic-single').select2();
-  //   $('#product_code_name5').select2({
-  //     theme: 'classic'
-  //   });
-  // });
-  // $(document).ready(function() {
-    
-  //   $(document).on('focusout', '#product_code_name4', function(e){
-  //     var search_data = this.value;
-  //     $.ajax({
-  //         type: 'GET',
-  //         url: 'searchproduct',
-  //         data: {
-  //             data: search_data
-  //       },
-  //       success:function(data) {
-  //         var product_id = data[0]["product_id"];
-  //         var status_id = data[0]["status_id"];
-  //         // var product_name = data[0]["product_name"];
-  //         // $.each( data, function ( i, id ) {
-  //         //   $('table tbody').append('<tr class="row prtr"><td class="col-2 firstcol">'+data[i].product_barcode+'</td><td class="col-3 mycol">'+data[i].product_name+'</td><td class="col-1 mycol">'+data[i].product_pieces_total+'</td><td class="col-1 mycol">'+data[i].product_packets_total+'</td><td class="col-1 mycol">'+data[i].product_cartons_total+'</td><td class="col-1 mycol">'+data[i].product_trade_price_piece+'</td><td class="col-1 mycol">'+data[i].product_state+'</td><td class="col-1 mycol">'+data[i].product_pieces_total*data[i].product_trade_price_piece+'</td><td class="col-1 lastcol" align="center">  <button type="button" href="{{ route('purchase.create', ['purchase' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="X" title="X">    <i class="fa fa-times"></i>  </button></td></tr>');
-  //         //   // $('table tbody').append('<tr class="row prtr"><td class="col-2 firstcol">{{ $value->product_barcode }}</td><td class="col-3 mycol">{{ $value->product_name }}</td><td class="col-1 mycol">{{ $value->product_pieces_total }}</td><td class="col-1 mycol">{{ $value->product_packets_total }}</td><td class="col-1 mycol">{{ $value->product_cartons_total }}</td><td class="col-1 mycol">{{ $value->product_trade_price_piece }}</td><td class="col-1 mycol">{{ $value->product_state }}</td><td class="col-1 mycol">{{ $value->product_pieces_total*$value->product_trade_price_piece }}</td><td class="col-1 lastcol" align="center">  <button type="button" href="{{ route('purchase.destroy', ['purchase' => 1,]) }}" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="X" title="X">    <i class="fa fa-times"></i>  </button></td></tr>');
-  //         // });
-  //         $('#product_name option').removeAttr('selected');
-  //         // $('#product_name option[value='+product_id+']').removeAttr('selected');
-  //         $('#product_name option[value='+product_id+']').attr('selected', 'selected');
-  //         $('#product_name option[value='+product_id+']').attr('status_id', status_id);
-  //       }
-  //     });
-  //   });
 
-  //   function productSearch(data) {
-  //     // $.ajax({
-  //     //     type: 'GET',
-  //     //     url: 'searchproduct',
-  //     //     data: {
-  //     //         data: data
-  //     //     },
-  //     //     success: function(data) {
-  //     //       console.log(data);
-  //     //       var flag = 1;
-  //     //       $(".product-code").each(function(i) {
-  //     //           if ($(this).val() == data[1]) {
-  //     //               rowindex = i;
-  //     //               var qty = parseFloat($('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val()) + 1;
-  //     //               $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val(qty);
-  //     //               checkQuantity(String(qty), true);
-  //     //               flag = 0;
-  //     //           }
-  //     //       });
-  //     //       $("input[name='product_code_name6']").val('');
-  //     //       // if(flag){
-  //     //       //     var newRow = $("<tr>");
-  //     //       //     var cols = '';
-  //     //       //     temp_unit_name = (data[6]).split(',');
-  //     //       //     cols += '<td>' + data[0] + '</td>';
-  //     //       //     cols += '<td>' + data[1] + '</td>';
-  //     //       //     cols += '<td><input type="number" class="form-control qty" name="qty[]" value="1" step="any" required/></td>';
-  //     //       //     cols += '<td><input type="number" class="form-control qty" name="pkt[]" value="1" step="any" /></td>';
-  //     //       //     cols += '<td><input type="number" class="form-control qty" name="crt[]" value="1" step="any" /></td>';
-  //     //       //     cols += '<td class="net_unit_price"></td>';
-  //     //       //     cols += '<td class="discount">0.00</td>';
-  //     //       //     cols += '<td class="sub-total"></td>';
-  //     //       //     cols += '<td><button type="button" class="ibtnDel btn btn-md btn-danger">{{trans("file.delete")}}</button></td>';
-  //     //       //     cols += '<input type="hidden" class="product-code" name="product_code[]" value="' + data[1] + '"/>';
-  //     //       //     cols += '<input type="hidden" class="product-id" name="product_id[]" value="' + data[9] + '"/>';
-  //     //       //     cols += '<input type="hidden" class="net_unit_price" name="net_unit_price[]" />';
-  //     //       //     cols += '<input type="hidden" class="discount-value" name="discount[]" />';
-  //     //       //     cols += '<input type="hidden" class="subtotal-value" name="subtotal[]" />';
-                
-  //     //       //     // name="purchase_total_items"
-  //     //       //     // name="purchase_total_qty"
-  //     //       //     // name="purchase_free_piece"
-  //     //       //     // name="purchase_free_amount"
-  //     //       //     // name="purchase_total_price"
-  //     //       //     // name="purchase_add_amount"
-  //     //       //     // name="purchase_discount"
-  //     //       //     // name="purchase_grandtotal_price"
-  //     //       //     // name="purchase_amount_recieved"
-
-  //     //       //     newRow.append(cols);
-  //     //       //     $("table.order-list tbody").append(newRow);
-
-  //     //       //     pos = product_code.indexOf(data[1]);
-  //     //       //     if(!data[11] && product_warehouse_price[pos]) {
-  //     //       //         product_price.push(parseFloat(product_warehouse_price[pos] * currency['exchange_rate']) + parseFloat(product_warehouse_price[pos] * currency['exchange_rate'] * customer_group_rate));
-  //     //       //     }
-  //     //       //     else {
-  //     //       //         product_price.push(parseFloat(data[2]));
-  //     //       //     }
-  //     //       //     product_discount.push('0.00');
-  //     //       //     // unit_name.push(data[6]);
-  //     //       //     // unit_operator.push(data[7]);
-  //     //       //     // unit_operation_value.push(data[8]);
-  //     //       //     rowindex = newRow.index();
-  //     //       //     checkQuantity(1, true);
-  //     //       // }
-  //     //     }
-  //     // });
-  //   }
-
-  //   function calculateRowProductData(quantity) {
-  //     // $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(6)').text((product_discount[rowindex] * quantity).toFixed(2));
-  //     // $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.discount-value').val((product_discount[rowindex] * quantity).toFixed(2));
-  //     // if (tax_method[rowindex] == 1) {
-  //     //     var net_unit_price = row_product_cost - product_discount[rowindex];
-  //     //     var sub_total = (net_unit_price * quantity);
-
-  //     //     $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(5)').text(net_unit_price.toFixed(2));
-  //     //     $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.net_unit_price').val(net_unit_price.toFixed(2));
-  //     //     $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(8)').text(sub_total.toFixed(2));
-  //     //     $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.subtotal-value').val(sub_total.toFixed(2));
-  //     // }
-  //     // calculateTotal();
-  //   }
-
-  //   // function calculateTotal() {
-  //   //   // //Sum of quantity
-  //   //   // var total_qty = 0;
-  //   //   // $(".qty").each(function() {
-
-  //   //   //     if ($(this).val() == '') {
-  //   //   //         total_qty += 0;
-  //   //   //     } else {
-  //   //   //         total_qty += parseFloat($(this).val());
-  //   //   //     }
-  //   //   // });
-  //   //   // $("#total-qty").text(total_qty);
-  //   //   // $('input[name="total_qty"]').val(total_qty);
-
-  //   //   // //Sum of discount
-  //   //   // var total_discount = 0;
-  //   //   // $(".discount").each(function() {
-  //   //   //     total_discount += parseFloat($(this).text());
-  //   //   // });
-  //   //   // $("#total-discount").text(total_discount.toFixed(2));
-  //   //   // $('input[name="total_discount"]').val(total_discount.toFixed(2));
-
-  //   //   // //Sum of subtotal
-  //   //   // var total = 0;
-  //   //   // $(".sub-total").each(function() {
-  //   //   //     total += parseFloat($(this).text());
-  //   //   // });
-  //   //   // $("#total").text(total.toFixed(2));
-  //   //   // $('input[name="total_cost"]').val(total.toFixed(2));
-
-  //   //   // calculateGrandTotal();
-  //   // }
-
-  //   function calculateGrandTotal() {
-  //     //   var item = $('table.order-list tbody tr:last').index();
-
-  //     //   var total_qty = parseFloat($('#total-qty').text());
-  //     //   var subtotal = parseFloat($('#total').text());
-  //     //   var order_tax = parseFloat($('select[name="order_tax_rate"]').val());
-  //     //   var order_discount = parseFloat($('input[name="order_discount"]').val());
-  //     //   var shipping_cost = parseFloat($('input[name="shipping_cost"]').val());
-
-  //     //   if (!order_discount)
-  //     //       order_discount = 0.00;
-  //     //   if (!shipping_cost)
-  //     //       shipping_cost = 0.00;
-
-  //     //   item = ++item + '(' + total_qty + ')';
-  //     //   order_tax = (subtotal - order_discount) * (order_tax / 100);
-  //     //   var grand_total = (subtotal + order_tax + shipping_cost) - order_discount;
-
-  //     //   $('#item').text(item);
-  //     //   $('input[name="item"]').val($('table.order-list tbody tr:last').index() + 1);
-  //     //   $('#subtotal').text(subtotal.toFixed(2));
-  //     //   $('#order_tax').text(order_tax.toFixed(2));
-  //     //   $('input[name="order_tax"]').val(order_tax.toFixed(2));
-  //     //   $('#order_discount').text(order_discount.toFixed(2));
-  //     //   $('#shipping_cost').text(shipping_cost.toFixed(2));
-  //     //   $('#grand_total').text(grand_total.toFixed(2));
-  //     //   $('input[name="grand_total"]').val(grand_total.toFixed(2));
-  //   }
-
-  // });
-
-</script>
-
-<script>
   $(document).on('click', '#add_button', function(e){
     var product_barcode = $('#purchase_products_barcode_i').val();
     // var product_barcode2 = $('#product_barcode2').val();
@@ -1019,8 +899,8 @@
     var pieces_per_carton = $('#pieces_per_carton').val();
     var pieces_per_packet = $('#pieces_per_packet').val();
     var packets_per_carton = $('#packets_per_carton').val();
-    purchase_free_amount = $('#purchase_free_amount').val();
-    purchase_add_amount = $('#purchase_add_amount').val();
+    purchase_free_amount = $('#purchase_free_amount_i').val();
+    purchase_add_amount = $('#purchase_add_amount_i').val();
 
     var product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
     if(product_quantity == 0 || product_unit_price == 0){
@@ -1049,8 +929,8 @@
       $('#purchase_total_items').val(total_items);
       // $('#purchase_free_price').val('');
       // $('#purchase_free_price').val();
-      $('#purchase_total_price').val('');
-      $('#purchase_total_price').val(subtotal_amount);
+      $('#purchase_total_price_i').val('');
+      $('#purchase_total_price_i').val(subtotal_amount);
       $('#purchase_discount').val('');
       $('#purchase_discount').val(total_discount);
       $('#purchase_grandtotal_price').val('');
@@ -1058,16 +938,16 @@
     }
 
   });
-  $(document).on('change', "#purchase_add_amount", function(e){
+  $(document).on('change', "#purchase_add_amount_i", function(e){
     grandtotal_amount = Number(grandtotal_amount) - Number(purchase_add_amount);
-    purchase_add_amount = $('#purchase_add_amount').val();
+    purchase_add_amount = $('#purchase_add_amount_i').val();
     grandtotal_amount = Number(grandtotal_amount) + Number(purchase_add_amount);
     $('#purchase_grandtotal_price').val('');
     $('#purchase_grandtotal_price').val(grandtotal_amount);
   });
-  $(document).on('change', "#purchase_free_amount", function(e){
+  $(document).on('change', "#purchase_free_amount_i", function(e){
     grandtotal_amount = Number(grandtotal_amount) + Number(purchase_free_amount);
-    purchase_free_amount = $('#purchase_free_amount').val();
+    purchase_free_amount = $('#purchase_free_amount_i').val();
     grandtotal_amount = Number(grandtotal_amount) - Number(purchase_free_amount);
     $('#purchase_grandtotal_price').val('');
     $('#purchase_grandtotal_price').val(grandtotal_amount);
@@ -1097,8 +977,8 @@
     $('#purchase_total_items').val(total_items);
     $('#purchase_discount').val('');
     $('#purchase_discount').val(total_discount);
-    $('#purchase_total_price').val('');
-    $('#purchase_total_price').val(subtotal_amount);
+    $('#purchase_total_price_i').val('');
+    $('#purchase_total_price_i').val(subtotal_amount);
     $('#purchase_grandtotal_price').val('');
     $('#purchase_grandtotal_price').val(grandtotal_amount);
 
@@ -1116,39 +996,7 @@
     // calculateTotal();
   });
 
-  function calculateTotal() {
-    // //Sum of quantity
-    // var total_qty = 0;
-    // $(".qty").each(function() {
-
-    //     if ($(this).val() == '') {
-    //         total_qty += 0;
-    //     } else {
-    //         total_qty += parseFloat($(this).val());
-    //     }
-    // });
-    // $("#total-qty").text(total_qty);
-    // $('input[name="total_qty"]').val(total_qty);
-
-    // //Sum of discount
-    // var total_discount = 0;
-    // $(".discount").each(function() {
-    //     total_discount += parseFloat($(this).text());
-    // });
-    // $("#total-discount").text(total_discount.toFixed(2));
-    // $('input[name="total_discount"]').val(total_discount.toFixed(2));
-
-    // //Sum of subtotal
-    // var total = 0;
-    // $(".sub-total").each(function() {
-    //     total += parseFloat($(this).text());
-    // });
-    // $("#total").text(total.toFixed(2));
-    // $('input[name="total_cost"]').val(total.toFixed(2));
-
-    // calculateGrandTotal();
-  }
-    
+  var productsbarcodes_array = <?php echo json_encode($barcodeArray); ?>;
   var productsnames_array = <?php echo json_encode($nameArray); ?>;
   var productsnamescodes_array = <?php echo json_encode($namecodeArray); ?>;
 
@@ -1203,27 +1051,172 @@
             // '_token': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(data) {
-          var catchbarcode = data[0]['product_barcode'];
+          // var catchbarcode = data[0]['product_barcode'];
+          var catchproduct_name = data[0]['product_name'];
           var catchproduct_code = data[0]['product_ref_no'];
+          catchproduct_name = catchproduct_name+", "+catchproduct_code;
           var catchproduct_id = data[0]['product_id'];
           var pieces_per_carton = data[0]['product_piece_per_carton'];
           var pieces_per_packet = data[0]['product_piece_per_packet'];
           var packets_per_carton = data[0]['product_packet_per_carton'];
+          var product_cash_price_piece = data[0]['product_cash_price_piece'];
+          var product_credit_price_piece = data[0]['product_credit_price_piece'];
           // console.log(total_items);
-          $('#purchase_products_barcode_i').val('');
-          $('#purchase_products_barcode_i').val(catchbarcode);
+          $('#product_name_i').val('');
+          $('#product_name_i').val(catchproduct_name);
           $('#product_code_i').val('');
           $('#product_code_i').val(catchproduct_code);
           $('#product_id_i').val('');
           $('#product_id_i').val(catchproduct_id);
+          // $('#purchase_products_barcode_i').val('');
+          // $('#purchase_products_barcode_i').val(catchbarcode);
           $('#pieces_per_carton').val('');
           $('#pieces_per_carton').val(pieces_per_carton);
           $('#pieces_per_packet').val('');
           $('#pieces_per_packet').val(pieces_per_packet);
           $('#packets_per_carton').val('');
           $('#packets_per_carton').val(packets_per_carton);
+          $('#purchase_products_unit_price_i').val('');
+          $('#purchase_products_unit_price_i').val(product_cash_price_piece)
+          // $('#purchase_products_unit_price_i').val('');
+          // $('#purchase_products_unit_price_i').val(product_credit_price_piece)
+          
           // $('#product_barcode2').val(data[0]['product_barcode']);
+          barcodeSearch2(catchproduct_id);
+
         }
+    });
+  }
+
+  $("#purchase_products_barcode_i").on('focus', function () {
+    // $( "product_name" ).autocomplete({
+    $(this).autocomplete({
+      source: productsbarcodes_array,
+      autoFocus:true,
+      minLength: 0,
+      // select: $('#purchase_product_barcode').val();
+      // source: function(request, response) {
+      //   var matcher = new RegExp(".?" + $.ui.autocomplete.escapeRegex(request.term), "i");
+      //     response($.grep(productsnamescodes_array, function(item) {
+      //     return matcher.test(item);
+      //   }));
+      // },
+      // response: function(event, ui) {
+      //   if (ui.content.length == 1) {
+      //         var data = ui.content[0].value;
+      //         $(this).autocomplete( "close" );
+      //         // productSearch(data);
+      //   };
+      // },
+      select: function(event, ui) {
+        var data = ui.item.value;
+        // console.log(data);
+        barcodeSearch(data);
+      },
+      // change: function(event, ui) {
+      //   var data = ui.item;
+      //   console.log(data);
+      //   if (ui.item == null) {
+      //       this.setCustomValidity("You must select a product");
+      //   }
+      // }
+    }).on('click', function(event) {  
+            // $(this).trigger('keydown.autocomplete');
+            $(this).autocomplete("search", $(this).val());
+            // .focus(function(){
+    });
+    // $(this).autocomplete("search", "");
+
+  });
+  function barcodeSearch(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchbarcode2')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        productSearch(data[0]['product_id']);
+        // var catchname = data[0]['product_name'];
+        // var catchproduct_code = data[0]['product_ref_no'];
+        // catchname = catchname+", "+catchproduct_code;
+        // var catchproduct_id = data[0]['product_id'];
+        // var catchproduct_pieces = data[0]['product_pieces_available'];
+        // var catchproduct_packets = data[0]['product_packets_available'];
+        // var catchproduct_cartons = data[0]['product_cartons_available'];
+        // var pieces_per_carton = data[0]['product_piece_per_carton'];
+        // var pieces_per_packet = data[0]['product_piece_per_packet'];
+        // var packets_per_carton = data[0]['product_packet_per_carton'];
+        // var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        // var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        // $('#product_name_i').val('');
+        // $('#product_name_i').val(catchname);
+        // $('#product_code_i').val('');
+        // $('#product_code_i').val(catchproduct_code);
+        // $('#product_id_i').val('');
+        // $('#product_id_i').val(catchproduct_id);
+        // $('#purchase_products_pieces_i').attr('max', catchproduct_pieces);
+        // $('#purchase_products_packets_i').attr('max', catchproduct_packets);
+        // $('#purchase_products_cartons_i').attr('max', catchproduct_cartons);
+        // $('#pieces_per_carton').val('');
+        // $('#pieces_per_carton').val(pieces_per_carton);
+        // $('#pieces_per_packet').val('');
+        // $('#pieces_per_packet').val(pieces_per_packet);
+        // $('#packets_per_carton').val('');
+        // $('#packets_per_carton').val(packets_per_carton);
+        // $('#purchase_products_unit_price_i').val('');
+        // $('#purchase_products_unit_price_i').val(product_cash_price_piece)
+        // $('#purchase_products_unit_price_i').val('');
+        // $('#purchase_products_unit_price_i').val(product_credit_price_piece)
+      }
+    });
+  }
+  function barcodeSearch2(data) {
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('searchbarcode3')  }}",
+      data: {
+          data: data,
+          // '_token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        console.log(data);
+        var catchattachedbarcode = data[0]['product_barcodes'];
+        // var catchname = data[0]['product_name'];
+        // var catchproduct_code = data[0]['product_ref_no'];
+        // catchname = catchname+", "+catchproduct_code;
+        // var catchproduct_id = data[0]['product_id'];
+        // var catchproduct_pieces = data[0]['product_pieces_available'];
+        // var catchproduct_packets = data[0]['product_packets_available'];
+        // var catchproduct_cartons = data[0]['product_cartons_available'];
+        // var pieces_per_carton = data[0]['product_piece_per_carton'];
+        // var pieces_per_packet = data[0]['product_piece_per_packet'];
+        // var packets_per_carton = data[0]['product_packet_per_carton'];
+        // var product_cash_price_piece = data[0]['product_cash_price_piece'];
+        // var product_credit_price_piece = data[0]['product_credit_price_piece'];
+        $('#purchase_products_barcode_i').val('');
+        $('#purchase_products_barcode_i').val(catchattachedbarcode);
+        // $('#product_name_i').val('');
+        // $('#product_name_i').val(catchname);
+        // $('#product_code_i').val('');
+        // $('#product_code_i').val(catchproduct_code);
+        // $('#product_id_i').val('');
+        // $('#product_id_i').val(catchproduct_id);
+        // $('#purchase_products_pieces_i').attr('max', catchproduct_pieces);
+        // $('#purchase_products_packets_i').attr('max', catchproduct_packets);
+        // $('#purchase_products_cartons_i').attr('max', catchproduct_cartons);
+        // $('#pieces_per_carton').val('');
+        // $('#pieces_per_carton').val(pieces_per_carton);
+        // $('#pieces_per_packet').val('');
+        // $('#pieces_per_packet').val(pieces_per_packet);
+        // $('#packets_per_carton').val('');
+        // $('#packets_per_carton').val(packets_per_carton);
+        // $('#purchase_products_unit_price_i').val('');
+        // $('#purchase_products_unit_price_i').val(product_cash_price_piece)
+        // $('#purchase_products_unit_price_i').val('');
+        // $('#purchase_products_unit_price_i').val(product_credit_price_piece)
+      }
     });
   }
 
@@ -1308,31 +1301,6 @@
     //   $('#supplier_status').val('Inactive');
     // }
   });
-    // $(document).on('focusout', '#suppliercodesearch', function(e){
-    //   var data = this.value;
-    //   $.ajax({
-    //     url: 'searchsupplier',
-    //     type: "GET",
-    //     data: {
-    //       data: data,
-    //     },
-    //     success:function(data) {
-    //       // alert(data[0]["supplier_id"]);
-    //       var supplier_id = data[0]["supplier_id"];
-    //       var status_id = data[0]["status_id"];
-    //       $('#supplier_name option').removeAttr('selected');
-    //       // $('#supplier_name option[value='+supplier_id+']').removeAttr('selected');
-    //       $('#supplier_name option[value='+supplier_id+']').attr('selected', 'selected');
-    //       $('#supplier_name option[value='+supplier_id+']').attr('status_id', status_id);
-    //       if(status_id == 1){
-    //       $('#supplier_status').val('Active');
-    //       }
-    //       // else{
-    //       //   $('#supplier_status').val('Inactive');
-    //       // }
-    //     }
-    //   });
-    // });
 
 </script>
 

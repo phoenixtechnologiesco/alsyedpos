@@ -10,7 +10,7 @@
             <h5 class="title">{{__(" Add Company")}}</h5>
           </div>
           <div class="card-body">
-            <form method="post" action="{{ route('company.store') }}" autocomplete="off" enctype="multipart/form-data">
+            <form id="company_store" method="post" action="{{ route('company.store') }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @method('post')
               @include('alerts.success')
@@ -72,4 +72,50 @@
 @endsection
 
 @section('javascript')
+
+<script type="text/javascript">
+  $(function (){
+    $('#company_store').validate({
+      rules: {
+        company_name: 'required',
+        company_ref_no: 'required',
+        company_description: 'required',
+      },
+      messages: {
+        company_name:  'Please Enter Company Name',
+        company_ref_no:  'Please Enter Company Ref No',
+        company_description:  'Please Company Description',
+      },
+      errorElement: 'em',
+      errorPlacement: function ( error, element ) {
+        error.addClass( 'invalid-feedback' );
+        if ( element.prop( 'type' ) === 'checkbox' ) {
+          error.insertAfter( element.parent( 'label' ) );
+        } else {
+          error.insertAfter( element );
+        }
+      },
+      errorClass: "error fail-alert",
+      validClass: "valid success-alert",
+      highlight: function ( element, errorClass, validClass ) {
+        $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        // $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+        $( element ).removeClass( 'is-invalid' );
+      }
+    });
+    $.validator.setDefaults( {
+      // debug: true,
+      // success: "valid",
+      // submitHandler: function () {
+      //   alert( 'submitted!' );
+      // },
+      submitHandler: function(form) {
+        form.submit();
+      }
+    });
+  });
+</script>
+
 @endsection
