@@ -847,33 +847,18 @@
 
 <script type="text/javascript">
 
-  var total_items = [];
-  var total_quantity = [];
-  var total_discount = [];
-  var subtotal_amount = [];
+  var total_items;
+  var total_quantity;
+  var total_discount;
+  var subtotal_amount;
   var grandtotal_amount;
   var purchase_free_amount;
   var purchase_add_amount;
+  var purchase_amount_recieved;
+  var purchase_return_change;
+  var product_quantity;
+  var product_sub_total;
   var i = 1;
-  // var productArray = [];
-  var product_code = [];
-  var product_name = [];
-  var product_qty = [];
-  var product_type = [];
-  var product_id = [];
-  var product_list = [];
-  var qty_list = [];
-
-  // array data with selection
-  var product_price = [];
-  var product_discount = [];
-  var unit_name = [];
-  var unit_operator = [];
-  var unit_operation_value = [];
-  // temporary array
-  var temp_unit_name = [];
-  var temp_unit_operator = [];
-  var temp_unit_operation_value = [];
 
   var rowindex;
   var supplier_purchase_rate;
@@ -902,40 +887,71 @@
     purchase_free_amount = $('#purchase_free_amount_i').val();
     purchase_add_amount = $('#purchase_add_amount_i').val();
 
-    var product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
-    if(product_quantity == 0 || product_unit_price == 0){
-      product_discount = 0;
-      product_unit_price = 0;
-    }
+    product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
+    
+    var allRows = [];
+    var repeated;
+    $(".prtr").each(function() {
+      // rowindex = $(this).closest('tr').index();
+      allRows.push($(this).find('[name="product_id[]"]').val());
+    });
 
-    total_items = Number(total_items) + 1;
-    total_quantity = Number(total_quantity) + (Number(product_quantity));
-    total_discount = Number(total_discount) + Number(product_discount);
-    // var product_sub_total = $('#purchase_products_sub_total').val();
+    allRows.forEach(element => {
+      if(product_id == element){
+        repeated = 1;
+      }
+    });
 
-    var product_sub_total = product_unit_price*(Number(product_quantity))-Number(product_discount);
-    if(product_quantity == 0){
-      product_sub_total = 0;
-    }
-    subtotal_amount = Number(subtotal_amount) + Number(product_sub_total);
-    grandtotal_amount = Number(subtotal_amount) + Number(purchase_free_amount) + Number(purchase_add_amount);
+    $('#purchase_products_barcode_i').val('');
+    $('#product_name_i').val('');
+    $('#product_code_i').val('');
+    $('#product_id_i').val('');
 
-    if(product_name !== "" && product_quantity !== 0 ){
-      $('.purchase-product').append('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="purchase_products_barcode[]" id="purchase_products_barcode'+i+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+i+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+i+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+i+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_pieces[]" id="purchase_products_pieces'+i+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="purchase_pieces_per_packet[]" id="purchase_pieces_per_packet'+i+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_packets[]" id="purchase_products_packets'+i+'" class="form-control col-12" value='+product_packets+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_cartons[]" id="purchase_products_cartons'+i+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="purchase_pieces_per_carton[]" id="purchase_pieces_per_carton'+i+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_unit_price[]" id="purchase_products_unit_price'+i+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_discount[]" id="purchase_products_discount'+i+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_sub_total[]" id="purchase_products_sub_total'+i+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+i+'" row-id="'+i+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
-      i++;
+    if(product_name !== "" && product_quantity !== 0 && product_unit_price !== 0 && repeated !== 1){
+
+      if(product_quantity == 0 || product_unit_price == 0){
+        product_discount = 0;
+        product_unit_price = 0;
+      }
+
+      total_items = Number(total_items) + 1;
+      total_quantity = Number(total_quantity) + (Number(product_quantity));
+      total_discount = Number(total_discount) + Number(product_discount);
+      // var product_sub_total = $('#purchase_products_sub_total').val();
+
+      product_sub_total = product_unit_price*(Number(product_quantity))-Number(product_discount);
+      if(product_quantity == 0){
+        product_sub_total = 0;
+      }
+      subtotal_amount = Number(subtotal_amount) + Number(product_sub_total);
+      grandtotal_amount = Number(subtotal_amount) + Number(purchase_free_amount) + Number(purchase_add_amount);
+
+      $('.purchase-product').prepend('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="purchase_products_barcode[]" id="purchase_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_pieces[]" id="purchase_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="purchase_pieces_per_packet[]" id="purchase_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_packets[]" id="purchase_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'><input readonly type="hidden" name="purchase_packets_per_carton[]" id="purchase_packets_per_carton'+rownum+'" class="form-control col-12" value='+packets_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_cartons[]" id="purchase_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="purchase_pieces_per_carton[]" id="purchase_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_unit_price[]" id="purchase_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_discount[]" id="purchase_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_sub_total[]" id="purchase_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
+      rownum++;
       $('#purchase_total_qty').val('');
       $('#purchase_total_qty').val(total_quantity);
       $('#purchase_total_items').val('');
       $('#purchase_total_items').val(total_items);
       // $('#purchase_free_price').val('');
       // $('#purchase_free_price').val();
-      $('#purchase_total_price_i').val('');
-      $('#purchase_total_price_i').val(subtotal_amount);
+      $('#purchase_total_price').val('');
+      $('#purchase_total_price').val(subtotal_amount);
       $('#purchase_discount').val('');
       $('#purchase_discount').val(total_discount);
       $('#purchase_grandtotal_price').val('');
       $('#purchase_grandtotal_price').val(grandtotal_amount);
+      if(purchase_amount_recieved >= grandtotal_amount){
+        purchase_return_change = Number(purchase_amount_recieved) -  Number(grandtotal_amount);
+        $('#purchase_return_change').val(purchase_return_change);
+      }
+      else{
+        $('#purchase_return_change').val(0);
+      }
+    
     }
+
+    $('#product_name_i').focus();
+
 
   });
   $(document).on('change', "#purchase_add_amount_i", function(e){
@@ -952,48 +968,52 @@
     $('#purchase_grandtotal_price').val('');
     $('#purchase_grandtotal_price').val(grandtotal_amount);
   });
+  $(document).on('change', "#purchase_amount_recieved", function(e){
+    grandtotal_amount = $('#purchase_grandtotal_price').val();
+    purchase_amount_recieved = $('#purchase_amount_recieved').val();
+    if(Number(purchase_amount_recieved) >= Number(grandtotal_amount)){
+      purchase_return_change = Number(purchase_amount_recieved) -  Number(grandtotal_amount);
+      $('#purchase_return_change').val(purchase_return_change);
+    }
+    if(Number(purchase_amount_recieved) < Number(grandtotal_amount)){
+      alert('Amount recieved should be greater than the Grand Total Amount');
+      $('#purchase_amount_recieved').val(0);
+    }
+  });
   $(document).on('click', ".delete-productfield", function(event) {
-    rowid = $(this).attr('row-id');
-    thisproduct_discount = $('#purchase_products_discount'+rowid).val();
-    thisproduct_sub_total = $('#purchase_products_sub_total'+rowid).val();
-    thisproduct_pieces = $('#purchase_products_pieces'+rowid).val();
-    thisproduct_packets = $('#purchase_products_packets'+rowid).val();
-    thisproduct_cartons = $('#purchase_products_cartons'+rowid).val();
-    thispieces_per_packet = $('#purchase_pieces_per_packet'+rowid).val();
-    thispieces_per_carton = $('#purchase_pieces_per_carton'+rowid).val();
+    if(confirm('Do you really want to delete this?')){
+      rowid = $(this).attr('row-id');
+      thisproduct_discount = $('#purchase_products_discount'+rowid).val();
+      thisproduct_sub_total = $('#purchase_products_sub_total'+rowid).val();
+      thisproduct_pieces = $('#purchase_products_pieces'+rowid).val();
+      thisproduct_packets = $('#purchase_products_packets'+rowid).val();
+      thisproduct_cartons = $('#purchase_products_cartons'+rowid).val();
+      thispieces_per_packet = $('#purchase_pieces_per_packet'+rowid).val();
+      thispieces_per_carton = $('#purchase_pieces_per_carton'+rowid).val();
+      purchase_amount_recieved = $('#purchase_amount_recieved').val();
 
-    // rowindex = $(this).closest('tr').index();
-    var my_total_qty = this.value;
-    total_quantity = Number(total_quantity) - (Number(thisproduct_pieces)+(thisproduct_packets*thispieces_per_packet)+(thisproduct_cartons*thispieces_per_carton));
-    total_items = Number(total_items) - 1;
-    total_discount = Number(total_discount) - Number(thisproduct_discount);
-    // var product_sub_total = $('#purchase_products_sub_total').val();
-    subtotal_amount = Number(subtotal_amount) - Number(thisproduct_sub_total);
-    grandtotal_amount = Number(grandtotal_amount) - Number(thisproduct_sub_total);
+      // rowindex = $(this).closest('tr').index();
+      var my_total_qty = this.value;
+      total_quantity = Number(total_quantity) - (Number(thisproduct_pieces)+(thisproduct_packets*thispieces_per_packet)+(thisproduct_cartons*thispieces_per_carton));
+      total_items = Number(total_items) - 1;
+      total_discount = Number(total_discount) - Number(thisproduct_discount);
+      // var product_sub_total = $('#purchase_products_sub_total').val();
+      subtotal_amount = Number(subtotal_amount) - Number(thisproduct_sub_total);
+      grandtotal_amount = Number(grandtotal_amount) - Number(thisproduct_sub_total);
 
-    $('#purchase_total_qty').val('');
-    $('#purchase_total_qty').val(total_quantity);
-    $('#purchase_total_items').val('');
-    $('#purchase_total_items').val(total_items);
-    $('#purchase_discount').val('');
-    $('#purchase_discount').val(total_discount);
-    $('#purchase_total_price_i').val('');
-    $('#purchase_total_price_i').val(subtotal_amount);
-    $('#purchase_grandtotal_price').val('');
-    $('#purchase_grandtotal_price').val(grandtotal_amount);
+      $('#purchase_total_qty').val('');
+      $('#purchase_total_qty').val(total_quantity);
+      $('#purchase_total_items').val('');
+      $('#purchase_total_items').val(total_items);
+      $('#purchase_discount').val('');
+      $('#purchase_discount').val(total_discount);
+      $('#purchase_total_price_i').val('');
+      $('#purchase_total_price_i').val(subtotal_amount);
+      $('#purchase_grandtotal_price').val('');
+      $('#purchase_grandtotal_price').val(grandtotal_amount);
 
-    $(this).closest('.prtr').remove();
-
-    // product_barcode.splice(rowindex, 1);
-    // product_name.splice(rowindex, 1);
-    // product_pieces.splice(rowindex, 1);
-    // product_packets.splice(rowindex, 1);
-    // product_cartons.splice(rowindex, 1);
-    // product_unit_price.splice(rowindex, 1);
-    // product_discount.splice(rowindex, 1);
-    // product_total_price.splice(rowindex, 1);
-    // $(this).closest('.prtr').remove();
-    // calculateTotal();
+      $(this).closest('.prtr').remove();
+    }
   });
 
   var productsbarcodes_array = <?php echo json_encode($barcodeArray); ?>;
@@ -1041,7 +1061,6 @@
     // $(this).autocomplete("search", "");
 
   });
-
   function productSearch(data) {
     $.ajax({
         type: 'GET',
@@ -1258,7 +1277,7 @@
 
   function supplierSearch(data){
     $.ajax({
-      url: 'searchsupplier',
+      url: '{{ route("searchsupplier") }}',
       type: "GET",
       data: {
         data: data,

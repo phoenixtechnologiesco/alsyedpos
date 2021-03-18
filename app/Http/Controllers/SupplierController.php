@@ -101,7 +101,7 @@ class SupplierController extends Controller
             'supplier_balance_paid' 	=> $request->supplier_balance_paid,
             'supplier_balance_dues' 	=> $request->supplier_balance_dues,
             'status_id' 	            => $request->status_id,
-            'suppolier_created_by' 	            => Auth::user()->id,
+            'supplier_created_by' 	            => Auth::user()->id,
             // 'created_at'	 			=> date('Y-m-d h:i:s'),
         );
         $save = DB::table('suppliers')->insert($supplier_adds);

@@ -153,7 +153,7 @@ Route::group(['middleware' => ['get.menu']], function () {
     Route::post('report/brandreport', 'ReportController@brandReport')->name('brandreport');
     Route::post('report/companyreport', 'ReportController@companyReport')->name('companyreport');
 
-    Route::group(['middleware' => ['role:superadmin']], function () {
+    Route::group(['middleware' => ['role:superadmin|admin']], function () {
         Route::resource('bread',  'BreadController');   //create BREAD (resource)
         Route::resource('users',        'UsersController');
         Route::resource('roles',        'RolesController');

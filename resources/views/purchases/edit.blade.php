@@ -970,6 +970,7 @@
     subtotal_amount = $('#purchase_total_price').val();
     total_discount = $('#purchase_discount').val();
     grandtotal_amount = $('#purchase_grandtotal_price').val();
+    // sale_amount_recieved = $('#sale_amount_recieved').val();
 
     product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
 
@@ -1032,6 +1033,13 @@
       $('#purchase_discount').val(total_discount);
       $('#purchase_grandtotal_price').val('');
       $('#purchase_grandtotal_price').val(grandtotal_amount);
+      // if(sale_amount_recieved >= grandtotal_amount){
+      //   sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
+      //   $('#sale_return_change').val(sale_return_change);
+      // }
+      // else{
+      //   $('#sale_return_change').val(0);
+      // }
     }
 
     $('#product_name_i').focus();
@@ -1050,6 +1058,18 @@
     grandtotal_amount = Number(grandtotal_amount) - Number(purchase_free_amount);
     $('#purchase_grandtotal_price').val('');
     $('#purchase_grandtotal_price').val(grandtotal_amount);
+  });
+  $(document).on('change', "#purchase_amount_recieved", function(e){
+    // grandtotal_amount = $('#purchase_grandtotal_price').val();
+    // purchase_amount_recieved = $('#purchase_amount_recieved').val();
+    // if(Number(purchase_amount_recieved) >= Number(grandtotal_amount)){
+    //   purchase_return_change = Number(purchase_amount_recieved) -  Number(grandtotal_amount);
+    //   $('#purchase_return_change').val(purchase_return_change);
+    // }
+    // if(Number(purchase_amount_recieved) < Number(grandtotal_amount)){
+    //   alert('Amount recieved should be greater than the Grand Total Amount');
+    //   $('#purchase_amount_recieved').val(0);
+    // }
   });
   $(document).on("click", ".delete-productfield", function(event) {
 
@@ -1100,7 +1120,7 @@
 
     }
 
-});
+  });
   $(document).on("click", ".olddelete-productfield", function(event) {
 
     rowid = $(this).attr('row-id');
@@ -1404,7 +1424,6 @@
             // .focus(function(){
     });
   });
-
   function supplierSearch(data){
     $.ajax({
       url: 'searchsupplier',
@@ -1438,7 +1457,6 @@
       }
     });
   }
-
   $(document).on('change', '#supplier_name', function(e){
     var status = $('option:selected', this).attr('status_id');
     e.preventDefault();
@@ -1450,31 +1468,7 @@
     //   $('#supplier_status').val('Inactive');
     // }
   });
-    // $(document).on('focusout', '#suppliercodesearch', function(e){
-    //   var data = this.value;
-    //   $.ajax({
-    //     url: 'searchsupplier',
-    //     type: "GET",
-    //     data: {
-    //       data: data,
-    //     },
-    //     success:function(data) {
-    //       // alert(data[0]["supplier_id"]);
-    //       var supplier_id = data[0]["supplier_id"];
-    //       var status_id = data[0]["status_id"];
-    //       $('#supplier_name option').removeAttr('selected');
-    //       // $('#supplier_name option[value='+supplier_id+']').removeAttr('selected');
-    //       $('#supplier_name option[value='+supplier_id+']').attr('selected', 'selected');
-    //       $('#supplier_name option[value='+supplier_id+']').attr('status_id', status_id);
-    //       if(status_id == 1){
-    //       $('#supplier_status').val('Active');
-    //       }
-    //       // else{
-    //       //   $('#supplier_status').val('Inactive');
-    //       // }
-    //     }
-    //   });
-    // });
+
 </script>
 
 @endsection

@@ -286,15 +286,13 @@
         $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
       },
       unhighlight: function (element, errorClass, validClass) {
-        $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+        // $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+        $( element ).removeClass( 'is-invalid' );
       }
     });
     $.validator.setDefaults( {
       // debug: true,
       // success: "valid",
-      // submitHandler: function () {
-      //   alert( 'submitted!' );
-      // },
       submitHandler: function(form) {
         form.submit();
       }

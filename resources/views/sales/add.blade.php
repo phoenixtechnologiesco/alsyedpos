@@ -892,7 +892,6 @@
   var rowindex;
   var customer_sale_rate;
   var row_product_price;
-  var pos;
 
   var rownum = <?php echo $i; ?>;
 

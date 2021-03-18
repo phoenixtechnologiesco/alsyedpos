@@ -124,7 +124,7 @@ class UsersController extends Controller
     {
         $validatedData = $request->validate([
             'name'       => 'required|min:1|max:256',
-            'email'      => 'required|email|max:256'
+            'email'      => 'required|min:1|max:256|unique:users',
         ]);
         $user = User::find($id);
         $user->name       = $request->input('name');

@@ -296,14 +296,6 @@
           customer_balance_dues: 'required',
           customer_sale_rate: 'required',
           status_id: 'required',
-          // username: {
-          //   required: true,
-          //   minlength: 2
-          // },
-          // email: {
-          //   required: true,
-          //   email: true
-          // },
         },
         messages: {
           customer_ref_no: 'Please Enter Customer Ref No',
@@ -313,11 +305,6 @@
           customer_balance_dues: 'Please Enter Customer Balance Dues',
           customer_sale_rate: 'Please Enter Customer Payment Method Cash/Credit',
           status_id: 'Please Select Status',
-          // username: {
-          //   required: 'Please enter a username',
-          //   minlength: 'Your username must consist of at least 2 characters'
-          // },
-          // email: 'Please enter a valid email address',
         },
         errorElement: 'em',
         errorPlacement: function ( error, element ) {
@@ -332,15 +319,13 @@
           $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
         },
         unhighlight: function (element, errorClass, validClass) {
-          $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+          // $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+          $( element ).removeClass( 'is-invalid' );
         }
       });
       $.validator.setDefaults( {
         // debug: true,
         // success: "valid",
-        // submitHandler: function () {
-        //   alert( 'submitted!' );
-        // },
         submitHandler: function(form) {
           form.submit();
         }
