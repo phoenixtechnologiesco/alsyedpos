@@ -9,7 +9,7 @@
             <div class="card-header">
               <i class="fa fa-align-justify"></i> {{ __('Add User') }} </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('users.store') }}" autocomplete="off" >
+                <form id="user_store" method="POST" action="{{ route('users.store') }}" autocomplete="off" >
                   {{-- action="/users/{{ $user->id }}" --}}
                     @csrf
                     @method('POST')
@@ -58,7 +58,7 @@
                                         </a>
                                       </span>
                                     </div>
-                                    <input required class="form-control col-12" type="password" placeholder="{{ __('Password') }}" name="password" value="{{ old('password', '') }}" required>
+                                    <input required class="form-control col-12" type="text" minlength="6" placeholder="{{ __('Password') }}" name="password" value="{{ old('password', '') }}">
                                   </div>
                                 </div>
                               </div>
@@ -74,7 +74,7 @@
                                         </a>
                                       </span>
                                     </div>
-                                    <input class="form-control col-12" type="password" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" value="{{ old('password_confirmation', '') }}" required >
+                                    <input class="form-control col-12" type="text" minlength="6" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" value="{{ old('password_confirmation', '') }}" >
                                   </div>
                                 </div>
                               </div>
@@ -105,5 +105,47 @@
 @endsection
 
 @section('javascript')
-
+<script type="text/javascript">
+  $(function (){
+    $('#user_store').validate({
+      rules: {
+        name: 'required',
+        email: 'required',
+        password: 'required',
+        password_confirmation: 'required'
+      },
+      messages: {
+        name:  'Please Enter Full Name',
+        email:  'Please Enter Username',
+        password: 'Please Enter Password',
+        password_confirmation: 'Please Enter Password Confirmation'
+      },
+      errorElement: 'em',
+      errorPlacement: function ( error, element ) {
+        error.addClass( 'invalid-feedback' );
+        if ( element.prop( 'type' ) === 'checkbox' ) {
+          error.insertAfter( element.parent( 'label' ) );
+        } else {
+          error.insertAfter( element );
+        }
+      },
+      errorClass: "error fail-alert",
+      validClass: "valid success-alert",
+      highlight: function ( element, errorClass, validClass ) {
+        $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        // $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+        $( element ).removeClass( 'is-invalid' );
+      }
+    });
+    $.validator.setDefaults( {
+      // debug: true,
+      // success: "valid",
+      submitHandler: function(form) {
+        form.submit();
+      }
+    });
+  });
+</script>
 @endsection

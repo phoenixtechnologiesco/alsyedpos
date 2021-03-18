@@ -79,12 +79,10 @@
       rules: {
         company_name: 'required',
         company_ref_no: 'required',
-        company_description: 'required',
       },
       messages: {
         company_name:  'Please Enter Company Name',
         company_ref_no:  'Please Enter Company Ref No',
-        company_description:  'Please Company Description',
       },
       errorElement: 'em',
       errorPlacement: function ( error, element ) {
@@ -108,9 +106,6 @@
     $.validator.setDefaults( {
       // debug: true,
       // success: "valid",
-      // submitHandler: function () {
-      //   alert( 'submitted!' );
-      // },
       submitHandler: function(form) {
         form.submit();
       }

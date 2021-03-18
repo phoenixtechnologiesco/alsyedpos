@@ -79,12 +79,10 @@
       rules: {
         brand_name: 'required',
         brand_ref_no: 'required',
-        brand_description: 'required',
       },
       messages: {
         brand_name:  'Please Enter brand Name',
         brand_ref_no:  'Please Enter brand Ref No',
-        brand_description:  'Please brand Description',
       },
       errorElement: 'em',
       errorPlacement: function ( error, element ) {
@@ -108,9 +106,6 @@
     $.validator.setDefaults( {
       // debug: true,
       // success: "valid",
-      // submitHandler: function () {
-      //   alert( 'submitted!' );
-      // },
       submitHandler: function(form) {
         form.submit();
       }

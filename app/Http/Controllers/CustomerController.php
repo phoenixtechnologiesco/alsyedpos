@@ -118,11 +118,12 @@ class CustomerController extends Controller
         $save = DB::table('customers')->insert($customer_adds);
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('customers')->insertGetId($customer_adds);
-		if($save){
-			return response()->json(['data' => $customer_adds, 'message' => 'Customer Created Successfully'], 200);
-		}else{
-			return response()->json("Oops! Something Went Wrong", 400);
-		}
+		return redirect()->back();
+        // if($save){
+		// 	return response()->json(['data' => $customer_adds, 'message' => 'Customer Created Successfully'], 200);
+		// }else{
+		// 	return response()->json("Oops! Something Went Wrong", 400);
+		// }
     }
 
     /**

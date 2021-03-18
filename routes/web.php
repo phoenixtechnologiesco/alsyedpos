@@ -154,8 +154,12 @@ Route::group(['middleware' => ['get.menu']], function () {
     Route::post('report/companyreport', 'ReportController@companyReport')->name('companyreport');
 
     Route::group(['middleware' => ['role:superadmin|admin']], function () {
-        Route::resource('bread',  'BreadController');   //create BREAD (resource)
         Route::resource('users',        'UsersController');
+    });
+
+    Route::group(['middleware' => ['role:superadmin']], function () {
+        Route::resource('bread',  'BreadController');   //create BREAD (resource)
+        // Route::resource('users',        'UsersController');
         Route::resource('roles',        'RolesController');
         Route::get('/roles/move/move-up',      'RolesController@moveUp')->name('roles.up');
         Route::get('/roles/move/move-down',    'RolesController@moveDown')->name('roles.down');

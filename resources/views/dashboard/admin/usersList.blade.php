@@ -31,12 +31,12 @@
                       <td>{{ $user->email }}</td>
                       <td>{{ $user->menuroles }}</td>
                       <td>
-                        @if( $you->id !== $user->id )
+                        @if( $you->id !== $user->id && $user->email !== 'superadmin')
                           <a href="{{ url('/users/' . $user->id . '/edit') }}" class="btn btn-block btn-primary">Edit</a>
                         @endif
                       </td>
                       {{-- <td>
-                        @if( $you->id !== $user->id )
+                        @if( $you->id !== $user->id && $user->email !== 'superadmin')
                         <form action="{{ route('users.destroy', $user->id ) }}" method="POST">
                             @method('DELETE')
                             @csrf

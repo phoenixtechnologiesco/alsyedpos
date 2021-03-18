@@ -134,9 +134,9 @@ class ProductController extends Controller
             'product_info'                  => '',
             // 'status_id'                     => 'required',
         ]);
-        // if ($validate->fails()) {    
-        //    return response()->json("Fields Required", 400);
-        // }
+        if ($validate->fails()) {    
+           return response()->json("Fields Required", 400);
+        }
         $product_adds = array(
             'product_ref_no'                => $request->product_ref_no,
             'warehouse_id'                  => $request->warehouse_id,
@@ -187,11 +187,13 @@ class ProductController extends Controller
                 $barcodes_save[$key] = DB::table('product_barcodes')->insert($barcodes_adds[$key]);
             }
         }
-		if($save){
-			return response()->json(['data' => $product_adds, 'barcodes' => $barcodes_adds, 'message' => 'Product Created Successfully'], 200);
-		}else{
-			return response()->json("Oops! Something Went Wrong", 400);
-		}
+		
+        return redirect('/product')->with(['message' => 'Product Created Successfully'], 200);
+        // if($save){
+		// 	return response()->json(['data' => $product_adds, 'barcodes' => $barcodes_adds, 'message' => 'Product Created Successfully'], 200);
+		// }else{
+		// 	return response()->json("Oops! Something Went Wrong", 400);
+		// }
     }
 
     /**

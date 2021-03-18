@@ -107,11 +107,12 @@ class SupplierController extends Controller
         $save = DB::table('suppliers')->insert($supplier_adds);
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('suppliers')->insertGetId($supplier_adds);
-		if($save){
-			return response()->json(['data' => $supplier_adds, 'message' => 'Supplier Created Successfully'], 200);
-		}else{
-			return response()->json("Oops! Something Went Wrong", 400);
-		}
+        return redirect()->back();
+        // if($save){
+		// 	return response()->json(['data' => $supplier_adds, 'message' => 'Supplier Created Successfully'], 200);
+		// }else{
+		// 	return response()->json("Oops! Something Went Wrong", 400);
+		// }
     }
 
     /**

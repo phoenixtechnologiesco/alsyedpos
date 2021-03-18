@@ -82,8 +82,8 @@
                             <div class=" col-12">
                               {{-- <input type="text" name="product_company" class="form-control col-12" value="{{ old('product_company', '') }}">
                               @include('alerts.feedback', ['field' => 'product_company']) --}}
-                              <select name="product_company" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Company..." >
-                                <option selected value="NULL">Select</option>
+                              <select required name="product_company" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Company..." >
+                                <option selected value="">Select</option>
                               @foreach($companies as $single_company)
                                 <option value="{{ $single_company->company_name }}">{{ $single_company->company_name }}</option>
                               @endforeach
@@ -133,7 +133,7 @@
                         <div class="form-group">
                           <label for="product_damage_quantity" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Damage Quantity")}}</label>
                             <div class=" col-12">
-                              <input type="number" name="product_damage_quantity" class="form-control col-12" value="{{ old('product_damage_quantity', '') }}">
+                              <input type="number" name="product_damage_quantity" class="form-control col-12" value="{{ old('product_damage_quantity', '0') }}">
                               @include('alerts.feedback', ['field' => 'product_damage_quantity'])
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                       <div class="form-group">
                         <label for="product_alert_quantity" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Alert Quantity")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_alert_quantity" class="form-control col-12" value="{{ old('product_alert_quantity', '') }}">
+                            <input type="number" name="product_alert_quantity" class="form-control col-12" value="{{ old('product_alert_quantity', '0') }}">
                             @include('alerts.feedback', ['field' => 'product_alert_quantity'])
                           </div>
                       </div>
@@ -153,7 +153,7 @@
                       <div class="form-group">
                         <label for="product_pieces_total" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Total Pieces")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_pieces_total" class="form-control col-12" value="{{ old('product_pieces_total', '') }}" >
+                            <input type="number" name="product_pieces_total" class="form-control col-12" value="{{ old('product_pieces_total', '0') }}" >
                             @include('alerts.feedback', ['field' => 'product_pieces_total'])
                           </div>
                       </div>
@@ -162,7 +162,7 @@
                       <div class="form-group">
                         <label for="product_pieces_available" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Available Pieces")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_pieces_available" class="form-control col-12" value="{{ old('product_pieces_available', '') }}">
+                            <input type="number" name="product_pieces_available" class="form-control col-12" value="{{ old('product_pieces_available', '0') }}">
                             @include('alerts.feedback', ['field' => 'product_pieces_available'])
                           </div>
                       </div>
@@ -173,7 +173,7 @@
                       <div class="form-group">
                         <label for="product_packets_total" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Total Packets")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_packets_total" class="form-control col-12" value="{{ old('product_packets_total', '') }}" >
+                            <input type="number" name="product_packets_total" class="form-control col-12" value="{{ old('product_packets_total', '0') }}" >
                             @include('alerts.feedback', ['field' => 'product_packets_total'])
                           </div>
                       </div>
@@ -182,7 +182,7 @@
                       <div class="form-group">
                         <label for="product_packets_available" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Available Packets")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_packets_available" class="form-control col-12" value="{{ old('product_packets_available', '') }}" >
+                            <input type="number" name="product_packets_available" class="form-control col-12" value="{{ old('product_packets_available', '0') }}" >
                             @include('alerts.feedback', ['field' => 'product_packets_available'])
                           </div>
                       </div>
@@ -193,7 +193,7 @@
                         <div class="form-group">
                           <label for="product_cartons_total" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Total Cartons")}}</label>
                             <div class=" col-12">
-                              <input type="number" name="product_cartons_total" class="form-control col-12" value="{{ old('product_cartons_total', '') }}" >
+                              <input type="number" name="product_cartons_total" class="form-control col-12" value="{{ old('product_cartons_total', '0') }}" >
                               @include('alerts.feedback', ['field' => 'product_cartons_total'])
                             </div>
                         </div>
@@ -202,7 +202,7 @@
                       <div class="form-group">
                         <label for="product_cartons_available" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Available Cartons")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_cartons_available" class="form-control col-12" value="{{ old('product_cartons_available', '') }}" >
+                            <input type="number" name="product_cartons_available" class="form-control col-12" value="{{ old('product_cartons_available', '0') }}" >
                             @include('alerts.feedback', ['field' => 'product_cartons_available'])
                           </div>
                       </div>
@@ -213,7 +213,7 @@
                         <div class="form-group">
                           <label for="product_piece_per_packet" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Pieces Per Packet")}}</label>
                             <div class=" col-12">
-                              <input type="number" name="product_piece_per_packet" class="form-control col-12" value="{{ old('product_piece_per_packet', '') }}" >
+                              <input type="number" name="product_piece_per_packet" class="form-control col-12" value="{{ old('product_piece_per_packet', '0') }}" >
                               @include('alerts.feedback', ['field' => 'product_piece_per_packet'])
                             </div>
                         </div>
@@ -222,7 +222,7 @@
                       <div class="form-group">
                         <label for="product_piece_per_carton" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Pieces Per Carton")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_piece_per_carton" class="form-control col-12" value="{{ old('product_piece_per_carton', '') }}" >
+                            <input type="number" name="product_piece_per_carton" class="form-control col-12" value="{{ old('product_piece_per_carton', '0') }}" >
                             @include('alerts.feedback', ['field' => 'product_piece_per_carton'])
                           </div>
                       </div>
@@ -233,7 +233,7 @@
                       <div class="form-group">
                         <label for="product_packet_per_carton" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Packets Per Carton")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_packet_per_carton" class="form-control col-12" value="{{ old('product_packet_per_carton', '') }}" >
+                            <input type="number" name="product_packet_per_carton" class="form-control col-12" value="{{ old('product_packet_per_carton', '0') }}" >
                             @include('alerts.feedback', ['field' => 'product_packet_per_carton'])
                           </div>
                       </div>
@@ -747,6 +747,7 @@
       rules: {
         product_ref_no: 'required',
         product_name: 'required',
+        product_company: 'required',
         product_quantity_total: 'required',
         product_quantity_available: 'required',
         // product_pieces_total: 'required'
@@ -754,11 +755,13 @@
         product_trade_price_piece: 'required',
         product_credit_price_piece: 'required',
         product_cash_price_piece: 'required',
+        product_nonbulk_price_piece: 'required',
         status_id: 'required'
       },
       messages: {
         product_ref_no:  'Please Enter Product Ref No',
         product_name:  'Please Enter Product Name',
+        product_company: 'Please Select Product Company',
         product_quantity_total:  'Please Enter Product Total Quantity',
         product_quantity_available:  'Please Enter Product Available Quantity',
         // product_pieces_total: 'Please Enter Total Product Pieces',
@@ -766,6 +769,7 @@
         product_trade_price_piece:  'Please Piece Trade Price',
         product_credit_price_piece:  'Please Enter Piece Credit Price',
         product_cash_price_piece:  'Please Enter Piece Cash Price',
+        product_nonbulk_price_piece: 'Please Enter Piece Non Bulk Price',
         status_id: 'Please Select Status'
       },
       errorElement: 'em',

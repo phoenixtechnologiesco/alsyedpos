@@ -142,9 +142,9 @@ class MenusTableSeeder extends Seeder
         $this->beginDropdown('admin,superadmin', 'Settings', 'cil-settings');
             // $this->insertLink('admin,superadmin', 'Notes',                   '/notes');
             $this->insertLink('admin,superadmin', 'Users',                   '/users');
-            $this->insertLink('admin,superadmin', 'Edit menu',               '/menu/menu');
-            $this->insertLink('admin,superadmin', 'Edit menu elements',      '/menu/element');
-            $this->insertLink('admin,superadmin', 'Edit roles',              '/roles');
+            $this->insertLink('superadmin', 'Edit menu',               '/menu/menu');
+            $this->insertLink('superadmin', 'Edit menu elements',      '/menu/element');
+            $this->insertLink('superadmin', 'Edit roles',              '/roles');
             // $this->insertLink('admin,superadmin', 'Media',                   '/media');
             // $this->insertLink('admin,superadmin', 'BREAD',                   '/bread');
         $this->endDropdown();

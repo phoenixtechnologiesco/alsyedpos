@@ -15,6 +15,7 @@ use Input;
 use Session;
 use Response;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -27,7 +28,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('superadmin');
+        // $this->middleware('superadmin');
     }
 
     /**
@@ -64,7 +65,7 @@ class UsersController extends Controller
         $validate = Validator::make($request->all(), [ 
             'name'       => 'required|min:1|max:256',
             'email'      => 'required|min:1|max:256|unique:users',
-            'password'   => 'required_with:password_confirmation|same:password_confirmation|max:256|',
+            'password'   => 'required_with:password_confirmation|same:password_confirmation|min:1|max:256|',
             'password_confirmation' => 'required_with:password|same:password|min:1|max:256'
         ]);
         if ($validate->fails()) {    
@@ -85,7 +86,7 @@ class UsersController extends Controller
         ]);
         $user->assignRole('user');
 
-        $request->session()->flash('message', 'Successfully created user');
+        $request->session()->flash('message', 'Successfully Created User');
         return redirect()->route('users.index');
     }
 
@@ -121,16 +122,41 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'name'       => 'required|min:1|max:256',
-            'email'      => 'required|min:1|max:256|unique:users',
+    {        
+        $validate = Validator::make($request->all(), [
+            'name'       => 'required|min:2|max:256',
+            'email'      => 'required','min:2','max:256','unique:users,email,'.$id.',id',
+            // 'email'      => ['required|min:1|max:256|unique:users,email', Rule::unique('users')->ignore($id),],
+            // 'password'   => 'sometimes|string|min:6|same:password_confirmation',
+            
+            // 'password'   => 'required_with:password_confirmation|same:password_confirmation|min:6|max:256|',
+            // 'password_confirmation' => 'required_with:password|same:password|min:6|max:256'
         ]);
-        $user = User::find($id);
-        $user->name       = $request->input('name');
-        $user->email      = $request->input('email');
-        $user->save();
-        $request->session()->flash('message', 'Successfully updated user');
+        if ($validate->fails()) {    
+            return response()->json("Fields Requireds", 400);
+        }
+        // dd($validate);
+
+        $user_name = $request->input('name');
+        $user_email = $request->input('email');
+        // $user = User::find($id);
+        // $user->name       = $user_name;
+        // $user->email      = $user_email;
+        // if(!empty($request->input('password'))){
+        //     $user->password   = Hash::make($request->input('password'));
+        // }
+        // $user->save();
+        $user_edits = array(
+            'name'       => $user_name,
+            'email'      => $user_email,
+        );
+        if(!empty($request->input('password'))){
+            $user_edits['password']   = Hash::make($request->input('password'));
+        }
+
+        $update = DB::table('users')->where('id', $id)->update($user_edits);
+
+        // $request->session()->flash('message', 'Successfully Updated User');
         return redirect()->route('users.index');
     }
 
