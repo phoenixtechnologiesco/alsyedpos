@@ -14,6 +14,17 @@
               @csrf
               @method('post')
               @include('alerts.success')
+              @if($errors->any())
+                <div class="form-group">
+                  <div class="alert alert-danger">
+                    <ul>
+                      @foreach($errors->all() as $error)
+                        <li> {{ $error }} </li>
+                      @endforeach
+                    </ul>
+                  </div>
+                </div>
+              @endif
               <div class="row">
                 <div class="card-body-custom col-12">
                   <div class="row">
@@ -313,10 +324,10 @@
                                 </tr>
                                 <tr class="row table-info" >
                                   <td class="col-1 firstcol" scope="col">
-                                    <input readonly type="text" name="sale_total_items" id="sale_total_items" class="form-control col-12" value="">
+                                    <input readonly type="number" name="sale_total_items" id="sale_total_items" class="form-control col-12" value="">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input readonly type="text" name="sale_total_qty" id="sale_total_qty" class="form-control col-12" value="">
+                                    <input readonly type="number" name="sale_total_qty" id="sale_total_qty" class="form-control col-12" value="">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="sale_free_piece" class="form-control col-12" value="">
@@ -864,9 +875,6 @@
     $.validator.setDefaults( {
       // debug: true,
       // success: "valid",
-      // submitHandler: function () {
-      //   alert( 'submitted!' );
-      // },
       submitHandler: function(form) {
         form.submit();
       }

@@ -33,7 +33,7 @@ class CreateSaleReturnsTable extends Migration
             $table->decimal('sale_return_amount_dues', 10, 2);
             $table->string('sale_return_payment_method');//cash,credit
             $table->string('sale_return_payment_status');//paid,due,partial,overdue
-            $table->integer('sale_return_invoice_id')->nullable();
+            $table->string('sale_return_invoice_id')->nullable();
             $table->date('sale_return_invoice_date')->nullable();
             $table->string('sale_return_document')->nullable();
             $table->text('sale_return_note')->nullable();

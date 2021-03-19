@@ -48,16 +48,17 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        // $validate = Validator::make($request->all(), [ 
-        //     'company_ref_no'            => 'required',
-        //     'company_parent'            => '',
-        //     'company_name'              => 'required',
-        //     'company_description'              => '',
-        //     // 'status_id'                 => 'required',
-        // ]);
-        // if ($validate->fails()) {    
+        $validate = Validator::make($request->all(), [ 
+            'company_ref_no'            => 'required',
+            'company_parent'            => '',
+            'company_name'              => 'required',
+            'company_description'              => '',
+            // 'status_id'                 => 'required',
+        ]);
+        if ($validate->fails()) {    
         //    return response()->json("Fields Required", 400);
-        // }
+           return redirect()->back()->withErrors($validate);
+        }
         $company_adds = array(
             'company_ref_no'            => $request->company_ref_no,
             'company_parent'            => $request->company_parent,
@@ -71,7 +72,8 @@ class CompanyController extends Controller
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('companies')->insertGetId($company_adds);
 
-        return redirect()->back();
+        // return redirect()->back();
+        return redirect('/company')->with(['message' => 'Company Created Successfully'], 200);
 		// if($save){
 		// 	return response()->json(['data' => $company_adds, 'message' => 'Company Created Successfully'], 200);
 		// }else{
@@ -124,7 +126,8 @@ class CompanyController extends Controller
             // 'status_id'                 => 'required',
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+        //    return response()->json("Fields Required", 400);
+           return redirect()->back()->withErrors($validate);
         }
         $company_edits = array(
             'company_ref_no'            => $request->company_ref_no,

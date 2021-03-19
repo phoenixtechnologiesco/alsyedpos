@@ -35,7 +35,7 @@ class CreateSalesTable extends Migration
             $table->string('sale_payment_status');//paid,due,partial,overdue
             $table->text('sale_payment_note')->nullable();
             $table->string('sale_document')->nullable();
-            $table->integer('sale_invoice_id')->index()->nullable();
+            $table->string('sale_invoice_id')->index()->nullable();
             $table->date('sale_invoice_date')->nullable();
             // $table->decimal('sale_payterm_number', 8, 2)->nullable();
             // $table->string('sale_payterm_duration')->nullable();

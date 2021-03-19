@@ -68,11 +68,12 @@ class PurchaseController extends Controller
 
     public function returnadd(PurchaseReturn $model, Supplier $model2, Product $model3)
     {
-        $purchasereturns = PurchaseReturn::get();
+        $purchasereturns = PurchaseReturn::all();
         $suppliers = Supplier::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
+        $attachedbarcodes = ProductBarcodes::get();
 
-        return view('purchases.returnadd', compact('purchasereturns', 'suppliers', 'products') );
+        return view('purchases.returnadd', compact('purchasereturns', 'suppliers', 'products', 'attachedbarcodes') );
     }
 
     /**
@@ -192,7 +193,9 @@ class PurchaseController extends Controller
             'warehouse_id'                 => '',
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+        //    return response()->json("Fields Required", 400);
+           return redirect('purchase/create')->withErrors($validate);
+        //    return response()->withErrors($validate);
         }
         $purchase_ref_no = $random = Str::random(8); //str_random
         $lastpurchase = DB::table('purchases')->orderBy('purchase_id', 'desc')->limit(1)->first();
@@ -311,8 +314,7 @@ class PurchaseController extends Controller
                     'purchase_product_barcode'       => $product_barcodes[$key],
                     'warehouse_id'                   => $product[$key]->warehouse_id,
                     'purchase_piece_per_packet'      => $pieces_per_packet[$key],
-                    // 'purchase_packet_per_carton'     => $packets_per_carton[$key],
-                    'purchase_packet_per_carton'     => 4,
+                    'purchase_packet_per_carton'     => $packets_per_carton[$key],
                     'purchase_piece_per_carton'      => $pieces_per_carton[$key],
                     'purchase_pieces_total'          => $products_pieces[$key],
                     'purchase_packets_total'         => $products_packets[$key],
@@ -334,15 +336,14 @@ class PurchaseController extends Controller
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
     
-                // dd($products_quantity_available[$key]);
                 $product_edits = array(
                     // 'product_id'                 => $single_id,
-                    'product_ref_no'                => $product_codes[$key],
-                    'product_name'                  => $product_names[$key],
+                    // 'product_ref_no'                => $product_codes[$key],
+                    // 'product_name'                  => $product_names[$key],
                     // 'product_barcode'               => $product_barcodes[$key],
                     // 'warehouse_id'                  => $product_warehouses[$key],
-                    'product_piece_per_packet'      => $pieces_per_packet[$key],
-                    'product_piece_per_carton'      => $pieces_per_carton[$key],
+                    // 'product_piece_per_packet'      => $pieces_per_packet[$key],
+                    // 'product_piece_per_carton'      => $pieces_per_carton[$key],
                     'product_pieces_total'          => $product[$key]->product_pieces_total+$products_pieces[$key],
                     'product_pieces_available'      => $product[$key]->product_pieces_available+$products_pieces[$key],
                     'product_packets_total'         => $product[$key]->product_packets_total+$products_packets[$key],
@@ -351,15 +352,17 @@ class PurchaseController extends Controller
                     'product_cartons_available'     => $product[$key]->product_cartons_available+$products_cartons[$key],
                     'product_quantity_total'        => $product[$key]->product_quantity_total+$products_quantity_total[$key],
                     'product_quantity_available'    => $product[$key]->product_quantity_available+$products_quantity_available[$key],
-                    'product_trade_discount'        => $products_discounts[$key],
-                    'product_trade_price_piece'     => $products_unit_prices[$key],
-                    'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                    'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                    // 'product_trade_discount'        => $products_discounts[$key],
+                    // 'product_trade_price_piece'     => $products_unit_prices[$key],
+                    // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                    // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
                 );
                 $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
             }
     
-            return redirect()->back();
+            // return redirect()->back();
+            return redirect('purchase/gen_invoice/'.$id);
+            // return redirect('/purchase')->with(['message' => 'Purchase Created Successfully'], 200);
             // if($save){
             // 	return response()->json(['data' => $purchase_adds, 'purchase_products' => $purchase_products_save, 'message' => 'Purchase Created Successfully'], 200);
             // }else{
@@ -368,39 +371,42 @@ class PurchaseController extends Controller
 
         }
         else{
-            return response()->json("Add atleast one product", 400);
+            // return response()->json("Add atleast one product", 400);
+            Session::flash('message' , 'Add atleast one product');
+            return redirect()->back();
         }
     }
 
     public function storereturn(Request $request)
     {
         // dd($request->all());
-        // $validate = Validator::make($request->all(), [ 
-        //     'purchase_id'                       => '',
-        //     'purchase_return_ref_no'            => '',
-        //     'purchase_return_supplier_id'       => 'required',
-        //     'purchase_return_product_pieces'    => '',
-        //     'purchase_return_product_packets'   => '',
-        //     'purchase_return_product_cartons'   => '',
-        //     'purchase_return_unit_price'        => '',
-        //     'purchase_return_product_quantity'  => '',
-        //     'purchase_return_status'            => '',
-        //     'purchase_return_date'              => '',
-        //     'purchase_return_total_price'       => '',
-        //     'purchase_return_grandtotal_price'  => '',
-        //     'purchase_return_amount_paid'       => '',
-        //     'purchase_return_amount_dues'       => '',
-        //     'purchase_return_payment_method'    => '',
-        //     'purchase_return_payment_status'    => '',
-        //     'purchase_return_invoice_id'        => '',
-        //     'purchase_return_invoice_date'      => '',
-        //     'purchase_return_document'          => '',
-        //     'purchase_return_note'              => '',
-        //     'purchase_return_returned_by'       => '',
-        // ]);
-        // if ($validate->fails()) {    
+        $validate = Validator::make($request->all(), [ 
+            'purchase_id'                       => '',
+            'purchase_ref_no'            => '',
+            'purchase_supplier_id'       => '',
+            'purchase_product_pieces'    => '',
+            'purchase_product_packets'   => '',
+            'purchase_product_cartons'   => '',
+            'purchase_unit_price'        => '',
+            'purchase_product_quantity'  => '',
+            'purchase_status'            => '',
+            'purchase_date'              => '',
+            'purchase_total_price'       => '',
+            'purchase_grandtotal_price'  => '',
+            'purchase_amount_paid'       => '',
+            'purchase_amount_dues'       => '',
+            'purchase_payment_method'    => '',
+            'purchase_payment_status'    => '',
+            'purchase_invoice_id'        => 'required',
+            'purchase_invoice_date'      => 'required',
+            'purchase_document'          => '',
+            'purchase_note'              => '',
+            // 'purchase_return_returned_by'       => '',
+        ]);
+        if ($validate->fails()) {    
         //    return response()->json("Fields Required", 400);
-        // }
+           return redirect('purchase/returnadd')->withErrors($validate);
+        }
         $purchase_return_ref_no = $random = Str::random(8); //str_random
         $lastpurchasereturn = DB::table('purchase_returns')->orderBy('purchase_return_id', 'desc')->limit(1)->first();
         $lastid = (string)$lastpurchasereturn->purchase_return_id+1;
@@ -409,7 +415,6 @@ class PurchaseController extends Controller
         $year = (string)Carbon::now()->year;
         $purchase_return_invoice_id = 'p.return-'.$year.'-'.$lastid;
         //$purchase_adds = $request->except('document');
-        //$purchase_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $purchase_return_grandtotal_price = $request->purchase_grandtotal_price;
         $purchase_return_amount_recieved = $request->purchase_amount_recieved;
         $supplier_return_amount_paid = $request->purchase_amount_paid;
@@ -420,7 +425,8 @@ class PurchaseController extends Controller
             $supplier_return_amount_paid = $supplier_return_amount_paid - $purchase_return_grandtotal_price;
             $supplier_return_amount_dues = $supplier_return_amount_dues + ($purchase_return_amount_recieved - $purchase_return_grandtotal_price);
             $purchase_return_amount_dues = $purchase_return_amount_recieved - $purchase_return_grandtotal_price;
-        }else{
+        }
+        else{
             $supplier_return_amount_paid = $supplier_return_amount_paid - $purchase_return_amount_recieved;
             $supplier_return_amount_dues = $supplier_return_amount_dues - ($purchase_return_grandtotal_price - $purchase_return_amount_recieved);
             $purchase_return_amount_dues = $purchase_return_grandtotal_price - $purchase_return_amount_recieved;
@@ -437,9 +443,18 @@ class PurchaseController extends Controller
             );
     
             $update = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->update($supplier_edits);
+
+            $purchase = DB::table('purchases')->where('purchase_invoice_id','=', $request->purchase_invoice_id)->first();
+            if($purchase !== NULL){
+                $purchase_id = $purchase->purchase_id;
+            }
+            else{
+                $purchase_id = NULL;
+            }
     
             $purchasereturn_adds = array(
                 'purchase_return_ref_no'           => $purchase_return_ref_no,
+                'purchase_id'                      => $purchase_id,
                 'purchase_return_supplier_id'      => $request->purchase_supplier_id,
                 'purchase_return_total_items'      => $request->purchase_total_items,//'purchase_product_items'
                 'purchase_return_total_quantity'   => $request->purchase_total_qty,//'purchase_product_quantity'
@@ -515,8 +530,7 @@ class PurchaseController extends Controller
                     'purchasereturn_product_barcode'       => $product_barcodes[$key],
                     'warehouse_id'                         => $product[$key]->warehouse_id,
                     'purchasereturn_piece_per_packet'      => $pieces_per_packet[$key],
-                    // 'purchase_packet_per_carton'            => $packets_per_carton[$key],
-                    'purchasereturn_packet_per_carton'     => 4,
+                    'purchasereturn_packet_per_carton'     => $packets_per_carton[$key],
                     'purchasereturn_piece_per_carton'      => $pieces_per_carton[$key],
                     'purchasereturn_pieces_total'          => $products_pieces[$key],
                     'purchasereturn_packets_total'         => $products_packets[$key],
@@ -541,12 +555,12 @@ class PurchaseController extends Controller
                 // dd($products_quantity_available[$key]);
                 $product_edits = array(
                     // 'product_id'                 => $single_id,
-                    'product_ref_no'                => $product_codes[$key],
-                    'product_name'                  => $product_names[$key],
+                    // 'product_ref_no'                => $product_codes[$key],
+                    // 'product_name'                  => $product_names[$key],
                     // 'product_barcode'               => $product_barcodes[$key],
                     // 'warehouse_id'                  => $product_warehouses[$key],
-                    'product_piece_per_packet'      => $pieces_per_packet[$key],
-                    'product_piece_per_carton'      => $pieces_per_carton[$key],
+                    // 'product_piece_per_packet'      => $pieces_per_packet[$key],
+                    // 'product_piece_per_carton'      => $pieces_per_carton[$key],
                     'product_pieces_total'          => $product[$key]->product_pieces_total-$products_pieces[$key],
                     'product_pieces_available'      => $product[$key]->product_pieces_available-$products_pieces[$key],
                     'product_packets_total'         => $product[$key]->product_packets_total-$products_packets[$key],
@@ -555,15 +569,18 @@ class PurchaseController extends Controller
                     'product_cartons_available'     => $product[$key]->product_cartons_available-$products_cartons[$key],
                     'product_quantity_total'        => $product[$key]->product_quantity_total-$products_quantity_total[$key],
                     'product_quantity_available'    => $product[$key]->product_quantity_available-$products_quantity_available[$key],
-                    'product_trade_discount'        => $products_discounts[$key],
-                    'product_trade_price_piece'     => $products_unit_prices[$key],
-                    'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                    'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                    // 'product_trade_discount'        => $products_discounts[$key],
+                    // 'product_trade_price_piece'     => $products_unit_prices[$key],
+                    // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                    // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
                 );
                 $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
             }
     
-            return redirect()->back();
+            // return redirect()->back();
+            Session::flash('message' , 'Purchase Returned Successfully');
+            return redirect('/purchase');
+            // ->with(['message' => 'Purchase Returned Successfully'], 200);
     
             // if($save){
             // 	return response()->json(['data' => $purchasereturn_adds, 'purchasereturn_products' => $purchasereturn_products_save, 'message' => 'Purchase Returned Successfully'], 200);
@@ -572,7 +589,10 @@ class PurchaseController extends Controller
             // }
         }
         else{
-            return response()->json("Add atleast one product", 400);
+            // return response()->json("Add atleast one product", 400);
+            Session::flash('message' , 'Add atleast one product');
+            return redirect()->back();
+
         }
 
     }
@@ -628,6 +648,7 @@ class PurchaseController extends Controller
     public function update(Request $request, $id)
     {
         $purchase_id = $id; //OR $request->purchase_id;
+        $get_supplier = DB::table('suppliers')->where('supplier_id', $request->sale_supplier_id)->first();
 
         $validate = Validator::make($request->all(), [ 
             'purchase_supplier_id'         => 'required',
@@ -655,7 +676,8 @@ class PurchaseController extends Controller
             'warehouse_id'                 => '',
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+        //    return response()->json("Fields Required", 400);
+           return redirect()->back()->withErrors($validate);
         }
 
         $purchase_grandtotal_price = $request->purchase_grandtotal_price;
@@ -665,7 +687,6 @@ class PurchaseController extends Controller
         $net_purchase_price = $purchase_grandtotal_price - $purchase_amount_paid;
         $supplier_amount_paid = $request->supplier_balance_paid;
         $supplier_amount_dues = $request->supplier_balance_dues;
-        // dd($supplier_amount_paid);
 
         // if($purchase_amount_recieved > $net_purchase_price){
         $purchase_amount_paid_new = $purchase_amount_paid + $purchase_amount_recieved;
@@ -704,8 +725,8 @@ class PurchaseController extends Controller
                 'purchase_payment_method'   => $request->purchase_payment_method,
                 'purchase_payment_status'   => $request->purchase_payment_status,
                 // 'purchase_document'      => $request->purchase_document,
-                'purchase_invoice_id'       => $request->purchase_invoice_id,
-                'purchase_invoice_date'     => $request->purchase_invoice_date,
+                // 'purchase_invoice_id'       => $request->purchase_invoice_id,
+                // 'purchase_invoice_date'     => $request->purchase_invoice_date,
                 // 'purchase_payment_id'       => $request->purchase_payment_id,
                 // 'warehouse_id'              => $request->warehouse_id,
     
@@ -746,66 +767,76 @@ class PurchaseController extends Controller
             $products_discounts = $request->purchase_products_discount;
             $products_sub_totals = $request->purchase_products_sub_total;
     
+            $purchase_products_delete = array();
+            $purchase_products_delete = DB::table('purchase_products')->where('purchase_id', $purchase_id)->whereNotIn('product_id', $product_ids)->get();
+    
+            foreach($purchase_products_delete as $purchase_product_delete){
+                if($purchase_product_delete !== NULL){
+                    DB::table('purchase_products')->where('purchase_id', $purchase_id)->where('product_id','=', $purchase_product_delete->product_id)->delete();
+                }
+            }
+
             foreach($product_ids as $key => $single_id){
     
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
                 $products_quantity_available[$key] = $products_quantity_total[$key];
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+
+                $purchase_products_get[$key] = DB::table('purchase_products')->where('purchase_id', $purchase_id)->where('product_id','=', $single_id)->first();
     
                 // $purchase_products_delete = DB::table('purchase_products')->where('purchase_id','=', $purchase_id)->delete();
     
-                $purchase_product_adds[$key] = array(
-                    'purchase_id'                    => $id,
-                    'product_id'                     => $single_id,
-                    'purchase_product_ref_no'        => $product_codes[$key],
-                    'purchase_product_name'          => $product_names[$key],
-                    'purchase_product_barcode'       => $product_barcodes[$key],
-                    'warehouse_id'                   => $product[$key]->warehouse_id,
-                    'purchase_piece_per_packet'      => $pieces_per_packet[$key],
-                    // 'purchase_packet_per_carton'     => $packets_per_carton[$key],
-                    'purchase_packet_per_carton'     => 4,
-                    'purchase_piece_per_carton'      => $pieces_per_carton[$key],
-                    'purchase_pieces_total'          => $products_pieces[$key],
-                    'purchase_packets_total'         => $products_packets[$key],
-                    'purchase_cartons_total'         => $products_cartons[$key],
-                    'purchase_quantity_total'        => $products_quantity_total[$key],
-                    'purchase_trade_discount'        => $products_discounts[$key],
-                    'purchase_trade_price_piece'     => $products_unit_prices[$key],
-                    'purchase_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                    'purchase_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
-                    'purchase_product_sub_total'     => $products_sub_totals[$key]
-                );
+                if($purchase_products_get[$key] == NULL){
+
+                    $purchase_product_adds[$key] = array(
+                        'purchase_id'                    => $purchase_id,
+                        'product_id'                     => $single_id,
+                        'purchase_product_ref_no'        => $product_codes[$key],
+                        'purchase_product_name'          => $product_names[$key],
+                        'purchase_product_barcode'       => $product_barcodes[$key],
+                        'warehouse_id'                   => $product[$key]->warehouse_id,
+                        'purchase_piece_per_packet'      => $pieces_per_packet[$key],
+                        // 'purchase_packet_per_carton'     => $packets_per_carton[$key],
+                        'purchase_packet_per_carton'     => 4,
+                        'purchase_piece_per_carton'      => $pieces_per_carton[$key],
+                        'purchase_pieces_total'          => $products_pieces[$key],
+                        'purchase_packets_total'         => $products_packets[$key],
+                        'purchase_cartons_total'         => $products_cartons[$key],
+                        'purchase_quantity_total'        => $products_quantity_total[$key],
+                        'purchase_trade_discount'        => $products_discounts[$key],
+                        'purchase_trade_price_piece'     => $products_unit_prices[$key],
+                        'purchase_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                        'purchase_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                        'purchase_product_sub_total'     => $products_sub_totals[$key]
+                    );
+        
+                    $purchase_product_save[$key] = DB::table('purchase_products')->insert($purchase_product_adds[$key]);
+
+                }
+                else{
+
+                    $purchase_product_edits[$key] = array(
+                        'purchase_product_name'          => $product_names[$key],
+                        'purchase_piece_per_packet'      => $pieces_per_packet[$key],
+                        // 'purchase_packet_per_carton'     => $packets_per_carton[$key],
+                        'purchase_packet_per_carton'     => 4,
+                        'purchase_piece_per_carton'      => $pieces_per_carton[$key],
+                        'purchase_pieces_total'          => $products_pieces[$key],
+                        'purchase_packets_total'         => $products_packets[$key],
+                        'purchase_cartons_total'         => $products_cartons[$key],
+                        'purchase_quantity_total'        => $products_quantity_total[$key],
+                        'purchase_trade_discount'        => $products_discounts[$key],
+                        'purchase_trade_price_piece'     => $products_unit_prices[$key],
+                        'purchase_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                        'purchase_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                        'purchase_product_sub_total'     => $products_sub_totals[$key]
+                    );
+        
+                    $purchase_products_update = DB::table('purchase_products')->where('purchase_id', $purchase_id)->where('product_id','=', $single_id)->update($purchase_product_edits[$key]);
+
+                }
     
-                $purchase_product_save[$key] = DB::table('purchase_products')->insert($purchase_product_adds[$key]);
-    
-                // $purchase_product_edits[$key] = array(
-                //     'purchase_id'                    => $id,
-                //     'product_id'                     => $single_id,
-                //     'purchase_product_ref_no'        => $product_codes[$key],
-                //     'purchase_product_name'          => $product_names[$key],
-                //     'purchase_product_barcode'       => $product_barcodes[$key],
-                //     'warehouse_id'                   => $product[$key]->warehouse_id,
-                //     'purchase_piece_per_packet'      => $pieces_per_packet[$key],
-                //     // 'purchase_packet_per_carton'     => $packets_per_carton[$key],
-                //     'purchase_packet_per_carton'     => 4,
-                //     'purchase_piece_per_carton'      => $pieces_per_carton[$key],
-                //     'purchase_pieces_total'          => $products_pieces[$key],
-                //     // 'purchase_pieces_available'      => $products_pieces[$key],
-                //     'purchase_packets_total'         => $products_packets[$key],
-                //     // 'purchase_packets_available'     => $products_packets[$key],
-                //     'purchase_cartons_total'         => $products_cartons[$key],
-                //     // 'purchase_cartons_available'     => $products_cartons[$key],
-                //     'purchase_quantity_total'        => $products_quantity_total[$key],
-                //     // 'purchase_quantity_available'    => $products_quantity_available[$key],
-                //     'purchase_trade_discount'        => $products_discounts[$key],
-                //     'purchase_trade_price_piece'     => $products_unit_prices[$key],
-                //     'purchase_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                //     'purchase_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
-                //     'purchase_product_sub_total'     => $products_sub_totals[$key]
-                // );
-    
-                // $purchase_products_update = DB::table('purchase_products')->where('product_id','=', $single_id)->update($purchase_product_edits[$key]);
             }
             // dd($purchase_product_edits);
             foreach($product_ids as $key => $single_id){
@@ -815,33 +846,59 @@ class PurchaseController extends Controller
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
     
-                // dd($products_quantity_available[$key]);
+                $purchase_products_get[$key] = DB::table('purchase_products')->where('purchase_id', $purchase_id)->where('product_id','=', $single_id)->first();
+
+                if($purchase_products_get[$key] !== NULL){
+
+                        $sum_purchase_pieces_total =  $purchase_products_get[$key]->purchase_pieces_total+$products_pieces[$key];
+                        $sum_purchase_pieces_available = $purchase_products_get[$key]->purchase_pieces_total+$products_pieces[$key];
+                        $sum_purchase_packets_total = $purchase_products_get[$key]->purchase_packets_total+$products_packets[$key];
+                        $sum_purchase_packets_available   = $purchase_products_get[$key]->purchase_packets_total+$products_packets[$key];
+                        $sum_purchase_cartons_total       = $purchase_products_get[$key]->purchase_cartons_total+$products_cartons[$key];
+                        $sum_purchase_cartons_available   = $purchase_products_get[$key]->purchase_cartons_total+$products_cartons[$key];
+                        $sum_purchase_quantity_total      = $purchase_products_get[$key]->purchase_quantity_total+$products_quantity_total[$key];
+                        $sum_purchase_quantity_available  = $purchase_products_get[$key]->purchase_quantity_total+$products_quantity_available[$key];
+                }
+                else{
+                    $sum_purchase_pieces_total = 0;
+                    $sum_purchase_pieces_available = 0;
+                    $sum_purchase_packets_total = 0;
+                    $sum_purchase_packets_available = 0;
+                    $sum_purchase_cartons_total = 0;
+                    $sum_purchase_cartons_available = 0;
+                    $sum_purchase_quantity_total = 0;
+                    $sum_purchase_quantity_available = 0;
+                }
+
                 $product_edits = array(
-                    'product_ref_no'                => $product_codes[$key],
-                    'product_name'                  => $product_names[$key],
+                    // 'product_ref_no'                => $product_codes[$key],
+                    // 'product_name'                  => $product_names[$key],
                     // 'product_barcode'               => $product_barcodes[$key],
                     // 'warehouse_id'                  => $product_warehouses[$key],
                     'product_piece_per_packet'      => $pieces_per_packet[$key],
                     'product_piece_per_carton'      => $pieces_per_carton[$key],
-                    'product_pieces_total'          => $product[$key]->product_pieces_total+$products_pieces[$key],
-                    'product_pieces_available'      => $product[$key]->product_pieces_available+$products_pieces[$key],
-                    'product_packets_total'         => $product[$key]->product_packets_total+$products_packets[$key],
-                    'product_packets_available'     => $product[$key]->product_packets_available+$products_packets[$key],
-                    'product_cartons_total'         => $product[$key]->product_cartons_total+$products_cartons[$key],
-                    'product_cartons_available'     => $product[$key]->product_cartons_available+$products_cartons[$key],
-                    'product_quantity_total'        => $product[$key]->product_quantity_total+$products_quantity_total[$key],
-                    'product_quantity_available'    => $product[$key]->product_quantity_available+$products_quantity_available[$key],
-                    'product_trade_discount'        => $products_discounts[$key],
-                    'product_trade_price_piece'     => $products_unit_prices[$key],
-                    'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
-                    'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
+                    'product_pieces_total'          => $product[$key]->product_pieces_total+$sum_purchase_pieces_total,
+                    'product_pieces_available'      => $product[$key]->product_pieces_available+$sum_purchase_pieces_available,
+                    'product_packets_total'         => $product[$key]->product_packets_total+$sum_purchase_packets_total,
+                    'product_packets_available'     => $product[$key]->product_packets_available+$sum_purchase_packets_available,
+                    'product_cartons_total'         => $product[$key]->product_cartons_total+$sum_purchase_cartons_total,
+                    'product_cartons_available'     => $product[$key]->product_cartons_available+$sum_purchase_cartons_available,
+                    'product_quantity_total'        => $product[$key]->product_quantity_total+$sum_purchase_quantity_total,
+                    'product_quantity_available'    => $product[$key]->product_quantity_available+$sum_purchase_quantity_available,
+                    // 'product_trade_discount'        => $products_discounts[$key],
+                    // 'product_trade_price_piece'     => $products_unit_prices[$key],
+                    // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
+                    // 'product_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
                 );
+
                 $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
             }
     
             $update = DB::table('purchases')->where('purchase_id','=', $purchase_id)->update($purchase_edits);
     
-            return redirect()->back();
+            // return redirect()->back();
+            Session::flash('message' , 'Purchase Edited Successfully');
+            return redirect('/purchase');
             // return redirect('/purchase')->with(['message' => 'Purchase Edited Successfully'], 200);
             // if($update){
             // 	return response()->json(['data' => $purchase_edits, /*'purchase_products' => $purchase_products_update,*/ 'message' => 'Purchase Edited Successfully'], 200);
@@ -852,9 +909,9 @@ class PurchaseController extends Controller
 
         }
         else{
-
-            return response()->json("Add atleast one product", 400);
-
+            // return response()->json("Add atleast one product", 400);
+            Session::flash('message' , 'Add atleast one product');
+            return redirect()->back();
         }
 
     }

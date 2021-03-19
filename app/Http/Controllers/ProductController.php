@@ -135,7 +135,8 @@ class ProductController extends Controller
             // 'status_id'                     => 'required',
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+        //    return response()->json("Fields Required", 400);
+           return redirect()->back()->withErrors($validate);
         }
         $product_adds = array(
             'product_ref_no'                => $request->product_ref_no,
@@ -271,9 +272,10 @@ class ProductController extends Controller
             'product_info'                  => '',
             // 'status_id'                     => 'required',
         ]);
-        // if ($validate->fails()) {    
+        if ($validate->fails()) {    
         //    return response()->json("Fields Required", 400);
-        // }
+           return redirect()->back()->withErrors($validate);
+        }
         $product_edits = array(
             'product_ref_no'                => $request->product_ref_no,
             'warehouse_id'                  => $request->warehouse_id,
@@ -338,6 +340,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        DB::table('product_barcodes')->where('product_id', $id)->delete();
         DB::table('products')->where('product_id', $id)->delete();
 
         return redirect('/product')->with(['message' => 'Product Deleted Successfully'], 200);

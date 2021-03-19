@@ -7,10 +7,21 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-              <a class="btn btn-info btn-round text-white pull-right" href="{{ route('purchase.returnadd') }}">Add Purchase Return</a>
+            <a class="btn btn-info btn-round text-white pull-right" href="{{ route('purchase.returnadd') }}">Add Purchase Return</a>
             <h4 class="card-title">Purchase Returns</h4>
             <div class="col-12 mt-2">
-                                        </div>
+              @if (Session::has('message'))
+                <div class="alert alert-success alert-block alert-dismissible fade show w-50 ml-auto" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">×</button>    
+                    <strong>{{Session::get('message') }}</strong>
+                </div>
+              @elseif(Session::has('error'))
+                <div class="alert alert-danger alert-block alert-dismissible fade show w-50 ml-auto" role="alert">
+                  <button type="button" class="close" data-dismiss="alert">×</button>    
+                  <strong>{{Session::get('error') }}</strong>
+                </div>
+              @endif
+            </div>
           </div>
           <div class="card-body">
             <div class="toolbar">

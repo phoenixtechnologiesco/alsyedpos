@@ -14,6 +14,17 @@
               @csrf
               @method('post')
               @include('alerts.success')
+              @if($errors->any())
+                <div class="form-group">
+                  <div class="alert alert-danger">
+                    <ul>
+                      @foreach($errors->all() as $error)
+                        <li> {{ $error }} </li>
+                      @endforeach
+                    </ul>
+                  </div>
+                </div>
+              @endif
               <div class="row">
                 <div class="card-body-custom col-12">
                   <div class="row">
@@ -87,7 +98,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="purchase_amount_paid" id="supplier_balance_paid" class="form-control col-12" value="">
+                              <input readonly type="number" name="purchase_amount_paid" id="supplier_balance_paid" class="form-control col-12" value="{{ old('purchase_amount_paid', '') }}">
                               @include('alerts.feedback', ['field' => 'purchase_amount_paid'])
                             </div>
                           </div>
@@ -209,25 +220,19 @@
                                       <input type="text" name="product_name_i" id="product_name_i" class="form-control col-12" placeholder="Product search by name/code" value="{{ old('product_name_i', '') }}" >
                                       <input type="hidden" name="product_code_i" id="product_code_i" value="{{ old('product_code_i', '') }}">
                                       <input type="hidden" name="product_id_i" id="product_id_i" value="{{ old('product_id_i', '') }}">
-                                      {{-- <select placeholder="Scan/Search product by name/code" name="product_code_name" id="product_code_name" class="form-control select2-single col-10">
-                                        select2-single
-                                        c-multi-select
-                                        js-example-basic-single my-class
-                                        <option class="" value="">Scan/Search product by name/code</option>
-                                        @foreach($products as $one_product)
-                                          <option class="" value="{{ $one_product->product_id }}">{{ $one_product->product_name }}</option>
-                                        @endforeach
-                                      </select> --}}
                                     </div>
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="purchase_products_pieces_i" id="purchase_products_pieces_i" class="form-control col-12" min="0" value="0">
+                                    <input type="hidden" name="purchase_pieces_per_packet_i" min="0" id="purchase_pieces_per_packet_i" class="form-control col-12" min="0" value="{{ old('purchase_pieces_per_packet_i', '5') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="purchase_products_packets_i" id="purchase_products_packets_i" class="form-control col-12" min="0" value="0">
+                                    <input type="hidden" name="purchase_packets_per_carton_i" min="0" id="purchase_packets_per_carton_i" class="form-control col-12" min="0" value="{{ old('purchase_packets_per_carton_i', '4') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="purchase_products_cartons_i" id="purchase_products_cartons_i" class="form-control col-12" min="0" value="0">
+                                    <input type="hidden" name="purchase_pieces_per_carton_i" min="0" id="purchase_pieces_per_carton_i" class="form-control col-12" min="0" value="{{ old('purchase_pieces_per_carton_i', '20') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="purchase_products_unit_price_i" id="purchase_products_unit_price_i" class="form-control col-12" min="0"  value="0">
@@ -243,9 +248,67 @@
                                       <button id="add_button" type="button" rel="tooltip" class="btn btn-info btn-round pull-right " data-original-title="+" title="+"><i class="fa fa-plus"></i></button>
                                   </td>
                                 </tr>
+                                <?php $i=1; $j = 1; $mytotal_quantity = 0; $mytotal_discount = 0; $mysubtotal_amount = 0; $mygrandtotal_amount = 0; ?>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class=" col-12 ">
+                      <div class="form-group">
+                        <div class=" col-12">
+                          <div class="table-responsive-custom" >
+                            <table id="myTable2" class="table table-hover table-fixed table-bordered">
+                              <thead class="thead-dark">
+                                  <tr class="row thead-dark-custom">
+                                    <th colspan="1" class="col-1 firstcol" scope="col">Items</th>
+                                    <th colspan="1" class="col-1 mycol" scope="col">Total Qty</th>
+                                    <th colspan="2" class="col-2 mycol" scope="col">Free Pcs  /  Free Amount</th>
+                                    {{-- <th class="col-1 mycol" scope="col">Free Amount</th> --}}
+                                    <th colspan="1" class="col-2 mycol" scope="col">Total</th>
+                                    <th colspan="1" class="col-1 mycol" scope="col">Add</th>
+                                    <th colspan="1" class="col-1 mycol" scope="col">Discount</th>
+                                    <th colspan="1" class="col-2 mycol" scope="col">Grand Total</th>
+                                    <th colspan="1" class="col-2 lastcol" scope="col">Paid Amount</th>
+                                  </tr>
+                                  <tr class="row table-info" >
+                                    <td class="col-1 firstcol" scope="col">
+                                      <input readonly type="number" name="purchase_total_items" id="purchase_total_items" class="form-control col-12" value="">
+                                    </td>
+                                    <td class="col-1 mycol" scope="col">
+                                      <input readonly type="number" name="purchase_total_qty" id="purchase_total_qty" class="form-control col-12" value="">
+                                    </td>
+                                    <td class="col-1 mycol" scope="col">
+                                      <input type="number" name="purchase_free_piece" class="form-control col-12" value="">
+                                    </td>
+                                    <td class="col-1 mycol" scope="col">
+                                      <input type="number" name="purchase_free_amount" id="purchase_free_amount_i" class="form-control col-12" value="">
+                                    </td>
+                                    <td class="col-2 mycol" scope="col">
+                                      <input readonly type="number" name="purchase_total_price" id="purchase_total_price_i" class="form-control col-12"  value="">
+                                    </td>
+                                    <td class="col-1 mycol" scope="col">
+                                      <input type="number" name="purchase_add_amount" id="purchase_add_amount_i" class="form-control col-12"  value="">
+                                    </td>
+                                    <td class="col-1 mycol" scope="col">
+                                      <input readonly type="number" name="purchase_discount" id="purchase_discount" class="form-control col-12"  value="">
+                                    </td>
+                                    <td class="col-2 mycol" scope="col">
+                                      <input readonly type="number" name="purchase_grandtotal_price"  id="purchase_grandtotal_price" class="form-control col-12"  value="">
+                                    </td>
+                                    <td class="col-2 lastcol" scope="col">
+                                      <input type="number" name="purchase_amount_recieved" class="form-control col-12"  value="">
+                                    </td>
+                                  </tr>
+                                </div>
+                              </thead>
+                              <tbody class="">
                               </tbody>
                               <tfoot class="thead-dark">
-                                <tr class="row">
+                                <tr class="row tfoot-dark-custom">
                                   {{-- <th class="col-1 mycol" scope="col">Invoice Id</th> --}}
                                   {{-- <th class="col-3 mycol" scope="col" style="text-align: center">Invoice Date</th> --}}
                                   {{-- <th class="col-2 mycol" scope="col">Document</th> --}}
@@ -282,48 +345,6 @@
                                   </td>
                                   <td class="col-2 lastcol" scope="col">
                                     <input type="number" min="0" name="purchase_return_change" class="form-control col-12"  value="">
-                                  </td>
-                                </tr>
-                              </tfoot>
-                              <tfoot class="thead-dark">
-                                <tr class="row">
-                                  <th colspan="1" class="col-1 firstcol" scope="col">Items</th>
-                                  <th colspan="1" class="col-1 mycol" scope="col">Total Qty</th>
-                                  <th colspan="2" class="col-2 mycol" scope="col">Free Pcs  /  Free Amount</th>
-                                  {{-- <th class="col-1 mycol" scope="col">Free Amount</th> --}}
-                                  <th colspan="1" class="col-2 mycol" scope="col">Total</th>
-                                  <th colspan="1" class="col-1 mycol" scope="col">Add</th>
-                                  <th colspan="1" class="col-1 mycol" scope="col">Discount</th>
-                                  <th colspan="1" class="col-2 mycol" scope="col">Grand Total</th>
-                                  <th colspan="1" class="col-2 lastcol" scope="col">Paid Amount</th>
-                                </tr>
-                                <tr class="row table-info" >
-                                  <td class="col-1 firstcol" scope="col">
-                                    <input readonly type="number" name="purchase_total_items" id="purchase_total_items" class="form-control col-12" value="">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input readonly type="number" name="purchase_total_qty" id="purchase_total_qty" class="form-control col-12" value="">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_free_piece" class="form-control col-12" value="">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_free_amount" id="purchase_free_amount_i" class="form-control col-12" value="">
-                                  </td>
-                                  <td class="col-2 mycol" scope="col">
-                                    <input readonly type="number" name="purchase_total_price" id="purchase_total_price_i" class="form-control col-12"  value="">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input type="number" name="purchase_add_amount" id="purchase_add_amount_i" class="form-control col-12"  value="">
-                                  </td>
-                                  <td class="col-1 mycol" scope="col">
-                                    <input readonly type="number" name="purchase_discount" id="purchase_discount" class="form-control col-12"  value="">
-                                  </td>
-                                  <td class="col-2 mycol" scope="col">
-                                    <input readonly type="number" name="purchase_grandtotal_price" id="purchase_grandtotal_price" id="purchase_grandtotal_price" class="form-control col-12"  value="">
-                                  </td>
-                                  <td class="col-2 lastcol" scope="col">
-                                    <input type="number" name="purchase_amount_recieved" class="form-control col-12"  value="">
                                   </td>
                                 </tr>
                               </tfoot>
@@ -834,9 +855,6 @@
     $.validator.setDefaults( {
       // debug: true,
       // success: "valid",
-      // submitHandler: function () {
-      //   alert( 'submitted!' );
-      // },
       submitHandler: function(form) {
         form.submit();
       }
@@ -863,9 +881,8 @@
   var rowindex;
   var supplier_purchase_rate;
   var row_product_price;
-  var pos;
-  // <?php $productArray = []; ?>
-
+  
+  var rownum = <?php echo $i; ?>;
 
   $(document).on('click', '#add_button', function(e){
     var product_barcode = $('#purchase_products_barcode_i').val();
@@ -881,13 +898,22 @@
     var product_cartons = $('#purchase_products_cartons_i').val();
     var product_unit_price = $('#purchase_products_unit_price_i').val();
     var product_discount = $('#purchase_products_discount_i').val();
+    // var pieces_per_packet = $('#purchase_pieces_per_packet_i').val();
+    // var packets_per_carton = $('#purchase_packets_per_carton_i').val();
+    // var pieces_per_carton = $('#purchase_pieces_per_carton_i').val();
     var pieces_per_carton = $('#pieces_per_carton').val();
     var pieces_per_packet = $('#pieces_per_packet').val();
     var packets_per_carton = $('#packets_per_carton').val();
+    total_items = $('#purchase_total_items').val();
+    total_quantity = $('#purchase_total_qty').val();
     purchase_free_amount = $('#purchase_free_amount_i').val();
     purchase_add_amount = $('#purchase_add_amount_i').val();
+    subtotal_amount = $('#purchase_total_price_i').val();
+    total_discount = $('#purchase_discount').val();
+    grandtotal_amount = $('#purchase_grandtotal_price').val();
+    purchase_amount_recieved = $('#purchase_amount_recieved').val();
 
-    product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
+    product_quantity = Number(product_pieces)+Number(product_packets*pieces_per_packet)+Number(product_cartons*pieces_per_carton);
     
     var allRows = [];
     var repeated;
@@ -925,7 +951,7 @@
       }
       subtotal_amount = Number(subtotal_amount) + Number(product_sub_total);
       grandtotal_amount = Number(subtotal_amount) + Number(purchase_free_amount) + Number(purchase_add_amount);
-
+      
       $('.purchase-product').prepend('<tr class="row prtr"><td class="col-2 firstcol" scope="col"><input readonly type="text" name="purchase_products_barcode[]" id="purchase_products_barcode'+rownum+'" class="form-control col-12" placeholder="Scan/Search barcode" value='+product_barcode+'></td><td class="col-3 mycol" scope="col"><input readonly type="text" name="product_name[]" id="product_name'+rownum+'" class="form-control col-12" placeholder="Search product by name/code" value="'+product_name+'"><input readonly type="hidden" name="product_code[]" id="product_code'+rownum+'" class="form-control col-12" value='+product_ref+'><input readonly type="hidden" name="product_id[]" id="product_id'+rownum+'" class="form-control col-12" value='+product_id+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_pieces[]" id="purchase_products_pieces'+rownum+'" class="form-control col-12" value='+product_pieces+'><input readonly type="hidden" name="purchase_pieces_per_packet[]" id="purchase_pieces_per_packet'+rownum+'" class="form-control col-12" value='+pieces_per_packet+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_packets[]" id="purchase_products_packets'+rownum+'" class="form-control col-12" value='+product_packets+'><input readonly type="hidden" name="purchase_packets_per_carton[]" id="purchase_packets_per_carton'+rownum+'" class="form-control col-12" value='+packets_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="number" name="purchase_products_cartons[]" id="purchase_products_cartons'+rownum+'" class="form-control col-12" value='+product_cartons+'><input readonly type="hidden" name="purchase_pieces_per_carton[]" id="purchase_pieces_per_carton'+rownum+'" class="form-control col-12" value='+pieces_per_carton+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_unit_price[]" id="purchase_products_unit_price'+rownum+'" class="form-control col-12"  value='+product_unit_price+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_discount[]" id="purchase_products_discount'+rownum+'" class="form-control col-12"  value='+product_discount+'></td><td class="col-1 mycol" scope="col"><input readonly type="text" name="purchase_products_sub_total[]" id="purchase_products_sub_total'+rownum+'" class="form-control col-12"  value='+product_sub_total+'></td><td class="col-1 lastcol" align="center"><button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm delete-productfield" id="delete-productfield'+rownum+'" row-id="'+rownum+'" data-original-title="X" title="X"><i class="fa fa-times"></i></button></td></tr>');
       rownum++;
       $('#purchase_total_qty').val('');
@@ -934,8 +960,8 @@
       $('#purchase_total_items').val(total_items);
       // $('#purchase_free_price').val('');
       // $('#purchase_free_price').val();
-      $('#purchase_total_price').val('');
-      $('#purchase_total_price').val(subtotal_amount);
+      $('#purchase_total_price_i').val('');
+      $('#purchase_total_price_i').val(subtotal_amount);
       $('#purchase_discount').val('');
       $('#purchase_discount').val(total_discount);
       $('#purchase_grandtotal_price').val('');
@@ -1080,7 +1106,6 @@
           var packets_per_carton = data[0]['product_packet_per_carton'];
           var product_cash_price_piece = data[0]['product_cash_price_piece'];
           var product_credit_price_piece = data[0]['product_credit_price_piece'];
-          // console.log(total_items);
           $('#product_name_i').val('');
           $('#product_name_i').val(catchproduct_name);
           $('#product_code_i').val('');

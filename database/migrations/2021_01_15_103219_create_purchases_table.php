@@ -36,7 +36,7 @@ class CreatePurchasesTable extends Migration
             // $table->decimal('purchase_payterm_number', 8, 2)->nullable();
             // $table->string('purchase_payterm_duration')->nullable();
             $table->string('purchase_document')->nullable();
-            $table->integer('purchase_invoice_id')->index()->nullable();
+            $table->string('purchase_invoice_id')->index()->nullable();
             $table->date('purchase_invoice_date')->nullable();
             $table->integer('purchase_added_by');
             // $table->integer('purchase_payment_id')->index()->nullable();

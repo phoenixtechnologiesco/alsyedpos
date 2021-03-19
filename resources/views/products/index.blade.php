@@ -10,6 +10,17 @@
             <a class="btn btn-info btn-round text-white pull-right" href="{{ route('product.create') }}">Add Product</a>
             <h4 class="card-title">Products</h4>
             <div class="col-12">
+              @if (Session::has('message'))
+                <div class="alert alert-success alert-block alert-dismissible fade show w-50 ml-auto" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>    
+                    <strong>{{Session::get('message') }}</strong>
+                </div>
+              @elseif(Session::has('error'))
+                <div class="alert alert-danger alert-block alert-dismissible fade show w-50 ml-auto" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>    
+                  <strong>{{Session::get('error') }}</strong>
+                </div>
+              @endif
             </div>
           </div>
           <div class="card-body">
@@ -865,19 +876,7 @@
 @endsection
 
 @section('javascript')
-    <!-- Plugins and scripts required by this views -->
-    {{-- <script src="{{ asset('js/coreui/dataTables.coreui.js') }}"></script> --}}
-    {{-- <script src="{{ asset('js/coreui/jquery.dataTables.js') }}"></script> --}}
-    {{-- <script src="{{ asset('js/coreui/dataTables.bootstrap4.min.js') }}"></script> --}}
 
-    <!-- Custom scripts required by this view -->
-    {{-- <script src="{{ asset('js/coreui/datatables.js') }}"></script> --}}
-
-    {{-- <script>
-      $(document).ready( function () {
-          $('#productTable').DataTable();
-      });
-    </script> --}}
     {{-- <script id="detailss-template" type="text/x-handlebars-template">
       @verbatim
           <table class="table">

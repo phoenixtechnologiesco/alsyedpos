@@ -14,6 +14,17 @@
               @csrf
               @method('post')
               @include('alerts.success')
+              @if($errors->any())
+                <div class="form-group">
+                  <div class="alert alert-danger">
+                    <ul>
+                      @foreach($errors->all() as $error)
+                        <li> {{ $error }} </li>
+                      @endforeach
+                    </ul>
+                  </div>
+                </div>
+              @endif
                 <div class="row">
                   <div class="col-4">
                       <div class="form-group">
@@ -31,13 +42,13 @@
                   </div>
                   <div class="col-4">
                     <div class="form-group">
-                      <label for="parent_brand">{{__(" Parent brand")}}</label>
-                      {{-- <input type="text" id="parent_brand" name="parent_brand" class="form-control" placeholder="Parent brand" value="{{ old('parent_brand', '')}}">
-                      @include('alerts.feedback', ['field' => 'parent_brand']) --}}
-                      <select name="parent_brand" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select brand...">
+                      <label for="parent_company">{{__(" Parent Company")}}</label>
+                      {{-- <input type="text" id="parent_company" name="parent_company" class="form-control" placeholder="Parent Company" value="{{ old('parent_company', '')}}">
+                      @include('alerts.feedback', ['field' => 'parent_company']) --}}
+                      <select name="parent_company" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Company...">
                           <option selected value="NULL">Select</option>
-                        @foreach($companies as $single_brand)
-                          <option value="{{ $single_brand->brand_name }}">{{ $single_brand->brand_name }}</option>
+                        @foreach($companies as $single_company)
+                          <option value="{{ $single_company->company_name }}">{{ $single_company->company_name }}</option>
                         @endforeach
                       </select>
                     </div>

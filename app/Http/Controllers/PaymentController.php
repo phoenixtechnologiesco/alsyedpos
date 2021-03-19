@@ -118,27 +118,29 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        // $validate = Validator::make($request->all(), [ 
-        //     'payment_id'                 => '',
-        //     'payment_ref_no'             => '',
-        //     'payment_type'               => '',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
-        //     'customer_id'                => '',
-        //     'supplier_id'                => '',
-        //     'payment_method'             => 'required',//'cash', 'credit', 'deposit', 'card', 'cheque', 'other'
-        //     'payment_amount_paid'        => 'required',
-        //     'payment_amount_balance'     => '',
-        //     'payment_cheque_no'          => '',
-        //     'account_id'                 => '',
-        //     'payment_note'               => '',
-        //     'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
-        //     'payment_invoice_no'         => '',
-        //     'payment_invoice_date'       => '',
-        //     'payment_document'           => '',
-        //     'created_by'                 => '',
-        // ]);
-        // if ($validate->fails()) {    
+        $validate = Validator::make($request->all(), [ 
+            'payment_id'                 => '',
+            'payment_ref_no'             => '',
+            'payment_type'               => '',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
+            'customer_id'                => '',
+            'supplier_id'                => '',
+            'payment_method'             => 'required',//'cash', 'credit', 'deposit', 'card', 'cheque', 'other'
+            'payment_amount_paid'        => 'required',
+            'payment_amount_balance'     => '',
+            'payment_cheque_no'          => '',
+            'account_id'                 => '',
+            'payment_note'               => '',
+            'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
+            'payment_invoice_no'         => '',
+            'payment_invoice_date'       => '',
+            'payment_document'           => '',
+            'created_by'                 => '',
+        ]);
+        if ($validate->fails()) {    
         //    return response()->json("Fields Required", 400);
-        // }
+            return redirect()->back()->withErrors($validate);
+
+        }
         $payment_ref_no = $random = Str::random(8); //str_random
         $lastpayment = DB::table('sales')->orderBy('sale_id', 'desc')->limit(1)->first();
         $lastid = (string)$lastpayment->sale_id+1;
@@ -176,10 +178,18 @@ class PaymentController extends Controller
         );
 
         $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
+        $sale = DB::table('sales')->where('sale_invoice_id','=', $request->payment_invoice_id)->get();
+        if($sale !== NULL){
+            $sale_id = $sale->sale_id;
+        }
+        else{
+            $sale_id = NULL;
+        }
 
         $payment_adds = array(
             'payment_ref_no'           => $payment_ref_no,
             'payment_type'             => $request->payment_type,
+            'sale_id'                  => $sale->sale_id,
             'payment_customer_id'      => $request->payment_customer_id,
             // 'payment_supplier_id'      => $request->payment_supplier_id,
             // 'payment_status'           => $request->payment_status,
@@ -223,7 +233,7 @@ class PaymentController extends Controller
         // $add_id = DB::table('payments')->insertGetId($payment_adds)
         
 		if($save){
-			return response()->json(['data' => $payment_adds, 'message' => 'payment Created Successfully'], 200);
+			return response()->json(['data' => $payment_adds, 'message' => 'Payment Created Successfully'], 200);
 		}else{
 			return response()->json("Oops! Something Went Wrong", 400);
 		}
@@ -232,27 +242,29 @@ class PaymentController extends Controller
     public function purchasestore(Request $request)
     {
         // dd($request->all());
-        // $validate = Validator::make($request->all(), [ 
-        //     'payment_id'                 => '',
-        //     'payment_ref_no'             => '',
-        //     'payment_type'               => '',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
-        //     'customer_id'                => '',
-        //     'supplier_id'                => '',
-        //     'payment_method'             => 'required',//'cash', 'credit', 'deposit', 'card', 'cheque', 'other'
-        //     'payment_amount_paid'        => 'required',
-        //     'payment_amount_balance'     => '',
-        //     'payment_cheque_no'          => '',
-        //     'account_id'                 => '',
-        //     'payment_note'               => '',
-        //     'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
-        //     'payment_invoice_no'         => '',
-        //     'payment_invoice_date'       => '',
-        //     'payment_document'           => '',
-        //     'created_by'                 => '',
-        // ]);
-        // if ($validate->fails()) {    
+        $validate = Validator::make($request->all(), [ 
+            'payment_id'                 => '',
+            'payment_ref_no'             => '',
+            'payment_type'               => '',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
+            'customer_id'                => '',
+            'supplier_id'                => '',
+            'payment_method'             => 'required',//'cash', 'credit', 'deposit', 'card', 'cheque', 'other'
+            'payment_amount_paid'        => 'required',
+            'payment_amount_balance'     => '',
+            'payment_cheque_no'          => '',
+            'account_id'                 => '',
+            'payment_note'               => '',
+            'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
+            'payment_invoice_no'         => '',
+            'payment_invoice_date'       => '',
+            'payment_document'           => '',
+            'created_by'                 => '',
+        ]);
+        if ($validate->fails()) {    
         //    return response()->json("Fields Required", 400);
-        // }
+           return redirect()->back()->withErrors($validate);
+
+        }
         $payment_ref_no = $random = Str::random(8); //str_random
         $lastpayment = DB::table('purchases')->orderBy('purchase_id', 'desc')->limit(1)->first();
         $lastid = (string)$lastpayment->purchase_id+1;
@@ -262,7 +274,6 @@ class PaymentController extends Controller
         $payment_invoice_id = 'payment-'.$year.'-'.$lastid;
         $payment_type = 'debit';
         //$payment_adds = $request->except('document');
-        //$payment_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $payment_amount_recieved = $request->payment_amount_recieved;
         // $payment_amount_balance = $request->payment_amount_paid;
         $supplier_amount_paid = $request->supplier_amount_paid;
@@ -289,6 +300,14 @@ class PaymentController extends Controller
         );
 
         $update = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->update($supplier_edits);
+
+        $purchase = DB::table('purchases')->where('purchase_invoice_id','=', $request->payment_invoice_id)->first();
+        if($purchase !== NULL){
+            $purchase_id = $purchase->purchase_id;
+        }
+        else{
+            $purchase_id = NULL;
+        }
 
         $payment_adds = array(
             'payment_ref_no'           => $payment_ref_no,

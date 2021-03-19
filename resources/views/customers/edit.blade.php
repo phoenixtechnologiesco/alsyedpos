@@ -15,6 +15,17 @@
               @csrf
               @method('put')
               @include('alerts.success')
+              @if($errors->any())
+                <div class="form-group">
+                  <div class="alert alert-danger">
+                    <ul>
+                      @foreach($errors->all() as $error)
+                        <li> {{ $error }} </li>
+                      @endforeach
+                    </ul>
+                  </div>
+                </div>
+              @endif
               <div class="row">
                 <div class="card-body-custom col-12 ">
                   <div class="row">

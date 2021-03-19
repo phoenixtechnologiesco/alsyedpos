@@ -78,7 +78,8 @@ class SupplierController extends Controller
             'status_id' 	            => 'required',
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+        //    return response()->json("Fields Required", 400);
+           return redirect()->back()->withErrors($validate);
         }
         $supplier_adds = array(
             'supplier_ref_no' 			=> $request->supplier_ref_no,
@@ -173,7 +174,8 @@ class SupplierController extends Controller
             'status_id' 	            => 'required',
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+        //    return response()->json("Fields Required", 400);
+           return redirect()->back()->withErrors($validate);
         }
         $supplier_edits = array(
             'supplier_ref_no' 			=> $request->supplier_ref_no,

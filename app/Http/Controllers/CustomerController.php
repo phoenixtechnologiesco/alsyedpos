@@ -85,7 +85,8 @@ class CustomerController extends Controller
             'status_id' 	            => 'required',
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+        //    return response()->json("Fields Required", 400);
+           return redirect()->back()->withErrors($validate);
         }
         $customer_adds = array(
             'customer_ref_no' 			=> $request->customer_ref_no,
@@ -189,7 +190,8 @@ class CustomerController extends Controller
             'status_id' 	            => 'required',
         ]);
         if ($validate->fails()) {    
-           return response()->json("Fields Required", 400);
+        //    return response()->json("Fields Required", 400);
+           return redirect()->back()->withErrors($validate);
         }
         $customer_edits = array(
             'customer_ref_no' 			=> $request->customer_ref_no,

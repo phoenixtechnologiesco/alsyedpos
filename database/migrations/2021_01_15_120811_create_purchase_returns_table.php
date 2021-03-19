@@ -33,7 +33,7 @@ class CreatePurchaseReturnsTable extends Migration
             $table->decimal('purchase_return_amount_dues', 10, 2);
             $table->string('purchase_return_payment_method');//cash,credit
             $table->string('purchase_return_payment_status');//paid,due,partial,overdue
-            $table->integer('purchase_return_invoice_id')->nullable();
+            $table->string('purchase_return_invoice_id')->nullable();
             $table->date('purchase_return_invoice_date')->nullable();
             $table->string('purchase_return_document')->nullable();
             $table->text('purchase_return_note')->nullable();
