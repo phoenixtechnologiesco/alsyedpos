@@ -137,9 +137,9 @@ Route::group(['middleware' => ['get.menu']], function () {
     Route::get('sale/gen_invoice/{id}', 'SaleController@genInvoice')->name('saleinvoice');
     // Route::get('product/addmore', ['as' => 'product.addmore', 'uses' => 'ProductController@addMore']);
     // Route::post('product/addmore', ['as' => 'product.addmore', 'uses' => 'ProductController@addMoreBarcode']);
-    Route::get('balance/customer', 'ReportController@balancecustomer')->name('balancecustomer');
-    Route::get('balance/sale', 'ReportController@balancesale')->name('balancesale');
-    Route::get('balance/purchase', 'ReportController@balancepurchase')->name('balancepurchase');
+    Route::get('balance/customers', 'ReportController@balancecustomer')->name('balancecustomer');
+    Route::get('balance/sales', 'ReportController@balancesale')->name('balancesale');
+    Route::get('balance/purchases', 'ReportController@balancepurchase')->name('balancepurchase');
     Route::get('balance/creditduration', 'ReportController@balancecreditduration')->name('balancecreditduration');
     Route::get('report/date', 'ReportController@reportdate')->name('reportdate');
     Route::get('report/cashcredit', 'ReportController@reportcashcredit')->name('reportcashcredit');

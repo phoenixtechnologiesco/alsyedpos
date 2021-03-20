@@ -143,12 +143,11 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        {{-- <div class="form-col-2">
                           <div class="form-group">
                             <label for="purchase_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Invoice ID")}}</label>
                               <div class="form-col-12">
                                 <div class="myrow">
-                                  {{-- <div class="col-1"></div> --}}
                                   <input type="text" name="purchase_invoice_id" class="form-control form-col-10" value="{{ old('purchase_invoice_', '') }}">
                                   <button type="button" href="{{ route('purchase.edit', ['purchase' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
                                     <i class="fa fa-file-text-o"></i>
@@ -157,7 +156,7 @@
                                 @include('alerts.feedback', ['field' => 'purchase_invoice_id'])
                               </div>
                           </div>
-                        </div>
+                        </div> --}}
                         <div class="form-col-2">
                           <div class="form-group">
                             <label for="purchase_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase/Invoice Date")}}</label>

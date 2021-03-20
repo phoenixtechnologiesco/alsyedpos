@@ -42,7 +42,6 @@ class ReportController extends Controller
         return view('balance.customer', compact('customers') );
         // return view('balance.customer', ['sales', 'purchases' => $purchases, 'customers' => $customers, 'payments' => $payments]);
     }
-
     public function getBalanceCustomerData()
     {
         $customers = Customer::where('status_id', 1)->get();
@@ -91,7 +90,6 @@ class ReportController extends Controller
         return view('balance.sale', compact('saleledgers', 'sales', 'customers') );
         // return view('balance.sale, ['sales' => $sales, 'customers' => $customers,]);
     }
-
     public function getBalanceSaleData()
     {
         $sale_customer_amount=0;
@@ -173,7 +171,6 @@ class ReportController extends Controller
         return view('balance.purchase', compact('purchaseledgers', 'purchases', 'suppliers',) );
         // return view('balance.purchase, ['purchases' => $purchases,  'payments' => $payments]);
     }
-
     public function getBalancePurchaseData()
     {
         $purchase_supplier_amount=0;
@@ -223,7 +220,6 @@ class ReportController extends Controller
         return view('balance.creditduration', compact('sales', 'purchases', 'customers',) );
         // return view('balance.creditduration, ['sales', 'purchases' => $purchases, 'customers' => $customers, 'payments' => $payments]);
     }
-
     public function getBalanceCreditDurationData()
     {
         $customers = Customer::where('status_id', 1)->get();

@@ -94,13 +94,13 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="supplier_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Amount Paid")}}</label>
+                            <label for="supplier_amount_recieved" class="form-col-12 control-label">{{__("Supplier Amount Recieve")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input readonly type="number" name="supplier_amount_paid" id="supplier_balance_paid" class="form-control" value="{{ old('supplier_amount_paid', '') }}">
-                              @include('alerts.feedback', ['field' => 'supplier_amount_paid'])
+                              <input readonly type="number" name="supplier_amount_recieved" id="supplier_balance_recieved" class="form-control" value="{{ old('supplier_amount_recieved', '') }}">
+                              @include('alerts.feedback', ['field' => 'supplier_amount_recieved'])
                             </div>
                           </div>
                         </div>
@@ -207,13 +207,13 @@
                       <div class="row">
                         <div class="form-first-col-2">
                           <div class="form-group">
-                            <label for="payment_amount_recieved" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Paid Amount")}}</label>
+                            <label for="payment_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Paid Amount")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input type="text" name="payment_amount_recieved" class="form-control form-col-12"  value="{{ old('payment_amount_recieved', '100') }}">
-                              @include('alerts.feedback', ['field' => 'payment_amount_recieved'])
+                              <input type="text" name="payment_amount_paid" class="form-control form-col-12"  value="{{ old('payment_amount_paid', '0') }}">
+                              @include('alerts.feedback', ['field' => 'payment_amount_paid'])
                             </div>
                           </div>
                         </div>
@@ -303,7 +303,7 @@
 
   function suppliersearch(data){
     $.ajax({
-      url: 'searchsupplier',
+      url: '{{ route("searchsupplier") }}',
       type: "GET",
       data: {
         data: data,
@@ -313,7 +313,7 @@
         var supplier_id = data[0]["supplier_id"];
         var supplier_name = data[0]["supplier_name"];
         var status_id = data[0]["status_id"];
-        var supplier_balance_paid = data[0]["supplier_balance_paid"];
+        var supplier_balance_recieved = data[0]["supplier_balance_paid"];
         var supplier_balance_dues = data[0]["supplier_balance_dues"];
         var supplier_total_balance = data[0]["supplier_total_balance"];
         var supplier_credit_duration = data[0]["supplier_credit_duration"];
@@ -333,7 +333,7 @@
         // else{
         //   $('#supplier_status').val('Inactive');
         // }
-        $('#supplier_balance_paid').val(supplier_balance_paid);
+        $('#supplier_balance_recieved').val(supplier_balance_recieved);
         $('#supplier_balance_dues').val(supplier_balance_dues);
         // $('#supplier_total_balance').val(supplier_total_balance);
         // $('#supplier_credit_duration').val(supplier_credit_duration);

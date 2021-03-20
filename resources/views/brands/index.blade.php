@@ -11,12 +11,12 @@
             <h4 class="card-title">Brands</h4>
             <div class="col-12">
               @if (Session::has('message'))
-                <div class="alert alert-success alert-block alert-dismissible fade show w-50 ml-auto" role="alert">
+                <div class="alert alert-success alert-block alert-dismissible fade show w-100 ml-auto" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>    
                     <strong>{{Session::get('message') }}</strong>
                 </div>
               @elseif(Session::has('error'))
-                <div class="alert alert-danger alert-block alert-dismissible fade show w-50 ml-auto" role="alert">
+                <div class="alert alert-danger alert-block alert-dismissible fade show w-100 ml-auto" role="alert">
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>    
                   <strong>{{Session::get('error') }}</strong>
                 </div>

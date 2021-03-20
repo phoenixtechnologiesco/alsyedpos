@@ -114,7 +114,7 @@
                           <div class="form-group">
                             <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label>
                               <div class="form-col-12">
-                                <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="{{ old('payterm_duratype', '30 Days') }}">
+                                <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="{{ old('payterm_duratype', '') }}">
                               </div>
                           </div>
                         </div>
@@ -122,7 +122,7 @@
                           <div class="form-group">
                             <label for="customer_credit_limit" class=" form-col-12 control-label">{{__(" Credit Limit")}}</label>
                               <div class=" form-col-12">
-                                <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="{{ old('customer_credit_limit', '30000') }}">
+                                <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="{{ old('customer_credit_limit', '') }}">
                                 @include('alerts.feedback', ['field' => 'credit_limit'])
                               </div>
                           </div>
@@ -205,7 +205,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input type="text" name="payment_amount_recieved" class="form-control form-col-12"  value="{{ old('payment_amount_recieved', '') }}">
+                              <input type="text" name="payment_amount_recieved" class="form-control form-col-12"  value="{{ old('payment_amount_recieved', '0') }}">
                               @include('alerts.feedback', ['field' => 'payment_amount_recieved'])
                             </div>
                           </div>
