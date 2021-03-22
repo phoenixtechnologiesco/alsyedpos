@@ -51,10 +51,10 @@ class SaleController extends Controller
         $customers = Customer::where('status_id', 1)->get();
         // dd($sales);
         return Datatables::of($sales)
+        ->addIndexColumn()
         ->addColumn('action', function ($sales) {
             return '<a type="button" href="sale/'. $sales->sale_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
         })
-        // ->editColumn('sale_id', '{{$sale_id}}')
         ->make(true);
     }
 

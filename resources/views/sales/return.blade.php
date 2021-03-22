@@ -41,7 +41,7 @@
                   {{-- <th colspan="1" class="disabled-sorting text-center">Actions</th> --}}
                 </tr>
                 <tr>
-                  <th class="text-center"></th>
+                  <th class="text-center">S.No</th>
                   <th class="text-center">Name</th>
                   <th class="text-center">Ref_No</th>
                   <th class="text-center">Status</th>

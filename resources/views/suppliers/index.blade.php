@@ -30,7 +30,7 @@
             <table id="supplierTable" class="table table-sm table-striped table-bordered dataTable display compact hover order-column" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th class="text-center"></th>
+                  <th class="text-center">S.No</th>
                   <th class="text-center">Ref_No</th>
                   <th class="text-center">Supplier Name</th>
                   <th class="text-center">Supplier Type</th>

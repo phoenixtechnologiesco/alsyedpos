@@ -31,34 +31,32 @@
               <thead>
                 <tr>
                   <th></th>
-                  <th></th>
-                  <th colspan="1" class="text-center">Customer Info</th>
+                  <th colspan="1" class="text-center">Customer</th>
                   <th colspan="2" class="text-center">Sale Info</th>
                   <th colspan="2" class="text-center">Total Items/Qty</th>
                   <th colspan="3" class="text-center">Sale Amount</th>
                   <th colspan="2" class="text-center">Payment Info</th>
                   <th colspan="2" class="text-center">Invoice Info</th>
-                  <th colspan="1" class="text-center">Cashier Info</th>
-                  {{-- <th colspan="1" class="disabled-sorting text-center">Actions</th> --}}
+                  <th colspan="1" class="text-center">Cashier</th>
+                  <th colspan="1" class="disabled-sorting text-center">Actions</th>
                 </tr>
                 <tr>
-                  <th></th>
                   <th class="text-center">S.No</th>
                   <th class="text-center">Name</th>
                   <th class="text-center">Ref_No</th>
                   <th class="text-center">Status</th>
                   <th class="text-center">Items</th>
                   <th class="text-center">Quantity</th>
-                  <th class="text-center">Total Price</th>
-                  <th class="text-center">Amount Paid</th>
-                  <th class="text-center">Amount Dues</th>
-                  <th class="text-center">Pay Method</th>
-                  <th class="text-center">Pay Status</th>
-                  <th class="text-center">Invoice Id</th>
-                  <th class="text-center">Invoice Date</th>
+                  <th class="text-center">Total</th>
+                  <th class="text-center">Paid</th>
+                  <th class="text-center">Dues</th>
+                  <th class="text-center">Method</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-center">Inv.No</th>
+                  <th class="text-center">Inv Date</th>
                   <th class="text-center">Created By</th>
                   {{-- <th>Warehouse</th> --}}
-                  {{-- <th class="disabled-sorting text-center">Edit</th> --}}
+                  <th class="disabled-sorting text-center">Edit</th>
                 </tr>
               </thead>
               {{-- <tfoot>
@@ -149,11 +147,6 @@
     //   $(this).toggleClass('selected');
     // });
 
-      function format ( d ) {
-        // $sales->sale_id
-        return '<a type="button" href="sale/'+d.sale_id+'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
-        // return 'Attached Barcodes: '+sum;
-      }
 
       var dt = $('#saleTable').DataTable({
         // processing: true,
@@ -167,14 +160,14 @@
         // info:           false,
         ajax: '{{ route('api.sale_row_details') }}',
         columns: [
-          {
-            "className":      'details-control',
-            "orderable":      false,
-            "searchable":     false,
-            "data":           null,
-            "defaultContent": ''
-          },
-          { className: 'dt-body-center', data: 'sale_id', name: 'sale_id' },
+          // {
+          //   "className":      'details-control',
+          //   "orderable":      false,
+          //   "searchable":     false,
+          //   "data":           null,
+          //   "defaultContent": ''
+          // },
+          { className: 'dt-body-center', data: 'DT_RowIndex', name: 'DT_RowIndex'},
           { width:'25%', className: 'dt-body-center', data: 'customer_name', name: 'customer_name' },
           { className: 'dt-body-center', data: 'sale_ref_no', name: 'sale_ref_no' },
           { className: 'dt-body-center', data: 'sale_status', name: 'sale_status' },
@@ -188,6 +181,7 @@
           { width:'25%', className: 'dt-body-center', data: 'sale_invoice_id', name: 'sale_invoice_id' },
           { width:'25%', className: 'dt-body-center', data: 'sale_invoice_date', name: 'sale_invoice_date' },
           { width:'25%', className: 'dt-body-center', data: 'name', name: 'name' },
+          { className: 'dt-body-center', data: 'action', name: 'action'},
           // {
           //       "targets": [ 12 ],
           //       "visible": false
@@ -195,59 +189,56 @@
           // { data: 'warehouse_name', name: 'warehouse_name' },
           // { data: 'action', name: 'action', orderable: false, searchable: false }
         ],
-        order: [[1, 'asc']]
+        order: [[1, 'asc']],
+        select: { style: 'multi',  selector: 'td:first-child'},
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        dom: '<"offset-1"lfB>rt<"offset-1"ip>',
+        // dom: '<"top"i>rt<"bottom"flp><"clear">',
+        buttons: [
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.print.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'colvis',
+                columns: ':gt(0)'
+            }
+        ],
+        drawCallback: function () {
+            var api = this.api();
+        },
       });
 
-      // $('#saleTable table tbody').on('click', 'td.details-control', function () {
-      //   var tr = $(this).closest('tr');
-      //   var row = mytable.row( tr );
 
-      //   if ( row.child.isShown() ) {
-      //     // This row is already open - close it
-      //     row.child.hide();
-      //     tr.removeClass('shown');
-      //   }
-      //   else {
-      //     // Open this row
-      //     row.child( template(row.data()) ).show();
-      //     tr.addClass('shown');
-      //   }
-      // });
-
-      // Array to track the ids of the details displayed rows
-      var detailRows = [];
-  
-      $('#saleTable tbody').on( 'click', 'tr td.details-control', function () {
-          var tr = $(this).closest('tr');
-          var row = dt.row( tr );
-          var idx = $.inArray( tr.attr('id'), detailRows );
-
-          // console.log(row.data());
-  
-          if ( row.child.isShown() ) {
-              tr.removeClass( 'details' );
-              row.child.hide();
-  
-              // Remove from the 'open' array
-              detailRows.splice( idx, 1 );
-          }
-          else {
-              tr.addClass( 'details' );
-              row.child( format( row.data() ) ).show();
-  
-              // Add to the 'open' array
-              if ( idx === -1 ) {
-                  detailRows.push( tr.attr('id') );
-              }
-          }
-      } );
-  
-      // On each draw, loop over the `detailRows` array and show any child rows
-      dt.on( 'draw', function () {
-          $.each( detailRows, function ( i, id ) {
-              $('#'+id+' td.details-control').trigger( 'click' );
-          } );
-      } );
 
 </script>
 

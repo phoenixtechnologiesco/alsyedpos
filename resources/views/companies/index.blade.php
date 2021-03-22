@@ -30,7 +30,7 @@
             <table id="companyTable" class="table table-sm table-striped table-bordered dataTable display compact hover order-column" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th class="text-center"></th>
+                  <th class="text-center">S.No</th>
                   <th class="text-center">Parent Company</th>
                   <th class="text-center">Name</th>
                   <th class="text-center">Reference ID</th>

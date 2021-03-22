@@ -49,6 +49,7 @@ class PurchaseController extends Controller
         $suppliers = Supplier::where('status_id', 1)->get();
         // dd($purchases);
         return Datatables::of($purchases)
+        ->addIndexColumn()
         ->addColumn('action', function ($purchases) {
             return '<a type="button" href="purchase/'. $purchases->purchase_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
         })

@@ -16,7 +16,7 @@
             <table id="damageTable" class="table table-sm table-striped table-bordered dataTable display compact hover order-column" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th class="text-center"></th>
+                  <th class="text-center">S.No</th>
                   <th class="text-center">Product RefNo</th>
                   <th class="text-center">Product Name</th>
                   <th class="text-center">Company</th>
@@ -88,7 +88,53 @@
       //       "visible": false
       // },
     ],
-    order: [[1, 'asc']]
+    order: [[1, 'asc']],
+    select: { style: 'multi',  selector: 'td:first-child'},
+    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    dom: '<"offset-1"lfB>rt<"offset-1"ip>',
+    // dom: '<"top"i>rt<"bottom"flp><"clear">',
+    buttons: [
+        {
+            extend: 'pdf',
+            exportOptions: {
+                columns: ':visible:Not(.not-exported-sale)',
+                rows: ':visible'
+            },
+            action: function(e, dt, button, config) {
+                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button, config);
+            },
+            footer:true
+        },
+        {
+            extend: 'csv',
+            exportOptions: {
+                columns: ':visible:Not(.not-exported-sale)',
+                rows: ':visible'
+            },
+            action: function(e, dt, button, config) {
+                $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button, config);
+            },
+            footer:true
+        },
+        {
+            extend: 'print',
+            exportOptions: {
+                columns: ':visible:Not(.not-exported-sale)',
+                rows: ':visible'
+            },
+            action: function(e, dt, button, config) {
+                $.fn.dataTable.ext.buttons.print.action.call(this, e, dt, button, config);
+            },
+            footer:true
+        },
+        {
+            extend: 'colvis',
+            columns: ':gt(0)'
+        }
+    ],
+    drawCallback: function () {
+        var api = this.api();
+    },
   });
   // //  create index for table at columns zero
   // dt.on('order.dt search.dt', function () {

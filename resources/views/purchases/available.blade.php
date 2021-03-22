@@ -16,7 +16,7 @@
             <table id="availableTable" class="table table-sm table-striped table-bordered dataTable display compact hover order-column" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th class="text-center"></th>
+                  <th class="text-center">S.No</th>
                   <th class="text-center">Product RefNo</th>
                   <th class="text-center">Product Name</th>
                   <th class="text-center">Company</th>

@@ -31,7 +31,7 @@
               <thead>
                 <tr>
                   {{-- <th>Ref.Id</th> --}}
-                  <th></th>
+                  <th colspan="2"></th>
                   <th colspan="3">Product Info</th>
                   {{-- <th colspan="2">Company/Brand</th> --}}
                   <th colspan="4">Total Quantity</th>
@@ -58,6 +58,7 @@
                 <tr>
                   {{-- <th>Ref.Id</th> --}}
                   <th class="text-center"></th>
+                  <th class="text-center">S.No</th>
                   <th class="text-center">Name</th>
                   <th class="text-center">Company</th>
                   <th class="text-center">Brand</th>
@@ -613,29 +614,76 @@
             "data":           null,
             "defaultContent": ''
           },
-          { data: 'product_name', name: 'product_name', },
-          { data: 'product_company', name: 'product_company' },
-          { data: 'product_brand', name: 'product_brand' },
-          { data: 'product_pieces_total', name: 'product_pieces_total' },
-          { data: 'product_packets_total', name: 'product_packets_total' },
-          { data: 'product_cartons_total', name: 'product_cartons_total' },
-          { data: 'product_quantity_total', name: 'product_quantity_total' },
-          { data: 'product_pieces_available', name: 'product_pieces_available' },
-          { data: 'product_packets_available', name: 'product_packets_available' },
-          { data: 'product_cartons_available', name: 'product_cartons_available' },
-          { data: 'product_quantity_available', name: 'product_quantity_available' },
-          { data: 'product_trade_price_piece', name: 'product_trade_price_piece' },
-          { data: 'product_trade_price_packet', name: 'product_trade_price_packet' },
-          { data: 'product_trade_price_carton', name: 'product_trade_price_carton' },
-          { data: 'product_cash_price_piece', name: 'product_cash_price_piece' },
-          { data: 'product_cash_price_packet', name: 'product_cash_price_packet' },
-          { data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
-          { data: 'product_credit_price_piece', name: 'product_credit_price_piece' },
-          { data: 'product_credit_price_packet', name: 'product_credit_price_packet' },
-          { data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
+          { className: 'dt-body-center', data: 'DT_RowIndex', name: 'DT_RowIndex'},
+          { className: 'dt-body-center', data: 'product_name', name: 'product_name', },
+          { className: 'dt-body-center', data: 'product_company', name: 'product_company' },
+          { className: 'dt-body-center', data: 'product_brand', name: 'product_brand' },
+          { className: 'dt-body-center', data: 'product_pieces_total', name: 'product_pieces_total' },
+          { className: 'dt-body-center', data: 'product_packets_total', name: 'product_packets_total' },
+          { className: 'dt-body-center', data: 'product_cartons_total', name: 'product_cartons_total' },
+          { className: 'dt-body-center', data: 'product_quantity_total', name: 'product_quantity_total' },
+          { className: 'dt-body-center', data: 'product_pieces_available', name: 'product_pieces_available' },
+          { className: 'dt-body-center', data: 'product_packets_available', name: 'product_packets_available' },
+          { className: 'dt-body-center', data: 'product_cartons_available', name: 'product_cartons_available' },
+          { className: 'dt-body-center', data: 'product_quantity_available', name: 'product_quantity_available' },
+          { className: 'dt-body-center', data: 'product_trade_price_piece', name: 'product_trade_price_piece' },
+          { className: 'dt-body-center', data: 'product_trade_price_packet', name: 'product_trade_price_packet' },
+          { className: 'dt-body-center', data: 'product_trade_price_carton', name: 'product_trade_price_carton' },
+          { className: 'dt-body-center', data: 'product_cash_price_piece', name: 'product_cash_price_piece' },
+          { className: 'dt-body-center', data: 'product_cash_price_packet', name: 'product_cash_price_packet' },
+          { className: 'dt-body-center', data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
+          { className: 'dt-body-center', data: 'product_credit_price_piece', name: 'product_credit_price_piece' },
+          { className: 'dt-body-center', data: 'product_credit_price_packet', name: 'product_credit_price_packet' },
+          { className: 'dt-body-center', data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
           // { data: 'action', name: 'action'},
         ],
-        order: [[1, 'asc']]
+        order: [[2, 'asc']],
+        select: { style: 'multi',  selector: 'td:first-child'},
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        dom: '<"offset-1"lfB>rt<"offset-1"ip>',
+        // dom: '<"top"i>rt<"bottom"flp><"clear">',
+        buttons: [
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.print.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'colvis',
+                columns: ':gt(0)'
+            }
+        ],
+        drawCallback: function () {
+            var api = this.api();
+        },
       });
 
       // $('#productTable table tbody').on('click', 'td.details-control', function () {
@@ -691,42 +739,6 @@
 
 
       // var selected = [];
-
-      // $('#productTable').DataTable({
-      //   processing: true,
-      //   serverSide: true,
-      //   ajax: {
-      //     "url": '{{ route('api.product_row_attributes') }}',
-      //     // "type": "POST"
-      //   },
-      //   "rowCallback": function( row, data ) {
-      //       if ( $.inArray(data.DT_RowId, selected) !== -1 ) {
-      //           $(row).addClass('selected');
-      //       }
-      //   },
-      //   columns: [
-      //     { data: 'product_name', name: 'product_name' },
-      //     { data: 'product_barcode', name: 'product_barcode' },
-      //     { data: 'product_company', name: 'product_company' },
-      //     { data: 'product_brand', name: 'product_brand' },
-      //     { data: 'product_pieces_total', name: 'product_pieces_total' },
-      //     { data: 'product_packets_total', name: 'product_packets_total' },
-      //     { data: 'product_cartons_total', name: 'product_cartons_total' },
-      //     { data: 'product_pieces_available', name: 'product_pieces_available' },
-      //     { data: 'product_packets_available', name: 'product_packets_available' },
-      //     { data: 'product_cartons_available', name: 'product_cartons_available' },
-      //     { data: 'product_trade_price_piece', name: 'product_trade_price_piece' },
-      //     { data: 'product_trade_price_packet', name: 'product_trade_price_packet' },
-      //     { data: 'product_trade_price_carton', name: 'product_trade_price_carton' },
-      //     { data: 'product_cash_price_piece', name: 'product_cash_price_piece' },
-      //     { data: 'product_cash_price_packet', name: 'product_cash_price_packet' },
-      //     { data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
-      //     { data: 'product_credit_price_piece', name: 'product_credit_price_piece' },
-      //     { data: 'product_credit_price_packet', name: 'product_credit_price_packet' },
-      //     { data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
-      //     // { data: 'action', name: 'action', orderable: false, searchable: false }
-      //   ]
-      // });
 
       // $('#productTable tbody').on('click', 'tr', function () {
       //   var id = this.id;

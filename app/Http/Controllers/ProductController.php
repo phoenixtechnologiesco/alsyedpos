@@ -46,10 +46,10 @@ class ProductController extends Controller
         // $product_barcodes = ProductBarcodes::select(['product_barcode_id', 'product_id', 'product_barcodes']);
 
         return Datatables::of($products)
+        ->addIndexColumn()
         // ->addColumn('action', function ($products) {
         //     return '<a href="product/'. $products->product_id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
         // })
-        // ->editColumn('product_id', '{{$product_id}}')
         ->make(true);
     }
 
@@ -58,6 +58,7 @@ class ProductController extends Controller
         $products = Product::select(['product_id', 'product_name', 'product_barcode', 'product_company', 'product_brand', 'product_pieces_total',  'product_packets_total', 'product_cartons_total', 'product_pieces_available', 'product_packets_available', 'product_cartons_available', 'product_trade_price_piece', 'product_trade_price_packet', 'product_trade_price_carton', 'product_cash_price_piece', 'product_cash_price_packet', 'product_credit_price_carton', 'product_credit_price_piece', 'product_credit_price_packet', 'product_credit_price_carton' ]);
         
         return Datatables::of($products)
+            ->addIndexColumn()
             ->addColumn('action', function ($products) {
                 return '<a href="#edit-'. $products->product_id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
             })

@@ -30,7 +30,7 @@
                               </div>
                                 <input type="text" name="customer_code" id="customercodesearch" placeholder="Search Customer by code" class="form-control col-12" value="{{ old('customer_code') }}" />
                                 <input readonly type="hidden" name="sale_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
-                                <input readonly type="text" name="sale_customer_id" id="customer_id" class="form-control col-12" value="" />
+                                <input readonly type="hidden" name="sale_customer_id" id="customer_id" class="form-control col-12" value="" />
                                 {{-- <input type="hidden" name="customer_code" id="allcustomers" class="form-control col-12"  /> --}}
                                   <?php $snameArray = []; $snamecodeArray = []; ?>
                                   @foreach($customers as $one_customer) 
@@ -400,7 +400,6 @@
         // },
     ],
     order: [[1, 'asc']],
-    // order: [],
     select: { style: 'multi',  selector: 'td:first-child'},
     lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
     dom: '<"offset-1"lfB>rt<"offset-1"ip>',
