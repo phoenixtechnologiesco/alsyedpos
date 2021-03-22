@@ -116,7 +116,7 @@ Route::group(['middleware' => ['get.menu']], function () {
     Route::get('purchase/payment', 'PaymentController@indexpurchase')->name('purchase.payment');
     Route::get('purchase/payment/create', 'PaymentController@purchasecreate')->name('purchase.paymentcreate');
     Route::post('purchase/paymentadd', 'PaymentController@purchasestore')->name('purchase.paymentadd');
-    Route::get('purchase/ledger', 'PurchaseController@ledger')->name('purchase.ledger');
+    Route::any('purchase/ledger', 'PurchaseController@ledger')->name('purchase.ledger');
     Route::get('purchase/return', 'PurchaseController@return')->name('purchase.return');
     Route::get('purchase/returnadd', 'PurchaseController@returnadd')->name('purchase.returnadd');
     Route::post('purchase/storereturn', 'PurchaseController@storereturn')->name('purchase.storereturn');
@@ -147,11 +147,11 @@ Route::group(['middleware' => ['get.menu']], function () {
     Route::get('report/brand', 'ReportController@reportbrand')->name('reportbrand');
     Route::get('report/company', 'ReportController@reportcompany')->name('reportcompany');
 
-    Route::post('report/datereport', 'ReportController@dateReport')->name('datereport');
-    Route::post('report/cashcreditreport', 'ReportController@cashcreditReport')->name('cashcreditreport');
-    Route::post('report/customerreport', 'ReportController@customerReport')->name('customerreport');
-    Route::post('report/brandreport', 'ReportController@brandReport')->name('brandreport');
-    Route::post('report/companyreport', 'ReportController@companyReport')->name('companyreport');
+    Route::any('report/datereport', 'ReportController@dateReport')->name('datereport');
+    Route::any('report/cashcreditreport', 'ReportController@cashcreditReport')->name('cashcreditreport');
+    Route::any('report/customerreport', 'ReportController@customerReport')->name('customerreport');
+    Route::any('report/brandreport', 'ReportController@brandReport')->name('brandreport');
+    Route::any('report/companyreport', 'ReportController@companyReport')->name('companyreport');
 
     Route::group(['middleware' => ['role:superadmin|admin']], function () {
         Route::resource('users',        'UsersController');

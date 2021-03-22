@@ -45,7 +45,6 @@ class SaleController extends Controller
         return view('sales.index', compact('sales', 'customers') );
         // return view('sales.index', ['sales' => $sales]);
     }
-
     public function getRowDetailsData()
     {
         $sales = Sale::join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->join('users', 'sales.sale_added_by', '=', 'users.id')->join('warehouses', 'sales.warehouse_id', '=', 'warehouses.warehouse_id')->select('sales.*', 'customers.customer_name', 'users.name', 'warehouses.warehouse_name')->get();
@@ -67,16 +66,16 @@ class SaleController extends Controller
 
         return view('sales.return', compact('salereturns', 'customers') );
     }
-
     public function getRowDetailsData2()
     {
         $salereturns = SaleReturn::join('customers', 'sale_returns.sale_return_customer_id', '=', 'customers.customer_id')->join('users', 'sale_returns.sale_return_returned_by', '=', 'users.id')->select('sale_returns.*', 'customers.customer_name', 'users.name')->get();
         $customers = Customer::where('status_id', 1)->get();
         // dd($salereturns);
         return Datatables::of($salereturns)
-        // ->editColumn('salereturn_id', '{{$salereturn_id}}')
+        ->addIndexColumn()
         ->make(true);
     }
+
 
     public function returnadd(SaleReturn $model, Customer $model2, sale $model3)
     {
@@ -125,7 +124,7 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function financial(Sale $model)
+    public function financial_old(Sale $model)
     {
         // $sales = $model->paginate(15)->items();
         $sales = Sale::all();
@@ -135,6 +134,48 @@ class SaleController extends Controller
 
         return view('sales.financial', compact('sales', 'customers', 'products', 'payments') );
         // return view('sales.financial', ['sales' => $sales, 'customers' => $customers, 'payments' => $payments]);
+    }
+    public function getFinancialData(Request $request)
+    {
+        // $payments = Payment::all();
+        $customer_id = $request->customer_id;
+        // $customer_id = $request->sale_customer_id;
+        $payments = Payment::where('payment_customer_id', $customer_id)
+        ->join('customers', 'payments.payment_customer_id', '=', 'customers.customer_id')
+        ->orderBy('payments.created_at', 'desc')
+        ->select('payments.*', 'customers.customer_name',)
+        ->get();        
+        // $customers = customer::where('status_id', 1)->get();
+        // dd($payments);
+        return Datatables::of($payments)
+        ->addIndexColumn()
+        ->make(true);
+    }
+    public function financial(Request $request)
+    {
+    	$data = $request->all();
+        if($data != [ ]){
+            $customer_id = $data['sale_customer_id'];
+            // $start_date = $data['start_date'];
+            // $end_date = $data['end_date'];
+        }
+        else
+        {
+            $customer_id = 0;
+            // $start_date = '';
+            // $end_date = '';
+        }
+        $payments = Payment::where('payment_customer_id', $customer_id)
+        ->join('customers', 'payments.payment_customer_id', '=', 'customers.customer_id')
+        ->orderBy('payments.created_at', 'desc')
+        ->select('payments.*', 'customers.customer_name',)
+        ->get();
+        // dd([$customer_id, $payments]);
+        $payments = Payment::where('payment_customer_id', 9999)->get();
+
+        $customers = Customer::where('status_id', 1)->get();
+
+        return view('sales.financial', compact('payments','customer_id', 'customers',));
     }
 
     /**
@@ -301,6 +342,12 @@ class SaleController extends Controller
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+                if(!empty($product[$key])){
+                    $warehouse_id = $product[$key]->warehouse_id;
+                }
+                else{
+                    $warehouse_id = NULL;
+                }
                 
                 $sale_product_adds[$key] = array(
                     'sale_id'                    => $id,
@@ -308,7 +355,7 @@ class SaleController extends Controller
                     'sale_product_ref_no'        => $product_codes[$key],
                     'sale_product_name'          => $product_names[$key],
                     'sale_product_barcode'       => $product_barcodes[$key],
-                    'warehouse_id'               => $product[$key]->warehouse_id,
+                    'warehouse_id'               => $warehouse_id,
                     'sale_piece_per_packet'      => $pieces_per_packet[$key],
                     'sale_packet_per_carton'     => $packets_per_carton[$key],
                     'sale_piece_per_carton'      => $pieces_per_carton[$key],
@@ -516,6 +563,12 @@ class SaleController extends Controller
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+                if(!empty($product[$key])){
+                    $warehouse_id = $product[$key]->warehouse_id;
+                }
+                else{
+                    $warehouse_id = NULL;
+                }
     
                 $salereturn_product_adds[$key] = array(
                     'sale_return_id'                   => $id,
@@ -523,7 +576,7 @@ class SaleController extends Controller
                     'salereturn_product_ref_no'        => $product_codes[$key],
                     'salereturn_product_name'          => $product_names[$key],
                     'salereturn_product_barcode'       => $product_barcodes[$key],
-                    'warehouse_id'                     => $product[$key]->warehouse_id,
+                    'warehouse_id'                     => $warehouse_id,
                     'salereturn_piece_per_packet'      => $pieces_per_packet[$key],
                     'salereturn_packet_per_carton'     => $packets_per_carton[$key],
                     'salereturn_piece_per_carton'      => $pieces_per_carton[$key],
@@ -571,7 +624,7 @@ class SaleController extends Controller
                 $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
             }
     
-            Session::flash('message' , 'Purchase Returned Successfully');
+            Session::flash('message' , 'Sale Returned Successfully');
             return redirect()->back();
             // return redirect('/sale/returnadd');
             // if($save){
@@ -779,7 +832,13 @@ class SaleController extends Controller
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
-                
+                if(!empty($product[$key])){
+                    $warehouse_id = $product[$key]->warehouse_id;
+                }
+                else{
+                    $warehouse_id = NULL;
+                }
+
                 $sale_products_get[$key] = DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $single_id)->first();
     
                 // if($key == 0){
@@ -794,7 +853,7 @@ class SaleController extends Controller
                         'sale_product_ref_no'        => $product_codes[$key],
                         'sale_product_name'          => $product_names[$key],
                         'sale_product_barcode'       => $product_barcodes[$key],
-                        'warehouse_id'               => $product[$key]->warehouse_id,
+                        'warehouse_id'               => $warehouse_id,
                         'sale_piece_per_packet'      => $pieces_per_packet[$key],
                         'sale_packet_per_carton'     => $packets_per_carton[$key],
                         'sale_piece_per_carton'      => $pieces_per_carton[$key],

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Yajra\Datatables\Datatables;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +27,17 @@ class CompanyController extends Controller
     {
         $companies = Company::all();
         return view('companies.index', compact('companies') );
+    }
+    public function getCompaniesData()
+    {
+        $companies = Company::all();
+
+        return Datatables::of($companies)
+        ->addColumn('action', function ($companies) {
+            return '<a type="button" href="company/'. $companies->company_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+        })
+        ->addIndexColumn()
+        ->make(true);
     }
 
     /**

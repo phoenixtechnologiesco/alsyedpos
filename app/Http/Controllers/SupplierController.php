@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Yajra\Datatables\Datatables;
 use App\Models\Supplier;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -34,6 +35,17 @@ class SupplierController extends Controller
     {
         $suppliers = Supplier::all();
         return view('suppliers.index', compact('suppliers') );
+    }
+    public function getSuppliersData()
+    {
+        $suppliers = Supplier::all();
+
+        return Datatables::of($suppliers)
+        ->addColumn('action', function ($suppliers) {
+            return '<a type="button" href="supplier/'. $suppliers->supplier_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+        })
+        ->addIndexColumn()
+        ->make(true);
     }
 
     /**

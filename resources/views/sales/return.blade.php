@@ -41,7 +41,7 @@
                   {{-- <th colspan="1" class="disabled-sorting text-center">Actions</th> --}}
                 </tr>
                 <tr>
-                  <th class="text-center">S.No</th>
+                  <th class="text-center"></th>
                   <th class="text-center">Name</th>
                   <th class="text-center">Ref_No</th>
                   <th class="text-center">Status</th>
@@ -115,7 +115,7 @@
         // info:           false,
         ajax: '{{ route('api.salereturn_row_details') }}',
         columns: [
-          { className: 'dt-body-center', data: 'sale_return_id', name: 'sale_return_id' },
+          { className: 'dt-body-center', data: 'DT_RowIndex', name: 'DT_RowIndex'},
           { width:'25%', className: 'dt-body-center', data: 'customer_name', name: 'customer_name' },
           { className: 'dt-body-center', data: 'sale_return_ref_no', name: 'sale_return_ref_no' },
           { className: 'dt-body-center', data: 'sale_return_status', name: 'sale_return_status' },
@@ -129,11 +129,65 @@
           { width:'25%', className: 'dt-body-center', data: 'sale_return_invoice_id', name: 'sale_return_invoice_id' },
           { width:'25%', className: 'dt-body-center', data: 'sale_return_invoice_date', name: 'sale_return_invoice_date' },
           { width:'25%', className: 'dt-body-center', data: 'name', name: 'name' },
+          // { className: 'dt-body-center', data: 'action', name: 'action'},
           // { data: 'warehouse_name', name: 'warehouse_name' },
           // { data: 'action', name: 'action', orderable: false, searchable: false }
         ],
-        order: [[1, 'asc']]
+        order: [[1, 'asc']],
+        select: { style: 'multi',  selector: 'td:first-child'},
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        dom: '<"offset-1"lfB>rt<"offset-1"ip>',
+        // dom: '<"top"i>rt<"bottom"flp><"clear">',
+        buttons: [
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: ':visible:Not(.not-exported-sale)',
+                    rows: ':visible'
+                },
+                action: function(e, dt, button, config) {
+                    $.fn.dataTable.ext.buttons.print.action.call(this, e, dt, button, config);
+                },
+                footer:true
+            },
+            {
+                extend: 'colvis',
+                columns: ':gt(0)'
+            }
+        ],
+        drawCallback: function () {
+            var api = this.api();
+        },
       });
+      //  create index for table at columns zero
+      // dt.on('order.dt search.dt', function () {
+      //   dt.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+      //         cell.innerHTML = i + 1;
+      //         // dt.cell(cell).invalidate('dom');
+      //     });
+      // }).draw();
   
 </script>
 

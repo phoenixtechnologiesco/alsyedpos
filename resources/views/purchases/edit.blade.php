@@ -247,6 +247,7 @@
                                     </td>
                                     <td class="col-1 mycol" scope="col">
                                       <input readonly type="number" name="purchase_products_packets[]" id="purchase_products_packets{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->purchase_packets_total }}">
+                                      <input readonly type="hidden" name="purchase_packets_per_carton[]" id="purchase_packets_per_carton{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->purchase_packet_per_carton }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
                                       <input readonly type="number" name="purchase_products_cartons[]" id="purchase_products_cartons{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->purchase_cartons_total }}">

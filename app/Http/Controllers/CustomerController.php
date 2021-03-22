@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Yajra\Datatables\Datatables;
 use App\Models\Customer;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -36,6 +37,17 @@ class CustomerController extends Controller
 
         return view('customers.index', compact('customers') );
         // return view('customers.index', ['customers' => $model->paginate(15)->items()]);
+    }
+    public function getCustomersData()
+    {
+        $customers = Customer::all();
+
+        return Datatables::of($customers)
+        ->addColumn('action', function ($customers) {
+            return '<a type="button" href="customer/'. $customers->customer_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+        })
+        ->addIndexColumn()
+        ->make(true);
     }
 
     /**

@@ -27,17 +27,17 @@
             <div class="toolbar">
               <!--        Here you can write extra buttons/actions for the toolbar              -->
             </div>
-            <table id="productTable" class="table table-sm table-striped table-bordered dataTable display compact hover order-column" cellspacing="0" width="600px">
+            <table id="productTable" class="table table-sm table-striped table-bordered dataTable display compact hover order-column" cellspacing="0" width="100%">
               <thead>
                 <tr>
                   {{-- <th>Ref.Id</th> --}}
                   <th></th>
                   <th colspan="3">Product Info</th>
                   {{-- <th colspan="2">Company/Brand</th> --}}
-                  <th colspan="3">Total Quantity</th>
+                  <th colspan="4">Total Quantity</th>
                   {{-- <th>Totl.Pkt</th>
                   <th>Totl.Crt</th> --}}
-                  <th colspan="3">Aval Quantity</th>
+                  <th colspan="4">Aval Quantity</th>
                   {{-- <th>Aval.Pkt</th>
                   <th>Aval.Crt</th> --}}
                   {{-- <th>Damage Qty</th> --}}
@@ -53,34 +53,36 @@
                   <th>Credit.P.Crt</th> --}}
                   {{-- <th>Expiry</th> --}}
                   {{-- <th>Status</th> --}}
-                  {{-- <th class="disabled-sorting text-left">Edit</th> --}}
+                  {{-- <th class="disabled-sorting text-center">Edit</th> --}}
                 </tr>
                 <tr>
                   {{-- <th>Ref.Id</th> --}}
-                  <th></th>
-                  <th>Name</th>
-                  <th>Company</th>
-                  <th>Brand</th>
-                  <th>Pc</th>
-                  <th>Pkt</th>
-                  <th>Crt</th>
-                  <th>Pc</th>
-                  <th>Pkt</th>
-                  <th>Crt</th>
+                  <th class="text-center"></th>
+                  <th class="text-center">Name</th>
+                  <th class="text-center">Company</th>
+                  <th class="text-center">Brand</th>
+                  <th class="text-center">Pc</th>
+                  <th class="text-center">Pkt</th>
+                  <th class="text-center">Crt</th>
+                  <th class="text-center">Ttl</th>
+                  <th class="text-center">Pc</th>
+                  <th class="text-center">Pkt</th>
+                  <th class="text-center">Crt</th>
+                  <th class="text-center">Ttl</th>
                   {{-- <th>Damage Qty</th> --}}
                   {{-- <th>Piece Carton</th> --}}
-                  <th>Pc</th>
-                  <th>Pkt</th>
-                  <th>Crt</th>
-                  <th>Pc</th>
-                  <th>Pkt</th>
-                  <th>Crt</th>
-                  <th>Pc</th>
-                  <th>Pkt</th>
-                  <th>Crt</th>
+                  <th class="text-center">Pc</th>
+                  <th class="text-center">Pkt</th>
+                  <th class="text-center">Crt</th>
+                  <th class="text-center">Pc</th>
+                  <th class="text-center">Pkt</th>
+                  <th class="text-center">Crt</th>
+                  <th class="text-center">Pc</th>
+                  <th class="text-center">Pkt</th>
+                  <th class="text-center">Crt</th>
                   {{-- <th>Expiry</th> --}}
                   {{-- <th>Status</th> --}}
-                  {{-- <th class="disabled-sorting text-left">Edit</th> --}}
+                  {{-- <th class="disabled-sorting text-center">Edit</th> --}}
                 </tr>
               </thead>
               {{-- <tfoot>
@@ -115,315 +117,6 @@
               </tbody> --}}
             </table>
 
-            {{-- <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-              <div class="row">
-                <div class=" col-6">
-                  <div class="dataTables_length" id="DataTables_Table_0_length">
-                    <label>Show 
-                      <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                      </select> entries
-                    </label>
-                  </div>
-                </div>
-                <div class=" col-6">
-                  <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                    <label>Search:
-                      <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0">
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="">
-                  <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
-                    <thead>
-                      <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Username: activate to sort column descending" style="width: 220px;">Username</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date registered: activate to sort column ascending" style="width: 188px;">Date registered</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: 82px;">Role</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 91px;">Status</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 190px;">Actions</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr role="row" class="odd">
-                        <td class="sorting_1">Adam Alister</td>
-                        <td>2012/01/21</td>
-                        <td>Staff</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="even">
-                        <td class="sorting_1">Adinah Ralph</td>
-                        <td>2012/06/01</td>
-                        <td>Admin</td>
-                        <td><span class="badge badge-dark">Inactive</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="odd">
-                        <td class="sorting_1">Ajith Hristijan</td>
-                        <td>2012/03/01</td>
-                        <td>Member</td>
-                        <td><span class="badge badge-warning">Pending</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="even">
-                        <td class="sorting_1">Alphonse Ivo</td>
-                        <td>2012/01/01</td>
-                        <td>Member</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="odd">
-                        <td class="sorting_1">Anton Phunihel</td>
-                        <td>2012/01/01</td>
-                        <td>Member</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="even">
-                        <td class="sorting_1">Bao Gaspar</td>
-                        <td>2012/01/01</td>
-                        <td>Member</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="odd">
-                        <td class="sorting_1">Bernhard Shelah</td>
-                        <td>2012/06/01</td>
-                        <td>Admin</td>
-                        <td><span class="badge badge-dark">Inactive</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="even">
-                        <td class="sorting_1">Bünyamin Kasper</td>
-                        <td>2012/08/23</td>
-                        <td>Staff</td>
-                        <td><span class="badge badge-danger">Banned</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="odd">
-                        <td class="sorting_1">Carlito Roffe</td>
-                        <td>2012/08/23</td>
-                        <td>Staff</td>
-                        <td><span class="badge badge-danger">Banned</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr role="row" class="even">
-                        <td class="sorting_1">Chidubem Gottlob</td>
-                        <td>2012/02/01</td>
-                        <td>Staff</td>
-                        <td><span class="badge badge-danger">Banned</span></td>
-                        <td>
-                          <a class="btn btn-success" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-magnifying-glass"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-info" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                            </svg>
-                          </a>
-                          <a class="btn btn-danger" href="#">
-                            <svg class="c-icon">
-                              <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
-                          </a>
-                        </td>
-                      </tr>
-                      
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="row">
-                <div class=" col-5">
-                  <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">
-                    Showing 1 to 10 of 32 entries
-                  </div>
-                </div>
-                <div class=" col-7">
-                  <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                    <ul class="pagination">
-                      <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">
-                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">
-                          Previous
-                        </a>
-                      </li>
-                      <li class="paginate_button page-item active">
-                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">
-                          1
-                        </a>
-                      </li>
-                      <li class="paginate_button page-item ">
-                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">
-                          2
-                        </a>
-                      </li>
-                      <li class="paginate_button page-item ">
-                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0" class="page-link">
-                          3
-                        </a>
-                      </li>
-                      <li class="paginate_button page-item ">
-                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4" tabindex="0" class="page-link">
-                          4
-                        </a>
-                      </li>
-                      <li class="paginate_button page-item next" id="DataTables_Table_0_next">
-                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="5" tabindex="0" class="page-link">
-                          Next
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div> --}}
-
             <!-- <table id="productTable" class="table table-striped table-bordered datatable">
               <thead>
                 <tr>
@@ -441,7 +134,7 @@
                   <th>Credit.P(P/P/C)</th>
                   {{-- <th>Expiry</th> --}}
                   {{-- <th>Status</th> --}}
-                  <th class="disabled-sorting text-right">Edit</th>
+                  <th class="disabled-sorting text-center">Edit</th>
                 </tr>
               </thead>
               <tbody>
@@ -926,9 +619,11 @@
           { data: 'product_pieces_total', name: 'product_pieces_total' },
           { data: 'product_packets_total', name: 'product_packets_total' },
           { data: 'product_cartons_total', name: 'product_cartons_total' },
+          { data: 'product_quantity_total', name: 'product_quantity_total' },
           { data: 'product_pieces_available', name: 'product_pieces_available' },
           { data: 'product_packets_available', name: 'product_packets_available' },
           { data: 'product_cartons_available', name: 'product_cartons_available' },
+          { data: 'product_quantity_available', name: 'product_quantity_available' },
           { data: 'product_trade_price_piece', name: 'product_trade_price_piece' },
           { data: 'product_trade_price_packet', name: 'product_trade_price_packet' },
           { data: 'product_trade_price_carton', name: 'product_trade_price_carton' },

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Yajra\Datatables\Datatables;
 use App\Models\Brand;
 use App\Models\Company;
 use Illuminate\Http\Request;
@@ -27,6 +28,17 @@ class BrandController extends Controller
     {
         $brands = Brand::all();
         return view('brands.index', compact('brands') );
+    }
+    public function getBrandsData()
+    {
+        $brands = Brand::all();
+
+        return Datatables::of($brands)
+        ->addColumn('action', function ($brands) {
+            return '<a type="button" href="brand/'. $brands->brand_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+        })
+        ->addIndexColumn()
+        ->make(true);
     }
 
     /**

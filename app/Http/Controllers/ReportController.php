@@ -240,9 +240,17 @@ class ReportController extends Controller
     }
     public function dateReport(Request $request)
     {
-    	$data = $request->all();
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
+        $data = $request->all();
+        if($data != [ ]){
+            $start_date = $data['start_date'];
+            $end_date = $data['end_date'];
+        }
+        else
+        {
+            $start_date = '';
+            $end_date = '';
+        }
+
         $sale_data = Sale::where('created_at', '>=', $start_date)
         ->where('created_at', '<=', $end_date)
         ->orderBy('created_at', 'desc')
@@ -284,10 +292,19 @@ class ReportController extends Controller
     }
     public function cashcreditReport(Request $request)
     {
-    	$data = $request->all();
-        $cashcredit = $data['cashcredit'];
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
+        $data = $request->all();
+        if($data != [ ]){
+            $cashcredit = $data['cashcredit'];
+            $start_date = $data['start_date'];
+            $end_date = $data['end_date'];
+        }
+        else
+        {
+            $cashcredit = '';
+            $start_date = '';
+            $end_date = '';
+        }
+        
         $sale_data = Sale::where('sale_payment_method', $cashcredit)
         ->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)
         ->orderBy('created_at', 'desc')
@@ -326,10 +343,19 @@ class ReportController extends Controller
     }
     public function customerReport(Request $request)
     {
-    	$data = $request->all();
-        $customer_id = (integer)$data['customer_id'];
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
+        $data = $request->all();
+        if($data != [ ]){
+            $customer_id = (integer)$data['customer_id'];
+            $start_date = $data['start_date'];
+            $end_date = $data['end_date'];
+        }
+        else
+        {
+            $customer_id = 0;
+            $start_date = '';
+            $end_date = '';
+        }
+
         $sale_data = Sale::where('sale_customer_id', $customer_id)
         ->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)
         ->orderBy('created_at', 'desc')
@@ -376,10 +402,18 @@ class ReportController extends Controller
     }
     public function brandReport(Request $request)
     {
-    	$data = $request->all();
-        $brand_name = $data['brand_name'];
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
+        $data = $request->all();
+        if($data != [ ]){
+            $brand_name = $data['brand_name'];
+            $start_date = $data['start_date'];
+            $end_date = $data['end_date'];
+        }
+        else
+        {
+            $brand_name = '';
+            $start_date = '';
+            $end_date = '';
+        }
 
         $saleproducts_data = SaleProducts::where('sale_product_brand',  $brand_name)->orderBy('created_at', 'desc')->get();
         $sale_data = [];
@@ -448,10 +482,18 @@ class ReportController extends Controller
     }
     public function companyReport(Request $request)
     {
-    	$data = $request->all();
-        $company_name = $data['company_name'];
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
+        $data = $request->all();
+        if($data != [ ]){
+            $company_name = $data['company_name'];
+            $start_date = $data['start_date'];
+            $end_date = $data['end_date'];
+        }
+        else
+        {
+            $company_name = '';
+            $start_date = '';
+            $end_date = '';
+        }
 
         $saleproducts_data = SaleProducts::where('sale_product_company',  $company_name)->orderBy('created_at', 'desc')->get();
         $sale_data = [];

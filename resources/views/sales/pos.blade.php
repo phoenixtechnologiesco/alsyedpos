@@ -1562,19 +1562,19 @@
                                       <table id="myTable" class="table table-sm table-hover table-striped table-fixed table-bordered">
                                         <thead class="thead-dark pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
                                           <tr>
-                                            <th>S.No</th>
-                                            <th>Ref_No</th>
-                                            <th>Customer Name</th>
-                                            <th>Sale Status</th>
-                                            <th>Invoice Date</th>
-                                            <th>Grandtotal Price</th>
-                                            <th>Payment Method</th>
-                                            <th>Payment Status</th>
-                                            <!-- <th>Invoice Id</th> -->
-                                            <th>C Amount Paid</th>
-                                            <th>C Amount Dues</th>
-                                            <th>Payterm DuraType</th>
-                                            <th class="disabled-sorting text-right">Actions</th>
+                                            <th class="text-center">S.No</th>
+                                            <th class="text-center">Ref_No</th>
+                                            <th class="text-center">Customer Name</th>
+                                            <th class="text-center">Sale Status</th>
+                                            <th class="text-center">Invoice Date</th>
+                                            <th class="text-center">Grandtotal Price</th>
+                                            <th class="text-center">Payment Method</th>
+                                            <th class="text-center">Payment Status</th>
+                                            <!-- <th class="text-center">Invoice Id</th> -->
+                                            <th class="text-center">C Amount Paid</th>
+                                            <th class="text-center">C Amount Dues</th>
+                                            <th class="text-center">Payterm DuraType</th>
+                                            <th class="disabled-sorting text-center">Actions</th>
                                           </tr>
                                         </thead>
                                         <tbody>

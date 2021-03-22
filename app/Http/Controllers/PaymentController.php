@@ -57,9 +57,9 @@ class PaymentController extends Controller
         $customers = Customer::where('status_id', 1)->get();
         // dd($sales);
         return Datatables::of($payments)
-        ->addColumn('action', function ($payments) {
-            return '<a type="button" href="payment/'. $payments->payment_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
-        })
+        // ->addColumn('action', function ($payments) {
+        //     return '<a type="button" href="payment/'. $payments->payment_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+        // })
         // ->editColumn('payment_id', '{{$payment_id}}')
         ->make(true);
     }
@@ -71,9 +71,9 @@ class PaymentController extends Controller
         ->get();
         $suppliers = Supplier::where('status_id', 1)->get();
         return Datatables::of($payments)
-        ->addColumn('action', function ($payments) {
-            return '<a type="button" href="payment/'. $payments->payment_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
-        })
+        // ->addColumn('action', function ($payments) {
+        //     return '<a type="button" href="payment/'. $payments->payment_id.'/edit" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+        // })
         // ->editColumn('payment_id', '{{$payment_id}}')
         ->make(true);
     }

@@ -42,7 +42,6 @@ class PurchaseController extends Controller
         return view('purchases.index', compact('purchases', 'suppliers') );
         // return view('purchases.index', ['purchases' => $purchases]);
     }
-
     public function getRowDetailsData()
     {
         // $purchases = Purchase::all();
@@ -64,6 +63,16 @@ class PurchaseController extends Controller
         $suppliers = Supplier::where('status_id', 1)->get();
 
         return view('purchases.return', compact('purchasereturns', 'suppliers') );
+    }
+    public function getRowDetailsData2()
+    {
+        // $purchases = Purchase::all();
+        $purchasereturns = PurchaseReturn::join('suppliers', 'purchase_returns.purchase_return_supplier_id', '=', 'suppliers.supplier_id')->get();
+        $suppliers = Supplier::where('status_id', 1)->get();
+        // dd($purchases);
+        return Datatables::of($purchasereturns)
+        ->addIndexColumn()
+        ->make(true);
     }
 
     public function returnadd(PurchaseReturn $model, Supplier $model2, Product $model3)
@@ -97,21 +106,60 @@ class PurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function ledger(Purchase $model)
+    public function ledger_old(Purchase $model)
     {
         // $purchases = $model->paginate(15)->items();
-        $purchases = Purchase::all();
         $suppliers = Supplier::where('status_id', 1)->get();
-        $products = Product::all();
-        // $payments = Payment::get();
+        $payments = Payment::all();
 
-        return view('purchases.ledger', compact('purchases', 'suppliers', 'products') );
-        // return view('purchases.ledger', ['purchases' => $purchases, 'suppliers' => $suppliers, 'payments' => $payments]);
+        return view('purchases.ledger', compact('payments', 'suppliers', ) );
+        // return view('purchases.ledger', ['payments' => $payments, 'suppliers' => $suppliers,]);
+    }
+    public function getLedgerData(Request $request)
+    {
+        // $payments = Payment::all();
+        $supplier_id = $request->supplier_id;
+        // $supplier_id = $request->purchase_supplier_id;
+        $payments = Payment::where('payment_supplier_id', $supplier_id)
+        ->join('suppliers', 'payments.payment_supplier_id', '=', 'suppliers.supplier_id')
+        ->orderBy('payments.created_at', 'desc')
+        ->select('payments.*', 'suppliers.supplier_name',)
+        ->get();        
+        // $suppliers = Supplier::where('status_id', 1)->get();
+        // dd($payments);
+        return Datatables::of($payments)
+        ->addIndexColumn()
+        ->make(true);
+    }
+    public function ledger(Request $request)
+    {
+    	$data = $request->all();
+        if($data != [ ]){
+            $supplier_id = $data['purchase_supplier_id'];
+            // $start_date = $data['start_date'];
+            // $end_date = $data['end_date'];
+        }
+        else
+        {
+            $supplier_id = 0;
+            // $start_date = '';
+            // $end_date = '';
+        }
+        $payments = Payment::where('payment_supplier_id', $supplier_id)
+        ->join('suppliers', 'payments.payment_supplier_id', '=', 'suppliers.supplier_id')
+        ->orderBy('payments.created_at', 'desc')
+        ->select('payments.*', 'suppliers.supplier_name',)
+        ->get();
+        // dd([$supplier_id, $payments]);
+        $payments = Payment::where('payment_supplier_id', 9999)->get();
+
+        $suppliers = Supplier::where('status_id', 1)->get();
+
+        return view('purchases.ledger', compact('payments','supplier_id', 'suppliers',));
     }
 
-    public function available(Purchase $model)
+    public function available()
     {
-        // $purchases = $model->paginate(15)->items();
         $purchases = Purchase::all();
         $suppliers = Supplier::where('status_id', 1)->get();
         $products = Product::all();
@@ -120,10 +168,17 @@ class PurchaseController extends Controller
         return view('purchases.available', compact('purchases', 'suppliers', 'products') );
         // return view('purchases.available', ['purchases' => $purchases, 'suppliers' => $suppliers, 'payments' => $payments]);
     }
-
-    public function minimum(Purchase $model)
+    public function getAvailableData()
     {
-        // $purchases = $model->paginate(15)->items();
+        $products = Product::all();
+
+        return Datatables::of($products)
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function minimum()
+    {
         $purchases = Purchase::all();
         $suppliers = Supplier::where('status_id', 1)->get();
         $products = Product::all();
@@ -132,10 +187,17 @@ class PurchaseController extends Controller
         return view('purchases.minimum', compact('purchases', 'suppliers', 'products') );
         // return view('purchases.minimum', ['purchases' => $purchases, 'suppliers' => $suppliers, 'payments' => $payments]);
     }
-
-    public function damage(Purchase $model)
+    public function getMinimumData()
     {
-        // $purchases = $model->paginate(15)->items();
+        $products = Product::all();
+
+        return Datatables::of($products)
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function damage()
+    {
         $purchases = Purchase::all();
         $suppliers = Supplier::where('status_id', 1)->get();
         $products = Product::all();
@@ -144,10 +206,17 @@ class PurchaseController extends Controller
         return view('purchases.damage', compact('purchases', 'suppliers', 'products') );
         // return view('purchases.damage', ['purchases' => $purchases, 'suppliers' => $suppliers, 'payments' => $payments]);
     }
-
-    public function amountwise(Purchase $model)
+    public function getDamageData()
     {
-        // $purchases = $model->paginate(15)->items();
+        $products = Product::all();
+
+        return Datatables::of($products)
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function amountwise()
+    {
         $purchases = Purchase::all();
         $suppliers = Supplier::where('status_id', 1)->get();
         $products = Product::all();
@@ -305,6 +374,12 @@ class PurchaseController extends Controller
                 $products_quantity_available[$key] = $products_quantity_total[$key];
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
+                if(!empty($product[$key])){
+                    $warehouse_id = $product[$key]->warehouse_id;
+                }
+                else{
+                    $warehouse_id = NULL;
+                }
     
                 $purchase_product_adds[$key] = array(
                     'purchase_id'                    => $id,
@@ -312,7 +387,7 @@ class PurchaseController extends Controller
                     'purchase_product_ref_no'        => $product_codes[$key],
                     'purchase_product_name'          => $product_names[$key],
                     'purchase_product_barcode'       => $product_barcodes[$key],
-                    'warehouse_id'                   => $product[$key]->warehouse_id,
+                    'warehouse_id'                   => $warehouse_id,
                     'purchase_piece_per_packet'      => $pieces_per_packet[$key],
                     'purchase_packet_per_carton'     => $packets_per_carton[$key],
                     'purchase_piece_per_carton'      => $pieces_per_carton[$key],
@@ -648,7 +723,7 @@ class PurchaseController extends Controller
     public function update(Request $request, $id)
     {
         $purchase_id = $id; //OR $request->purchase_id;
-        $get_supplier = DB::table('suppliers')->where('supplier_id', $request->sale_supplier_id)->first();
+        $get_supplier = DB::table('suppliers')->where('supplier_id', $request->purchase_supplier_id)->first();
 
         $validate = Validator::make($request->all(), [ 
             'purchase_supplier_id'         => 'required',
@@ -760,7 +835,6 @@ class PurchaseController extends Controller
             $pieces_per_packet = $request->purchase_pieces_per_packet;
             $products_packets = $request->purchase_products_packets;
             $packets_per_carton = $request->purchase_packets_per_carton;
-            // dd($request->purchase_packets_per_carton);
             $products_cartons = $request->purchase_products_cartons;
             $pieces_per_carton = $request->purchase_pieces_per_carton;
             $products_unit_prices = $request->purchase_products_unit_price;
@@ -797,8 +871,7 @@ class PurchaseController extends Controller
                         'purchase_product_barcode'       => $product_barcodes[$key],
                         'warehouse_id'                   => $product[$key]->warehouse_id,
                         'purchase_piece_per_packet'      => $pieces_per_packet[$key],
-                        // 'purchase_packet_per_carton'     => $packets_per_carton[$key],
-                        'purchase_packet_per_carton'     => 4,
+                        'purchase_packet_per_carton'     => $packets_per_carton[$key],
                         'purchase_piece_per_carton'      => $pieces_per_carton[$key],
                         'purchase_pieces_total'          => $products_pieces[$key],
                         'purchase_packets_total'         => $products_packets[$key],
@@ -819,8 +892,7 @@ class PurchaseController extends Controller
                     $purchase_product_edits[$key] = array(
                         'purchase_product_name'          => $product_names[$key],
                         'purchase_piece_per_packet'      => $pieces_per_packet[$key],
-                        // 'purchase_packet_per_carton'     => $packets_per_carton[$key],
-                        'purchase_packet_per_carton'     => 4,
+                        'purchase_packet_per_carton'     => $packets_per_carton[$key],
                         'purchase_piece_per_carton'      => $pieces_per_carton[$key],
                         'purchase_pieces_total'          => $products_pieces[$key],
                         'purchase_packets_total'         => $products_packets[$key],
@@ -838,7 +910,7 @@ class PurchaseController extends Controller
                 }
     
             }
-            // dd($purchase_product_edits);
+
             foreach($product_ids as $key => $single_id){
     
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
