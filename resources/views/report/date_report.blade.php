@@ -73,7 +73,7 @@
                                                         <tr>
                                                             <td>{{$key}}</td>
                                                             <td>{{date('d/m/Y', strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
-                                                            <td>{{$sale->sale_ref_no}}</td>
+                                                            <td>{{$sale->sale_invoice_id}}</td>
                                                             <td>{{$sale->warehouse->warehouse_name}}</td>
                                                             <td>
                                                                 {{-- {{ dd($product_sale_data) }} --}}

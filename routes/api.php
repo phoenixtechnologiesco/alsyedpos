@@ -31,6 +31,7 @@ Route::get('/company_row_details', 'CompanyController@getCompaniesData')->name('
 Route::get('/brand_row_details', 'BrandController@getBrandsData')->name('api.brand_row_details');
 
 Route::get('/product-row-details', 'ProductController@getRowDetailsData')->name('api.product_row_details');
+Route::get('/product-row-details2', 'ProductController@getRowDetailsData2')->name('api.product_row_details2');
 Route::get('/product-row-attributes', 'ProductController@getRowAttributesData')->name('api.product_row_attributes');
 
 Route::get('/sale-row-details', 'SaleController@getRowDetailsData')->name('api.sale_row_details');

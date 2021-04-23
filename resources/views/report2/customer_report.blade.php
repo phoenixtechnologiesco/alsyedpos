@@ -73,7 +73,7 @@
                                                         <tr>
                                                             <th class="not-exported-sale"></th>
                                                             <th>{{'Date'}}</th>
-                                                            <th>{{'Reference No'}}</th>
+                                                            <th>{{'Invoice No'}}</th>
                                                             <th>{{'Warehouse'}}</th>
                                                             <th>{{'Product'}} ({{'Qty'}})</th>
                                                             <th>{{'Grand Total'}}</th>
@@ -87,16 +87,18 @@
                                                         <tr>
                                                             <td>{{$key}}</td>
                                                             <td>{{date('d/m/Y', strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
-                                                            <td>{{$sale->sale_ref_no}}</td>
-                                                            <td>{{$sale->warehouse->warehouse_name}}</td>
+                                                            <td>{{$sale->sale_invoice_id}}</td>
+                                                            <td>@if($sale->warehouse){{$sale->warehouse->warehouse_name}}@endif</td>
                                                             <td>
-                                                                @foreach($product_sale_data[$key] as $product_sale_data)
-                                                                <?php 
-                                                                    $product = App\Models\Product::where('product_id', $product_sale_data->product_id)->select('product_name')->get()->toArray();
-                                                                ?>
-                                                                {{$product[0]['product_name'].' ('.$product_sale_data->sale_quantity_total.')'}}
-                                                                <br>
-                                                                @endforeach
+                                                                @if($product_sale_data[$key])
+                                                                    @foreach($product_sale_data[$key] as $product_sale_data1)
+                                                                        <?php 
+                                                                            $product = App\Models\Product::where('product_id', $product_sale_data1->product_id)->select('product_name')->get()->toArray();
+                                                                        ?>
+                                                                        {{$product[0]['product_name'].' ('.$product_sale_data1->sale_quantity_total.')'}}
+                                                                        <br>
+                                                                    @endforeach
+                                                                @endif
                                                             </td>
                                                             <td>{{$sale->sale_grandtotal_price}}</td>
                                                             <td>{{$sale->sale_amount_paid}}</td>
@@ -133,8 +135,8 @@
                                                         <tr>
                                                             <th class="not-exported-payment"></th>
                                                             <th>{{'Date'}}</th>
-                                                            <th>{{'Payment Reference'}}</th>
-                                                            <th>{{'Sale Reference'}}</th>
+                                                            <th>{{'Payment Invoice'}}</th>
+                                                            <th>{{'Sale Invoice'}}</th>
                                                             <th>{{'Amount'}}</th>
                                                             <th>{{'Paid Method'}}</th>
                                                         </tr>
@@ -145,7 +147,7 @@
                                                                 <td></td>
                                                                 {{-- <td>{{$key}}</td> --}}
                                                                 <td>{{date('d/m/Y', strtotime($payment->created_at))}}</td>
-                                                                <td>{{$payment->payment_ref_no}}</td>
+                                                                <td>{{$payment->payment_invoice_id}}</td>
                                                                 <td>{{$payment->sale_reference}}</td>
                                                                 <td>{{$payment->payment_amount_paid}}</td>
                                                                 <td>{{$payment->payment_method}}</td>
@@ -172,7 +174,7 @@
                                                         <tr>
                                                             <th class="not-exported-return"></th>
                                                             <th>{{'Date'}}</th>
-                                                            <th>{{'Reference'}}</th>
+                                                            <th>{{'Invoice No'}}</th>
                                                             <th>{{'Warehouse'}}</th>
                                                             <th>{{'Biller'}}</th>
                                                             <th>{{'Product'}} ({{'qty'}})</th>
@@ -185,17 +187,19 @@
                                                             <td></td>
                                                             {{-- <td>{{$key}}</td> --}}
                                                             <td>{{date('d/m/Y', strtotime($return->created_at->toDateString())) . ' '. $return->created_at->toTimeString()}}</td>
-                                                            <td>{{$return->sale_return_ref_no}}</td>
-                                                            <td>{{$return->warehouse->warehouse_name}}</td>
+                                                            <td>{{$return->sale_return_invoice_id}}</td>
+                                                            <td>@if($sale->warehouse){{$sale->warehouse->warehouse_name}}@endif</td>
                                                             <td>{{$return->cashier->name}}</td>
                                                             <td>
-                                                                @foreach($product_return_data[$key] as $productreturn_data)
-                                                                <?php 
-                                                                    $product = App\Models\Product::where('product_id',$productreturn_data->product_id)->select('product_name')->get()->toArray();
-                                                                    // dd($product);
-                                                                ?>
-                                                                    {{$product[0]['product_name'].' ('.$productreturn_data->salereturn_quantity_total.')'}}
-                                                                @endforeach
+                                                                @if($product_sale_data[$key])
+                                                                    @foreach($product_return_data[$key] as $productreturn_data)
+                                                                    <?php 
+                                                                        $product = App\Models\Product::where('product_id',$productreturn_data->product_id)->select('product_name')->get()->toArray();
+                                                                        // dd($product);
+                                                                    ?>
+                                                                        {{$product[0]['product_name'].' ('.$productreturn_data->salereturn_quantity_total.')'}}
+                                                                    @endforeach
+                                                                @endif
                                                             </td>
                                                             <td>{{number_format((float)($return->sale_return_grandtotal_price), 2, '.', '')}}</td>
                                                         </tr>

@@ -33,7 +33,7 @@
                   <th class="text-center">S.No</th>
                   <th class="text-center">Parent Company</th>
                   <th class="text-center">Name</th>
-                  <th class="text-center">Reference ID</th>
+                  {{-- <th class="text-center">Reference ID</th> --}}
                   <th class="text-center">Description</th>
                   <th class="disabled-sorting text-center">Actions</th>
                 </tr>
@@ -102,7 +102,7 @@
         { className: 'dt-body-center', data: 'DT_RowIndex', name: 'DT_RowIndex'},
         { className: 'dt-body-center', data: 'parent_company', name: 'parent_company' },
         { className: 'dt-body-center', data: 'brand_name', name: 'brand_name' },
-        { className: 'dt-body-center', data: 'brand_ref_no', name: 'brand_ref_no' },
+        // { className: 'dt-body-center', data: 'brand_ref_no', name: 'brand_ref_no' },
         { className: 'dt-body-center', data: 'brand_description', name: 'brand_description' },
         { className: 'dt-body-center', data: 'action', name: 'action'},
         // { className: 'dt-body-center', width:'25%', data: 'name', name: 'name' },

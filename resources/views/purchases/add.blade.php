@@ -275,31 +275,31 @@
                                   </tr>
                                   <tr class="row table-info" >
                                     <td class="col-1 firstcol" scope="col">
-                                      <input readonly type="number" name="purchase_total_items" id="purchase_total_items" class="form-control col-12" value="">
+                                      <input readonly type="number" name="purchase_total_items" id="purchase_total_items" class="form-control col-12" value="0">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="number" name="purchase_total_qty" id="purchase_total_qty" class="form-control col-12" value="">
+                                      <input readonly type="number" name="purchase_total_qty" id="purchase_total_qty" class="form-control col-12" value="0">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input type="number" name="purchase_free_piece" class="form-control col-12" value="">
+                                      <input type="number" name="purchase_free_piece" id="purchase_free_piece" class="form-control col-12" value="0">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input type="number" name="purchase_free_amount" id="purchase_free_amount_i" class="form-control col-12" value="">
+                                      <input type="number" name="purchase_free_amount" id="purchase_free_amount_i" class="form-control col-12" value="0">
                                     </td>
                                     <td class="col-2 mycol" scope="col">
-                                      <input readonly type="number" name="purchase_total_price" id="purchase_total_price_i" class="form-control col-12"  value="">
+                                      <input readonly type="number" name="purchase_total_price" id="purchase_total_price_i" class="form-control col-12"  value="0">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input type="number" name="purchase_add_amount" id="purchase_add_amount_i" class="form-control col-12"  value="">
+                                      <input type="number" name="purchase_add_amount" id="purchase_add_amount_i" class="form-control col-12"  value="0">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="number" name="purchase_discount" id="purchase_discount" class="form-control col-12"  value="">
+                                      <input readonly type="number" name="purchase_discount" id="purchase_discount" class="form-control col-12"  value="0">
                                     </td>
                                     <td class="col-2 mycol" scope="col">
-                                      <input readonly type="number" name="purchase_grandtotal_price"  id="purchase_grandtotal_price" class="form-control col-12"  value="">
+                                      <input readonly type="number" name="purchase_grandtotal_price"  id="purchase_grandtotal_price" class="form-control col-12"  value="0">
                                     </td>
                                     <td class="col-2 lastcol" scope="col">
-                                      <input type="number" name="purchase_amount_recieved" class="form-control col-12"  value="">
+                                      <input type="number" name="purchase_amount_received" id="purchase_amount_received" class="form-control col-12"  value="0">
                                     </td>
                                   </tr>
                                 </div>
@@ -331,10 +331,10 @@
                                     <input type="file" name="purchase_document" id="purchase_document" class="form-control col-12" value="{{ old('purchase_document', '') }}">
                                   </td> --}}
                                   <td class="col-8 firstcol" scope="col">
-                                    <input type="text" name="purchase_note" class="form-control col-12" value="" >
+                                    <input type="text" name="purchase_note" id="purchase_note" class="form-control col-12" value="" >
                                   </td>
                                   <td class="col-2 mycol" scope="col">
-                                    <select name="purchase_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
+                                    <select name="purchase_payment_status" id="purchase_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
                                       <option value="paid">Paid</option>
                                       <option value="due">Due</option>
                                       <option value="partial">Partial</option>
@@ -343,7 +343,7 @@
                                     </select>
                                   </td>
                                   <td class="col-2 lastcol" scope="col">
-                                    <input type="number" min="0" name="purchase_return_change" class="form-control col-12"  value="">
+                                    <input readonly type="number" min="0" name="purchase_return_change" class="form-control col-12"  value="">
                                   </td>
                                 </tr>
                               </tfoot>
@@ -396,7 +396,7 @@
                                   <div class="col-10">
                                       <div class="row">
                                           <div class="col-6 mt-1">
-                                              <label>Recieved Amount *</label>
+                                              <label>Received Amount *</label>
                                               <input type="text" name="paying_amount" class="form-control numkey" required step="any">
                                           </div>
                                           <div class="col-6 mt-1">
@@ -467,51 +467,7 @@
                       <div class="modal-body">
                         <div class="row">
                           <div class="col-12">
-                            <div class="row">
-                              <div class=" col-6 ">
-                                <div class="form-group">
-                                  <label for="supplier_name" class=" col-10 control-label">&nbsp;&nbsp;{{__("supplier Name")}}</label>
-                                  <div class=" col-12 input-group ">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text barcode">
-                                        <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-user"></i></a>
-                                      </span>
-                                    </div>
-                                    {{-- <div class="input-group pos"> --}}
-                                      <input type="text" name="supplier_name" id="suppliercodesearch" placeholder="Supplier Name" class="form-control suppliercodesearch"  />
-                                      {{-- <select required name="supplier_name" id="supplier_name" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select SSupplier..." style="width: 100px">
-                                        @foreach($suppliers as $supplier)
-                                          <option value="{{$supplier->id}}">{{$supplier->name}}</option>
-                                        @endforeach
-                                      </select> --}}
-                                    {{-- </div> --}}
-                                    @include('alerts.feedback', ['field' => 'supplier_name'])
-                                  </div>
-                                </div>
-                              </div>
-                              <div class=" col-6 ">
-                                <div class="form-group">
-                                  <label for="supplier_code" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Supplier Code")}}</label>
-                                  <div class=" col-12 input-group ">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text barcode">
-                                        <a class="" id="product-list-btn"><i class="fa fa-barcode"></i></a>
-                                      </span>
-                                    </div>
-                                    {{-- <div class="input-group pos"> --}}
-                                      <input type="text" name="supplier_code" id="suppliercodeSearch" placeholder="Supplier Code" class="form-control"  />
-                                      {{-- <select required name="supplier_code" id="supplier_code" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select supplier..." style="width: 100px">
-                                        @foreach($suppliers as $supplier)
-                                          <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
-                                        @endforeach
-                                      </select> --}}
-                                    {{-- </div> --}}
-                                    @include('alerts.feedback', ['field' => 'supplier_code'])
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
+                            {{-- <div class="row">
                               <div class=" col-12 ">
                                 <div class="search-box form-group">
                                   <label for="product_code_name" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Search Product")}}</label>
@@ -526,13 +482,13 @@
                                     @include('alerts.feedback', ['field' => 'product_code_name'])
                                 </div>
                               </div>
-                            </div>
+                            </div> --}}
                             <div class="row">
                               <div class=" col-12 ">
                                 <div class="form-group">
                                   <div class=" col-12">
-                                    <div class="table-responsive-sm" style="height:300px; overflow-x:hidden">
-                                        <table id="myTable" class="table table-sm table-hover table-striped table-fixed table-bordered display compact order-column">
+                                    <div class="table-responsive-sm" style="height:500px; overflow-x:hidden">
+                                        <table id="productTable" class="table table-sm table-hover table-striped table-fixed table-bordered display compact order-column">
                                           <thead class="thead pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
                                             {{-- <tr>
                                                 <th>RefID</th>
@@ -549,6 +505,7 @@
                                             </tr> --}}
                                             <tr>
                                               {{-- <th>Ref.Id</th> --}}
+                                              <th></th>
                                               <th colspan="2">Product Info</th>
                                               {{-- <th>Barcode</th> --}}
                                               {{-- <th colspan="2">Company/Brand</th> --}}
@@ -576,6 +533,7 @@
                                             </tr>
                                             <tr>
                                               {{-- <th>Ref.Id</th> --}}
+                                              <th></th>
                                               <th>Name</th>
                                               <th>Barcode</th>
                                               {{-- <th>Company</th>
@@ -603,7 +561,7 @@
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            @foreach($products as $key => $value)
+                                            {{-- @foreach($products as $key => $value)
                                             <tr>
                                               <td>{{ $value->product_name }}</td>
                                               <!-- <td>{ $value->product_ref_no }}</td> -->
@@ -627,7 +585,7 @@
                                                 </a>
                                               </td>
                                             </tr>
-                                            @endforeach
+                                            @endforeach --}}
                                           </tbody>
                                         </table>
                                     </div>
@@ -637,7 +595,7 @@
                             </div>
                             {{-- <div class="row">
                                 <div class="col-6 mt-1">
-                                    <label>Recieved Amount *</label>
+                                    <label>Received Amount *</label>
                                     <input type="text" name="paying_amount" class="form-control numkey" required step="any">
                                 </div>
                                 <div class="col-6 mt-1">
@@ -790,7 +748,7 @@
                   <a type="button" href="{{ URL::previous() }}" class="btn btn-secondary btn-round ">{{__('Back')}}</a>
                 </div>
                 <div class=" col-6">
-                  <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
+                  <button type="submit" id="save-btn" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
                 </div>
               </div>
               <hr class="half-rule"/>
@@ -815,7 +773,7 @@
         // product_name: 'required',
         // product_code: 'required',
         // purchase_grandtotal_price: 'required',
-        purchase_amount_recieved: 'required',
+        purchase_amount_received: 'required',
       },
       messages: {
         supplier_code:  'Please Enter Supplier Name',
@@ -823,7 +781,7 @@
         // product_name:  'Please Enter Product Name',
         // product_code:  'Please Enter Product Code',
         // purchase_grandtotal_price:  'Please Enter Product',
-        purchase_amount_recieved:  'Please Enter Amount Paid',
+        purchase_amount_received:  'Please Enter Amount Paid',
       },
       errorElement: 'em',
       errorPlacement: function ( error, element ) {
@@ -871,7 +829,7 @@
   var grandtotal_amount;
   var purchase_free_amount;
   var purchase_add_amount;
-  var purchase_amount_recieved;
+  var purchase_amount_received;
   var purchase_return_change;
   var product_quantity;
   var product_sub_total;
@@ -883,6 +841,9 @@
   
   var rownum = <?php echo $i; ?>;
 
+  $(document).ready( function(e) {
+    $('#suppliercodesearch').focus();
+  });
   $(document).on('click', '#add_button', function(e){
     var product_barcode = $('#purchase_products_barcode_i').val();
     // var product_barcode2 = $('#product_barcode2').val();
@@ -910,7 +871,7 @@
     subtotal_amount = $('#purchase_total_price_i').val();
     total_discount = $('#purchase_discount').val();
     grandtotal_amount = $('#purchase_grandtotal_price').val();
-    purchase_amount_recieved = $('#purchase_amount_recieved').val();
+    purchase_amount_received = $('#purchase_amount_received').val();
 
     product_quantity = Number(product_pieces)+Number(product_packets*pieces_per_packet)+Number(product_cartons*pieces_per_carton);
     
@@ -927,10 +888,19 @@
       }
     });
 
-    $('#purchase_products_barcode_i').val('');
+    $('#sale_products_barcode_i').val('');
     $('#product_name_i').val('');
     $('#product_code_i').val('');
     $('#product_id_i').val('');
+    $('#sale_products_pieces_i').val(0);
+    $('#sale_products_packets_i').val(0);
+    $('#sale_products_cartons_i').val(0);
+    $('#sale_pieces_per_packet_i').val(0);
+    $('#sale_packets_per_carton_i').val(0);
+    $('#sale_pieces_per_carton_i').val(0);
+    $('#sale_products_unit_price_i').val(0);
+    $('#sale_products_discount_i').val(0);
+    $('#sale_products_sub_total_i').val(0);
 
     if(product_name !== "" && product_quantity !== 0 && product_unit_price !== 0 && repeated !== 1){
 
@@ -965,8 +935,8 @@
       $('#purchase_discount').val(total_discount);
       $('#purchase_grandtotal_price').val('');
       $('#purchase_grandtotal_price').val(grandtotal_amount);
-      if(purchase_amount_recieved >= grandtotal_amount){
-        purchase_return_change = Number(purchase_amount_recieved) -  Number(grandtotal_amount);
+      if(purchase_amount_received >= grandtotal_amount){
+        purchase_return_change = Number(purchase_amount_received) -  Number(grandtotal_amount);
         $('#purchase_return_change').val(purchase_return_change);
       }
       else{
@@ -993,16 +963,16 @@
     $('#purchase_grandtotal_price').val('');
     $('#purchase_grandtotal_price').val(grandtotal_amount);
   });
-  $(document).on('change', "#purchase_amount_recieved", function(e){
+  $(document).on('change', "#purchase_amount_received", function(e){
     grandtotal_amount = $('#purchase_grandtotal_price').val();
-    purchase_amount_recieved = $('#purchase_amount_recieved').val();
-    if(Number(purchase_amount_recieved) >= Number(grandtotal_amount)){
-      purchase_return_change = Number(purchase_amount_recieved) -  Number(grandtotal_amount);
+    purchase_amount_received = $('#purchase_amount_received').val();
+    if(Number(purchase_amount_received) >= Number(grandtotal_amount)){
+      purchase_return_change = Number(purchase_amount_received) -  Number(grandtotal_amount);
       $('#purchase_return_change').val(purchase_return_change);
     }
-    if(Number(purchase_amount_recieved) < Number(grandtotal_amount)){
-      alert('Amount recieved should be greater than the Grand Total Amount');
-      $('#purchase_amount_recieved').val(0);
+    if(Number(purchase_amount_received) < Number(grandtotal_amount)){
+      alert('Amount received should be greater than the Grand Total Amount');
+      $('#purchase_amount_received').val(0);
     }
   });
   $(document).on('click', ".delete-productfield", function(event) {
@@ -1015,7 +985,7 @@
       thisproduct_cartons = $('#purchase_products_cartons'+rowid).val();
       thispieces_per_packet = $('#purchase_pieces_per_packet'+rowid).val();
       thispieces_per_carton = $('#purchase_pieces_per_carton'+rowid).val();
-      purchase_amount_recieved = $('#purchase_amount_recieved').val();
+      purchase_amount_received = $('#purchase_amount_received').val();
 
       // rowindex = $(this).closest('tr').index();
       var my_total_qty = this.value;
@@ -1103,8 +1073,7 @@
           var pieces_per_carton = data[0]['product_piece_per_carton'];
           var pieces_per_packet = data[0]['product_piece_per_packet'];
           var packets_per_carton = data[0]['product_packet_per_carton'];
-          var product_cash_price_piece = data[0]['product_cash_price_piece'];
-          var product_credit_price_piece = data[0]['product_credit_price_piece'];
+          var product_trade_price_piece = data[0]['product_trade_price_piece'];
           $('#product_name_i').val('');
           $('#product_name_i').val(catchproduct_name);
           $('#product_code_i').val('');
@@ -1120,10 +1089,8 @@
           $('#packets_per_carton').val('');
           $('#packets_per_carton').val(packets_per_carton);
           $('#purchase_products_unit_price_i').val('');
-          $('#purchase_products_unit_price_i').val(product_cash_price_piece)
-          // $('#purchase_products_unit_price_i').val('');
-          // $('#purchase_products_unit_price_i').val(product_credit_price_piece)
-          
+          $('#purchase_products_unit_price_i').val(product_trade_price_piece)
+
           // $('#product_barcode2').val(data[0]['product_barcode']);
           barcodeSearch2(catchproduct_id);
 
@@ -1343,6 +1310,243 @@
     // else{
     //   $('#supplier_status').val('Inactive');
     // }
+  });
+
+  shortcut.add("esc",function(e) {
+      e.preventDefault ();
+      // $('#product_name_i').focus();
+      $('#cancel-btn').trigger('click');
+      // if(e.keyCode == 88) {
+      //   e.preventDefault()
+      //   console.log('x was pressed');
+      // }
+    },
+    // {
+    // 	'type':'keydown',
+    // 	'propagate':true,
+    // 	'target':document
+    // }
+  );
+  shortcut.add("alt+n",function(e) {
+    e.preventDefault ();
+    $('#product_name_i').focus();
+  });
+  shortcut.add("alt+b",function(e) {
+    e.preventDefault ();
+    $('#purchase_products_barcode_i').focus();
+  });
+  shortcut.add("alt+a",function(e) {
+    e.preventDefault ();
+    $('#add_button').trigger('click');
+  });
+  shortcut.add("enter",function(e) {
+    e.preventDefault ();
+    var activeid2 = String(document.activeElement.id);
+    if(activeid2 == "suppliercodesearch"){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_products_barcode_i').focus();
+    }
+    else if(activeid2 == "purchase_products_barcode_i"){
+      $('#'+activeid2).trigger('click');
+      $('#product_name_i').focus();
+    }
+    else if(activeid2 == "product_name_i"){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_products_pieces_i').focus();
+    }
+    else if(activeid2 == "purchase_products_pieces_i"){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_products_packets_i').focus();
+      // $('#purchase_pieces_per_packet_i').focus();
+    }
+    else if(activeid2 == "purchase_products_packets_i"){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_products_cartons_i').focus();
+      // $('#purchase_packets_per_carton_i').focus();
+    }
+    else if(activeid2 == 'purchase_products_cartons_i'){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_products_unit_price_i').focus();
+      // $('#purchase_pieces_per_carton_i').focus();
+    }
+    else if(activeid2 == 'purchase_products_unit_price_i'){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_products_discount_i').focus();
+    }
+    else if(activeid2 == "purchase_products_discount_i"){
+      $('#'+activeid2).trigger('click');
+      $('#add_button').focus();
+    }
+    else if(activeid2 == "add_button"){
+      console.log(activeid2);
+      $('#add_button').trigger('click');
+      // $('#purchase_products_barcode_i').focus();
+      // $(this).next('input').focus();
+    }
+
+    else if(activeid2 == "purchase_free_piece"){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_free_amount_i').focus();
+    }
+    else if(activeid2 == "purchase_free_amount_i"){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_add_amount_i').focus();
+    }
+    else if(activeid2 == "purchase_add_amount_i"){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_amount_received').focus();
+    }
+    else if(activeid2 == "purchase_amount_received"){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_note').focus();
+    }
+    else if(activeid2 == "purchase_note"){
+      $('#'+activeid2).trigger('click');
+      $('#save-btn').focus();
+    }
+    else if(activeid2 == "save-btn"){
+      $('#'+activeid2).trigger('click');
+    }
+
+    },
+    {
+      'type':'keypress',
+      'keycode':13
+    }
+  );
+  shortcut.add("ctrl+l",function(e) {
+    e.preventDefault ();
+    $('#purchase_free_piece').focus();
+  });
+  shortcut.add("alt+s",function(e) {
+    e.preventDefault ();
+    if(confirm('Do you really want to create/print this purchase?')){
+      $('#save-btn').trigger('click');
+    }
+  });
+  $(document).on('focus', '#purchase_products_pieces_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#purchase_products_packets_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#purchase_products_cartons_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#purchase_products_unit_price_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#purchase_products_discount_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#purchase_free_piece', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#purchase_free_amount_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#purchase_add_amount_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#purchase_amount_received', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+
+  var dt = $('#productTable').DataTable( {
+            keys: true,
+            serverSide: true,
+            ajax: "{{ route('api.product_row_details2') }}",
+            columns: [
+            //     {
+            //         "className":      'details-control',
+            //         "orderable":      false,
+            //         "searchable":     false,
+            //         "data":           null,
+            //         "defaultContent": ''
+            //     },
+            //  { width:'25%', className: 'dt-body-center', data: 'customer_name', name: 'customer_name' },
+                { className: 'dt-body-center', searchable: false, data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
+                { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
+                { className: 'dt-body-center', data: 'product_pieces_available', name: 'product_pieces_available' },
+                { className: 'dt-body-center', data: 'product_packets_available', name: 'product_packets_available' },
+                { className: 'dt-body-center', data: 'product_cartons_available', name: 'product_cartons_available' },
+                { className: 'dt-body-center', data: 'product_trade_price_piece', name: 'product_trade_price_piece' },
+                { className: 'dt-body-center', data: 'product_trade_price_packet', name: 'product_trade_price_packet' },
+                { className: 'dt-body-center', data: 'product_trade_price_carton', name: 'product_trade_price_carton' },
+                { className: 'dt-body-center', data: 'product_cash_price_piece', name: 'product_cash_price_piece' },
+                { className: 'dt-body-center', data: 'product_cash_price_packet', name: 'product_cash_price_packet' },
+                { className: 'dt-body-center', data: 'product_cash_price_carton', name: 'product_cash_price_carton' },
+                { className: 'dt-body-center', data: 'product_credit_price_piece', name: 'product_credit_price_piece' },
+                { className: 'dt-body-center', data: 'product_credit_price_packet', name: 'product_credit_price_packet' },
+                { className: 'dt-body-center', data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
+                // { className: 'dt-body-center', data: 'product_nonbulk_price_piece', name: 'product_nonbulk_price_piece' },
+            //     // {
+            //     //       "targets": [ 12 ],
+            //     //       "visible": false
+            //     // },
+                { className: 'dt-body-center', data: 'action', name: 'action', orderable: false, searchable: false }
+            ],
+            // order: [[1, 'asc']],
+            order: [],
+            // columnDefs: [
+            //     {
+            //         "orderable": false,
+            //         'targets': 0
+            //     },
+            //     {
+            //         'render': function(data, type, row, meta){
+            //             if(type === 'display'){
+            //                 data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
+            //             }
+
+            //         return data;
+            //         },
+            //         'checkboxes': {
+            //         'selectRow': true,
+            //         'selectAllRender': '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>'
+            //         },
+            //         'targets': [0]
+            //     }
+            // ],
+            // select: { style: 'multi',  selector: 'td:first-child'},
+            // lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            // dom: '<"offset-1"lfB>rt<"offset-1"ip>',
+            // // dom: '<"top"i>rt<"bottom"flp><"clear">',
+            // drawCallback: function () {
+            //     var api = this.api();
+            // }
+        } );
+        
+  $(document).on('click', '.addProduct', function () {
+    // var rowindex = $(this).closest('tr').index();
+    var rowindex = $(this).attr('productid');
+    var data = productsnames_array;
+    productSearch(data[rowindex-1]);
+    $('#productclose').trigger('click');
+    $('#productclose').trigger('click');
+    $('.modal-backdrop').hide();
+    $('.modal-backdrop').hide();
+    $('#product_name_i').focus();
+
   });
 
 </script>

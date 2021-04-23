@@ -27,21 +27,21 @@
                 </div>
               @endif
               <div class="row">
-                <div class="col-4">
+                <div class="col-6">
                     <div class="form-group">
                         <label>{{__(" Brand Name")}}</label>
                             <input type="text" name="brand_name" class="form-control" placeholder="Brand Name" value="{{ $brand[0]->brand_name }}">
                             @include('alerts.feedback', ['field' => 'brand_name'])
                     </div>
                 </div>
-                <div class="col-4">
+                {{-- <div class="col-4">
                   <div class="form-group">
                     <label for="brand_ref_no">{{__(" Brand Ref No.")}}</label>
                     <input type="text" id="brand_ref_no" name="brand_ref_no" class="form-control" placeholder="Brand Ref ID" value="{{ $brand[0]->brand_ref_no }}">
                     @include('alerts.feedback', ['field' => 'brand_ref_no'])
                   </div>
-                </div>
-                <div class="col-4">
+                </div> --}}
+                <div class="col-6">
                   <div class="form-group">
                     <label for="parent_company">{{__(" Parent Company")}}</label>
                     {{-- <input type="text" id="parent_company" name="parent_company" class="form-control" placeholder="Parent Company" value="{{ $brand[0]->parent_company }}">

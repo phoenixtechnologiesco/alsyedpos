@@ -171,14 +171,14 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-last-col-2">
+                        <div class="form-col-2">
                           <div class="form-group">
                             <label for="payment_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment/Invoice Date")}}</label>
                             <div class="form-col-12 input-group ">
                               {{-- <div class="input-group-prepend">
                                 <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
                               </div> --}}
-                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ old('payment_invoice_date', '') }}">
+                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
                               @include('alerts.feedback', ['field' => 'payment_invoice_date'])
                             </div>
                           </div>

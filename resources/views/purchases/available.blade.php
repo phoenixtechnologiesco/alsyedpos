@@ -21,9 +21,9 @@
                   <th class="text-center">Product Name</th>
                   <th class="text-center">Company</th>
                   <th class="text-center">Brand</th>
-                  <th class="text-center">Product Pieces</th>
+                  {{-- <th class="text-center">Product Pieces</th>
                   <th class="text-center">Product Packets</th>
-                  <th class="text-center">Product Cartons</th>
+                  <th class="text-center">Product Cartons</th> --}}
                   <th class="text-center">Product Quantity</th>
                 </tr>
               </thead>
@@ -92,9 +92,9 @@ $(document).ready(function() {
         { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
         { className: 'dt-body-center', data: 'product_company', name: 'product_company' },
         { className: 'dt-body-center', data: 'product_brand', name: 'product_brand' },
-        { className: 'dt-body-center', data: 'product_pieces_available', name: 'product_pieces_available' },
-        { className: 'dt-body-center', data: 'product_packets_available', name: 'product_packets_available' },
-        { className: 'dt-body-center', data: 'product_cartons_available', name: 'product_cartons_available' },
+        // { className: 'dt-body-center', data: 'product_pieces_available', name: 'product_pieces_available' },
+        // { className: 'dt-body-center', data: 'product_packets_available', name: 'product_packets_available' },
+        // { className: 'dt-body-center', data: 'product_cartons_available', name: 'product_cartons_available' },
         { className: 'dt-body-center', data: 'product_quantity_available', name: 'product_quantity_available' },
         // { className: 'dt-body-center', width:'25%', data: 'name', name: 'name' },
         // {

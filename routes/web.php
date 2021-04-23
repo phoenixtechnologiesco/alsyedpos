@@ -129,12 +129,15 @@ Route::group(['middleware' => ['get.menu']], function () {
     Route::get('purchase/searchsupplierpayments', 'SupplierController@searchsupplierpayments')->name('searchsupplierpayments');
     Route::get('purchase/searchproduct', 'ProductController@searchproduct')->name('searchproduct');
     Route::get('purchase/searchbarcode', 'ProductController@searchbarcode')->name('searchbarcode');
+    Route::get('purchase/gen_invoice/{id}', 'PurchaseController@genInvoice')->name('purchaseinvoice');
+    Route::get('purchase/gen_invoice2/{id}', 'PurchaseController@genInvoice2')->name('purchaseinvoice2');
     Route::get('sale/searchcustomer', 'CustomerController@searchcustomer')->name('searchcustomer');
     Route::get('sale/searchcustomerpayments', 'CustomerController@searchcustomerpayments')->name('searchcustomerpayments');
     Route::get('sale/searchproduct', 'ProductController@searchproduct')->name('searchproduct2');
     Route::get('sale/searchbarcode', 'ProductController@searchbarcode')->name('searchbarcode2');
     Route::get('sale/searchbarcode3', 'ProductController@searchbarcode3')->name('searchbarcode3');
     Route::get('sale/gen_invoice/{id}', 'SaleController@genInvoice')->name('saleinvoice');
+    Route::get('sale/gen_invoice2/{id}', 'SaleController@genInvoice2')->name('saleinvoice2');
     // Route::get('product/addmore', ['as' => 'product.addmore', 'uses' => 'ProductController@addMore']);
     // Route::post('product/addmore', ['as' => 'product.addmore', 'uses' => 'ProductController@addMoreBarcode']);
     Route::get('balance/customers', 'ReportController@balancecustomer')->name('balancecustomer');

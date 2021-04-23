@@ -144,10 +144,7 @@
                               <div class="form-col-12">
                                 <div class="myrow">
                                   {{-- <div class="col-1"></div> --}}
-                                  <input type="text" name="sale_invoice_id" class="form-control form-col-10" value="{{ old('sale_invoice_id', '') }}">
-                                  <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
-                                    <i class="fa fa-file-text-o"></i>
-                                  </button>
+                                  <input type="text" name="sale_invoice_id" class="form-control form-col-12" value="{{ old('sale_invoice_id', '') }}">
                                 </div>
                                 @include('alerts.feedback', ['field' => 'sale_invoice_id'])
                               </div>
@@ -372,8 +369,10 @@
                           <div class="product_array" style="display: none">{{ $productArray[] = $one_product }}</div>
                           <div class="productnames_array" style="display: none">{{ $nameArray[] = $one_product->product_name }}</div>
                           <div class="productnamecode_array" style="display: none">{{ $namecodeArray[] = $one_product->product_name.", ".($one_product->product_ref_no) }}</div>
-                          <div class="productbarcodes_array" style="display: none">{{ $barcodeArray[] = "$one_product->product_barcode" }}</div>
-                          @endforeach 
+                          @endforeach
+                          @foreach($attachedbarcodes as $singlebarcode)
+                          <div class="productbarcodes_array" style="display: none">{{ $barcodeArray[] = "$singlebarcode->product_barcodes" }}</div>
+                          @endforeach
                           {{-- <input type="hidden" name="sale_products_barcode_2" id="product_barcode2" value="{{ $one_product->product_barcode }}"/> --}}
                           <input type="hidden" name="pieces_per_packet" id="pieces_per_packet" value="{{ $one_product->product_piece_per_packet }}"/>
                           <input type="hidden" name="packets_per_carton" id="packets_per_carton" value="{{ $one_product->product_packet_per_carton }}"/>

@@ -15,7 +15,7 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('company_id');
-            $table->string('company_ref_no')->index();
+            $table->string('company_ref_no')->index()->nullable();
             $table->string('company_parent')->index()->nullable();
             // $table->string('company_type')->nullable();
             $table->string('company_name')->unique();

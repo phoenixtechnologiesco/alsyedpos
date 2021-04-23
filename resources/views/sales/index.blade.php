@@ -167,7 +167,7 @@
           //   "data":           null,
           //   "defaultContent": ''
           // },
-          { className: 'dt-body-center', data: 'DT_RowIndex', name: 'DT_RowIndex'},
+          { className: 'dt-body-center', searchable: false, data: 'DT_RowIndex', name: 'DT_RowIndex'},
           { width:'25%', className: 'dt-body-center', data: 'customer_name', name: 'customer_name' },
           { className: 'dt-body-center', data: 'sale_ref_no', name: 'sale_ref_no' },
           { className: 'dt-body-center', data: 'sale_status', name: 'sale_status' },

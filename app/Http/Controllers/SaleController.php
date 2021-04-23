@@ -79,11 +79,18 @@ class SaleController extends Controller
 
     public function returnadd(SaleReturn $model, Customer $model2, sale $model3)
     {
+        $products_arr = [];
+        
         $salereturns = SaleReturn::join('customers', 'sale_returns.sale_return_customer_id', '=', 'customers.customer_id')->get();
 
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
-        return view('sales.returnadd', compact('salereturns', 'customers', 'products') );
+        foreach($products as $p){
+            array_push($products_arr, $p->product_id);
+        }
+        $attachedbarcodes = ProductBarcodes::whereIn('product_id', $products_arr)->get();
+
+        return view('sales.returnadd', compact('salereturns', 'customers', 'products', 'attachedbarcodes') );
     }
 
     /**
@@ -93,10 +100,15 @@ class SaleController extends Controller
      */
     public function create(Sale $model, Customer $model2, Product $model3)
     {
+        $products_arr = [];
+
         $sales = Sale::join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->get();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
-        $attachedbarcodes = ProductBarcodes::get();
+        foreach($products as $p){
+            array_push($products_arr, $p->product_id);
+        }
+        $attachedbarcodes = ProductBarcodes::whereIn('product_id', $products_arr)->get();
 
         return view('sales.add', compact('sales', 'customers', 'products', 'attachedbarcodes') );
         // return view('sales.add', ['sales' => $model->paginate(15)->items(), 'customers' => $model2->paginate(15)->items(), 'sales' => $model3->paginate(15)->items()]);
@@ -109,11 +121,16 @@ class SaleController extends Controller
      */
     public function pos(Sale $model, Customer $model2, Product $model3)
     {
+        $products_arr = [];
+        
         $sales = Sale::all();
         $pendingsales = Sale::where('sale_status', 'pending')->join('customers', 'sales.sale_customer_id', '=', 'customers.customer_id')->get();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
-        $attachedbarcodes = ProductBarcodes::get();
+        foreach($products as $p){
+            array_push($products_arr, $p->product_id);
+        }
+        $attachedbarcodes = ProductBarcodes::whereIn('product_id', $products_arr)->get();
 
         return view('sales.pos', compact('sales', 'pendingsales', 'customers', 'products', 'attachedbarcodes') );
         // return view('sales.pos', ['sales' => $sales, 'pendingsales' => $pendingsales, 'customers' => $customers, 'sales' => $sales]);
@@ -339,6 +356,9 @@ class SaleController extends Controller
             
             foreach($product_ids as $key => $single_id){
     
+                $products_quantity_pieces[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_packets[$key] = ($products_pieces[$key]/$pieces_per_packet[$key])+$products_packets[$key]+($products_cartons[$key]*($packets_per_carton[$key]));
+                $products_quantity_cartons[$key] = ($products_pieces[$key]/$pieces_per_carton[$key])+($products_packets[$key]/$packets_per_carton[$key])+$products_cartons[$key];
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
@@ -359,9 +379,12 @@ class SaleController extends Controller
                     'sale_piece_per_packet'      => $pieces_per_packet[$key],
                     'sale_packet_per_carton'     => $packets_per_carton[$key],
                     'sale_piece_per_carton'      => $pieces_per_carton[$key],
-                    'sale_pieces_total'          => $products_pieces[$key],
-                    'sale_packets_total'         => $products_packets[$key],
-                    'sale_cartons_total'         => $products_cartons[$key],
+                    'sale_pieces_number'         => $products_pieces[$key],
+                    'sale_packets_number'        => $products_packets[$key],
+                    'sale_cartons_number'        => $products_cartons[$key],
+                    'sale_pieces_total'          => $products_quantity_pieces[$key],
+                    'sale_packets_total'         => $products_quantity_packets[$key],
+                    'sale_cartons_total'         => $products_quantity_cartons[$key],
                     'sale_quantity_total'        => $products_quantity_total[$key],
                     'sale_trade_discount'        => $products_discounts[$key],
                     'sale_trade_price_piece'     => $products_unit_prices[$key],
@@ -374,8 +397,10 @@ class SaleController extends Controller
     
             foreach($product_ids as $key => $single_id){
     
+                $products_quantity_pieces[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_packets[$key] = ($products_pieces[$key]/$pieces_per_packet[$key])+$products_packets[$key]+($products_cartons[$key]*($packets_per_carton[$key]));
+                $products_quantity_cartons[$key] = ($products_pieces[$key]/$pieces_per_carton[$key])+($products_packets[$key]/$packets_per_carton[$key])+$products_cartons[$key];
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-                $products_quantity_available[$key] = $products_quantity_total[$key];
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
     
@@ -386,14 +411,14 @@ class SaleController extends Controller
                     // 'warehouse_id'                  => $product_warehouses[$key],
                     // 'product_piece_per_packet'      => $pieces_per_packet[$key],
                     // 'product_piece_per_carton'      => $pieces_per_carton[$key],
-                    'product_pieces_total'          => $product[$key]->product_pieces_total-$products_pieces[$key],
-                    'product_pieces_available'      => $product[$key]->product_pieces_available-$products_pieces[$key],
-                    'product_packets_total'         => $product[$key]->product_packets_total-$products_packets[$key],
-                    'product_packets_available'     => $product[$key]->product_packets_available-$products_packets[$key],
-                    'product_cartons_total'         => $product[$key]->product_cartons_total-$products_cartons[$key],
-                    'product_cartons_available'     => $product[$key]->product_cartons_available-$products_cartons[$key],
+                    'product_pieces_total'          => $product[$key]->product_pieces_total-$products_quantity_pieces[$key],
+                    'product_pieces_available'      => $product[$key]->product_pieces_available-$products_quantity_pieces[$key],
+                    'product_packets_total'         => $product[$key]->product_packets_total-$products_quantity_packets[$key],
+                    'product_packets_available'     => $product[$key]->product_packets_available-$products_quantity_packets[$key],
+                    'product_cartons_total'         => $product[$key]->product_cartons_total-$products_quantity_cartons[$key],
+                    'product_cartons_available'     => $product[$key]->product_cartons_available-$products_quantity_cartons[$key],
                     'product_quantity_total'        => $product[$key]->product_quantity_total-$products_quantity_total[$key],
-                    'product_quantity_available'    => $product[$key]->product_quantity_available-$products_quantity_available[$key],
+                    'product_quantity_available'    => $product[$key]->product_quantity_available-$products_quantity_total[$key],
                     // 'product_trade_discount'        => $products_discounts[$key],
                     // 'product_trade_price_piece'     => $products_unit_prices[$key],
                     // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
@@ -402,9 +427,16 @@ class SaleController extends Controller
                 $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
             }
     
-            // $this->genInvoice($id);
-            // return redirect()->url('sale/gen_invoice/'.$id);
-            return redirect('sale/gen_invoice/'.$id);
+            $sale_data = Sale::where('sale_id', $id)->first();
+            $sale_products_data = SaleProducts::where('sale_id', $id)->get();
+            $user_data = User::where('id', $sale_data->sale_added_by)->first();
+            $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
+            $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
+            $payment_data = Payment::where('sale_id', $id)->get();
+
+            return view('sales.invoice', compact('sale_data', 'sale_products_data', 'user_data', 'warehouse_data', 'customer_data', 'payment_data',));
+            // return redirect('sale/gen_invoice/'.$id);
+
             // return redirect('/sale')->with(['message' => 'Sale Created Successfully'], 200);
             // if($save){
             // 	return response()->json(['data' => $sale_adds, 'sale_products' => $sale_products_save, 'message' => 'Sale Created Successfully'], 200);
@@ -665,6 +697,7 @@ class SaleController extends Controller
         $total_discount = 0;
         $subtotal_amount = 0;
         $grandtotal_amount = 0;
+        $products_arr = [];
         // $s_name = $model->paginate(15)->items()[$id-1]->customer_name;
         // $s_id = $model->paginate(15)->items()[$id-1]->sale_customer_id;
         // $s_id = DB::table('sales')->where('sale_id','=', $id)->first();
@@ -674,7 +707,10 @@ class SaleController extends Controller
         $customer = DB::table('customers')->where('customer_id','=', $s_id)->first();
         $customers = Customer::where('status_id', 1)->get();
         $products = Product::where('status_id', 1)->get();
-        $attachedbarcodes = ProductBarcodes::get();
+        foreach($products as $p){
+            array_push($products_arr, $p->product_id);
+        }
+        $attachedbarcodes = ProductBarcodes::whereIn('product_id', $products_arr)->get();
 
         $saleproducts = SaleProducts::where('sale_id', $id)->orderBy('sale_products_id', 'desc')->get();    
 
@@ -692,6 +728,7 @@ class SaleController extends Controller
     public function update(Request $request, $sale_id)
     {
         // $sale_id = (int)$id; //OR $request->sale_id;
+        // dd($request->sale_amount_recieved);
 
         $get_sale = DB::table('sales')->where('sale_id', $sale_id)->first();
         $get_customer = DB::table('customers')->where('customer_id', $request->sale_customer_id)->first();
@@ -728,23 +765,56 @@ class SaleController extends Controller
 
         $sale_grandtotal_price = $request->sale_grandtotal_price;
         $sale_amount_recieved = $request->sale_amount_recieved;
-        $sale_amount_paid = $request->customer_amount_paid;
-        $sale_amount_dues = $request->customer_amount_dues;
+        $sale_amount_paid = $request->sale_amount_paid;
+        $sale_amount_dues = $request->sale_amount_dues;
         $net_sale_price = $sale_grandtotal_price - $sale_amount_paid;
         $customer_amount_paid = $request->customer_balance_paid;
         $customer_amount_dues = $request->customer_balance_dues;
+
+        $previous_balance = $request->customer_balance_dues;
 
         // if($sale_amount_recieved > $net_sale_price){
         $sale_amount_paid_new = $get_sale->sale_amount_paid + $sale_amount_recieved;
         $sale_amount_dues_new = $get_sale->sale_amount_dues - $sale_amount_recieved;
         $customer_amount_paid_new = $customer_amount_paid + $sale_amount_recieved;
         // if($sale_amount_recieved > $sale_grandtotal_price){
-        if($sale_amount_recieved > $get_sale->sale_amount_dues){
-            $customer_amount_dues_new = $get_customer->customer_balance_dues - ($sale_amount_recieved - $get_sale->sale_amount_dues);
+        if($sale_amount_recieved >= $get_sale->sale_amount_dues){
+            $customer_amount_dues_new = $get_customer->customer_balance_dues - $sale_amount_recieved/*($sale_amount_recieved - $get_sale->sale_amount_dues)*/;
+            $sale_status = 'completed';
+            $sale_payment_status = 'paid';
+        }
+        elseif($sale_amount_recieved == 0){
+            $customer_amount_dues_new = $get_customer->customer_balance_dues;
+            $sale_status = 'created';//$sale_status = 'pending';
+            $sale_payment_status = 'due';
         }
         else{
-            $customer_amount_dues_new = $get_customer->customer_balance_dues;
+            // $customer_amount_dues_new = $get_customer->customer_balance_dues;
+            $customer_amount_dues_new = $get_customer->customer_balance_dues - $sale_amount_recieved /*+ ($get_sale->sale_amount_dues - $sale_amount_recieved)*/;
+            $sale_status = 'created';
+            $sale_payment_status = 'partial';
         }
+        // if($sale_amount_recieved >= $sale_grandtotal_price){
+        //     $customer_amount_paid = $customer_amount_paid + $sale_amount_recieved;
+        //     $customer_amount_dues = $customer_amount_dues - ($sale_amount_recieved - $sale_grandtotal_price);
+        //     $sale_amount_dues = $sale_grandtotal_price - $sale_amount_recieved;
+        //     $sale_status = 'completed';
+        //     $sale_payment_status = 'paid';
+        // }
+        // elseif($sale_amount_recieved == 0){
+        //     $customer_amount_paid = $customer_amount_paid;
+        //     $customer_amount_dues = $customer_amount_dues + $sale_grandtotal_price;
+        //     $sale_amount_dues = $sale_grandtotal_price;
+        //     $sale_status = 'created';
+        //     $sale_payment_status = 'due';
+        // }
+        // else{
+        //     $customer_amount_paid = $customer_amount_paid + $sale_amount_recieved;
+        //     $customer_amount_dues = $customer_amount_dues + ($sale_grandtotal_price - $sale_amount_recieved);
+        //     $sale_amount_dues = $sale_grandtotal_price - $sale_amount_recieved;
+        //     $sale_status = 'created';
+        //     $sale_payment_status = 'partial';
+        // }
 
         if($request->product_name !== NULL){
 
@@ -757,7 +827,7 @@ class SaleController extends Controller
                 // 'customer_total_balance'    => $request->customer_total_balance,
             );
     
-            $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
+            $update1 = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
     
             $sale_edits = array(
                 'sale_customer_id'      => $request->sale_customer_id,
@@ -765,7 +835,7 @@ class SaleController extends Controller
                 'sale_total_quantity'   => $request->sale_total_qty,//'sale_product_quantity'
                 'sale_free_piece'       => $request->sale_free_piece,
                 'sale_free_amount'      => $request->sale_free_amount,
-                'sale_status'           => $request->sale_status,
+                'sale_status'           => $sale_status,//$request->sale_status,
                 'sale_note'             => $request->sale_note,
                 // 'sale_date'          => $request->sale_date,
                 'sale_total_price'      => $request->sale_total_price,
@@ -775,12 +845,13 @@ class SaleController extends Controller
                 'sale_amount_paid'      => $sale_amount_paid_new,
                 'sale_amount_dues'      => $sale_amount_dues_new,
                 'sale_payment_method'   => $request->sale_payment_method,
-                'sale_payment_status'   => $request->sale_payment_status,
+                'sale_payment_status'   => $sale_payment_status,//$request->sale_payment_status,
                 // 'sale_document'      => $request->sale_document,
                 // 'sale_invoice_id'       => $request->sale_invoice_id,
                 // 'sale_invoice_date'     => $request->sale_invoice_date,
                 // 'sale_payment_id'       => $request->sale_payment_id,
                 // 'warehouse_id'              => $request->warehouse_id,
+                'updated_at'	 		=> date('Y-m-d h:i:s'),
     
             );
     
@@ -829,6 +900,9 @@ class SaleController extends Controller
     
             foreach($product_ids as $key => $single_id){
     
+                $products_quantity_pieces[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_packets[$key] = ($products_pieces[$key]/$pieces_per_packet[$key])+$products_packets[$key]+($products_cartons[$key]*($packets_per_carton[$key]));
+                $products_quantity_cartons[$key] = ($products_pieces[$key]/$pieces_per_carton[$key])+($products_packets[$key]/$packets_per_carton[$key])+$products_cartons[$key];
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
@@ -857,9 +931,12 @@ class SaleController extends Controller
                         'sale_piece_per_packet'      => $pieces_per_packet[$key],
                         'sale_packet_per_carton'     => $packets_per_carton[$key],
                         'sale_piece_per_carton'      => $pieces_per_carton[$key],
-                        'sale_pieces_total'          => $products_pieces[$key],
-                        'sale_packets_total'         => $products_packets[$key],
-                        'sale_cartons_total'         => $products_cartons[$key],
+                        'sale_pieces_number'         => $products_pieces[$key],
+                        'sale_packets_number'        => $products_packets[$key],
+                        'sale_cartons_number'        => $products_cartons[$key],
+                        'sale_pieces_total'          => $products_quantity_pieces[$key],
+                        'sale_packets_total'         => $products_quantity_packets[$key],
+                        'sale_cartons_total'         => $products_quantity_cartons[$key],
                         'sale_quantity_total'        => $products_quantity_total[$key],
                         'sale_trade_discount'        => $products_discounts[$key],
                         'sale_trade_price_piece'     => $products_unit_prices[$key],
@@ -867,8 +944,13 @@ class SaleController extends Controller
                         'sale_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
                         'sale_product_sub_total'     => $products_sub_totals[$key]
                     );
+
+                    // dd([$sale_edits['sale_amount_dues'], $products_sub_totals[$key]]);
+                    $sale_edits['sale_amount_dues'] = $sale_edits['sale_amount_dues'] + $products_sub_totals[$key];
+                    $customer_edits['customer_balance_dues'] = $customer_edits['customer_balance_dues'] + $products_sub_totals[$key];
         
                     $sale_product_save[$key] = DB::table('sale_products')->insert($sale_product_adds[$key]);
+                    // $sale_due_update = DB::table('sales')->where('sale_id', $sale_id)->update($sale_due_adds);
         
                 }
                 else{
@@ -878,9 +960,12 @@ class SaleController extends Controller
                         'sale_piece_per_packet'      => $pieces_per_packet[$key],
                         'sale_packet_per_carton'     => $packets_per_carton[$key],
                         'sale_piece_per_carton'      => $pieces_per_carton[$key],
-                        'sale_pieces_total'          => $products_pieces[$key],
-                        'sale_packets_total'         => $products_packets[$key],
-                        'sale_cartons_total'         => $products_cartons[$key],
+                        'sale_pieces_number'         => $products_pieces[$key],
+                        'sale_packets_number'        => $products_packets[$key],
+                        'sale_cartons_number'        => $products_cartons[$key],
+                        'sale_pieces_total'          => $products_quantity_pieces[$key],
+                        'sale_packets_total'         => $products_quantity_packets[$key],
+                        'sale_cartons_total'         => $products_quantity_cartons[$key],
                         'sale_quantity_total'        => $products_quantity_total[$key],
                         'sale_trade_discount'        => $products_discounts[$key],
                         'sale_trade_price_piece'     => $products_unit_prices[$key],
@@ -888,7 +973,12 @@ class SaleController extends Controller
                         'sale_trade_price_carton'    => $products_unit_prices[$key]*$pieces_per_carton[$key],
                         'sale_product_sub_total'     => $products_sub_totals[$key]
                     );
-        
+
+                    // dd([$sale_edits['sale_amount_dues'], $products_sub_totals[$key], $sale_products_get[$key]->sale_product_sub_total]);
+                    $difference = $products_sub_totals[$key]-$sale_products_get[$key]->sale_product_sub_total;
+                    $sale_edits['sale_amount_dues'] = $sale_edits['sale_amount_dues'] + $difference;
+                    $customer_edits['customer_balance_dues'] = $customer_edits['customer_balance_dues'] + $difference;
+                    
                     $sale_products_update = DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $single_id)->update($sale_product_edits[$key]);
         
                 }
@@ -896,70 +986,60 @@ class SaleController extends Controller
             }
             foreach($product_ids as $key => $single_id){
     
+                $products_quantity_pieces[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_packets[$key] = ($products_pieces[$key]/$pieces_per_packet[$key])+$products_packets[$key]+($products_cartons[$key]*($packets_per_carton[$key]));
+                $products_quantity_cartons[$key] = ($products_pieces[$key]/$pieces_per_carton[$key])+($products_packets[$key]/$packets_per_carton[$key])+$products_cartons[$key];
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-                $products_quantity_available[$key] = $products_quantity_total[$key];
+
+                // dd([$products_quantity_pieces[$key], $products_quantity_packets[$key], $products_quantity_cartons[$key], $products_quantity_total[$key]]);
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
     
-                $sale_products_get[$key] = DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $single_id)->first();
+                // $sale_products_get[$key] = DB::table('sale_products')->where('sale_id', $sale_id)->where('product_id','=', $single_id)->first();
+
+                // dd($sale_products_get[$key]);
     
                 if($sale_products_get[$key] !== NULL){
-                    if($sale_products_get[$key]->sale_pieces_total >= $products_pieces[$key]){
-                        $diff_sale_pieces_total =  $sale_products_get[$key]->sale_pieces_total-$products_pieces[$key];
+                    if($sale_products_get[$key]->sale_pieces_total >= $products_quantity_pieces[$key]){
+                        $diff_sale_pieces_total =  $sale_products_get[$key]->sale_pieces_total-$products_quantity_pieces[$key];
+                        $diff_sale_pieces_available = $sale_products_get[$key]->sale_pieces_total-$products_quantity_pieces[$key];
                         // dd($diff_sale_pieces_total);
                     }
                     else{
-                        $diff_sale_pieces_total =  $sale_products_get[$key]->sale_pieces_total-$products_pieces[$key];
-                        // $diff_sale_pieces_total =  $products_pieces[$key]-$sale_products_get[$key]->sale_pieces_total;
+                        $diff_sale_pieces_total =  $sale_products_get[$key]->sale_pieces_total-$products_quantity_pieces[$key];
+                        // $diff_sale_pieces_total =  $products_quantity_pieces[$key]-$sale_products_get[$key]->sale_pieces_total;
+                        $diff_sale_pieces_available = $sale_products_get[$key]->sale_pieces_total-$products_quantity_pieces[$key];
+                        // $diff_sale_pieces_available = $products_quantity_pieces[$key]-$sale_products_get[$key]->sale_pieces_total;
                     }
-                    if($sale_products_get[$key]->sale_pieces_total >= $products_pieces[$key]){
-                        $diff_sale_pieces_available = $sale_products_get[$key]->sale_pieces_total-$products_pieces[$key];
-                    }
-                    else{
-                        $diff_sale_pieces_available = $sale_products_get[$key]->sale_pieces_total-$products_pieces[$key];
-                        // $diff_sale_pieces_available = $products_pieces[$key]-$sale_products_get[$key]->sale_pieces_total;
-                    }
-                    if($sale_products_get[$key]->sale_packets_total >= $products_packets[$key]){
-                        $diff_sale_packets_total = $sale_products_get[$key]->sale_packets_total-$products_packets[$key];
+                    if($sale_products_get[$key]->sale_packets_total >= $products_quantity_packets[$key]){
+                        $diff_sale_packets_total = $sale_products_get[$key]->sale_packets_total-$products_quantity_packets[$key];
+                        $diff_sale_packets_available   = $sale_products_get[$key]->sale_packets_total-$products_quantity_packets[$key];
                     }
                     else{
-                        $diff_sale_packets_total = $sale_products_get[$key]->sale_packets_total-$products_packets[$key];
-                        // $diff_sale_packets_total = $sales_packets[$key]-$sale_products_get[$key]->sale_packets_total;
+                        $diff_sale_packets_total = $sale_products_get[$key]->sale_packets_total-$products_quantity_packets[$key];
+                        // $diff_sale_packets_total = $products_quantity_packets[$key]-$sale_products_get[$key]->sale_packets_total;
+                        $diff_sale_packets_available   = $sale_products_get[$key]->sale_packets_total-$products_quantity_packets[$key];
+                        // $diff_sale_packets_available   = $products_quantity_packets[$key]-$sale_products_get[$key]->sale_packets_total;
                     }
-                    if($sale_products_get[$key]->sale_packets_total >= $products_packets[$key]){
-                        $diff_sale_packets_available   = $sale_products_get[$key]->sale_packets_total-$products_packets[$key];
-                    }
-                    else{
-                        $diff_sale_packets_available   = $sale_products_get[$key]->sale_packets_total-$products_packets[$key];
-                        // $diff_sale_packets_available   = $products_packets[$key]-$sale_products_get[$key]->sale_packets_total;
-                    }
-                    if($sale_products_get[$key]->sale_cartons_total >= $products_cartons[$key]){
-                        $diff_sale_cartons_total       = $sale_products_get[$key]->sale_cartons_total-$products_cartons[$key];
+                    if($sale_products_get[$key]->sale_cartons_total >= $products_quantity_cartons[$key]){
+                        $diff_sale_cartons_total       = $sale_products_get[$key]->sale_cartons_total-$products_quantity_cartons[$key];
+                        $diff_sale_cartons_available   = $sale_products_get[$key]->sale_cartons_total-$products_quantity_cartons[$key];
                     }
                     else{
-                        $diff_sale_cartons_total       = $sale_products_get[$key]->sale_cartons_total-$products_cartons[$key];
-                        // $diff_sale_cartons_total       = $sales_cartons[$key]-$sale_products_get[$key]->sale_cartons_total;
-                    }
-                    if($sale_products_get[$key]->sale_cartons_total >= $products_cartons[$key]){
-                        $diff_sale_cartons_available   = $sale_products_get[$key]->sale_cartons_total-$products_cartons[$key];
-                    }
-                    else{
-                        $diff_sale_cartons_available   = $sale_products_get[$key]->sale_cartons_total-$products_cartons[$key];
-                        // $diff_sale_cartons_available   = $products_cartons[$key]-$sale_products_get[$key]->sale_cartons_total;
+                        $diff_sale_cartons_total       = $sale_products_get[$key]->sale_cartons_total-$products_quantity_cartons[$key];
+                        // $diff_sale_cartons_total       = $products_quantity_cartons[$key]-$sale_products_get[$key]->sale_cartons_total;
+                        $diff_sale_cartons_available   = $sale_products_get[$key]->sale_cartons_total-$products_quantity_cartons[$key];
+                        // $diff_sale_cartons_available   = $products_quantity_cartons[$key]-$sale_products_get[$key]->sale_cartons_total;
                     }
                     if($sale_products_get[$key]->sale_quantity_total >= $products_quantity_total[$key]){
                         $diff_sale_quantity_total      = $sale_products_get[$key]->sale_quantity_total-$products_quantity_total[$key];
+                        $diff_sale_quantity_available  = $sale_products_get[$key]->sale_quantity_total-$products_quantity_total[$key];
                     }
                     else{
                         $diff_sale_quantity_total      = $sale_products_get[$key]->sale_quantity_total-$products_quantity_total[$key];
                         // $diff_sale_quantity_total      = $sales_quantity_total[$key]-$sale_products_get[$key]->sale_quantity_total;
-                    }
-                    if($sale_products_get[$key]->sale_quantity_total >= $products_quantity_available[$key]){
-                        $diff_sale_quantity_available  = $sale_products_get[$key]->sale_quantity_total-$products_quantity_available[$key];
-                    }
-                    else{
-                        $diff_sale_quantity_available  = $sale_products_get[$key]->sale_quantity_total-$products_quantity_available[$key];
-                        // $diff_sale_quantity_available  = $sales_quantity_available[$key]-$sale_products_get[$key]->sale_quantity_total;
+                        $diff_sale_quantity_available  = $sale_products_get[$key]->sale_quantity_total-$products_quantity_total[$key];
+                        // $diff_sale_quantity_available  = $sales_quantity_total[$key]-$sale_products_get[$key]->sale_quantity_total;
                     }
                 }
                 else{
@@ -973,7 +1053,6 @@ class SaleController extends Controller
                     $diff_sale_quantity_available = 0;
                 }
     
-                // dd($sale[$key]->sale_pieces_total);
                 $product_edits[$key] = array(
                     // 'product_ref_no'                => $product_codes[$key],
                     // 'product_name'                  => $product_names[$key],
@@ -997,11 +1076,24 @@ class SaleController extends Controller
                 $update = DB::table('products')->where('product_id', $single_id)->update($product_edits[$key]);
             }
     
-            $update = DB::table('sales')->where('sale_id', $sale_id)->update($sale_edits);
+            $update1 = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
+            $update2 = DB::table('sales')->where('sale_id', $sale_id)->update($sale_edits);
     
             // return redirect()->back();
             Session::flash('message' , 'Sale Edited Successfully');
-            return redirect('/sale');
+            
+            $sale_data = Sale::where('sale_id', $sale_id)->first();
+            $sale_products_data = SaleProducts::where('sale_id', $sale_id)->get();
+            $user_data = User::where('id', $sale_data->sale_added_by)->first();
+            $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
+            $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
+            $payment_data = Payment::where('sale_id', $sale_id)->get();
+            $customer_data->previous = $previous_balance;
+            $sale_data->amount_recieved = $sale_amount_recieved;
+
+            return view('sales.invoiceupdate', compact('sale_data', 'sale_products_data', 'user_data', 'warehouse_data', 'customer_data', 'payment_data', ));
+            // return redirect('sale/gen_invoice2/'.$sale_id);
+
             // return redirect('/sale')->with(['message' => 'Sale Edited Successfully'], 200);
             // if($update){
             // 	return response()->json(['data' => $sale_edits, /*'sale_products' => $sale_products_update,*/ 'message' => 'Sale Edited Successfully'], 200);
@@ -1104,5 +1196,20 @@ class SaleController extends Controller
         // $numberInWords = $numberTransformer->toWords($sale_data->sale_grandtotal_price);
 
         return view('sales.invoice', compact('sale_data', 'sale_products_data', 'user_data', 'warehouse_data', 'customer_data', 'payment_data',));
+    }
+
+    public function genInvoice2($id)
+    {
+        $sale_data = Sale::where('sale_id', $id)->first();
+        $sale_products_data = SaleProducts::where('sale_id', $id)->get();
+        $user_data = User::where('id', $sale_data->sale_added_by)->first();
+        $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
+        $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
+        $payment_data = Payment::where('sale_id', $id)->get();
+        // $numberToWords = new NumberToWords();
+        // $numberTransformer = $numberToWords->getNumberTransformer('en');
+        // $numberInWords = $numberTransformer->toWords($sale_data->sale_grandtotal_price);
+
+        return view('sales.invoiceupdate', compact('sale_data', 'sale_products_data', 'user_data', 'warehouse_data', 'customer_data', 'payment_data',));
     }
 }

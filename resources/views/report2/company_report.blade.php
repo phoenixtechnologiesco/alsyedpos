@@ -73,7 +73,7 @@
                                                         <tr>
                                                             <th class="not-exported-sale"></th>
                                                             <th>{{'Date'}}</th>
-                                                            <th>{{'Reference No'}}</th>
+                                                            <th>{{'Invoice No'}}</th>
                                                             <th>{{'Warehouse'}}</th>
                                                             <th>{{'Product'}} ({{'Qty'}})</th>
                                                             <th>{{'Grand Total'}}</th>
@@ -87,7 +87,7 @@
                                                         <tr>
                                                             <td>{{$key}}</td>
                                                             <td>{{date('d/m/Y', strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
-                                                            <td>{{$sale->sale_ref_no}}</td>
+                                                            <td>{{$sale->sale_invoice_id}}</td>
                                                             <td>{{$sale->warehouse->warehouse_name}}</td>
                                                             <td>
                                                                 @foreach($product_sale_data[$key] as $product_sale_data)
@@ -133,8 +133,8 @@
                                                         <tr>
                                                             <th class="not-exported-payment"></th>
                                                             <th>{{'Date'}}</th>
-                                                            <th>{{'Payment Reference'}}</th>
-                                                            <th>{{'Sale Reference'}}</th>
+                                                            <th>{{'Payment Invoice'}}</th>
+                                                            <th>{{'Sale Invoice'}}</th>
                                                             <th>{{'Amount'}}</th>
                                                             <th>{{'Paid Method'}}</th>
                                                         </tr>
@@ -145,7 +145,7 @@
                                                                 <td></td>
                                                                 {{-- <td>{{$key}}</td> --}}
                                                                 <td>{{date('d/m/Y', strtotime($payment->created_at))}}</td>
-                                                                <td>{{$payment->payment_ref_no}}</td>
+                                                                <td>{{$payment->payment_invoice_id}}</td>
                                                                 <td>{{$payment->sale_reference}}</td>
                                                                 <td>{{$payment->payment_amount_paid}}</td>
                                                                 <td>{{$payment->payment_method}}</td>
@@ -172,7 +172,7 @@
                                                         <tr>
                                                             <th class="not-exported-return"></th>
                                                             <th>{{'Date'}}</th>
-                                                            <th>{{'Reference'}}</th>
+                                                            <th>{{'Invoice No'}}</th>
                                                             <th>{{'Warehouse'}}</th>
                                                             <th>{{'Biller'}}</th>
                                                             <th>{{'Product'}} ({{'qty'}})</th>
@@ -185,7 +185,7 @@
                                                             <td></td>
                                                             {{-- <td>{{$key}}</td> --}}
                                                             <td>{{date('d/m/Y', strtotime($return->created_at->toDateString())) . ' '. $return->created_at->toTimeString()}}</td>
-                                                            <td>{{$return->sale_return_ref_no}}</td>
+                                                            <td>{{$return->sale_return_invoice_id}}</td>
                                                             <td>{{$return->warehouse->warehouse_name}}</td>
                                                             <td>{{$return->cashier->name}}</td>
                                                             <td>

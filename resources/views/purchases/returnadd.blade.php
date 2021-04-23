@@ -143,10 +143,7 @@
                               <div class="form-col-12">
                                 <div class="myrow">
                                   {{-- <div class="col-1"></div> --}}
-                                  <input type="text" name="purchase_invoice_id" class="form-control form-col-10" value="{{ old('purchase_invoice_', '') }}">
-                                  <button type="button" href="{{ route('purchase.edit', ['purchase' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
-                                    <i class="fa fa-file-text-o"></i>
-                                  </button>
+                                  <input type="text" name="purchase_invoice_id" class="form-control form-col-12" value="{{ old('purchase_invoice_', '') }}">
                                 </div>
                                 @include('alerts.feedback', ['field' => 'purchase_invoice_id'])
                               </div>

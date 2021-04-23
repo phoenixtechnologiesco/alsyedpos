@@ -26,21 +26,21 @@
                 </div>
               @endif
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-6">
                       <div class="form-group">
                           <label>{{__(" Brand Name")}}</label>
                               <input type="text" name="brand_name" class="form-control" placeholder="Brand Name" value="{{ old('brand_name', '') }}">
                               @include('alerts.feedback', ['field' => 'brand_name'])
                       </div>
                   </div>
-                  <div class="col-4">
+                  {{-- <div class="col-4">
                     <div class="form-group">
                       <label for="ref_no">{{__(" Brand Ref No.")}}</label>
                       <input type="text" id="brand_ref_no" name="brand_ref_no" class="form-control" placeholder="Brand Ref ID" value="{{ old('brand_ref_no', '')}}">
                       @include('alerts.feedback', ['field' => 'brand_ref_no'])
                     </div>
-                  </div>
-                  <div class="col-4">
+                  </div> --}}
+                  <div class="col-6">
                     <div class="form-group">
                       <label for="parent_company">{{__(" Parent Company")}}</label>
                       {{-- <input type="text" id="parent_company" name="parent_company" class="form-control" placeholder="Parent Company" value="{{ old('parent_company', '')}}">
@@ -89,11 +89,11 @@
     $('#brand_store').validate({
       rules: {
         brand_name: 'required',
-        brand_ref_no: 'required',
+        // brand_ref_no: 'required',
       },
       messages: {
         brand_name:  'Please Enter brand Name',
-        brand_ref_no:  'Please Enter brand Ref No',
+        // brand_ref_no:  'Please Enter brand Ref No',
       },
       errorElement: 'em',
       errorPlacement: function ( error, element ) {

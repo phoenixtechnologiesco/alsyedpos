@@ -113,10 +113,11 @@
                           <div class="form-group">
                             <label for="sale_status" class="form-col-12 control-label">{{__(" Sale Status")}}</label>
                               <div class="form-col-12">
-                                <select readonly name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
-                                  <option value="pending">Pending</option>
-                                  <option value="created">Created</option>
-                                  <option value="completed">Completed</option>
+                                <select name="sale_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Sale Status">
+                                  <option @if($sale->sale_status == "pending") selected @endif value="pending">Pending</option>
+                                  <option @if($sale->sale_status == "created") selected @endif value="created">Created</option>
+                                  <option @if($sale->sale_status == "completed") selected @endif value="completed">Completed</option>
+                                  {{-- <option value="completed">Completed</option> --}}
                                   //completed/pending/created
                                 </select>
                                 @include('alerts.feedback', ['field' => 'sale_status'])
@@ -133,6 +134,7 @@
                                 <select readonly required id="sale_payment_method" name="sale_payment_method" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Method...">
                                   <option @if($sale->sale_payment_method == 'cash') selected @endif value="cash">Cash</option>
                                   <option @if($sale->sale_payment_method == 'credit') selected @endif value="credit">Credit</option>
+                                  <option @if($sale->sale_payment_method == 'nonbulk') selected @endif value="nonbulk">Non Bulk</option>
                                 </select>
                                 @include('alerts.feedback', ['field' => 'sale_payment_method'])
                               </div>
@@ -156,7 +158,7 @@
                           <div class="form-group">
                             {{-- <label for="available_stock" class=" form-col-12 control-label">{{__(" Available Pcs/Pkts/Crtns")}}</label> --}}
                             <div class="row">
-                              <div class=" form-first-col-4">
+                              <div class=" form-col-4">
                                 <label for="" class=" form-col-12 control-label">{{__(" Avail.Pcs")}}</label>
                                 <input readonly type="number" name="available_pcs" id="available_pcs" class="form-control col-12" value="">
                               </div>
@@ -164,7 +166,7 @@
                                 <label for="" class=" form-col-12 control-label">{{__(" Avail.Pkts")}}</label>
                                 <input readonly type="number" name="available_pkts" id="available_pkts" class="form-control col-12" value="">
                               </div>
-                              <div class=" form-last-col-4">
+                              <div class=" form-col-4">
                                 <label for="" class=" form-col-12 control-label">{{__(" Aval.Crtns")}}</label>
                                 <input readonly type="number" name="available_crtns" id="available_crtns" class="form-control col-12" value="">
                               </div>
@@ -264,15 +266,15 @@
                                       <input readonly type="hidden" name="product_id[]" id="product_id{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->product_id }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_pieces_total }}">
+                                      <input readonly type="number" name="sale_products_pieces[]" id="sale_products_pieces{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_pieces_number }}">
                                       <input readonly type="hidden" name="sale_pieces_per_packet[]" id="sale_pieces_per_packet{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_piece_per_packet }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="number" name="sale_products_packets[]" id="sale_products_packets{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_packets_total }}">
+                                      <input readonly type="number" name="sale_products_packets[]" id="sale_products_packets{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_packets_number }}">
                                       <input readonly type="hidden" name="sale_packets_per_carton[]" id="sale_packets_per_carton{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_packet_per_carton }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_cartons_total }}">
+                                      <input readonly type="number" name="sale_products_cartons[]" id="sale_products_cartons{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_cartons_number }}">
                                       <input readonly type="hidden" name="sale_pieces_per_carton[]" id="sale_pieces_per_carton{{$i}}" class="form-control col-12" value="{{ $oneselectedproduct->sale_piece_per_carton }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
@@ -334,7 +336,7 @@
                                     <input type="number" name="sale_products_discount_i" min="0" id="sale_products_discount_i" class="form-control col-12"  value="{{ old('sale_products_discount_i', '0') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
-                                    <input readonly type="number" name="sale_products_sub_total_i" min="0" id="sale_products_sub_total_i" class="form-control col-12"  value="'{{ old('sale_products_sub_total_i', '') }}'">
+                                    <input readonly type="number" name="sale_products_sub_total_i" min="0" id="sale_products_sub_total_i" class="form-control col-12"  value="{{ old('sale_products_sub_total_i', '') }}">
                                   </td>
                                   <td class="col-1 lastcol" scope="col">
                                       {{-- <button id="add_button" type="button" class="btn btn-info btn-round pull-right">{{__('Add')}}</button> --}}
@@ -368,13 +370,13 @@
                                   </tr>
                                   <tr class="row table-info" >
                                     <td class="col-1 firstcol" scope="col">
-                                      <input readonly type="text" name="sale_total_items" id="sale_total_items" class="form-control col-12" value="{{ $mytotal_items }}">
+                                      <input readonly type="number" name="sale_total_items" id="sale_total_items" class="form-control col-12" value="{{ $mytotal_items }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="text" name="sale_total_qty" id="sale_total_qty" class="form-control col-12" value="{{ $mytotal_quantity }}">
+                                      <input readonly type="number" name="sale_total_qty" id="sale_total_qty" class="form-control col-12" value="{{ $mytotal_quantity }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input type="number" name="sale_free_piece" class="form-control col-12" value="{{ $sale->sale_free_piece }}">
+                                      <input type="number" name="sale_free_piece" id="sale_free_piece" class="form-control col-12" value="{{ $sale->sale_free_piece }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
                                       <input type="number" name="sale_free_amount" id="sale_free_amount" class="form-control col-12"  value="{{ $sale->sale_free_amount }}">
@@ -424,7 +426,7 @@
                                     <input type="file" name="sale_document" id="sale_document" class="form-control col-12" value="{{ old('sale_document', '') }}">
                                   </td> --}}
                                   <td class="col-8 firstcol" scope="col">
-                                    <input type="text" name="sale_note" class="form-control col-12" value="{{ $sale->sale_note }}" >
+                                    <input type="text" name="sale_note" id="sale_note" class="form-control col-12" value="{{ $sale->sale_note }}" >
                                   </td>
                                   <td class="col-2 mycol" scope="col">
                                     <select readonly name="sale_payment_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Payment Status">
@@ -557,77 +559,28 @@
                     <div class="modal-content-pos">
                       <div class="modal-header">
                           <h5 id="exampleModalLabel" class="modal-title">Products List</h5>
-                          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+                          <button type="button" id="productclose" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
                       </div>
                       <div class="modal-body">
                         <div class="row">
                           <div class="col-12">
-                            <div class="row">
-                              <div class=" col-6 ">
-                                <div class="form-group">
-                                  <label for="customer_name" class=" col-10 control-label">&nbsp;&nbsp;{{__("customer Name")}}</label>
-                                  <div class=" col-12 input-group ">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text barcode">
-                                        <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-user"></i></a>
-                                      </span>
-                                    </div>
-                                    {{-- <div class="input-group pos"> --}}
-                                      <input type="text" name="customer_name" id="customercodesearch" placeholder="customer Name" class="form-control customercodesearch"  />
-                                      {{-- <select required name="customer_name" id="customer_name" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Scustomer..." style="width: 100px">
-                                        @foreach($customers as $customer)
-                                          <option value="{{$customer->id}}">{{$customer->name}}</option>
-                                        @endforeach
-                                      </select> --}}
-                                    {{-- </div> --}}
-                                    @include('alerts.feedback', ['field' => 'customer_name'])
-                                  </div>
-                                </div>
-                              </div>
-                              <div class=" col-6 ">
-                                <div class="form-group">
-                                  <label for="customer_code" class=" col-10 control-label">&nbsp;&nbsp;{{__(" customer Code")}}</label>
-                                  <div class=" col-12 input-group ">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text barcode">
-                                        <a class="" id="product-list-btn"><i class="fa fa-barcode"></i></a>
-                                      </span>
-                                    </div>
-                                    {{-- <div class="input-group pos"> --}}
-                                      <input type="text" name="customer_code" id="customercodeSearch" placeholder="customer Code" class="form-control"  />
-                                      {{-- <select required name="customer_code" id="customer_code" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 100px">
-                                        @foreach($customers as $customer)
-                                          <option value="{{$customer->customer_id}}">{{$customer->customer_name}}</option>
-                                        @endforeach
-                                      </select> --}}
-                                    {{-- </div> --}}
-                                    @include('alerts.feedback', ['field' => 'customer_code'])
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
+                            {{-- <div class="row">
                               <div class=" col-12 ">
                                 <div class="search-box form-group">
                                   <label for="product_code_name" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Search Product")}}</label>
-                                    <div class=" col-12 input-group ">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text barcode">
-                                          <a class="" data-toggle="modal" data-target="#product-list" id="product-list-btn"><i class="fa fa-barcode"></i></a>
-                                        </span>
-                                      </div>
+                                    <div class="col-12">
                                       <input type="text" name="product_code_name" id="lims_productcodeSearch" placeholder="Scan/Search product by name/code" class="form-control"  />
                                     </div>
                                     @include('alerts.feedback', ['field' => 'product_code_name'])
                                 </div>
                               </div>
-                            </div>
+                            </div> --}}
                             <div class="row">
                               <div class=" col-12 ">
                                 <div class="form-group">
                                   <div class=" col-12">
-                                    <div class="table-responsive-sm" style="height:300px; overflow-x:hidden">
-                                      <table id="myTable" class="table table-sm table-hover table-striped table-fixed table-bordered display compact order-column">
+                                    <div class="table-responsive-sm" style="height:500px; overflow-x:hidden">
+                                      <table id="productTable" class="table table-sm table-hover table-striped table-fixed table-bordered dataTable display compact hover order-column">
                                         <thead class="thead pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
                                           {{-- <tr>
                                               <th>RefID</th>
@@ -644,6 +597,7 @@
                                           </tr> --}}
                                           <tr>
                                             {{-- <th>Ref.Id</th> --}}
+                                            <th></th>
                                             <th colspan="2">Product Info</th>
                                             {{-- <th>Barcode</th> --}}
                                             {{-- <th colspan="2">Company/Brand</th> --}}
@@ -667,10 +621,11 @@
                                             <th>Credit.P.Crt</th> --}}
                                             {{-- <th>Expiry</th> --}}
                                             {{-- <th>Status</th> --}}
-                                            <th class="disabled-sorting text-left">Edit</th>
+                                            <th class="disabled-sorting text-left">Add</th>
                                           </tr>
                                           <tr>
                                             {{-- <th>Ref.Id</th> --}}
+                                            <th></th>
                                             <th>Name</th>
                                             <th>Barcode</th>
                                             {{-- <th>Company</th>
@@ -694,12 +649,13 @@
                                             <th>Crt</th>
                                             {{-- <th>Expiry</th> --}}
                                             {{-- <th>Status</th> --}}
-                                            <th class="disabled-sorting text-left">Edit</th>
+                                            <th class="disabled-sorting text-left">Add</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                          @foreach($products as $key => $value)
+                                          {{-- @foreach($products as $key => $value)
                                           <tr>
+                                            <td></td>
                                             <td>{{ $value->product_name }}</td>
                                             <!-- <td>{ $value->product_ref_no }}</td> -->
                                             <td>{{ $value->product_barcode }}</td>
@@ -722,7 +678,7 @@
                                               </a>
                                             </td>
                                           </tr>
-                                          @endforeach
+                                          @endforeach --}}
                                         </tbody>
                                       </table>
                                     </div>
@@ -730,49 +686,8 @@
                                 </div>
                               </div>
                             </div>
-                            {{-- <div class="row">
-                                <div class="col-6 mt-1">
-                                    <label>Recieved Amount *</label>
-                                    <input type="text" name="paying_amount" class="form-control numkey" required step="any">
-                                </div>
-                                <div class="col-6 mt-1">
-                                    <label>Paying Amount *</label>
-                                    <input type="text" name="paid_amount" class="form-control numkey"  step="any">
-                                </div>
-                                <div class="col-6 mt-1">
-                                    <label>Change : </label>
-                                    <p id="change" class="ml-2">0.00</p>
-                                </div>
-                                <div class="col-6 mt-1">
-                                    <input type="hidden" name="paid_by_id">
-                                    <label>Paid By</label>
-                                    <select name="paid_by_id_select" class="form-control selectpicker">
-                                        <option value="1">Credit Card</option>
-                                        <option value="2">Cash</option>
-                                        <option value="3">Cheque</option>
-                                        <option value="4">Deposit</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-12 mt-3">
-                                    <div class="card-errors" role="alert"></div>
-                                </div>
-                                <div class="form-group col-12 cheque">
-                                    <label>Cheque Number *</label>
-                                    <input type="text" name="cheque_no" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-6 form-group">
-                                    <label>sale Note</label>
-                                    <textarea rows="3" class="form-control" name="sale_note"></textarea>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label>Payment Note</label>
-                                    <textarea rows="3" class="form-control" name="payment_note"></textarea>
-                                </div>
-                            </div> --}}
                             <div class="mt-3">
-                                <button id="submit-btn" type="button" class="btn btn-primary">submit</button>
+                                <button id="submit-btn" type="button" class="btn btn-primary">Submit</button>
                             </div>
                           </div>
                         </div>
@@ -882,7 +797,8 @@
               </div>
               <div class="card-footer row">
                 <div class="col-6">
-                  <button type="submit" class="btn btn-info btn-round pull-left">{{__('Update')}}</button>
+                  <button type="submit" id="update-btn" class="btn btn-info btn-round pull-left">{{__('Update')}}</button>
+                  <button type="submit" id="update-btn2" class="btn btn-primary btn-round pull-left">{{__('Update/Print')}}</button>
                 </div>
             </form>
                 <div class="col-6">
@@ -980,6 +896,9 @@
   
   var rownum = <?php echo $i; ?>;
 
+  $(document).ready( function(e) {
+    $('#sale_products_barcode_i').focus();
+  });
   $(document).on('click', '#add_button', function(e){
     var product_barcode = $('#sale_products_barcode_i').val();
     // var product_barcode2 = $('#product_barcode2').val();
@@ -1031,15 +950,15 @@
     $('#product_name_i').val('');
     $('#product_code_i').val('');
     $('#product_id_i').val('');
-    // $('#sale_products_pieces_i').val(Number(0));
-    // $('#sale_products_packets_i').val(Number(0));
-    // $('#sale_products_cartons_i').val(Number(0));
-    // $('#sale_pieces_per_packet_i').val(Number(0));
-    // $('#sale_packets_per_carton_i').val(Number(0));
-    // $('#sale_pieces_per_carton_i').val(Number(0));
-    // $('#sale_products_unit_price_i').val(Number(0));
-    // $('#sale_products_discount_i').val(Number(0));
-    // $('#sale_products_sub_total_i').val(Number(0));
+    $('#sale_products_pieces_i').val(Number(0));
+    $('#sale_products_packets_i').val(Number(0));
+    $('#sale_products_cartons_i').val(Number(0));
+    $('#sale_pieces_per_packet_i').val(Number(0));
+    $('#sale_packets_per_carton_i').val(Number(0));
+    $('#sale_pieces_per_carton_i').val(Number(0));
+    $('#sale_products_unit_price_i').val(Number(0));
+    $('#sale_products_discount_i').val(Number(0));
+    $('#sale_products_sub_total_i').val(Number(0));
 
     if(product_name !== "" && product_quantity !== 0 && product_unit_price !== 0 && repeated !== 1){
 
@@ -1086,7 +1005,7 @@
       }
     }
 
-    $('#product_name_i').focus();
+    $('#sale_products_barcode_i').focus();
 
   });
   $(document).on('change', '#sale_add_amount', function(e){
@@ -1111,8 +1030,8 @@
       $('#sale_return_change').val(sale_return_change);
     }
     if(Number(sale_amount_recieved) < Number(grandtotal_amount)){
-      alert('Amount recieved should be greater than the Grand Total Amount');
-      $('#sale_amount_recieved').val(Number(0));
+      // alert('Amount recieved should be greater than the Grand Total Amount');
+      // $('#sale_amount_recieved').val(Number(0));
     }
   });
   $(document).on("click", ".delete-productfield", function(event) {
@@ -1131,6 +1050,7 @@
       sale_amount_recieved = $('#sale_amount_recieved').val();
       total_quantity = $('#sale_total_qty').val();
       total_items = $('#sale_total_items').val();
+      total_discount = $('#sale_discount').val();
       subtotal_amount = $('#sale_total_price').val();
       grandtotal_amount = $('#sale_grandtotal_price').val();
       // rowindex = $(this).closest('tr').index();
@@ -1166,25 +1086,26 @@
 
   });
 
-  $(document).on('change', "#sale_products_pieces_i", function(e){
-    sale_product_name = $('#product_name_i').val();
-    data = sale_product_name.split(',')[0];
-    // console.log(data);
-    productSearch2(data);
-  });
-  $(document).on('change', "#sale_products_packets_i", function(e){
-    sale_product_name = $('#product_name_i').val();
-    data = sale_product_name.split(',')[0];
-    // console.log(data);
-    productSearch3(data);
-  });
-  $(document).on('change', "#sale_products_cartons_i", function(e){
-    sale_product_name = $('#product_name_i').val();
-    data = sale_product_name.split(',')[0];
-    // console.log(data);
-    productSearch4(data);
-  });
+  // $(document).on('change', "#sale_products_pieces_i", function(e){
+  //   sale_product_name = $('#product_name_i').val();
+  //   data = sale_product_name.split(',')[0];
+  //   // console.log(data);
+  //   productSearch2(data);
+  // });
+  // $(document).on('change', "#sale_products_packets_i", function(e){
+  //   sale_product_name = $('#product_name_i').val();
+  //   data = sale_product_name.split(',')[0];
+  //   // console.log(data);
+  //   productSearch3(data);
+  // });
+  // $(document).on('change', "#sale_products_cartons_i", function(e){
+  //   sale_product_name = $('#product_name_i').val();
+  //   data = sale_product_name.split(',')[0];
+  //   // console.log(data);
+  //   productSearch4(data);
+  // });
 
+  var productsbarcodes_array = <?php echo json_encode($barcodeArray); ?>;
   var productsnames_array = <?php echo json_encode($nameArray); ?>;
   var productsnamescodes_array = <?php echo json_encode($namecodeArray); ?>;
 
@@ -1252,33 +1173,69 @@
         var packets_per_carton = data[0]['product_packet_per_carton'];
         var product_cash_price_piece = data[0]['product_cash_price_piece'];
         var product_credit_price_piece = data[0]['product_credit_price_piece'];
-        var maxproduct_pieces  = catchproduct_pieces;//+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
-        var maxproduct_packets = catchproduct_packets;//+(catchproduct_cartons*packets_per_carton);
-        var maxproduct_cartons = catchproduct_cartons;
+        var product_nonbulk_price_piece = data[0]['product_nonbulk_price_piece'];
+
+        // var maxproduct_pieces  = 2*(Math.abs(catchproduct_pieces));
+        // // var maxproduct_pieces  = 2*(Number(catchproduct_pieces));//+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
+        // var maxproduct_packets = 2*(Math.abs(catchproduct_packets));//+(catchproduct_cartons*packets_per_carton);
+        // var maxproduct_cartons = 2*(Math.abs(catchproduct_cartons));
         // $('#sale_products_barcode_i').val('');
         // $('#sale_products_barcode_i').val(catchbarcode);
+        var sale_rate = $('#sale_payment_method').val();
+
         $('#product_name_i').val('');
         $('#product_name_i').val(catchproduct_name);
         $('#product_code_i').val('');
         $('#product_code_i').val(catchproduct_code);
         $('#product_id_i').val('');
         $('#product_id_i').val(catchproduct_id);
-        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
-        $('#sale_products_packets_i').attr('max', maxproduct_packets);
-        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+        // $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        // $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
         $('#pieces_per_carton').val(Number(0));
         $('#pieces_per_carton').val(pieces_per_carton);
+        $('#sale_pieces_per_carton_i').val(pieces_per_carton);
         $('#pieces_per_packet').val(Number(0));
         $('#pieces_per_packet').val(pieces_per_packet);
+        $('#sale_pieces_per_packet_i').val(pieces_per_packet);
         $('#packets_per_carton').val(Number(0));
         $('#packets_per_carton').val(packets_per_carton);
-        $('#sale_products_unit_price_i').val(Number(0));
-        $('#sale_products_unit_price_i').val(product_cash_price_piece)
-        // $('#sale_products_unit_price_i').val('');
-        // $('#sale_products_unit_price_i').val(product_credit_price_piece)
+        $('#sale_packets_per_carton_i').val(packets_per_carton);
+        if(sale_rate == 'credit'){
+          $('#sale_products_unit_price_i').val(Number(0));
+          $('#sale_products_unit_price_i').val(product_credit_price_piece);
+        }
+        else if (sale_rate == 'cash'){
+          $('#sale_products_unit_price_i').val(Number(0));
+          $('#sale_products_unit_price_i').val(product_cash_price_piece);
+        }
+        else if (sale_rate == 'nonbulk'){
+          $('#sale_products_unit_price_i').val(Number(0));
+          $('#sale_products_unit_price_i').val(product_nonbulk_price_piece);
+        }
+        var data1 = Math.abs(catchproduct_pieces);
+        var data2 = Math.abs(Math.trunc(catchproduct_packets));
+        var data3 = Math.abs(Math.trunc(catchproduct_cartons));
+
+        var data4 = Math.abs(catchproduct_packets)-data2;
+        var data5 = data4*pieces_per_packet;
+        // console.log(data5);
+        var sign = Math.sign(catchproduct_cartons);
+        var display_value = (sign*data2)+'.'+data5;
+        console.log(display_value);
+
+        var data6 = Math.abs(catchproduct_cartons)-data3;
+        var data7 = data6*pieces_per_carton;
+        // console.log(data7);
+        var sign2 = Math.sign(catchproduct_cartons);
+        var display_value2 = (sign2*data3)+'.'+data7;
+        console.log(display_value2);
+        // $('#available_pcs').val(catchproduct_pieces);
+        // $('#available_pkts').val(catchproduct_packets);
+        // $('#available_crtns').val(catchproduct_cartons);
         $('#available_pcs').val(catchproduct_pieces);
-        $('#available_pkts').val(catchproduct_packets);
-        $('#available_crtns').val(catchproduct_cartons);
+        $('#available_pkts').val(display_value);
+        $('#available_crtns').val(display_value2);
         barcodeSearch2(catchproduct_id);
       }
     });
@@ -1292,7 +1249,7 @@
           // '_token': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(data) {
-        // console.log(data);
+        console.log(data);
         var catchproduct_pieces = data[0]['product_pieces_available'];
         var sale_products_pieces = $('#sale_products_pieces_i').val();
         var catchproduct_packets = data[0]['product_packets_available'];
@@ -1307,15 +1264,19 @@
         //   var maxproduct_pieces  = catchproduct_pieces+(netcartons*pieces_per_carton);
         //   var maxproduct_packets = catchproduct_packets+(netcartons*packets_per_carton);
         //   var maxproduct_cartons = catchproduct_cartons;
+          var maxproduct_pieces  = 2*(catchproduct_pieces);
+          var maxproduct_packets = 2*(catchproduct_packets)
+          var maxproduct_cartons = 2*(catchproduct_cartons);
         // }
         // else{
         //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
         //   var maxproduct_packets = catchproduct_packets+(catchproduct_cartons*packets_per_carton);
         //   var maxproduct_cartons = catchproduct_cartons;
         // }
-        // $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
-        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
-        // $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
+
+        $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
+        $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
 
       }
     });
@@ -1329,7 +1290,7 @@
           // '_token': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(data) {
-        // console.log(data);
+        console.log(data);
         var catchproduct_pieces = data[0]['product_pieces_available'];
         var sale_products_pieces = $('#sale_products_pieces_i').val();
         var catchproduct_packets = data[0]['product_packets_available'];
@@ -1340,11 +1301,12 @@
         var pieces_per_packet = data[0]['product_piece_per_packet'];
         var packets_per_carton = data[0]['product_packet_per_carton'];
         // if(sale_products_packets > 0){
-          var netpackets=catchproduct_packets-sale_products_packets;
-          var netcartons=catchproduct_cartons-sale_products_cartons;
-          var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
-          var maxproduct_packets = catchproduct_packets
-          var maxproduct_cartons = catchproduct_cartons;
+          // var netpackets=catchproduct_packets-sale_products_packets;
+          // var netcartons=catchproduct_cartons-sale_products_cartons;
+          // var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          var maxproduct_pieces  = 2*(catchproduct_pieces);
+          var maxproduct_packets = 2*(catchproduct_packets)
+          var maxproduct_cartons = 2*(catchproduct_cartons);
         // }
         // else{
         //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
@@ -1367,7 +1329,7 @@
           // '_token': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(data) {
-        // console.log(data);
+        console.log(data);
         var catchproduct_pieces = data[0]['product_pieces_available'];
         var sale_products_pieces = $('#sale_products_pieces_i').val();
         var catchproduct_packets = data[0]['product_packets_available'];
@@ -1378,11 +1340,13 @@
         var pieces_per_packet = data[0]['product_piece_per_packet'];
         var packets_per_carton = data[0]['product_packet_per_carton'];
         // if(sale_products_cartons > 0){
-          var netpackets=catchproduct_packets-sale_products_packets;
-          var netcartons=catchproduct_cartons-sale_products_cartons;
-          var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          // var netpackets=catchproduct_packets-sale_products_packets;
+          // var netcartons=catchproduct_cartons-sale_products_cartons;
+          // var maxproduct_pieces  = catchproduct_pieces+(netpackets*pieces_per_packet)+(netcartons*pieces_per_carton);
+          var maxproduct_pieces  = 2*(catchproduct_pieces);
           // var maxproduct_packets = catchproduct_packets+(netcartons*packets_per_carton);
-          var maxproduct_cartons = catchproduct_cartons;
+          var maxproduct_packets = 2*(catchproduct_packets)
+          var maxproduct_cartons = 2*(catchproduct_cartons);
         // }
         // else{
         //   var maxproduct_pieces  = catchproduct_pieces+(catchproduct_cartons*pieces_per_carton)+(catchproduct_packets*pieces_per_packet);
@@ -1390,7 +1354,7 @@
         //   var maxproduct_cartons = catchproduct_cartons;
         // }
         $('#sale_products_pieces_i').attr('max', maxproduct_pieces);
-        // $('#sale_products_packets_i').attr('max', maxproduct_packets);
+        $('#sale_products_packets_i').attr('max', maxproduct_packets);
         $('#sale_products_cartons_i').attr('max', maxproduct_cartons);
       }
     });
@@ -1607,6 +1571,156 @@
     //   $('#customer_status').val('Inactive');
     // }
   });
+
+  shortcut.add("alt+n",function(e) {
+    e.preventDefault ();
+    $('#product_name_i').focus();
+  });
+  shortcut.add("alt+b",function(e) {
+    e.preventDefault ();
+    $('#sale_products_barcode_i').focus();
+  });
+  shortcut.add("alt+a",function(e) {
+    e.preventDefault ();
+    $('#add_button').trigger('click');
+  });
+  shortcut.add("enter",function(e) {
+    e.preventDefault ();
+    var activeid2 = String(document.activeElement.id);
+    if(activeid2 == "sale_products_barcode_i"){
+      $('#'+activeid2).trigger('click');
+      $('#product_name_i').focus();
+    }
+    else if(activeid2 == "product_name_i"){
+      $('#'+activeid2).trigger('click');
+      $('#sale_products_pieces_i').focus();
+    }
+    else if(activeid2 == "sale_products_pieces_i"){
+      $('#'+activeid2).trigger('click');
+      $('#sale_products_packets_i').focus();
+      // $('#sale_pieces_per_packet_i').focus();
+    }
+    else if(activeid2 == "sale_products_packets_i"){
+      $('#'+activeid2).trigger('click');
+      $('#sale_products_cartons_i').focus();
+      // $('#sale_packets_per_carton_i').focus();
+    }
+    else if(activeid2 == 'sale_products_cartons_i'){
+      $('#'+activeid2).trigger('click');
+      $('#sale_products_discount_i').focus();
+      // $('#sale_pieces_per_carton_i').focus();
+    }
+    else if(activeid2 == "sale_products_discount_i"){
+      $('#'+activeid2).trigger('click');
+      $('#add_button').focus();
+    }
+    else if(activeid2 == "add_button"){
+      console.log(activeid2);
+      $('#add_button').trigger('click');
+      // $('#sale_products_barcode_i').focus();
+      // $(this).next('input').focus();
+    }
+
+    else if(activeid2 == "sale_free_piece"){
+      $('#'+activeid2).trigger('click');
+      $('#sale_free_amount').focus();
+    }
+    else if(activeid2 == "sale_free_amount"){
+      $('#'+activeid2).trigger('click');
+      $('#sale_add_amount').focus();
+    }
+    else if(activeid2 == "sale_add_amount"){
+      $('#'+activeid2).trigger('click');
+      $('#sale_amount_recieved').focus();
+    }
+    else if(activeid2 == "sale_amount_recieved"){
+      $('#'+activeid2).trigger('click');
+      $('#sale_note').focus();
+    }
+    else if(activeid2 == "sale_note"){
+      $('#'+activeid2).trigger('click');
+      $('#update-btn').focus();
+    }
+    else if(activeid2 == "update-btn"){
+      if(confirm('Do you really want to update this sale?')){
+        $('#'+activeid2).trigger('click');
+      }
+      else{
+        $('#update-btn2').focus();
+      }
+    }
+    else if(activeid2 == "update-btn2"){
+      if(confirm('Do you really want to update/print this sale?')){
+        $('#'+activeid2).trigger('click');
+      }
+      else{
+        $('#sale_products_barcode_i').focus();
+      }
+    }
+
+    },
+    {
+      'type':'keypress',
+      'keycode':13
+    }
+  );
+  shortcut.add("ctrl+l",function(e) {
+    e.preventDefault ();
+    $('#sale_free_piece').focus();
+  });
+  shortcut.add("alt+u",function(e) {
+    e.preventDefault ();
+    if(confirm('Do you really want to update this sale?')){
+      $('#update-btn').trigger('click');
+    }
+  });
+  shortcut.add("alt+y",function(e) {
+    e.preventDefault ();
+    if(confirm('Do you really want to update/print this sale?')){
+      $('#update-btn2').trigger('click');
+    }
+  });
+  $(document).on('focus', '#sale_products_pieces_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#sale_products_packets_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#sale_products_cartons_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#sale_products_discount_i', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#sale_free_piece', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#sale_free_amount', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#sale_add_amount', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+  $(document).on('focus', '#sale_amount_recieved', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
+  });
+
     // $(document).on('focusout', '#customercodesearch', function(e){
     //   var data = this.value;
     //   $.ajax({
@@ -1632,6 +1746,86 @@
     //     }
     //   });
     // });
+
+    var dt = $('#productTable').DataTable( {
+            keys: true,
+            serverSide: true,
+            ajax: "{{ route('api.product_row_details2') }}",
+            columns: [
+            //     {
+            //         "className":      'details-control',
+            //         "orderable":      false,
+            //         "searchable":     false,
+            //         "data":           null,
+            //         "defaultContent": ''
+            //     },
+            //  { width:'25%', className: 'dt-body-center', data: 'customer_name', name: 'customer_name' },
+                { className: 'dt-body-center', searchable: false, data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
+                { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
+                { className: 'dt-body-center', data: 'product_pieces_available', name: 'product_pieces_available' },
+                { className: 'dt-body-center', data: 'product_packets_available', name: 'product_packets_available' },
+                { className: 'dt-body-center', data: 'product_cartons_available', name: 'product_cartons_available' },
+                { className: 'dt-body-center', data: 'product_trade_price_piece', name: 'product_trade_price_piece' },
+                { className: 'dt-body-center', data: 'product_trade_price_packet', name: 'product_trade_price_packet' },
+                { className: 'dt-body-center', data: 'product_trade_price_carton', name: 'product_trade_price_carton' },
+                { className: 'dt-body-center', data: 'product_cash_price_piece', name: 'product_cash_price_piece' },
+                { className: 'dt-body-center', data: 'product_cash_price_packet', name: 'product_cash_price_packet' },
+                { className: 'dt-body-center', data: 'product_cash_price_carton', name: 'product_cash_price_carton' },
+                { className: 'dt-body-center', data: 'product_credit_price_piece', name: 'product_credit_price_piece' },
+                { className: 'dt-body-center', data: 'product_credit_price_packet', name: 'product_credit_price_packet' },
+                { className: 'dt-body-center', data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
+                // { className: 'dt-body-center', data: 'product_nonbulk_price_piece', name: 'product_nonbulk_price_piece' },
+            //     // {
+            //     //       "targets": [ 12 ],
+            //     //       "visible": false
+            //     // },
+                { className: 'dt-body-center', data: 'action', name: 'action', orderable: false, searchable: false }
+            ],
+            // order: [[1, 'asc']],
+            order: [],
+            // columnDefs: [
+            //     {
+            //         "orderable": false,
+            //         'targets': 0
+            //     },
+            //     {
+            //         'render': function(data, type, row, meta){
+            //             if(type === 'display'){
+            //                 data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
+            //             }
+
+            //         return data;
+            //         },
+            //         'checkboxes': {
+            //         'selectRow': true,
+            //         'selectAllRender': '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>'
+            //         },
+            //         'targets': [0]
+            //     }
+            // ],
+            // select: { style: 'multi',  selector: 'td:first-child'},
+            // lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            // dom: '<"offset-1"lfB>rt<"offset-1"ip>',
+            // // dom: '<"top"i>rt<"bottom"flp><"clear">',
+            // drawCallback: function () {
+            //     var api = this.api();
+            // }
+        } );
+        
+  $(document).on('click', '.addProduct', function () {
+    // var rowindex = $(this).closest('tr').index();
+    var rowindex = $(this).attr('productid');
+    var data = productsnames_array;
+    productSearch(data[rowindex-1]);
+    $('#productclose').trigger('click');
+    $('#productclose').trigger('click');
+    $('.modal-backdrop').hide();
+    $('.modal-backdrop').hide();
+    $('#product_name_i').focus();
+
+  });
+  
 </script>
 
 @endsection

@@ -605,7 +605,7 @@
       var dt = $('#productTable').DataTable({
         // processing: true,
         serverSide: true,
-        ajax: '{{ route('api.product_row_details') }}',
+        ajax: "{{ route('api.product_row_details') }}",
         columns: [
           {
             "className":      'details-control',
@@ -614,7 +614,7 @@
             "data":           null,
             "defaultContent": ''
           },
-          { className: 'dt-body-center', data: 'DT_RowIndex', name: 'DT_RowIndex'},
+          { className: 'dt-body-center', searchable: false, data: 'DT_RowIndex', name: 'DT_RowIndex'},
           { className: 'dt-body-center', data: 'product_name', name: 'product_name', },
           { className: 'dt-body-center', data: 'product_company', name: 'product_company' },
           { className: 'dt-body-center', data: 'product_brand', name: 'product_brand' },

@@ -242,7 +242,7 @@ class SupplierController extends Controller
         //return response()->json(['input' => $request['input'],], 200);
         $records = Supplier::where(function($query)use($input){
             // $query->orWhere('supplier_ref_no', 'LIKE', "%{$input}%");
-            $query->orWhere('supplier_name', 'LIKE', "%{$input}%");
+            $query->orWhere('supplier_name', '=', $input);
         })
         ->get()->toArray();
         
@@ -266,7 +266,7 @@ class SupplierController extends Controller
         //return response()->json(['input' => $request['input'],], 200);
         $records = Supplier::where(function($query)use($input){
             // $query->orWhere('supplier_ref_no', 'LIKE', "%{$input}%");
-            $query->orWhere('supplier_name', 'LIKE', "%{$input}%");
+            $query->orWhere('supplier_name', '=', $input);
         })
         ->get()->toArray();
 

@@ -277,19 +277,19 @@ class PurchaseController extends Controller
         //$purchase_adds = $request->except('document');
         //$purchase_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $purchase_grandtotal_price = $request->purchase_grandtotal_price;
-        $purchase_amount_recieved = $request->purchase_amount_recieved;
+        $purchase_amount_received = $request->purchase_amount_received;
         $supplier_amount_paid = $request->purchase_amount_paid;
         $supplier_amount_dues = $request->purchase_amount_dues;
         $purchase_amount_dues = $purchase_grandtotal_price;
 
-        if($purchase_amount_recieved > $purchase_grandtotal_price){
-            $supplier_amount_paid = $supplier_amount_paid + $purchase_amount_recieved;
-            $supplier_amount_dues = $supplier_amount_dues - ($purchase_amount_recieved - $purchase_grandtotal_price);
-            $purchase_amount_dues = $purchase_grandtotal_price - $purchase_amount_recieved;
+        if($purchase_amount_received > $purchase_grandtotal_price){
+            $supplier_amount_paid = $supplier_amount_paid + $purchase_amount_received;
+            $supplier_amount_dues = $supplier_amount_dues - ($purchase_amount_received - $purchase_grandtotal_price);
+            $purchase_amount_dues = $purchase_grandtotal_price - $purchase_amount_received;
         }else{
-            $supplier_amount_paid = $supplier_amount_paid + $purchase_amount_recieved;
-            $supplier_amount_dues = $supplier_amount_dues + ($purchase_grandtotal_price - $purchase_amount_recieved);
-            $purchase_amount_dues = $purchase_grandtotal_price - $purchase_amount_recieved;
+            $supplier_amount_paid = $supplier_amount_paid + $purchase_amount_received;
+            $supplier_amount_dues = $supplier_amount_dues + ($purchase_grandtotal_price - $purchase_amount_received);
+            $purchase_amount_dues = $purchase_grandtotal_price - $purchase_amount_received;
         }
 
         if($request->product_name !== NULL){
@@ -303,7 +303,8 @@ class PurchaseController extends Controller
             );
     
             $update = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->update($supplier_edits);
-    
+
+            $userwarehouse = DB::table('user_warehouses')->where('user_id', Auth::user()->id)->get()->toArray();
     
             $purchase_adds = array(
                 'purchase_ref_no'           => $purchase_ref_no,
@@ -319,7 +320,7 @@ class PurchaseController extends Controller
                 'purchase_add_amount'       => $request->purchase_add_amount,
                 'purchase_discount'         => $request->purchase_discount,
                 'purchase_grandtotal_price' => $purchase_grandtotal_price,
-                'purchase_amount_paid'      => $purchase_amount_recieved,
+                'purchase_amount_paid'      => $purchase_amount_received,
                 'purchase_amount_dues'      => $purchase_amount_dues,
                 'purchase_payment_method'   => $request->purchase_payment_method,
                 'purchase_payment_status'   => $request->purchase_payment_status,
@@ -327,7 +328,7 @@ class PurchaseController extends Controller
                 'purchase_invoice_id'       => $purchase_invoice_id,
                 'purchase_invoice_date'     => $request->purchase_invoice_date,
                 // 'purchase_payment_id'       => $request->purchase_payment_id,
-                // 'warehouse_id'              => $request->warehouse_id,
+                'warehouse_id'              => $userwarehouse[0]->warehouse_id,
                 'purchase_created_by' 	    => Auth::user()->id,
                 'created_at'	 			=> date('Y-m-d h:i:s'),
             );
@@ -371,8 +372,10 @@ class PurchaseController extends Controller
             
             foreach($product_ids as $key => $single_id){
     
+                $products_quantity_pieces[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_packets[$key] = ($products_pieces[$key]/$pieces_per_packet[$key])+$products_packets[$key]+($products_cartons[$key]*($packets_per_carton[$key]));
+                $products_quantity_cartons[$key] = ($products_pieces[$key]/$pieces_per_carton[$key])+($products_packets[$key]/$packets_per_carton[$key])+$products_cartons[$key];
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-                $products_quantity_available[$key] = $products_quantity_total[$key];
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
                 if(!empty($product[$key])){
@@ -392,9 +395,9 @@ class PurchaseController extends Controller
                     'purchase_piece_per_packet'      => $pieces_per_packet[$key],
                     'purchase_packet_per_carton'     => $packets_per_carton[$key],
                     'purchase_piece_per_carton'      => $pieces_per_carton[$key],
-                    'purchase_pieces_total'          => $products_pieces[$key],
-                    'purchase_packets_total'         => $products_packets[$key],
-                    'purchase_cartons_total'         => $products_cartons[$key],
+                    'purchase_pieces_total'          => $products_quantity_pieces[$key],
+                    'purchase_packets_total'         => $products_quantity_packets[$key],
+                    'purchase_cartons_total'         => $products_quantity_cartons[$key],
                     'purchase_quantity_total'        => $products_quantity_total[$key],
                     'purchase_trade_discount'        => $products_discounts[$key],
                     'purchase_trade_price_piece'     => $products_unit_prices[$key],
@@ -407,8 +410,10 @@ class PurchaseController extends Controller
     
             foreach($product_ids as $key => $single_id){
     
+                $products_quantity_pieces[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_packets[$key] = ($products_pieces[$key]/$pieces_per_packet[$key])+$products_packets[$key]+($products_cartons[$key]*($packets_per_carton[$key]));
+                $products_quantity_cartons[$key] = ($products_pieces[$key]/$pieces_per_carton[$key])+($products_packets[$key]/$packets_per_carton[$key])+$products_cartons[$key];
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-                $products_quantity_available[$key] = $products_quantity_total[$key];
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
     
@@ -420,14 +425,14 @@ class PurchaseController extends Controller
                     // 'warehouse_id'                  => $product_warehouses[$key],
                     // 'product_piece_per_packet'      => $pieces_per_packet[$key],
                     // 'product_piece_per_carton'      => $pieces_per_carton[$key],
-                    'product_pieces_total'          => $product[$key]->product_pieces_total+$products_pieces[$key],
-                    'product_pieces_available'      => $product[$key]->product_pieces_available+$products_pieces[$key],
-                    'product_packets_total'         => $product[$key]->product_packets_total+$products_packets[$key],
-                    'product_packets_available'     => $product[$key]->product_packets_available+$products_packets[$key],
-                    'product_cartons_total'         => $product[$key]->product_cartons_total+$products_cartons[$key],
-                    'product_cartons_available'     => $product[$key]->product_cartons_available+$products_cartons[$key],
+                    'product_pieces_total'          => $product[$key]->product_pieces_total+$products_quantity_pieces[$key],
+                    'product_pieces_available'      => $product[$key]->product_pieces_available+$products_quantity_pieces[$key],
+                    'product_packets_total'         => $product[$key]->product_packets_total+$products_quantity_packets[$key],
+                    'product_packets_available'     => $product[$key]->product_packets_available+$products_quantity_packets[$key],
+                    'product_cartons_total'         => $product[$key]->product_cartons_total+$products_quantity_cartons[$key],
+                    'product_cartons_available'     => $product[$key]->product_cartons_available+$products_quantity_cartons[$key],
                     'product_quantity_total'        => $product[$key]->product_quantity_total+$products_quantity_total[$key],
-                    'product_quantity_available'    => $product[$key]->product_quantity_available+$products_quantity_available[$key],
+                    'product_quantity_available'    => $product[$key]->product_quantity_available+$products_quantity_total[$key],
                     // 'product_trade_discount'        => $products_discounts[$key],
                     // 'product_trade_price_piece'     => $products_unit_prices[$key],
                     // 'product_trade_price_packet'    => $products_unit_prices[$key]*$pieces_per_packet[$key],
@@ -436,8 +441,15 @@ class PurchaseController extends Controller
                 $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
             }
     
-            // return redirect()->back();
-            return redirect('purchase/gen_invoice/'.$id);
+            $purchase_data = Purchase::where('purchase_id', $id)->first();
+            $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->get();
+            $user_data = User::where('id', $purchase_data->purchase_added_by)->first();
+            $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
+            $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
+            $payment_data = Payment::where('purchase_id', $id)->get();
+    
+            return view('purchases.invoice', compact('purchase_data', 'purchase_products_data', 'user_data', 'warehouse_data', 'supplier_data', 'payment_data',));    
+            // return redirect('purchase/gen_invoice/'.$id);
             // return redirect('/purchase')->with(['message' => 'Purchase Created Successfully'], 200);
             // if($save){
             // 	return response()->json(['data' => $purchase_adds, 'purchase_products' => $purchase_products_save, 'message' => 'Purchase Created Successfully'], 200);
@@ -492,20 +504,20 @@ class PurchaseController extends Controller
         $purchase_return_invoice_id = 'p.return-'.$year.'-'.$lastid;
         //$purchase_adds = $request->except('document');
         $purchase_return_grandtotal_price = $request->purchase_grandtotal_price;
-        $purchase_return_amount_recieved = $request->purchase_amount_recieved;
+        $purchase_return_amount_received = $request->purchase_amount_received;
         $supplier_return_amount_paid = $request->purchase_amount_paid;
         $supplier_return_amount_dues = $request->purchase_amount_dues;
         $purchase_return_amount_dues = $purchase_return_grandtotal_price;
 
-        if($purchase_return_amount_recieved > $purchase_return_grandtotal_price){
+        if($purchase_return_amount_received > $purchase_return_grandtotal_price){
             $supplier_return_amount_paid = $supplier_return_amount_paid - $purchase_return_grandtotal_price;
-            $supplier_return_amount_dues = $supplier_return_amount_dues + ($purchase_return_amount_recieved - $purchase_return_grandtotal_price);
-            $purchase_return_amount_dues = $purchase_return_amount_recieved - $purchase_return_grandtotal_price;
+            $supplier_return_amount_dues = $supplier_return_amount_dues + ($purchase_return_amount_received - $purchase_return_grandtotal_price);
+            $purchase_return_amount_dues = $purchase_return_amount_received - $purchase_return_grandtotal_price;
         }
         else{
-            $supplier_return_amount_paid = $supplier_return_amount_paid - $purchase_return_amount_recieved;
-            $supplier_return_amount_dues = $supplier_return_amount_dues - ($purchase_return_grandtotal_price - $purchase_return_amount_recieved);
-            $purchase_return_amount_dues = $purchase_return_grandtotal_price - $purchase_return_amount_recieved;
+            $supplier_return_amount_paid = $supplier_return_amount_paid - $purchase_return_amount_received;
+            $supplier_return_amount_dues = $supplier_return_amount_dues - ($purchase_return_grandtotal_price - $purchase_return_amount_received);
+            $purchase_return_amount_dues = $purchase_return_grandtotal_price - $purchase_return_amount_received;
         }
 
         if($request->product_name !== NULL){
@@ -542,7 +554,7 @@ class PurchaseController extends Controller
                 'purchase_return_add_amount'       => $request->purchase_add_amount,
                 'purchase_return_discount'         => $request->purchase_discount,
                 'purchase_return_grandtotal_price' => $purchase_return_grandtotal_price,
-                'purchase_return_amount_paid'      => $purchase_return_amount_recieved,
+                'purchase_return_amount_paid'      => $purchase_return_amount_received,
                 'purchase_return_amount_dues'      => $purchase_return_amount_dues,
                 'purchase_return_payment_method'   => $request->purchase_payment_method,
                 'purchase_return_payment_status'   => $request->purchase_payment_status,
@@ -721,9 +733,10 @@ class PurchaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $purchase_id)
     {
-        $purchase_id = $id; //OR $request->purchase_id;
+        // $purchase_id = $id; //OR $request->purchase_id;
+        $get_purchase = DB::table('purchases')->where('purchase_id', $purchase_id)->first();
         $get_supplier = DB::table('suppliers')->where('supplier_id', $request->purchase_supplier_id)->first();
 
         $validate = Validator::make($request->all(), [ 
@@ -747,7 +760,6 @@ class PurchaseController extends Controller
             'purchase_document'            => '',
             'purchase_invoice_id'          => '',
             'purchase_invoice_date'        => '',
-            'purchase_added_by'            => '',
             // 'purchase_payment_id'          => '',
             'warehouse_id'                 => '',
         ]);
@@ -757,19 +769,41 @@ class PurchaseController extends Controller
         }
 
         $purchase_grandtotal_price = $request->purchase_grandtotal_price;
-        $purchase_amount_recieved = $request->purchase_amount_recieved;
+        $purchase_amount_received = $request->purchase_amount_received;
         $purchase_amount_paid = $request->purchase_amount_paid;
         $purchase_amount_dues = $request->purchase_amount_dues;
         $net_purchase_price = $purchase_grandtotal_price - $purchase_amount_paid;
         $supplier_amount_paid = $request->supplier_balance_paid;
         $supplier_amount_dues = $request->supplier_balance_dues;
 
-        // if($purchase_amount_recieved > $net_purchase_price){
-        $purchase_amount_paid_new = $purchase_amount_paid + $purchase_amount_recieved;
-        $purchase_amount_dues_new = $purchase_amount_dues - $purchase_amount_recieved;
-        $supplier_amount_paid_new = $supplier_amount_paid + $purchase_amount_recieved;
-        $supplier_amount_dues_new = $supplier_amount_dues - $purchase_amount_recieved;
+        $previous_balance = $request->supplier_balance_dues;
 
+        // if($purchase_amount_received >= $get_purchase->purchase_amount_dues){}
+        // elseif($purchase_amount_received == 0){}
+        // else{}
+        $purchase_amount_paid_new = $purchase_amount_paid + $purchase_amount_received;
+        $purchase_amount_dues_new = $purchase_amount_dues - $purchase_amount_received;
+        $supplier_amount_paid_new = $supplier_amount_paid + $purchase_amount_received;
+        // $supplier_amount_dues_new = $supplier_amount_dues - $purchase_amount_received;
+        if($purchase_amount_received >= $get_purchase->purchase_amount_dues){
+            $supplier_amount_dues_new = $get_supplier->supplier_balance_dues - $purchase_amount_received/*($purchase_amount_received - $get_purchase->purchase_amount_dues)*/;
+            $purchase_status = 'received';
+            $purchase_payment_status = 'paid';
+        }
+        elseif($purchase_amount_received == 0){
+            $supplier_amount_dues_new = $get_supplier->supplier_balance_dues;
+            $purchase_status = 'ordered';//$purchase_status = 'pending';
+            $purchase_payment_status = 'due';
+        }
+        else{
+            // $supplier_amount_dues_new = $get_supplier->supplier_balance_dues;
+            $supplier_amount_dues_new = $get_supplier->supplier_balance_dues - $purchase_amount_received /*+ ($get_purchase->purchase_amount_dues - $purchase_amount_received)*/;
+            $purchase_status = 'ordered';
+            $purchase_payment_status = 'partial';
+        }
+
+        // dd($request);
+        
         if($request->product_name !== NULL){
 
             $supplier_id = $request->purchase_supplier_id;
@@ -781,7 +815,7 @@ class PurchaseController extends Controller
                 // 'supplier_total_balance'    => $request->supplier_total_balance,
             );
     
-            $update = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->update($supplier_edits);
+            $update1 = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->update($supplier_edits);
     
             $purchase_edits = array(
                 'purchase_supplier_id'      => $request->purchase_supplier_id,
@@ -853,8 +887,10 @@ class PurchaseController extends Controller
 
             foreach($product_ids as $key => $single_id){
     
+                $products_quantity_pieces[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_packets[$key] = ($products_pieces[$key]/$pieces_per_packet[$key])+$products_packets[$key]+($products_cartons[$key]*($packets_per_carton[$key]));
+                $products_quantity_cartons[$key] = ($products_pieces[$key]/$pieces_per_carton[$key])+($products_packets[$key]/$packets_per_carton[$key])+$products_cartons[$key];
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-                $products_quantity_available[$key] = $products_quantity_total[$key];
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
 
@@ -874,9 +910,9 @@ class PurchaseController extends Controller
                         'purchase_piece_per_packet'      => $pieces_per_packet[$key],
                         'purchase_packet_per_carton'     => $packets_per_carton[$key],
                         'purchase_piece_per_carton'      => $pieces_per_carton[$key],
-                        'purchase_pieces_total'          => $products_pieces[$key],
-                        'purchase_packets_total'         => $products_packets[$key],
-                        'purchase_cartons_total'         => $products_cartons[$key],
+                        'purchase_pieces_total'          => $products_quantity_pieces[$key],
+                        'purchase_packets_total'         => $products_quantity_packets[$key],
+                        'purchase_cartons_total'         => $products_quantity_cartons[$key],
                         'purchase_quantity_total'        => $products_quantity_total[$key],
                         'purchase_trade_discount'        => $products_discounts[$key],
                         'purchase_trade_price_piece'     => $products_unit_prices[$key],
@@ -885,6 +921,9 @@ class PurchaseController extends Controller
                         'purchase_product_sub_total'     => $products_sub_totals[$key]
                     );
         
+                    $purchase_edits['purchase_amount_dues'] = $purchase_edits['purchase_amount_dues'] + $products_sub_totals[$key];
+                    $supplier_edits['supplier_balance_dues'] = $supplier_edits['supplier_balance_dues'] + $products_sub_totals[$key];
+
                     $purchase_product_save[$key] = DB::table('purchase_products')->insert($purchase_product_adds[$key]);
 
                 }
@@ -895,9 +934,9 @@ class PurchaseController extends Controller
                         'purchase_piece_per_packet'      => $pieces_per_packet[$key],
                         'purchase_packet_per_carton'     => $packets_per_carton[$key],
                         'purchase_piece_per_carton'      => $pieces_per_carton[$key],
-                        'purchase_pieces_total'          => $products_pieces[$key],
-                        'purchase_packets_total'         => $products_packets[$key],
-                        'purchase_cartons_total'         => $products_cartons[$key],
+                        'purchase_pieces_total'          => $products_quantity_pieces[$key],
+                        'purchase_packets_total'         => $products_quantity_packets[$key],
+                        'purchase_cartons_total'         => $products_quantity_cartons[$key],
                         'purchase_quantity_total'        => $products_quantity_total[$key],
                         'purchase_trade_discount'        => $products_discounts[$key],
                         'purchase_trade_price_piece'     => $products_unit_prices[$key],
@@ -906,6 +945,10 @@ class PurchaseController extends Controller
                         'purchase_product_sub_total'     => $products_sub_totals[$key]
                     );
         
+                    $difference = $products_sub_totals[$key]-$purchase_products_get[$key]->purchase_product_sub_total;
+                    $purchase_edits['purchase_amount_dues'] = $purchase_edits['purchase_amount_dues'] + $difference;
+                    $supplier_edits['supplier_balance_dues'] = $supplier_edits['supplier_balance_dues'] + $difference;
+
                     $purchase_products_update = DB::table('purchase_products')->where('purchase_id', $purchase_id)->where('product_id','=', $single_id)->update($purchase_product_edits[$key]);
 
                 }
@@ -914,8 +957,10 @@ class PurchaseController extends Controller
 
             foreach($product_ids as $key => $single_id){
     
+                $products_quantity_pieces[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
+                $products_quantity_packets[$key] = ($products_pieces[$key]/$pieces_per_packet[$key])+$products_packets[$key]+($products_cartons[$key]*($packets_per_carton[$key]));
+                $products_quantity_cartons[$key] = ($products_pieces[$key]/$pieces_per_carton[$key])+($products_packets[$key]/$packets_per_carton[$key])+$products_cartons[$key];
                 $products_quantity_total[$key] = $products_pieces[$key]+($products_packets[$key]*($pieces_per_packet[$key]))+($products_cartons[$key]*($pieces_per_carton[$key]));
-                $products_quantity_available[$key] = $products_quantity_total[$key];
     
                 $product[$key] = DB::table('products')->where('product_id','=', $single_id)->first();
     
@@ -923,14 +968,14 @@ class PurchaseController extends Controller
 
                 if($purchase_products_get[$key] !== NULL){
 
-                        $sum_purchase_pieces_total =  $purchase_products_get[$key]->purchase_pieces_total+$products_pieces[$key];
-                        $sum_purchase_pieces_available = $purchase_products_get[$key]->purchase_pieces_total+$products_pieces[$key];
-                        $sum_purchase_packets_total = $purchase_products_get[$key]->purchase_packets_total+$products_packets[$key];
-                        $sum_purchase_packets_available   = $purchase_products_get[$key]->purchase_packets_total+$products_packets[$key];
-                        $sum_purchase_cartons_total       = $purchase_products_get[$key]->purchase_cartons_total+$products_cartons[$key];
-                        $sum_purchase_cartons_available   = $purchase_products_get[$key]->purchase_cartons_total+$products_cartons[$key];
+                        $sum_purchase_pieces_total =  $purchase_products_get[$key]->purchase_pieces_total+$products_quantity_pieces[$key];
+                        $sum_purchase_pieces_available = $purchase_products_get[$key]->purchase_pieces_total+$products_quantity_pieces[$key];
+                        $sum_purchase_packets_total = $purchase_products_get[$key]->purchase_packets_total+$products_quantity_packets[$key];
+                        $sum_purchase_packets_available   = $purchase_products_get[$key]->purchase_packets_total+$products_quantity_packets[$key];
+                        $sum_purchase_cartons_total       = $purchase_products_get[$key]->purchase_cartons_total+$products_quantity_cartons[$key];
+                        $sum_purchase_cartons_available   = $purchase_products_get[$key]->purchase_cartons_total+$products_quantity_cartons[$key];
                         $sum_purchase_quantity_total      = $purchase_products_get[$key]->purchase_quantity_total+$products_quantity_total[$key];
-                        $sum_purchase_quantity_available  = $purchase_products_get[$key]->purchase_quantity_total+$products_quantity_available[$key];
+                        $sum_purchase_quantity_available  = $purchase_products_get[$key]->purchase_quantity_total+$products_quantity_total[$key];
                 }
                 else{
                     $sum_purchase_pieces_total = 0;
@@ -967,13 +1012,24 @@ class PurchaseController extends Controller
                 $update = DB::table('products')->where('product_id','=', $single_id)->update($product_edits);
             }
     
-            $update = DB::table('purchases')->where('purchase_id','=', $purchase_id)->update($purchase_edits);
+            $update1 = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->update($supplier_edits);
+            $update2 = DB::table('purchases')->where('purchase_id','=', $purchase_id)->update($purchase_edits);
     
-            // return redirect()->back();
-            Session::flash('message' , 'Purchase Edited Successfully');
-            return redirect('/purchase');
+            $purchase_data = Purchase::where('purchase_id', $purchase_id)->first();
+            $purchase_products_data = PurchaseProducts::where('purchase_id', $purchase_id)->get();
+            $user_data = User::where('id', $purchase_data->purchase_created_by)->first();
+            $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
+            $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
+            $payment_data = Payment::where('purchase_id', $purchase_id)->get();
+            $supplier_data->previous = $previous_balance;
+            $purchase_data->amount_received = $purchase_amount_received;
+    
+            return view('purchases.invoiceupdate', compact('purchase_data', 'purchase_products_data', 'user_data', 'warehouse_data', 'supplier_data', 'payment_data',));
+     
+            // Session::flash('message' , 'Purchase Edited Successfully');
+            // return redirect('/purchase');
             // return redirect('/purchase')->with(['message' => 'Purchase Edited Successfully'], 200);
-            // if($update){
+            // if($update2){
             // 	return response()->json(['data' => $purchase_edits, /*'purchase_products' => $purchase_products_update,*/ 'message' => 'Purchase Edited Successfully'], 200);
             // }else{
             // 	return response()->json("Oops! Something Went Wrong", 400);
@@ -1071,4 +1127,28 @@ class PurchaseController extends Controller
         }
         return $randomString;
 	}
+
+    public function genInvoice($id)
+    {
+        $purchase_data = Purchase::where('purchase_id', $id)->first();
+        $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->get();
+        $user_data = User::where('id', $purchase_data->purchase_added_by)->first();
+        $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
+        $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
+        $payment_data = Payment::where('purchase_id', $id)->get();
+
+        return view('purchases.invoice', compact('purchase_data', 'purchase_products_data', 'user_data', 'warehouse_data', 'supplier_data', 'payment_data',));
+    }
+
+    public function genInvoice2($id)
+    {
+        $purchase_data = Purchase::where('purchase_id', $id)->first();
+        $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->get();
+        $user_data = User::where('id', $purchase_data->purchase_added_by)->first();
+        $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
+        $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
+        $payment_data = Payment::where('purchase_id', $id)->get();
+
+        return view('purchases.invoiceupdate', compact('purchase_data', 'purchase_products_data', 'user_data', 'warehouse_data', 'supplier_data', 'payment_data',));
+    }
 }

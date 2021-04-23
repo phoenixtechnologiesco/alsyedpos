@@ -37,7 +37,8 @@ class ProductController extends Controller
 
     public function getRowDetailsData()
     {
-        $products = Product::with('barcodes');
+        // $products = Product::with('barcodes');
+        $products = Product::where('status_id', 1)->with('barcodes')->get();
         // where('product_id', 13)->with('barcodes');
         // join('product_barcodes', 'products.product_id', '=', 'product_barcodes.product_id')->select(['products.product_id', 'products.product_name', 'products.product_barcode', 'products.product_company', 'products.product_brand', 'products.product_pieces_total',  'products.product_packets_total', 'products.product_cartons_total', 'products.product_pieces_available', 'products.product_packets_available', 'products.product_cartons_available', 'products.product_trade_price_piece', 'products.product_trade_price_packet', 'products.product_trade_price_carton', 'products.product_cash_price_piece', 'products.product_cash_price_packet', 'products.product_credit_price_carton', 'products.product_credit_price_piece', 'products.product_credit_price_packet', 'products.product_credit_price_carton', 'product_barcodes.product_id', 'product_barcodes.product_barcodes']);
         // leftJoin('product_barcodes', 'products.product_id', '=', 'product_barcodes.product_id')
@@ -50,6 +51,29 @@ class ProductController extends Controller
         // ->addColumn('action', function ($products) {
         //     return '<a href="product/'. $products->product_id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
         // })
+        ->make(true);
+    }
+
+    public function getRowDetailsData2()
+    {
+        // $products = Product::with('barcodes');
+        $products = Product::where('status_id', 1)->with('barcodes')->get();
+        // where('product_id', 13)->with('barcodes');
+        // join('product_barcodes', 'products.product_id', '=', 'product_barcodes.product_id')->select(['products.product_id', 'products.product_name', 'products.product_barcode', 'products.product_company', 'products.product_brand', 'products.product_pieces_total',  'products.product_packets_total', 'products.product_cartons_total', 'products.product_pieces_available', 'products.product_packets_available', 'products.product_cartons_available', 'products.product_trade_price_piece', 'products.product_trade_price_packet', 'products.product_trade_price_carton', 'products.product_cash_price_piece', 'products.product_cash_price_packet', 'products.product_credit_price_carton', 'products.product_credit_price_piece', 'products.product_credit_price_packet', 'products.product_credit_price_carton', 'product_barcodes.product_id', 'product_barcodes.product_barcodes']);
+        // leftJoin('product_barcodes', 'products.product_id', '=', 'product_barcodes.product_id')
+        // ->select(['products.product_id', 'products.product_name', 'products.product_barcode', 'products.product_company', 'products.product_brand', 'products.product_pieces_total',  'products.product_packets_total', 'products.product_cartons_total', 'products.product_pieces_available', 'products.product_packets_available', 'products.product_cartons_available', 'products.product_trade_price_piece', 'products.product_trade_price_packet', 'products.product_trade_price_carton', 'products.product_cash_price_piece', 'products.product_cash_price_packet', 'products.product_credit_price_carton', 'products.product_credit_price_piece', 'products.product_credit_price_packet', 'products.product_credit_price_carton',])
+        // dd($products);
+        // $product_barcodes = ProductBarcodes::select(['product_barcode_id', 'product_id', 'product_barcodes']);
+
+        return Datatables::of($products)
+        ->addIndexColumn()
+        // ->addColumn('action', function ($products) {
+        //     return '<a href="product/'. $products->product_id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+        // })
+        ->addColumn('action', function ($products) {
+           // return '<a id="addProduct'.$products->product_id.'" class="btn btn-xs btn-primary mybtn"><i class="glyphicon glyphicon-edit"></i> Add</a>';
+           return '<a productid="'.$products->product_id.'" class="btn btn-xs btn-primary addProduct"><i class="glyphicon glyphicon-edit"></i> Add</a>';
+        })
         ->make(true);
     }
 
@@ -419,8 +443,8 @@ class ProductController extends Controller
         $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
         //return response()->json(['input' => $request['input'],], 200);
         $records = Product::where(function($query)use($input){
-            $query->orWhere('product_id', "$input");
-            $query->orWhere('product_name', 'LIKE', "%{$input}%");
+            $query->orWhere('product_id', $input);
+            $query->orWhere('product_name', '=', $input);
             // $query->orWhere('product_barcode', 'LIKE', "%{$input}%");
             // $query->orWhere('product_ref_no', 'LIKE', "%{$input}%");
         })
@@ -444,7 +468,7 @@ class ProductController extends Controller
         $input = trim(filter_var($request['data'], FILTER_SANITIZE_STRING));
         //return response()->json(['input' => $request['input'],], 200);
         $records = ProductBarcodes::where(function($query)use($input){
-            $query->where('product_barcodes', 'LIKE', "%{$input}%");
+            $query->where('product_barcodes', '=', $input);
             // $query->orWhere('product_ref_no', 'LIKE', "%{$input}%");
         })
         ->get()->toArray();

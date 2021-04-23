@@ -236,7 +236,7 @@
                         <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((integer)$sale_product->sale_quantity_total)}}{{__('pcs')}}</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                         {{-- {{number_format((float)($sale_product->sale_product_sub_total / $sale_product->sale_quantity_total), 2, '.', '')}} --}}
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((float)$sale_product->sale_trade_discount, 2, '.', '')}}</td>
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((float)($sale_product->sale_trade_discount), 2, '.', '')}}</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                         <td colspan="2" class="mycol form-col-2" style="text-align:left;">|{{number_format((float)($sale_product->sale_product_sub_total/**$sale_product->sale_quantity_total*/), 2, '.', '')}}|</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
@@ -265,12 +265,14 @@
                     @endif --}}
                     <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Previous Balance')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left;">{{number_format((float)$customer_data->customer_balance_dues-$sale_data->sale_grandtotal_price, 2, '.', '')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left;">{{number_format((float)($customer_data->previous), 2, '.', '')}}</th>
+                        {{-- number_format((float)($customer_data->previous)-(float)$sale_data->sale_amount_paid,2,'.','') --}}
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                     <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Net Balance')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$customer_data->customer_balance_dues/*+$sale_data->sale_grandtotal_price*/, 2, '.', '')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$customer_data->previous, 2, '.', '')}}</th>
+                        {{-- number_format((float)$customer_data->previous+(float)$sale_data->sale_amount_paid/*+$sale_data->sale_grandtotal_price*/,2,'.','') --}}
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                     <tr>
@@ -280,7 +282,8 @@
                     </tr>
                     <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Payment Dues')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)($customer_data->customer_balance_dues)/*+($sale_data->sale_amount_dues)*/-(float)$sale_data->sale_amount_paid, 2, '.', '')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)($customer_data->previous-$sale_data->amount_recieved)/*+($sale_data->sale_amount_dues)*/, 2, '.', '')}}</th>
+                        {{-- number_format((float)($customer_data->customer_balance_dues)/*+($sale_data->sale_amount_dues)*/,2,'.','') --}}
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                 </tfoot>

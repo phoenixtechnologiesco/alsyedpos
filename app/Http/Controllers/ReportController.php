@@ -263,7 +263,7 @@ class ReportController extends Controller
         ->join('sales', 'payments.sale_id', '=', 'sales.sale_id')
         ->whereDate('payments.created_at', '>=' , $start_date)
         ->whereDate('payments.created_at', '<=' , $end_date)
-        ->select('payments.*', 'sales.sale_ref_no as sale_reference')
+        ->select('payments.*', 'sales.sale_invoice_id as sale_reference')
         ->orderBy('payments.created_at', 'desc')
         ->get();
 
@@ -315,7 +315,7 @@ class ReportController extends Controller
         ->with('warehouse', 'cashier')
         ->get();
         // dd($return_data[0]->cashier->name);
-        $payment_data = DB::table('payments')->join('sales', 'payments.sale_id', '=', 'sales.sale_id')->where('payment_method', $cashcredit)->whereDate('payments.created_at', '>=' , $start_date)->whereDate('payments.created_at', '<=' , $end_date)->select('payments.*', 'sales.sale_ref_no as sale_reference')->orderBy('payments.created_at', 'desc')->get();
+        $payment_data = DB::table('payments')->join('sales', 'payments.sale_id', '=', 'sales.sale_id')->where('payment_method', $cashcredit)->whereDate('payments.created_at', '>=' , $start_date)->whereDate('payments.created_at', '<=' , $end_date)->select('payments.*', 'sales.sale_invoice_id as sale_reference')->orderBy('payments.created_at', 'desc')->get();
         // dd($payment_data);
 
         $product_sale_data = [];
@@ -366,7 +366,7 @@ class ReportController extends Controller
         ->with('warehouse', 'cashier')
         ->get();
         // dd($return_data[0]->cashier->name);
-        $payment_data = DB::table('payments')->join('sales', 'payments.sale_id', '=', 'sales.sale_id')->where('payment_customer_id', $customer_id)->whereDate('payments.created_at', '>=' , $start_date)->whereDate('payments.created_at', '<=' , $end_date)->select('payments.*', 'sales.sale_ref_no as sale_reference')->orderBy('payments.created_at', 'desc')->get();
+        $payment_data = DB::table('payments')->join('sales', 'payments.sale_id', '=', 'sales.sale_id')->where('payment_customer_id', $customer_id)->whereDate('payments.created_at', '>=' , $start_date)->whereDate('payments.created_at', '<=' , $end_date)->select('payments.*', 'sales.sale_invoice_id as sale_reference')->orderBy('payments.created_at', 'desc')->get();
         // dd($payment_data);
 
         $product_sale_data = [];
@@ -448,7 +448,7 @@ class ReportController extends Controller
                 ->where('payments.sale_id', $single_sale->sale_id)
                 ->where('payments.created_at', '>=' , $start_date)
                 ->where('payments.created_at', '<=' , $end_date)
-                ->select('payments.*', 'sales.sale_ref_no as sale_reference')
+                ->select('payments.*', 'sales.sale_invoice_id as sale_reference')
                 ->orderBy('payments.created_at', 'desc')
                 ->get();
             }
@@ -528,7 +528,7 @@ class ReportController extends Controller
                 ->where('payments.sale_id', $single_sale->sale_id)
                 ->where('payments.created_at', '>=' , $start_date)
                 ->where('payments.created_at', '<=' , $end_date)
-                ->select('payments.*', 'sales.sale_ref_no as sale_reference')
+                ->select('payments.*', 'sales.sale_invoice_id as sale_reference')
                 ->orderBy('payments.created_at', 'desc')
                 ->get();
             }

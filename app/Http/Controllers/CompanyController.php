@@ -61,7 +61,7 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [ 
-            'company_ref_no'            => 'required',
+            // 'company_ref_no'            => 'required',
             'company_parent'            => '',
             'company_name'              => 'required',
             'company_description'              => '',
@@ -72,7 +72,7 @@ class CompanyController extends Controller
            return redirect()->back()->withErrors($validate);
         }
         $company_adds = array(
-            'company_ref_no'            => $request->company_ref_no,
+            // 'company_ref_no'            => $request->company_ref_no,
             'company_parent'            => $request->company_parent,
             'company_name'              => $request->company_name,
             'company_description'       => $request->company_description,
@@ -131,7 +131,7 @@ class CompanyController extends Controller
         $company_id = $id; //OR $request->company_id;
 
         $validate = Validator::make($request->all(), [ 
-            'company_ref_no'            => '',
+            // 'company_ref_no'            => '',
             'company_parent'            => '',
             'company_name'              => '',
             'company_description'       => '',
@@ -142,7 +142,7 @@ class CompanyController extends Controller
            return redirect()->back()->withErrors($validate);
         }
         $company_edits = array(
-            'company_ref_no'            => $request->company_ref_no,
+            // 'company_ref_no'            => $request->company_ref_no,
             'company_parent'            => $request->company_parent,
             'company_name'              => $request->company_name,
             'company_description'       => $request->company_description,

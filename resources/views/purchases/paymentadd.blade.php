@@ -185,7 +185,7 @@
                               {{-- <div class="input-group-prepend">
                                 <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
                               </div> --}}
-                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ old('payment_invoice_date', '') }}">
+                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
                               @include('alerts.feedback', ['field' => 'payment_invoice_date'])
                             </div>
                           </div>
