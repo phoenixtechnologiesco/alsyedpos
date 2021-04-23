@@ -84,7 +84,53 @@
       // { data: 'action', name: 'action', orderable: false, searchable: false }
     ],
 
-    order: [[1, 'asc']]
+    order: [[1, 'asc']],
+    select: { style: 'multi',  selector: 'td:first-child'},
+    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    dom: '<"offset-1"lfB>rt<"offset-1"ip>',
+    // dom: '<"top"i>rt<"bottom"flp><"clear">',
+    buttons: [
+        {
+            extend: 'pdf',
+            exportOptions: {
+                columns: ':visible:Not(.not-exported-sale)',
+                rows: ':visible'
+            },
+            action: function(e, dt, button, config) {
+                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button, config);
+            },
+            footer:true
+        },
+        {
+            extend: 'csv',
+            exportOptions: {
+                columns: ':visible:Not(.not-exported-sale)',
+                rows: ':visible'
+            },
+            action: function(e, dt, button, config) {
+                $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button, config);
+            },
+            footer:true
+        },
+        {
+            extend: 'print',
+            exportOptions: {
+                columns: ':visible:Not(.not-exported-sale)',
+                rows: ':visible'
+            },
+            action: function(e, dt, button, config) {
+                $.fn.dataTable.ext.buttons.print.action.call(this, e, dt, button, config);
+            },
+            footer:true
+        },
+        {
+            extend: 'colvis',
+            columns: ':gt(0)'
+        }
+    ],
+    drawCallback: function () {
+        var api = this.api();
+    },
   });
 
 </script>

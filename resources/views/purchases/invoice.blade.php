@@ -274,7 +274,7 @@
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                     <tr>
-                        <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Payment Recieved')}}</th>
+                        <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Payment Paid')}}</th>
                         <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$purchase_data->purchase_amount_paid, 2, '.', '')}}</th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>

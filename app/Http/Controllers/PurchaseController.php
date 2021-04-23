@@ -395,6 +395,9 @@ class PurchaseController extends Controller
                     'purchase_piece_per_packet'      => $pieces_per_packet[$key],
                     'purchase_packet_per_carton'     => $packets_per_carton[$key],
                     'purchase_piece_per_carton'      => $pieces_per_carton[$key],
+                    'purchase_pieces_number'         => $products_pieces[$key],
+                    'purchase_packets_number'        => $products_packets[$key],
+                    'purchase_cartons_number'        => $products_cartons[$key],
                     'purchase_pieces_total'          => $products_quantity_pieces[$key],
                     'purchase_packets_total'         => $products_quantity_packets[$key],
                     'purchase_cartons_total'         => $products_quantity_cartons[$key],
@@ -443,7 +446,7 @@ class PurchaseController extends Controller
     
             $purchase_data = Purchase::where('purchase_id', $id)->first();
             $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->get();
-            $user_data = User::where('id', $purchase_data->purchase_added_by)->first();
+            $user_data = User::where('id', $purchase_data->purchase_created_by)->first();
             $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
             $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
             $payment_data = Payment::where('purchase_id', $id)->get();
@@ -785,6 +788,7 @@ class PurchaseController extends Controller
         $purchase_amount_dues_new = $purchase_amount_dues - $purchase_amount_received;
         $supplier_amount_paid_new = $supplier_amount_paid + $purchase_amount_received;
         // $supplier_amount_dues_new = $supplier_amount_dues - $purchase_amount_received;
+        
         if($purchase_amount_received >= $get_purchase->purchase_amount_dues){
             $supplier_amount_dues_new = $get_supplier->supplier_balance_dues - $purchase_amount_received/*($purchase_amount_received - $get_purchase->purchase_amount_dues)*/;
             $purchase_status = 'received';
@@ -802,7 +806,7 @@ class PurchaseController extends Controller
             $purchase_payment_status = 'partial';
         }
 
-        // dd($request);
+        dd($request);
         
         if($request->product_name !== NULL){
 
@@ -910,6 +914,9 @@ class PurchaseController extends Controller
                         'purchase_piece_per_packet'      => $pieces_per_packet[$key],
                         'purchase_packet_per_carton'     => $packets_per_carton[$key],
                         'purchase_piece_per_carton'      => $pieces_per_carton[$key],
+                        'purchase_pieces_number'         => $products_pieces[$key],
+                        'purchase_packets_number'        => $products_packets[$key],
+                        'purchase_cartons_number'        => $products_cartons[$key],
                         'purchase_pieces_total'          => $products_quantity_pieces[$key],
                         'purchase_packets_total'         => $products_quantity_packets[$key],
                         'purchase_cartons_total'         => $products_quantity_cartons[$key],
@@ -934,6 +941,9 @@ class PurchaseController extends Controller
                         'purchase_piece_per_packet'      => $pieces_per_packet[$key],
                         'purchase_packet_per_carton'     => $packets_per_carton[$key],
                         'purchase_piece_per_carton'      => $pieces_per_carton[$key],
+                        'purchase_pieces_number'         => $products_pieces[$key],
+                        'purchase_packets_number'        => $products_packets[$key],
+                        'purchase_cartons_number'        => $products_cartons[$key],
                         'purchase_pieces_total'          => $products_quantity_pieces[$key],
                         'purchase_packets_total'         => $products_quantity_packets[$key],
                         'purchase_cartons_total'         => $products_quantity_cartons[$key],

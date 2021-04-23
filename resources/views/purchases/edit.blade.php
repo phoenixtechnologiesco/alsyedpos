@@ -98,7 +98,7 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="purchase_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Amount Paid")}}</label>
+                            <label for="purchase_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Paid")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -167,7 +167,7 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="purchase_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase/Invoice Date")}}</label>
+                            <label for="purchase_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Date")}}</label>
                             <div class="form-col-12 input-group ">
                               {{-- <div class="input-group-prepend">
                                 <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
@@ -242,15 +242,15 @@
                                       <input readonly type="hidden" name="product_id[]" id="product_id{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->product_id }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="number" name="purchase_products_pieces[]" id="purchase_products_pieces{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_pieces_total }}">
+                                      <input readonly type="number" name="purchase_products_pieces[]" id="purchase_products_pieces{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_pieces_number }}">
                                       <input readonly type="hidden" name="purchase_pieces_per_packet[]" id="purchase_pieces_per_packet{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_piece_per_packet }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="number" name="purchase_products_packets[]" id="purchase_products_packets{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_packets_total }}">
+                                      <input readonly type="number" name="purchase_products_packets[]" id="purchase_products_packets{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_packets_number }}">
                                       <input readonly type="hidden" name="purchase_packets_per_carton[]" id="purchase_packets_per_carton{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_packet_per_carton }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
-                                      <input readonly type="number" name="purchase_products_cartons[]" id="purchase_products_cartons{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_cartons_total }}">
+                                      <input readonly type="number" name="purchase_products_cartons[]" id="purchase_products_cartons{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_cartons_number }}">
                                       <input readonly type="hidden" name="purchase_pieces_per_carton[]" id="purchase_pieces_per_carton{{$i}}" class="form-control form-col-12" value="{{ $oneselectedproduct->purchase_piece_per_carton }}">
                                     </td>
                                     <td class="col-1 mycol" scope="col">
@@ -1078,7 +1078,7 @@
       total_quantity = Number(total_quantity) - Number(product_quantity);
       total_items = Number(total_items) - 1;
       total_discount = Number(total_discount) - Number(thisproduct_discount);
-      console.log(total_quantity);
+
       // var product_sub_total = $('#purchase_products_sub_total').val();
       subtotal_amount = Number(subtotal_amount) - Number(thisproduct_sub_total);
       grandtotal_amount = Number(grandtotal_amount) - Number(thisproduct_sub_total);
