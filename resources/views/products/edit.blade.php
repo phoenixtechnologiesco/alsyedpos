@@ -30,17 +30,11 @@
                   <div class="row">
                     <div class=" col-6 ">
                       <div class="form-group">
-                        <label for="warehouse_id" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Warehouse")}}</label>
-                        <div class=" col-12">
-                          {{-- <input type="text" name="warehouse_id" class="form-control col-12" value="{{ old('warehouse_id', '') }}">
-                          @include('alerts.feedback', ['field' => 'warehouse_id']) --}}
-                          <select name="warehouse_id" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
-                            {{-- <option selected value="NULL">Select</option> --}}
-                          @foreach($warehouses as $single_warehouse)
-                            <option @if($single_warehouse->warehouse_id == $product[0]->warehouse_id) selected @endif value="{{ $single_warehouse->warehouse_id }}">{{ $single_warehouse->warehouse_name }}</option>
-                          @endforeach
-                          </select>
-                        </div>
+                        <label for="product_ref_no" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Reference No.")}}</label>
+                          <div class=" col-12">
+                            <input type="text" name="product_ref_no" class="form-control col-12" value="{{ $product[0]->product_ref_no }}">
+                            @include('alerts.feedback', ['field' => 'product_ref_no'])
+                          </div>
                       </div>
                     </div>
                     <div class=" col-6 ">
@@ -54,13 +48,19 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class=" col-6 ">
+                    <div class=" col-12 ">
                       <div class="form-group">
-                        <label for="product_ref_no" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Reference No.")}}</label>
-                          <div class=" col-12">
-                            <input type="text" name="product_ref_no" class="form-control col-12" value="{{ $product[0]->product_ref_no }}">
-                            @include('alerts.feedback', ['field' => 'product_ref_no'])
-                          </div>
+                        <label for="warehouse_id" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Warehouse")}}</label>
+                        <div class=" col-12">
+                          {{-- <input type="text" name="warehouse_id" class="form-control col-12" value="{{ old('warehouse_id', '') }}">
+                          @include('alerts.feedback', ['field' => 'warehouse_id']) --}}
+                          <select name="warehouse_id" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
+                            {{-- <option selected value="NULL">Select</option> --}}
+                          @foreach($warehouses as $single_warehouse)
+                            <option @if($single_warehouse->warehouse_id == $product[0]->warehouse_id) selected @endif value="{{ $single_warehouse->warehouse_id }}">{{ $single_warehouse->warehouse_name }}</option>
+                          @endforeach
+                          </select>
+                        </div>
                       </div>
                     </div>
                     {{-- <div class=" col-6 ">
@@ -162,7 +162,7 @@
                       <div class="form-group">
                         <label for="product_pieces_total" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Total Pieces")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_pieces_total" class="form-control col-12" value="{{ $product[0]->product_pieces_total }}">
+                            <input readonly type="number" name="product_pieces_total" class="form-control col-12" value="{{ $product[0]->product_pieces_total }}">
                             @include('alerts.feedback', ['field' => 'product_pieces_total'])
                           </div>
                       </div>
@@ -171,7 +171,7 @@
                       <div class="form-group">
                         <label for="product_pieces_available" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Available Pieces")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_pieces_available" class="form-control col-12" value="{{ $product[0]->product_pieces_available }}">
+                            <input readonly type="number" name="product_pieces_available" class="form-control col-12" value="{{ $product[0]->product_pieces_available }}">
                             @include('alerts.feedback', ['field' => 'product_pieces_available'])
                           </div>
                       </div>
@@ -182,7 +182,7 @@
                       <div class="form-group">
                         <label for="product_packets_total" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Total Packets")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_packets_total" class="form-control col-12" value="{{ $product[0]->product_packets_total }}">
+                            <input readonly type="number" name="product_packets_total" class="form-control col-12" value="{{ $product[0]->product_packets_total }}">
                             @include('alerts.feedback', ['field' => 'product_packets_total'])
                           </div>
                       </div>
@@ -191,7 +191,7 @@
                       <div class="form-group">
                         <label for="product_packets_available" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Available Packets")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_packets_available" class="form-control col-12" value="{{ $product[0]->product_packets_available }}">
+                            <input readonly type="number" name="product_packets_available" class="form-control col-12" value="{{ $product[0]->product_packets_available }}">
                             @include('alerts.feedback', ['field' => 'product_packets_available'])
                           </div>
                       </div>
@@ -202,7 +202,7 @@
                         <div class="form-group">
                           <label for="product_cartons_total" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Total Cartons")}}</label>
                             <div class=" col-12">
-                              <input type="number" name="product_cartons_total" class="form-control col-12" value="{{ $product[0]->product_cartons_total }}">
+                              <input readonly type="number" name="product_cartons_total" class="form-control col-12" value="{{ $product[0]->product_cartons_total }}">
                               @include('alerts.feedback', ['field' => 'product_cartons_total'])
                             </div>
                         </div>
@@ -211,7 +211,7 @@
                       <div class="form-group">
                         <label for="product_cartons_available" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Available Cartons")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_cartons_available" class="form-control col-12" value="{{ $product[0]->product_cartons_available }}">
+                            <input readonly type="number" name="product_cartons_available" class="form-control col-12" value="{{ $product[0]->product_cartons_available }}">
                             @include('alerts.feedback', ['field' => 'product_cartons_available'])
                           </div>
                       </div>
@@ -594,7 +594,7 @@
       // debug: true,
       // success: "valid",
       submitHandler: function () {
-        alert( 'submitted!' );
+        form.submit();
       }
     });
     $("#product_update").validate({

@@ -83,9 +83,9 @@
                             </div>
                           </div>
                         </div> --}}
-                        <div class="form-col-1">
+                        <div class="form-col-2">
                           <div class="form-group">
-                            <label for="supplier_status" class="form-col-12 control-label">{{__(" Cust Status")}}</label>
+                            <label for="supplier_status" class="form-col-12 control-label">{{__("Status")}}</label>
                               <div class="form-col-12">
                                 <input readonly type="text" name="supplier_status" id="supplier_status" class="form-control col-12" value="">
                                 @include('alerts.feedback', ['field' => 'supplier_status'])
@@ -94,7 +94,7 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="supplier_amount_recieved" class="form-col-12 control-label">{{__("Supplier Amount Recieve")}}</label>
+                            <label for="supplier_amount_recieved" class="form-col-12 control-label">{{__("Supplier Recieve")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -106,7 +106,7 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="supplier_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Dues")}}</label>
+                            <label for="supplier_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Supplier Dues")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -116,9 +116,23 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        <div class="form-last-col-3">
                           <div class="form-group">
-                            <label for="payment_method" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment Method")}}</label>
+                            <label for="payment_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Payment/Invoice Date")}}</label>
+                            <div class="form-col-12 input-group ">
+                              {{-- <div class="input-group-prepend">
+                                <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
+                              </div> --}}
+                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
+                              @include('alerts.feedback', ['field' => 'payment_invoice_date'])
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-first-col-3">
+                          <div class="form-group">
+                            <label for="payment_method" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Payment Method")}}</label>
                               <div class="form-col-12">
                                 {{-- <input readonly type="text" name="payment_method" class="form-control col-12" value="{{ old('payment_method', 'Cash') }}"> --}}
                                 <select required id="payment_method" name="payment_method" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Method...">
@@ -130,9 +144,9 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-last-col-2">
+                        <div class="form-col-2">
                           <div class="form-group">
-                            <label for="payment_type" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment Type")}}</label>
+                            <label for="payment_type" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Payment Type")}}</label>
                               <div class="form-col-12">
                                 {{-- <input readonly type="text" name="payment_type" class="form-control col-12" value="{{ old('payment_type', 'Cash') }}"> --}}
                                 <select required id="payment_type" name="payment_type" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Type...">
@@ -143,32 +157,11 @@
                               </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-first-col-2">
+                        <div class="form-col-3">
                           <div class="form-group">
-                            <label for="payment_cheque_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque #")}}</label>
-                            <div class="form-col-12">
-                              <input type="text" name="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
-                              @include('alerts.feedback', ['field' => 'payment_cheque_no'])
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-col-2">
-                          <div class="form-group">
-                            <label for="payment_cheque_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque Date")}}</label>
-                            <div class="form-col-12">
-                              <input type="date" name="payment_cheque_date" class="form-control form-col-12"  value="{{ old('payment_cheque_date', '') }}">
-                              @include('alerts.feedback', ['field' => 'payment_cheque_date'])
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-col-2">
-                          <div class="form-group">
-                            <label for="payment_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Invoice ID")}}</label>
+                            <label for="payment_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Invoice No.")}}</label>
                               <div class="form-col-12">
                                 <div class="myrow">
-                                  {{-- <div class="col-1"></div> --}}
                                   <input type="text" name="payment_invoice_id" class="form-control form-col-10" value="{{ old('payment_invoice_id', '') }}">
                                   <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
                                     <i class="fa fa-file-text-o"></i>
@@ -178,21 +171,18 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        {{-- <div class="form-col-2">
                           <div class="form-group">
-                            <label for="payment_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment/Invoice Date")}}</label>
-                            <div class="form-col-12 input-group ">
-                              {{-- <div class="input-group-prepend">
-                                <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
-                              </div> --}}
-                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
-                              @include('alerts.feedback', ['field' => 'payment_invoice_date'])
+                            <label for="payment_cheque_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Cheque Date")}}</label>
+                            <div class="form-col-12">
+                              <input type="date" name="payment_cheque_date" class="form-control form-col-12"  value="{{ old('payment_cheque_date', '') }}">
+                              @include('alerts.feedback', ['field' => 'payment_cheque_date'])
                             </div>
                           </div>
-                        </div>
+                        </div> --}}
                         <div class="form-last-col-4">
                           <div class="form-group">
-                            <label for="payment_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
+                            <label for="payment_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Upload Document")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text barcode">
@@ -205,7 +195,7 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="form-first-col-2">
+                        <div class="form-first-col-3">
                           <div class="form-group">
                             <label for="payment_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Paid Amount")}}</label>
                             <div class="form-col-12 input-group">
@@ -226,7 +216,16 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-last-col-8">
+                        <div class="form-col-2">
+                          <div class="form-group">
+                            <label for="payment_cheque_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque #")}}</label>
+                            <div class="form-col-12">
+                              <input type="text" name="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
+                              @include('alerts.feedback', ['field' => 'payment_cheque_no'])
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-last-col-5">
                           <div class="form-group">
                             <label for="payment_note" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Remarks")}}</label>
                             <div class="form-col-12 input-group ">

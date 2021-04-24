@@ -43,17 +43,11 @@
                   <div class="row">
                     <div class=" col-6 ">
                       <div class="form-group">
-                        <label for="warehouse_id" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Warehouse")}}</label>
-                        <div class=" col-12">
-                          {{-- <input type="text" name="warehouse_id" class="form-control col-12" value="{{ old('warehouse_id', '') }}">
-                          @include('alerts.feedback', ['field' => 'warehouse_id']) --}}
-                          <select name="warehouse_id" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
-                            {{-- <option selected value="NULL">Select</option> --}}
-                          @foreach($warehouses as $single_warehouse)
-                            <option value="{{ $single_warehouse->warehouse_id }}">{{ $single_warehouse->warehouse_name }}</option>
-                          @endforeach
-                          </select>
-                        </div>
+                        <label for="product_ref_no" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Reference No.")}}</label>
+                          <div class=" col-12">
+                            <input type="text" name="product_ref_no" class="form-control col-12" value="{{ old('product_ref_no', '') }}" required >
+                            @include('alerts.feedback', ['field' => 'product_ref_no'])
+                          </div>
                       </div>
                     </div>
                     <div class=" col-6 ">
@@ -67,13 +61,19 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class=" col-6 ">
+                    <div class=" col-12">
                       <div class="form-group">
-                        <label for="product_ref_no" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Reference No.")}}</label>
-                          <div class=" col-12">
-                            <input type="text" name="product_ref_no" class="form-control col-12" value="{{ old('product_ref_no', '') }}" required >
-                            @include('alerts.feedback', ['field' => 'product_ref_no'])
-                          </div>
+                        <label for="warehouse_id" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Warehouse")}}</label>
+                        <div class=" col-12">
+                          {{-- <input type="text" name="warehouse_id" class="form-control col-12" value="{{ old('warehouse_id', '') }}">
+                          @include('alerts.feedback', ['field' => 'warehouse_id']) --}}
+                          <select name="warehouse_id" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
+                            {{-- <option selected value="NULL">Select</option> --}}
+                          @foreach($warehouses as $single_warehouse)
+                            <option value="{{ $single_warehouse->warehouse_id }}">{{ $single_warehouse->warehouse_name }}</option>
+                          @endforeach
+                          </select>
+                        </div>
                       </div>
                     </div>
                     {{-- <div class=" col-6 ">
@@ -159,7 +159,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row">
+                  {{-- <div class="row">
                     <div class=" col-6 ">
                       <div class="form-group">
                         <label for="product_pieces_total" class=" col-8 control-label">&nbsp;&nbsp;{{__(" Total Pieces")}}</label>
@@ -218,7 +218,7 @@
                           </div>
                       </div>
                     </div>
-                  </div>
+                  </div> --}}
                   <div class="row">
                     <div class=" col-6 ">
                         <div class="form-group">

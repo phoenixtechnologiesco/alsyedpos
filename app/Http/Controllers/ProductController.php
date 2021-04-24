@@ -163,23 +163,49 @@ class ProductController extends Controller
         //    return response()->json("Fields Required", 400);
            return redirect()->back()->withErrors($validate);
         }
+
+        $quantity_total = $request->product_quantity_total;
+        $quantity_available = $request->product_quantity_available;
+        $piece_per_packet = $request->product_piece_per_packet;
+        $packet_per_carton = $request->product_packet_per_carton;
+        $piece_per_carton = $request->product_piece_per_carton;
+
+        $pieces_total = $quantity_total;
+        $pieces_available = $quantity_available;
+        if($piece_per_packet !== 0){
+            $packets_total = $quantity_total/$piece_per_packet;
+            $packets_available = $quantity_available/$piece_per_packet;
+        }else{
+            $packets_total = 0;
+            $packets_available = 0;
+        }
+        if($piece_per_carton !== 0){
+            $cartons_total = $quantity_total/$piece_per_carton;
+            $cartons_available = $quantity_available/$piece_per_carton;
+        }
+        else{
+            $cartons_total = 0;
+            $cartons_available = 0;
+        }        
+        
+
         $product_adds = array(
             'product_ref_no'                => $request->product_ref_no,
             'warehouse_id'                  => $request->warehouse_id,
             'product_name'                  => $request->product_name,
             'product_company'               => $request->product_company,
             'product_brand'                 => $request->product_brand,
-            'product_piece_per_packet'      => $request->product_piece_per_packet,
-            'product_packet_per_carton'     => $request->product_packet_per_carton,
-            'product_piece_per_carton'      => $request->product_piece_per_carton,
-            'product_pieces_total'          => $request->product_pieces_total,
-            'product_packets_total'         => $request->product_packets_total,
-            'product_cartons_total'         => $request->product_cartons_total,
-            'product_pieces_available'      => $request->product_pieces_available,
-            'product_packets_available'     => $request->product_packets_available,
-            'product_cartons_available'     => $request->product_cartons_available,
-            'product_quantity_total'        => $request->product_quantity_total,
-            'product_quantity_available'    => $request->product_quantity_available,
+            'product_piece_per_packet'      => $piece_per_packet,
+            'product_packet_per_carton'     => $packet_per_carton,
+            'product_piece_per_carton'      => $piece_per_carton,
+            'product_pieces_total'          => $pieces_total,
+            'product_packets_total'         => $packets_total,
+            'product_cartons_total'         => $cartons_total,
+            'product_pieces_available'      => $pieces_available,
+            'product_packets_available'     => $packets_available,
+            'product_cartons_available'     => $cartons_available,
+            'product_quantity_total'        => $quantity_total,
+            'product_quantity_available'    => $quantity_available,
             'product_quantity_damage'       => $request->product_quantity_damage,
             'product_alert_quantity'        => $request->product_alert_quantity,
             'product_trade_price_piece'     => $request->product_trade_price_piece,
@@ -301,23 +327,48 @@ class ProductController extends Controller
         //    return response()->json("Fields Required", 400);
            return redirect()->back()->withErrors($validate);
         }
+
+        $quantity_total = $request->product_quantity_total;
+        $quantity_available = $request->product_quantity_available;
+        $piece_per_packet = $request->product_piece_per_packet;
+        $packet_per_carton = $request->product_packet_per_carton;
+        $piece_per_carton = $request->product_piece_per_carton;
+
+        $pieces_total = $quantity_total;
+        $pieces_available = $quantity_available;
+        if($piece_per_packet !== 0){
+            $packets_total = $quantity_total/$piece_per_packet;
+            $packets_available = $quantity_available/$piece_per_packet;
+        }else{
+            $packets_total = 0;
+            $packets_available = 0;
+        }
+        if($piece_per_carton !== 0){
+            $cartons_total = $quantity_total/$piece_per_carton;
+            $cartons_available = $quantity_available/$piece_per_carton;
+        }
+        else{
+            $cartons_total = 0;
+            $cartons_available = 0;
+        }
+
         $product_edits = array(
             'product_ref_no'                => $request->product_ref_no,
             'warehouse_id'                  => $request->warehouse_id,
             'product_name'                  => $request->product_name,
             'product_company'               => $request->product_company,
             'product_brand'                 => $request->product_brand,
-            'product_piece_per_packet'      => $request->product_piece_per_packet,
-            'product_packet_per_carton'     => $request->product_packet_per_carton,
-            'product_piece_per_carton'      => $request->product_piece_per_carton,
-            'product_pieces_total'          => $request->product_pieces_total,
-            'product_packets_total'         => $request->product_packets_total,
-            'product_cartons_total'         => $request->product_cartons_total,
-            'product_pieces_available'      => $request->product_pieces_available,
-            'product_packets_available'     => $request->product_packets_available,
-            'product_cartons_available'     => $request->product_cartons_available,
-            'product_quantity_total'        => $request->product_quantity_total,
-            'product_quantity_available'    => $request->product_quantity_available,
+            'product_piece_per_packet'      => $piece_per_packet,
+            'product_packet_per_carton'     => $packet_per_carton,
+            'product_piece_per_carton'      => $piece_per_carton,
+            'product_pieces_total'          => $pieces_total,
+            'product_packets_total'         => $packets_total,
+            'product_cartons_total'         => $cartons_total,
+            'product_pieces_available'      => $pieces_available,
+            'product_packets_available'     => $packets_available,
+            'product_cartons_available'     => $cartons_available,
+            'product_quantity_total'        => $quantity_total,
+            'product_quantity_available'    => $quantity_available,
             'product_quantity_damage'       => $request->product_quantity_damage,
             'product_alert_quantity'        => $request->product_alert_quantity,
             'product_trade_price_piece'     => $request->product_trade_price_piece,
