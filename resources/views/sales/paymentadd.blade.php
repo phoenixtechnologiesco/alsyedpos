@@ -10,7 +10,7 @@
             <h5 class="title">{{__(" Add Payment")}}</h5>
           </div>
           <div class="card-body-custom">
-            <form method="post" action="{{ route('sale.paymentadd') }}" autocomplete="off" enctype="multipart/form-data">
+            <form id="payment_store" method="post" action="{{ route('sale.paymentadd') }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @method('post')
               @include('alerts.success')
@@ -30,7 +30,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="row">
-                        <div class="form-first-col-3">
+                        <div class="form-first-col-4">
                           <div class="form-group">
                             <label for="customer_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
                             <div class="form-col-12 input-group ">
@@ -40,9 +40,9 @@
                                 </span>
                               </div>
                               {{-- <div class="input-group pos"> --}}
-                                <input type="text" name="customer_code" id="customercodesearch" placeholder="Search Customer by code" class="form-control col-12" value="{{ old('customer_code') }}" />
-                                <input readonly type="hidden" name="payment_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="" />
-                                <input readonly type="hidden" name="payment_customer_id" id="customer_id" class="form-control col-12" value="" />
+                                <input type="text" id="customercodesearch" name="customer_code" placeholder="Search Customer by code" class="form-control col-12" value="{{ old('customer_code') }}" />
+                                <input readonly type="hidden" name="payment_customer_name" id="customer_name" placeholder="Customer Name" class="form-control col-12" value="{{ old('customer_name') }}" />
+                                <input readonly type="hidden" name="payment_customer_id" id="customer_id" class="form-control col-12" value="{{ old('customer_id') }}" />
  
                                 {{-- <input type="hidden" name="customer_code" id="allcustomers" class="form-control col-12"  /> --}}
                                   <?php $snameArray = []; $snamecodeArray = []; ?>
@@ -86,7 +86,7 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        <div class="form-col-3">
                           <div class="form-group">
                             <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Customer Paid")}}</label>
                             <div class="form-col-12 input-group">
@@ -98,7 +98,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        <div class="form-last-col-3">
                           <div class="form-group">
                             <label for="customer_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Customer Dues")}}</label>
                             <div class="form-col-12 input-group">
@@ -127,18 +127,6 @@
                               </div>
                           </div>
                         </div> --}}
-                        <div class="form-last-col-3">
-                          <div class="form-group">
-                            <label for="payment_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Payment/Invoice Date")}}</label>
-                            <div class="form-col-12 input-group ">
-                              {{-- <div class="input-group-prepend">
-                                <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
-                              </div> --}}
-                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
-                              @include('alerts.feedback', ['field' => 'payment_invoice_date'])
-                            </div>
-                          </div>
-                        </div>
                       </div>
                       <div class="row">
                         <div class="form-first-col-3">
@@ -155,7 +143,7 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        <div class="form-col-3">
                           <div class="form-group">
                             <label for="payment_type" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Payment Type")}}</label>
                               <div class="form-col-12">
@@ -170,19 +158,62 @@
                         </div>
                         <div class="form-col-3">
                           <div class="form-group">
-                            <label for="payment_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Sale Invoice No.")}}</label>
+                            <label for="payment_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Payment Invoice No.")}}</label>
                               <div class="form-col-12">
                                 <div class="myrow">
-                                  <input type="text" name="payment_invoice_id" class="form-control form-col-10" value="{{ old('payment_invoice_id', '') }}">
-                                  <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
-                                    <i class="fa fa-file-text-o"></i>
-                                  </button>
+                                  <input type="text" id="payment_invoice_id" name="payment_invoice_id" class="form-control form-col-12" value="{{ old('payment_invoice_id', $payment_invoice_id) }}">
                                 </div>
                                 @include('alerts.feedback', ['field' => 'payment_invoice_id'])
                               </div>
                           </div>
                         </div>
-                        <div class="form-last-col-4">
+                        <div class="form-last-col-3">
+                          <div class="form-group">
+                            <label for="payment_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Payment/Invoice Date")}}</label>
+                            <div class="form-col-12 input-group ">
+                              {{-- <div class="input-group-prepend">
+                                <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
+                              </div> --}}
+                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
+                              @include('alerts.feedback', ['field' => 'payment_invoice_date'])
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-first-col-3">
+                          <div class="form-group">
+                            <label for="payment_cheque_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Cheque No.")}}</label>
+                            <div class="form-col-12">
+                              <input type="text" name="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
+                              @include('alerts.feedback', ['field' => 'payment_cheque_no'])
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-col-3">
+                          <div class="form-group">
+                            <label for="payment_cheque_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Cheque Date")}}</label>
+                            <div class="form-col-12">
+                              <input type="text" name="payment_cheque_date" class="form-control form-col-12"  value="{{ old('payment_cheque_date', '') }}">
+                              @include('alerts.feedback', ['field' => 'payment_cheque_date'])
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-col-3">
+                          <div class="form-group">
+                            <label for="sale_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Sale Invoice No.")}}</label>
+                              <div class="form-col-12">
+                                <div class="myrow">
+                                  <input type="text" id="sale_invoice_id" name="sale_invoice_id" class="form-control form-col-12" value="{{ old('sale_invoice_id', '') }}">
+                                  <!-- <button type="button" href="{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
+                                    <i class="fa fa-file-text-o"></i>
+                                  </button> -->
+                                </div>
+                                @include('alerts.feedback', ['field' => 'sale_invoice_id'])
+                              </div>
+                          </div>
+                        </div>
+                        <div class="form-last-col-3">
                           <div class="form-group">
                             <label for="payment_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Upload Document")}}</label>
                             <div class="form-col-12 input-group">
@@ -204,21 +235,12 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input type="text" name="payment_amount_recieved" class="form-control form-col-12"  value="{{ old('payment_amount_recieved', '0') }}">
+                              <input type="number" id="payment_amount_recieved" name="payment_amount_recieved" class="form-control form-col-12"  value="{{ old('payment_amount_recieved', '0') }}">
                               @include('alerts.feedback', ['field' => 'payment_amount_recieved'])
                             </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
-                          <div class="form-group">
-                            <label for="payment_cheque_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Cheque #")}}</label>
-                            <div class="form-col-12">
-                              <input type="text" name="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
-                              @include('alerts.feedback', ['field' => 'payment_cheque_no'])
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-last-col-7">
+                        <div class="form-last-col-9">
                           <div class="form-group">
                             <label for="payment_note" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Remarks")}}</label>
                             <div class="form-col-12 input-group ">
@@ -240,7 +262,7 @@
                   <a type="button" href="{{ URL::previous() }}" class="btn btn-secondary btn-round ">{{__('Back')}}</a>
                 </div>
                 <div class=" form-col-6">
-                  <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
+                  <button type="submit" id="save-btn" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
                 </div>
               </div>
               <hr class="half-rule"/>
@@ -255,7 +277,64 @@
 
 @section('javascript')
 
+
 <script type="text/javascript">
+
+  $(function (){
+    $("#payment_store").validate({
+      rules: {
+        customer_code: 'required',
+        payment_invoice_date: 'required',
+        payment_method: 'required',
+        product_type: 'required',
+        // payment_invoice_id: 'required',
+        payment_amount_recieved: 'required',
+      },
+      messages: {
+        customer_code:  'Please Enter Customer Name',
+        payment_invoice_date:  'Please Enter Payment Date',
+        payment_method:  'Please Enter Payment Method',
+        payment_type:  'Please Enter Payment Type',
+        // payment_invoice_id: 'Please Enter Payment Invoice No.',
+        payment_amount_recieved:  'Please Enter Payment Amount Recieved',
+      },
+      errorElement: 'em',
+      errorPlacement: function ( error, element ) {
+        error.addClass( 'invalid-feedback' );
+        if( element.prop( 'type' ) === 'checkbox' ) {
+          error.insertAfter( element.parent( 'label' ) );
+        }
+        else {
+          error.insertAfter( element );
+        }
+      },
+      // errorElement: 'span',
+      // errorPlacement: function (error, element) {
+      //   error.addClass('invalid-feedback');
+      //   element.closest('.form-group').append(error);
+      // },
+      errorClass: "error fail-alert",
+      errorClass: "invalid",
+      // validClass: "valid success-alert",
+      // validClass: "success"
+      highlight: function ( element, errorClass, validClass ) {
+        $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $( element ).removeClass( 'is-invalid' );
+      },
+      // submitHandler: function(form) {
+      //   form.submit();
+      // },
+    });
+    $.validator.setDefaults( {
+      // debug: true,
+      // success: "valid",
+      submitHandler: function (form) {
+        form.submit();
+      }
+    });
+  });
 
   var customersnames_array = <?php echo json_encode($snameArray); ?>;
   var customersnamescodes_array = <?php echo json_encode($snamecodeArray); ?>;

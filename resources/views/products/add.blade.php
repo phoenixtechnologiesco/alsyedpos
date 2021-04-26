@@ -746,7 +746,7 @@
 </script>
 
 <script type="text/javascript">
-  $(document).ready(function (){
+  $(function (){
     $.validator.setDefaults( {
       // debug: true,
       // success: "valid",

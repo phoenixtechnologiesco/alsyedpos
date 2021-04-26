@@ -36,6 +36,7 @@ class CreatePaymentsTable extends Migration
             $table->text('payment_note')->nullable()->nullable();
             $table->string('payment_status');// 'paid', 'due', 'partial', 'overdue'
             // $table->integer('parent_id');
+            $table->string('sale_purch_invoice_id')->index()->nullable();
             $table->string('payment_invoice_id')->index()->nullable();
             $table->dateTime('payment_invoice_date')->nullable();
             // $table->dateTime('payment_date');

@@ -223,14 +223,14 @@
                 </thead>
                 <tbody>
                     <tr class="row">
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$customer_name}}</td>
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$customer_data->customer_name}}</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                         <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$payment_data->payment_method}}</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                         {{-- {{number_format((float)($payment_product->payment_product_sub_total / $payment_product->payment_quantity_total), 2, '.', '')}} --}}
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$payment_data->payment_method}}</td>
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$payment_data->payment_cheque_no}}</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">|{{$payment_data->payment_amount}}</td>
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">|{{$payment_data->payment_amount_paid}}</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                     </tr>
                 </tbody>
@@ -242,9 +242,9 @@
                             {{-- {{number_format((integer)$total_payment_quantity)}}{{__('pcs')}} --}}
                         </th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
-                        <th colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((float)$payment_data->payment_discount, 2, '.', '')}}</th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left;"></th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
-                        <th colspan="2" class="mycol form-col-2" style="text-align:left;">|{{number_format((float)$payment_data->payment_grandtotal_price, 2, '.', '')}}|</th>
+                        <th colspan="2" class="mycol form-col-2" style="text-align:left;">|{{number_format((float)$payment_data->payment_amount_paid, 2, '.', '')}}|</th>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                     </tr>
                     {{-- @if($payment_data->payment_discount)
@@ -255,7 +255,7 @@
                     @endif --}}
                     <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Previous Balance')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left;">{{number_format((float)$customer_data->customer_balance_dues-$payment_data->payment_grandtotal_price, 2, '.', '')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left;">{{number_format((float)$customer_data->customer_balance_dues+$payment_data->payment_amount_paid, 2, '.', '')}}</th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                     <tr>
@@ -270,7 +270,7 @@
                     </tr>
                     <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Payment Dues')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)($customer_data->customer_balance_dues)/*+($payment_data->payment_amount_dues)*/-(float)$payment_data->payment_amount_paid, 2, '.', '')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)($customer_data->customer_balance_dues)/*+($payment_data->payment_amount_dues)-(float)$payment_data->payment_amount_paid, 2, '.', '')*/}}</th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
                 </tfoot>

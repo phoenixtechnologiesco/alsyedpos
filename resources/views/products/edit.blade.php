@@ -589,11 +589,11 @@
 </script>
 
 <script type="text/javascript">
-  $(document).ready(function (){
+  $(function (){
     $.validator.setDefaults( {
       // debug: true,
       // success: "valid",
-      submitHandler: function () {
+      submitHandler: function (form) {
         form.submit();
       }
     });
@@ -645,7 +645,7 @@
         $( element ).addClass( 'is-invalid' ).removeClass( 'is-valid' );
       },
       unhighlight: function (element, errorClass, validClass) {
-        $( element ).addClass( 'is-valid' ).removeClass( 'is-invalid' );
+        $( element ).removeClass( 'is-invalid' );
       },
       // submitHandler: function(form) {
       //   form.submit();

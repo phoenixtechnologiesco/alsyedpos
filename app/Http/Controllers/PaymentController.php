@@ -9,6 +9,8 @@ use App\Models\Purchase;
 use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\Product;
+use App\Models\User;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -90,7 +92,14 @@ class PaymentController extends Controller
         $customers = Customer::where('status_id', 1)->get();
         $payments = Payment::get();
 
-        return view('sales.paymentadd', compact('sales', 'customers', 'payments') );
+        $lastpayment = DB::table('payments')->orderBy('payment_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastpayment->payment_id+1;
+        $lastid = substr($lastid, -8);
+        $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
+        $year = (string)Carbon::now()->year;
+        $payment_invoice_id = 'payment-'.$year.'-'.$lastid;
+
+        return view('sales.paymentadd', compact('sales', 'customers', 'payments', 'payment_invoice_id') );
         // return view('sales.payment', ['sales' => $sales, 'customers' => $customers, 'payments' => $payments]);
     }
 
@@ -106,7 +115,14 @@ class PaymentController extends Controller
         $suppliers = Supplier::where('status_id', 1)->get();
         $payments = Payment::get();
 
-        return view('purchases.paymentadd', compact('purchases', 'suppliers', 'payments') );
+        $lastpayment = DB::table('payments')->orderBy('payment_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastpayment->payment_id+1;
+        $lastid = substr($lastid, -8);
+        $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
+        $year = (string)Carbon::now()->year;
+        $payment_invoice_id = 'payment-'.$year.'-'.$lastid;
+
+        return view('purchases.paymentadd', compact('purchases', 'suppliers', 'payments', 'payment_invoice_id') );
         // return view('purchases.payment', ['purchases' => $purchases, 'suppliers' => $suppliers, 'payments' => $payments]);
     }
 
@@ -122,18 +138,19 @@ class PaymentController extends Controller
         $validate = Validator::make($request->all(), [ 
             'payment_id'                 => '',
             'payment_ref_no'             => '',
-            'payment_type'               => '',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
-            'customer_id'                => '',
-            'supplier_id'                => '',
+            'payment_type'               => 'required',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
+            'payment_customer_id'        => 'required',
             'payment_method'             => 'required',//'cash', 'credit', 'deposit', 'card', 'cheque', 'other'
-            'payment_amount_recieved'        => 'required',
+            'payment_amount_recieved'    => 'required',
             'payment_amount_balance'     => '',
             'payment_cheque_no'          => '',
+            'payment_cheque_date'        => '',
             'account_id'                 => '',
             'payment_note'               => '',
             'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
-            'payment_invoice_no'         => '',
-            'payment_invoice_date'       => '',
+            'sale_invoice_id'            => '',
+            'payment_invoice_id'         => '',
+            'payment_invoice_date'       => 'required',
             'payment_document'           => '',
             'created_by'                 => '',
         ]);
@@ -143,8 +160,8 @@ class PaymentController extends Controller
 
         }
         $payment_ref_no = $random = Str::random(8); //str_random
-        $lastpayment = DB::table('sales')->orderBy('sale_id', 'desc')->limit(1)->first();
-        $lastid = (string)$lastpayment->sale_id+1;
+        $lastpayment = DB::table('payments')->orderBy('payment_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastpayment->payment_id+1;
         $lastid = substr($lastid, -8);
         $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
         $year = (string)Carbon::now()->year;
@@ -157,17 +174,35 @@ class PaymentController extends Controller
         $customer_amount_paid = $request->customer_amount_paid;
         $customer_amount_dues = $request->customer_amount_dues;
 
-
+        $sale_purch_invoice_id = $request->sale_invoice_id;
+        $searchsale = DB::table('sales')->where('sale_invoice_id', '=', $sale_purch_invoice_id)->first();
+        
         if($payment_amount_recieved > $customer_amount_dues){
+            $sale_amount_paid = $searchsale->sale_amount_paid + $payment_amount_recieved;
+            $sale_amount_dues = $searchsale->sale_amount_dues - $payment_amount_recieved;
+
             $customer_amount_paid = $customer_amount_paid + $payment_amount_recieved;
             $customer_amount_dues = $customer_amount_dues - $payment_amount_recieved;
+
+            // $payment_amount_paid = $payment_amount_paid - $payment_amount_recieved;
             // $payment_amount_balance = $payment_amount_balance - $payment_amount_recieved;
         }
         else{
+            $sale_amount_paid = $searchsale->sale_amount_paid + $payment_amount_recieved;
+            $sale_amount_dues = $searchsale->sale_amount_dues - $payment_amount_recieved;
+
             $customer_amount_paid = $customer_amount_paid + $payment_amount_recieved;
             $customer_amount_dues = $customer_amount_dues - $payment_amount_recieved;
-            // // $payment_amount_balance = $payment_amount_balance - $payment_amount_recieved;
+
+            // $payment_amount_paid = $payment_amount_paid - $payment_amount_recieved;
+            // $payment_amount_balance = $payment_amount_balance - $payment_amount_recieved;
         }
+
+        $sale_edits = array(
+            'sale_amount_paid' => $sale_amount_paid,
+            'sale_amount_dues' => $sale_amount_dues,
+        );
+        $update_sale = DB::table('sales')->where('sale_invoice_id', '=', $sale_purch_invoice_id)->update($sale_edits);
 
         $customer_id = $request->payment_customer_id;
         // $customer_name = $request->payment_customer_name;
@@ -179,11 +214,10 @@ class PaymentController extends Controller
         );
 
         $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
-        $sale = DB::table('sales')->where('sale_invoice_id','=', $request->payment_invoice_id)->first();
+        $sale_data = DB::table('sales')->where('sale_invoice_id','=', $request->sale_invoice_id)->first();
         
-        // dd($sale);
-        if($sale !== NULL){
-            $sale_id = $sale->sale_id;
+        if($sale_data !== NULL){
+            $sale_id = $sale_data->sale_id;
         }
         else{
             $sale_id = NULL;
@@ -194,7 +228,6 @@ class PaymentController extends Controller
             'payment_type'             => $request->payment_type,
             'sale_id'                  => $sale_id,
             'payment_customer_id'      => $request->payment_customer_id,
-            // 'payment_supplier_id'      => $request->payment_supplier_id,
             // 'payment_status'           => $request->payment_status,
             'payment_status'           => 'done',
             'payment_note'             => $request->payment_note,
@@ -206,6 +239,7 @@ class PaymentController extends Controller
             'payment_cheque_no'        => $request->payment_cheque_no,
             // 'payment_document'         => $request->payment_document,
             // 'account_id'               => $request->account_id,
+            'sale_purch_invoice_id'    => $sale_purch_invoice_id,
             'payment_invoice_id'       => $payment_invoice_id,
             'payment_invoice_date'     => $request->payment_invoice_date,
             // 'payment_date'             => $request->payment_date,
@@ -235,8 +269,16 @@ class PaymentController extends Controller
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('payments')->insertGetId($payment_adds)
         
-        Session::flash('message' , 'Payment Created Successfully');
-        return redirect()->back();
+        $user_data = User::where('id', $sale_data->sale_added_by)->first();
+        $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
+        $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
+        $payment_data = Payment::where('payment_id', $id)->first();
+
+        return view('sales.paymentinvoice', compact('user_data', 'warehouse_data', 'customer_data', 'payment_data',));
+
+        // Session::flash('message' , 'Payment Created Successfully');
+        // // return redirect('sale/payment');
+        // return redirect()->back();
         // if($save){
 		// 	return response()->json(['data' => $payment_adds, 'message' => 'Payment Created Successfully'], 200);
 		// }else{
@@ -250,18 +292,19 @@ class PaymentController extends Controller
         $validate = Validator::make($request->all(), [ 
             'payment_id'                 => '',
             'payment_ref_no'             => '',
-            'payment_type'               => '',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
-            'customer_id'                => '',
-            'supplier_id'                => '',
+            'payment_type'               => 'required',//'initial/opening_balance', 'opening_stock', 'credit', 'debit', 'deposit', 'transfer', 'refund', 'sale_return', 'purchase_return'
+            'payment_supplier_id'        => 'required',
             'payment_method'             => 'required',//'cash', 'credit', 'deposit', 'card', 'cheque', 'other'
             'payment_amount_paid'        => 'required',
             'payment_amount_balance'     => '',
             'payment_cheque_no'          => '',
+            'payment_cheque_date'        => '',
             'account_id'                 => '',
             'payment_note'               => '',
             'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
-            'payment_invoice_no'         => '',
-            'payment_invoice_date'       => '',
+            'purchase_invoice_id'        => '',
+            'payment_invoice_id'         => '',
+            'payment_invoice_date'       => 'required',
             'payment_document'           => '',
             'created_by'                 => '',
         ]);
@@ -271,8 +314,8 @@ class PaymentController extends Controller
 
         }
         $payment_ref_no = $random = Str::random(8); //str_random
-        $lastpayment = DB::table('purchases')->orderBy('purchase_id', 'desc')->limit(1)->first();
-        $lastid = (string)$lastpayment->purchase_id+1;
+        $lastpayment = DB::table('payments')->orderBy('payment_id', 'desc')->limit(1)->first();
+        $lastid = (string)$lastpayment->payment_id+1;
         $lastid = substr($lastid, -8);
         $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
         $year = (string)Carbon::now()->year;
@@ -284,16 +327,33 @@ class PaymentController extends Controller
         $supplier_amount_recieved = $request->supplier_amount_paid;
         $supplier_amount_dues = $request->supplier_amount_dues;
 
+        $sale_purch_invoice_id = $request->purchase_invoice_id;
+        $searchpurchase = DB::table('purchases')->where('purchase_invoice_id', $sale_purch_invoice_id)->first();
+
+        // dd($searchpurchase);
         if($payment_amount_paid > $supplier_amount_dues){
+            $purchase_amount_recieved = $searchpurchase->purchase_amount_paid + $payment_amount_paid;
+            $purchase_amount_dues = $searchpurchase->purchase_amount_dues - $payment_amount_paid;
+
             $supplier_amount_recieved = $supplier_amount_recieved + $payment_amount_paid;
             $supplier_amount_dues = $supplier_amount_dues - $payment_amount_paid;
             // $payment_amount_balance = $payment_amount_balance - $payment_amount_paid;
         }
         else{
+            $purchase_amount_recieved = $searchpurchase->purchase_amount_paid + $payment_amount_paid;
+            $purchase_amount_dues = $searchpurchase->purchase_amount_dues - $payment_amount_paid;
+
             $supplier_amount_recieved = $supplier_amount_recieved + $payment_amount_paid;
             $supplier_amount_dues = $supplier_amount_dues - $payment_amount_paid;
             // // $payment_amount_balance = $payment_amount_balance - $payment_amount_paid;
         }
+
+        $purchase_edits = array(
+            'purchase_amount_paid' => $purchase_amount_recieved,
+            'purchase_amount_dues' => $purchase_amount_dues,
+        );
+        $update_purchase = DB::table('purchases')->where('purchase_invoice_id', '=', $sale_purch_invoice_id)->update($purchase_edits);
+
 
         $supplier_id = $request->payment_supplier_id;
         // $supplier_name = $request->payment_supplier_name;
@@ -305,10 +365,11 @@ class PaymentController extends Controller
         );
 
         $update = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->update($supplier_edits);
-
-        $purchase = DB::table('purchases')->where('purchase_invoice_id','=', $request->payment_invoice_id)->first();
-        if($purchase !== NULL){
-            $purchase_id = $purchase->purchase_id;
+        $purchase_data = DB::table('purchases')->where('purchase_invoice_id','=', $request->purchase_invoice_id)->first();
+        
+        // dd($purchase_data);
+        if($purchase_data !== NULL){
+            $purchase_id = $purchase_data->purchase_id;
         }
         else{
             $purchase_id = NULL;
@@ -328,8 +389,10 @@ class PaymentController extends Controller
             'supplier_amount_dues'     => $supplier_amount_dues,
             'payment_method'           => $request->payment_method,
             'payment_cheque_no'        => $request->payment_cheque_no,
+            'payment_cheque_date'      => $request->payment_cheque_date,
             // 'payment_document'         => $request->payment_document,
             // 'account_id'               => $request->account_id,
+            'sale_purch_invoice_id'    => $sale_purch_invoice_id,
             'payment_invoice_id'       => $payment_invoice_id,
             'payment_invoice_date'     => $request->payment_invoice_date,
             // 'payment_date'             => $request->payment_date,
@@ -356,11 +419,20 @@ class PaymentController extends Controller
         }
 
         $save = DB::table('payments')->insert($payment_adds);
+        // dd($save);
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('payments')->insertGetId($payment_adds)
         
-        Session::flash('message' , 'Payment Created Successfully');
-        return redirect()->back();
+        $user_data = User::where('id', $purchase_data->purchase_created_by)->first();
+        $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
+        $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
+        $payment_data = Payment::where('payment_id', $id)->first();
+
+        return view('purchases.paymentinvoice', compact('user_data', 'warehouse_data', 'supplier_data', 'payment_data',));
+
+        // Session::flash('message' , 'Payment Created Successfully');
+        // return redirect('purchase/payment');
+        // // return redirect()->back();
         // if($save){
 		// 	return response()->json(['data' => $payment_adds, 'message' => 'Payment Created Successfully'], 200);
 		// }else{
