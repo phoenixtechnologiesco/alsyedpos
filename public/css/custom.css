@@ -357,7 +357,7 @@
     display: flex;
     -ms-flex-direction: column;
         flex-direction: column;
-    width: 1000px;
+    width: 800px;
     height: 800px;
     pointer-events: auto;
     background-clip: padding-box;

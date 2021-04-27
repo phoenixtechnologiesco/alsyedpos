@@ -560,7 +560,7 @@
                               <div class=" col-12 ">
                                 <div class="form-group">
                                   <div class=" col-12">
-                                    <div class="table-responsive-sm" style="height:500px; overflow-x:hidden">
+                                    <div class="table-responsive-sm" style="height:500px; overflow-x:auto">
                                         <table id="productTable" class="table table-sm table-hover table-striped table-fixed table-bordered display compact order-column">
                                           <thead class="thead pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
                                             {{-- <tr>
@@ -946,7 +946,7 @@
     subtotal_amount = $('#purchase_total_price').val();
     total_discount = $('#purchase_discount').val();
     grandtotal_amount = $('#purchase_grandtotal_price').val();
-    // sale_amount_received = $('#sale_amount_received').val();
+    // purchase_amount_received = $('#purchase_amount_received').val();
 
     product_quantity = Number(product_pieces)+(product_packets*pieces_per_packet)+(product_cartons*pieces_per_carton);
 
@@ -967,19 +967,19 @@
       }
     });
 
-    $('#sale_products_barcode_i').val('');
+    $('#purchase_products_barcode_i').val('');
     $('#product_name_i').val('');
     $('#product_code_i').val('');
     $('#product_id_i').val('');
-    $('#sale_products_pieces_i').val(0);
-    $('#sale_products_packets_i').val(0);
-    $('#sale_products_cartons_i').val(0);
-    $('#sale_pieces_per_packet_i').val(0);
-    $('#sale_packets_per_carton_i').val(0);
-    $('#sale_pieces_per_carton_i').val(0);
-    $('#sale_products_unit_price_i').val(0);
-    $('#sale_products_discount_i').val(0);
-    $('#sale_products_sub_total_i').val(0);
+    $('#purchase_products_pieces_i').val(0);
+    $('#purchase_products_packets_i').val(0);
+    $('#purchase_products_cartons_i').val(0);
+    $('#purchase_pieces_per_packet_i').val(0);
+    $('#purchase_packets_per_carton_i').val(0);
+    $('#purchase_pieces_per_carton_i').val(0);
+    $('#purchase_products_unit_price_i').val(0);
+    $('#purchase_products_discount_i').val(0);
+    $('#purchase_products_sub_total_i').val(0);
 
     if(product_name !== "" && product_quantity !== 0 && product_unit_price !== 0 && repeated !== 1){
 
@@ -1018,12 +1018,12 @@
       $('#purchase_discount').val(total_discount);
       $('#purchase_grandtotal_price').val('');
       $('#purchase_grandtotal_price').val(grandtotal_amount);
-      // if(sale_amount_received >= grandtotal_amount){
-      //   sale_return_change = Number(sale_amount_received) -  Number(grandtotal_amount);
-      //   $('#sale_return_change').val(sale_return_change);
+      // if(purchase_amount_received >= grandtotal_amount){
+      //   purchase_return_change = Number(purchase_amount_received) -  Number(grandtotal_amount);
+      //   $('#purchase_return_change').val(purchase_return_change);
       // }
       // else{
-      //   $('#sale_return_change').val(0);
+      //   $('#purchase_return_change').val(0);
       // }
     }
 

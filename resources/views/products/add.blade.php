@@ -224,7 +224,7 @@
                         <div class="form-group">
                           <label for="product_piece_per_packet" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Pieces Per Packet")}}</label>
                             <div class=" col-12">
-                              <input type="number" name="product_piece_per_packet" class="form-control col-12" value="{{ old('product_piece_per_packet', '0') }}" >
+                              <input type="number" name="product_piece_per_packet" class="form-control col-12" value="{{ old('product_piece_per_packet', '1') }}" >
                               @include('alerts.feedback', ['field' => 'product_piece_per_packet'])
                             </div>
                         </div>
@@ -233,7 +233,7 @@
                       <div class="form-group">
                         <label for="product_piece_per_carton" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Pieces Per Carton")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_piece_per_carton" class="form-control col-12" value="{{ old('product_piece_per_carton', '0') }}" >
+                            <input type="number" name="product_piece_per_carton" class="form-control col-12" value="{{ old('product_piece_per_carton', '1') }}" >
                             @include('alerts.feedback', ['field' => 'product_piece_per_carton'])
                           </div>
                       </div>
@@ -244,7 +244,7 @@
                       <div class="form-group">
                         <label for="product_packet_per_carton" class=" col-10 control-label">&nbsp;&nbsp;{{__(" Packets Per Carton")}}</label>
                           <div class=" col-12">
-                            <input type="number" name="product_packet_per_carton" class="form-control col-12" value="{{ old('product_packet_per_carton', '0') }}" >
+                            <input type="number" name="product_packet_per_carton" class="form-control col-12" value="{{ old('product_packet_per_carton', '1') }}" >
                             @include('alerts.feedback', ['field' => 'product_packet_per_carton'])
                           </div>
                       </div>

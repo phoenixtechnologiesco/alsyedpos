@@ -131,7 +131,9 @@ class CustomerController extends Controller
         $save = DB::table('customers')->insert($customer_adds);
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('customers')->insertGetId($customer_adds);
-		return redirect()->back();
+		Session::flash('message' , 'Customer Added Successfully');
+        return redirect('customer');
+        // return redirect()->back();
         // if($save){
 		// 	return response()->json(['data' => $customer_adds, 'message' => 'Customer Created Successfully'], 200);
 		// }else{
@@ -237,7 +239,9 @@ class CustomerController extends Controller
         // $this->Customer->updateCustomer($customer_id, $customer_edits);
         $update = DB::table('customers')->where('customer_id','=', $customer_id)->update($customer_edits);
         // return redirect()->back();
-        return redirect('/customer')->with(['message' => 'Customer Edited Successfully'], 200);
+        Session::flash('message' , 'Customer Edited Successfully');
+        return redirect('/customer');
+        // ->with(['message' => 'Customer Edited Successfully'], 200);
         // return redirect('customers/'.$customer_id.'/edit');
     }
 

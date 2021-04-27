@@ -512,7 +512,7 @@
                               <div class=" col-12 ">
                                 <div class="form-group">
                                   <div class=" col-12">
-                                    <div class="table-responsive-sm" style="height:500px; overflow-x:hidden">
+                                    <div class="table-responsive-sm" style="height:500px; overflow-x:auto">
                                       <table id="productTable" class="table table-sm table-hover table-striped table-fixed table-bordered dataTable display compact hover order-column">
                                         <thead class="thead pos" >{{-- style="position: sticky; top: 0; z-index: 1" --}}
                                           {{-- <tr>

@@ -120,7 +120,9 @@ class SupplierController extends Controller
         $save = DB::table('suppliers')->insert($supplier_adds);
         $id = DB::getPdo()->lastInsertId();
         // $add_id = DB::table('suppliers')->insertGetId($supplier_adds);
-        return redirect()->back();
+        Session::flash('message' , 'Supplier Added Successfully');
+        return redirect('supplier');
+        // return redirect()->back();
         // if($save){
 		// 	return response()->json(['data' => $supplier_adds, 'message' => 'Supplier Created Successfully'], 200);
 		// }else{
@@ -216,7 +218,9 @@ class SupplierController extends Controller
 
         $update = DB::table('suppliers')->where('supplier_id', '=', $supplier_id)->update($supplier_edits);
         // return redirect()->back();
-        return redirect('/supplier')->with(['message' => 'Supplier Edited Successfully'], 200);
+        Session::flash('message' , 'Supplier Edited Successfully');
+        return redirect('/supplier');
+        // ->with(['message' => 'Supplier Edited Successfully'], 200);
         // return redirect('suppliers/'.$supplier_id.'/edit');
     }
 

@@ -31,7 +31,7 @@
                   <div class="row">
                     <div class="col-3 ">
                       <div class="form-group">
-                        <label for="customer_ref_no" class="col-8 control-label">&nbsp;&nbsp;{{__(" Reference No.")}}</label>
+                        <label for="customer_ref_no" class="col-12 control-label">&nbsp;&nbsp;{{__(" Reference No.")}}</label>
                           <div class=" col-12">
                             <input type="text" name="customer_ref_no" class="form-control col-12" value="{{ $customer[0]->customer_ref_no }}">
                             @include('alerts.feedback', ['field' => 'customer_ref_no'])
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-3 ">
                       <div class="form-group">
-                          <label for="customer_type" class="col-10 control-label">&nbsp;&nbsp;{{__(" Customer Type")}}</label>
+                          <label for="customer_type" class="col-12 control-label">&nbsp;&nbsp;{{__(" Customer Type")}}</label>
                           <div class=" col-12">
                             <select name="customer_type" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                               <option value="general" {{ $customer[0]->customer_type == 'general' ? 'selected' : '' }}>General</option>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-3 ">
                         <div class="form-group">
-                          <label for="customer_name" class="col-10 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
+                          <label for="customer_name" class="col-12 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
                           <div class=" col-12">
                             <input type="text" name="customer_name" class="form-control col-12" value="{{ $customer[0]->customer_name }}">
                             @include('alerts.feedback', ['field' => 'customer_name'])
@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-3 ">
                       <div class="form-group">
-                        <label for="customer_shop_name" class="col-8 control-label">&nbsp;&nbsp;{{__(" Shop Name")}}</label>
+                        <label for="customer_shop_name" class="col-12 control-label">&nbsp;&nbsp;{{__(" Shop Name")}}</label>
                           <div class=" col-12">
                             <input type="text" name="customer_shop_name" class="form-control col-12" value="{{ $customer[0]->customer_shop_name }}">
                             @include('alerts.feedback', ['field' => 'customer_shop_name'])
@@ -73,7 +73,7 @@
                   <div class="row">
                     <div class=" col-6 ">
                         <div class="form-group">
-                          <label for="customer_shop_info" class="col-8 control-label">&nbsp;&nbsp;{{__(" Shop Description")}}</label>
+                          <label for="customer_shop_info" class="col-12 control-label">&nbsp;&nbsp;{{__(" Shop Description")}}</label>
                             <div class=" col-12">
                               <input type="text" name="customer_shop_info" rows="2" class="form-control col-12" value="{{ $customer[0]->customer_shop_info }}">
                               @include('alerts.feedback', ['field' => 'customer_shop_info'])
@@ -82,7 +82,7 @@
                     </div>
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_balance_paid" class="col-8 control-label">&nbsp;&nbsp;{{__(" Balance Paid")}}</label>
+                        <label for="customer_balance_paid" class="col-12 control-label">&nbsp;&nbsp;{{__(" Balance Paid")}}</label>
                           <div class=" col-12 input-group mb-1">
                             <div class="input-group-prepend">
                               <span class="input-group-text rs">Rs: </span>
@@ -94,7 +94,7 @@
                     </div>
                     <div class=" col-3 ">
                         <div class="form-group">
-                          <label for="customer_balance_dues" class="col-8 control-label">&nbsp;&nbsp;{{__(" Balance Dues")}}</label>
+                          <label for="customer_balance_dues" class="col-12 control-label">&nbsp;&nbsp;{{__(" Balance Dues")}}</label>
                             <div class=" col-12 input-group mb-1">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -108,7 +108,7 @@
                   <div class="row">
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_sale_rate" class="col-8 control-label">&nbsp;&nbsp;{{__(" Sale Rate")}}</label>
+                        <label for="customer_sale_rate" class="col-12 control-label">&nbsp;&nbsp;{{__(" Sale Rate")}}</label>
                           <div class=" col-12">
                             <select name="customer_sale_rate" class="form-control col-12">
                               <option value="cash" {{ $customer[0]->customer_sale_rate == 'cash' ? 'selected' : '' }}>Cash</option>
@@ -121,7 +121,7 @@
                     </div>
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_credit_limit" class="col-8 control-label">&nbsp;&nbsp;{{__(" Credit Limit")}}</label>
+                        <label for="customer_credit_limit" class="col-12 control-label">&nbsp;&nbsp;{{__(" Credit Limit")}}</label>
                           <div class=" col-12 input-group mb-1">
                             <div class="input-group-prepend">
                               <span class="input-group-text rs">Rs: </span>
@@ -133,7 +133,7 @@
                     </div>
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_credit_duration" class="col-8 control-label">&nbsp;&nbsp;{{__(" Credit Duration")}}</label>
+                        <label for="customer_credit_duration" class="col-12 control-label">&nbsp;&nbsp;{{__(" Credit Duration")}}</label>
                           <div class=" col-12">
                             <input type="number" name="customer_credit_duration" class="form-control col-12" value="{{ $customer[0]->customer_credit_duration }}">
                             @include('alerts.feedback', ['field' => 'customer_credit_duration'])
@@ -142,7 +142,7 @@
                     </div>
                     <div class=" col-3 ">
                         <div class="form-group">
-                          <label for="customer_credit_type" class="col-8 control-label">&nbsp;&nbsp;{{__(" Credit Type")}}</label>
+                          <label for="customer_credit_type" class="col-12 control-label">&nbsp;&nbsp;{{__(" Credit Type")}}</label>
                             <div class=" col-12">
                               <select name="customer_credit_type" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Credit Type">
                                 <option value="">Select</option>
@@ -157,7 +157,7 @@
                   <div class="row">
                     <div class=" col-6">
                       <div class="form-group">
-                        <label for="customer_email" class="col-8 control-label">&nbsp;&nbsp;{{__(" Email")}}</label>
+                        <label for="customer_email" class="col-12 control-label">&nbsp;&nbsp;{{__(" Email")}}</label>
                           <div class=" col-12">
                             <input type="text" name="customer_email" class="form-control col-12" value="{{ $customer[0]->customer_email }}">
                             @include('alerts.feedback', ['field' => 'customer_email'])
@@ -166,7 +166,7 @@
                     </div>
                     <div class=" col-6">
                         <div class="form-group">
-                          <label for="customer_alternate_email" class="col-6 control-label">&nbsp;&nbsp;{{__(" Alternate Email")}}</label>
+                          <label for="customer_alternate_email" class="col-12 control-label">&nbsp;&nbsp;{{__(" Alternate Email")}}</label>
                           <div class=" col-12">
                             <input type="text" name="customer_alternate_email" class="form-control col-12" value="{{ $customer[0]->customer_alternate_email }}">
                             @include('alerts.feedback', ['field' => 'customer_alternate_email'])
@@ -177,7 +177,7 @@
                   <div class="row">
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_cnic_number" class="col-8 control-label">&nbsp;&nbsp;{{__(" Cnic Number")}}</label>
+                        <label for="customer_cnic_number" class="col-12 control-label">&nbsp;&nbsp;{{__(" Cnic Number")}}</label>
                           <div class=" col-12">
                             <input type="text" name="customer_cnic_number" class="form-control col-12" value="{{ $customer[0]->customer_cnic_number }}">
                             @include('alerts.feedback', ['field' => 'customer_cnic_number'])
@@ -186,7 +186,7 @@
                     </div>
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_phone_number" class="col-8 control-label">&nbsp;&nbsp;{{__(" Phone Number")}}</label>
+                        <label for="customer_phone_number" class="col-12 control-label">&nbsp;&nbsp;{{__(" Phone Number")}}</label>
                           <div class=" col-12">
                             <input type="text" name="customer_phone_number" class="form-control col-12" value="{{ $customer[0]->customer_phone_number }}">
                             @include('alerts.feedback', ['field' => 'customer_phone_number'])
@@ -195,7 +195,7 @@
                     </div>
                     <div class=" col-3 ">
                         <div class="form-group">
-                          <label for="customer_office_number" class="col-10 control-label">&nbsp;&nbsp;{{__(" Office Number")}}</label>
+                          <label for="customer_office_number" class="col-12 control-label">&nbsp;&nbsp;{{__(" Office Number")}}</label>
                           <div class=" col-12">
                             <input type="text" name="customer_office_number" class="form-control col-12" value="{{ $customer[0]->customer_office_number }}">
                             @include('alerts.feedback', ['field' => 'customer_office_number'])
@@ -204,7 +204,7 @@
                     </div>
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_alternate_number" class="col-12 control-label">&nbsp;&nbsp;{{__(" Alternate Phone Number")}}</label>
+                        <label for="customer_alternate_number" class="col-12 control-label">&nbsp;&nbsp;{{__(" Alternate Phone")}}</label>
                         <div class=" col-12">
                           <input type="text" name="customer_alternate_number" class="form-control col-12" value="{{ $customer[0]->customer_alternate_number }}">
                           @include('alerts.feedback', ['field' => 'customer_alternate_number'])
@@ -228,7 +228,7 @@
                     </div>
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_zipcode" class="col-6 control-label">&nbsp;&nbsp;{{__(" Zip Code")}}</label>
+                        <label for="customer_zipcode" class="col-12 control-label">&nbsp;&nbsp;{{__(" Zip Code")}}</label>
                         <div class=" col-12">
                           <input type="text" name="customer_zipcode" class="form-control" value="{{ $customer[0]->customer_zipcode }}">
                           @include('alerts.feedback', ['field' => 'customer_zipcode'])
@@ -237,7 +237,7 @@
                     </div>
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_town" class="col-6 control-label">&nbsp;&nbsp;{{__(" Town")}}</label>
+                        <label for="customer_town" class="col-12 control-label">&nbsp;&nbsp;{{__(" Town")}}</label>
                         <div class=" col-12">
                           <input type="text" name="customer_town" class="form-control" value="{{ $customer[0]->customer_town }}">
                           @include('alerts.feedback', ['field' => 'customer_town'])
@@ -246,7 +246,7 @@
                     </div>
                     <div class=" col-3 ">
                       <div class="form-group">
-                        <label for="customer_area" class="col-6 control-label">&nbsp;&nbsp;{{__(" Area")}}</label>
+                        <label for="customer_area" class="col-12 control-label">&nbsp;&nbsp;{{__(" Area")}}</label>
                         <div class=" col-12">
                           <input type="text" name="customer_area" class="form-control" value="{{ $customer[0]->customer_area }}">
                           @include('alerts.feedback', ['field' => 'customer_area'])
@@ -257,7 +257,7 @@
                   <div class="row">
                     <div class=" col-12 ">
                       <div class="form-group">
-                        <label for="customer_shop_address" class="col-6 control-label">&nbsp;&nbsp;{{__(" Shop Address")}}</label>
+                        <label for="customer_shop_address" class="col-12 control-label">&nbsp;&nbsp;{{__(" Shop Address")}}</label>
                         <div class=" col-12">
                           <input type="text" name="customer_shop_address" class="form-control col-12" value="{{ $customer[0]->customer_shop_address }}">
                           @include('alerts.feedback', ['field' => 'customer_shop_address'])
@@ -268,7 +268,7 @@
                   <div class="row">
                     <div class=" col-12 ">
                       <div class="form-group">
-                        <label for="customer_resident_address" class="col-6 control-label">&nbsp;&nbsp;{{__(" Residential Address")}}</label>
+                        <label for="customer_resident_address" class="col-12 control-label">&nbsp;&nbsp;{{__(" Residential Address")}}</label>
                         <div class=" col-12">
                           <input type="text" name="customer_resident_address" class="form-control col-12" value="{{ $customer[0]->customer_resident_address }}">
                           @include('alerts.feedback', ['field' => 'customer_resident_address'])
