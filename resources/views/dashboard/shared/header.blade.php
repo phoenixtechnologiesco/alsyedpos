@@ -65,13 +65,15 @@
               <div class="dropdown-header bg-light py-2">
                 <strong>Settings</strong>
               </div>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{{ url('/users') }}">
                 <svg class="c-icon mr-2">
                   <use xlink:href="{{ url('/icons/sprites/free.svg#cil-user') }}"></use>
-                </svg> Profile</a><a class="dropdown-item" href="#">
+                </svg> Profile</a>
+                {{-- <a class="dropdown-item" href="#">
                 <svg class="c-icon mr-2">
                   <use xlink:href="{{ url('/icons/sprites/free.svg#cil-settings') }}"></use>
-                </svg> Settings</a><a class="dropdown-item" href="#">
+                </svg> Settings</a> --}}
+                {{-- <a class="dropdown-item" href="#"> --}}
                 {{-- <svg class="c-icon mr-2">
                   <use xlink:href="{{ url('/icons/sprites/free.svg#cil-credit-card') }}"></use>
                 </svg> Payments<span class="badge badge-secondary ml-auto">42</span></a><a class="dropdown-item" href="#">
@@ -79,13 +81,19 @@
                   <use xlink:href="{{ url('/icons/sprites/free.svg#cil-file') }}"></use>
                 </svg> Projects<span class="badge badge-primary ml-auto">42</span></a> --}}</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">
+                
                 {{-- <svg class="c-icon mr-2">
                   <use xlink:href="{{ url('/icons/sprites/free.svg#cil-lock-locked') }}"></use>
                 </svg> Lock Account</a><a class="dropdown-item" href="#"> --}}
-                <svg class="c-icon mr-2">
-                  <use xlink:href="{{ url('/icons/sprites/free.svg#cil-account-logout') }}"></use>
-                </svg><form action="{{ url('/logout') }}" method="POST"> @csrf <button type="submit" class="btn btn-ghost-dark btn-block">Logout</button></form></a>
+                <form action="{{ url('/logout') }}" method="POST"> 
+                  @csrf 
+                  <button type="submit" class="btn btn-ghost-dark btn-block">
+                    <svg class="c-icon mr-2">
+                      <use xlink:href="{{ url('/icons/sprites/free.svg#cil-account-logout') }}"></use>
+                    </svg> 
+                    Logout
+                  </button>
+                </form>
             </div>
           </li>
         </ul>

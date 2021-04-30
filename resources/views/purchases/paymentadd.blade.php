@@ -150,7 +150,7 @@
                             <label for="payment_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Invoice No.")}}</label>
                               <div class="form-col-12">
                                 <div class="myrow">
-                                  <input type="text" name="payment_invoice_id" class="form-control form-col-12" value="{{ old('payment_invoice_id', $payment_invoice_id) }}">
+                                  <input readonly type="text" name="payment_invoice_id" class="form-control form-col-12" value="{{ old('payment_invoice_id', $payment_invoice_id) }}">
                                 </div>
                                 @include('alerts.feedback', ['field' => 'payment_invoice_id'])
                               </div>
@@ -163,7 +163,7 @@
                               {{-- <div class="input-group-prepend">
                                 <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
                               </div> --}}
-                              <input type="date" name="payment_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
+                              <input type="date" name="payment_invoice_date" id="payment_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
                               @include('alerts.feedback', ['field' => 'payment_invoice_date'])
                             </div>
                           </div>
@@ -174,7 +174,7 @@
                           <div class="form-group">
                             <label for="payment_cheque_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque No.")}}</label>
                             <div class="form-col-12">
-                              <input type="text" name="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
+                              <input type="text" name="payment_cheque_no" id="payment_cheque_no" class="form-control form-col-12"  value="{{ old('payment_cheque_no', '') }}">
                               @include('alerts.feedback', ['field' => 'payment_cheque_no'])
                             </div>
                           </div>
@@ -183,7 +183,7 @@
                           <div class="form-group">
                             <label for="payment_cheque_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Cheque Date")}}</label>
                             <div class="form-col-12">
-                              <input type="text" name="payment_cheque_date" class="form-control form-col-12"  value="{{ old('payment_cheque_date', '') }}">
+                              <input type="text" name="payment_cheque_date" id="payment_cheque_date" class="form-control form-col-12"  value="{{ old('payment_cheque_date', '') }}">
                               @include('alerts.feedback', ['field' => 'payment_cheque_date'])
                             </div>
                           </div>
@@ -193,7 +193,7 @@
                             <label for="purchase_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Invoice No.")}}</label>
                               <div class="form-col-12">
                                 <div class="myrow">
-                                  <input type="text" name="purchase_invoice_id" class="form-control form-col-12" value="{{ old('purchase_invoice_id', '') }}">
+                                  <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control form-col-12" value="{{ old('purchase_invoice_id', '') }}">
                                   {{-- <button type="button" href="{{ route('sale.edit', ['sale' => 1,]) }}" class="btn btn-sm btn-warning btn-icon form-col-2" title="Re-Open">
                                     <i class="fa fa-file-text-o"></i>
                                   </button> --}}
@@ -224,7 +224,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
                               </div>
-                              <input type="text" name="payment_amount_paid" class="form-control form-col-12"  value="{{ old('payment_amount_paid', '0') }}">
+                              <input type="text" name="payment_amount_paid" id="payment_amount_paid" class="form-control form-col-12"  value="{{ old('payment_amount_paid', '0') }}">
                               @include('alerts.feedback', ['field' => 'payment_amount_paid'])
                             </div>
                           </div>
@@ -233,7 +233,7 @@
                           <div class="form-group">
                             <label for="payment_account_no" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Account #")}}</label>
                             <div class="form-col-12">
-                              <input type="text" name="payment_account_no" class="form-control form-col-12"  value="{{ old('payment_account_no', '') }}">
+                              <input type="text" name="payment_account_no" id="payment_account_no" class="form-control form-col-12"  value="{{ old('payment_account_no', '') }}">
                               @include('alerts.feedback', ['field' => 'payment_account_no'])
                             </div>
                           </div>
@@ -245,7 +245,7 @@
                               {{-- <div class="input-group-prepend">
                                 <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
                               </div> --}}
-                              <input type="text" name="payment_note" class="form-control col-12" value="{{ old('payment_note'), '' }}" >
+                              <input type="text" name="payment_note" id="payment_note" class="form-control col-12" value="{{ old('payment_note'), '' }}" >
                               @include('alerts.feedback', ['field' => 'payment_note'])
                             </div>
                           </div>
@@ -260,7 +260,7 @@
                   <a type="button" href="{{ URL::previous() }}" class="btn btn-secondary btn-round ">{{__('Back')}}</a>
                 </div>
                 <div class=" form-col-6">
-                  <button type="submit" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
+                  <button type="submit" id="save-btn" class="btn btn-info btn-round pull-right">{{__('Save')}}</button>
                 </div>
               </div>
               <hr class="half-rule"/>
@@ -276,6 +276,10 @@
 @section('javascript')
 
 <script type="text/javascript">
+
+  $(document).ready( function(e) {
+    $('#suppliercodesearch').focus();
+  });
 
   $(function (){
     $("#payment_store").validate({
@@ -424,6 +428,73 @@
     // else{
     //   $('#supplier_status').val('Inactive');
     // }
+  });
+
+  shortcut.add("enter",function(e) {
+    e.preventDefault ();
+    var activeid2 = String(document.activeElement.id);
+    if(activeid2 == "suppliercodesearch"){
+      $('#'+activeid2).trigger('click');
+      $('#payment_method').focus();
+    }
+    else if(activeid2 == "payment_method"){
+      $('#'+activeid2).trigger('click');
+      $('#payment_type').focus();
+    }
+    else if(activeid2 == "payment_type"){
+      $('#'+activeid2).trigger('click');
+      $('#payment_invoice_date').focus();
+    }
+    else if(activeid2 == "payment_invoice_date"){
+      $('#'+activeid2).trigger('click');
+      $('#payment_cheque_no').focus();
+    }
+    else if(activeid2 == "payment_cheque_no"){
+      $('#'+activeid2).trigger('click');
+      $('#payment_cheque_date').focus();
+    }
+    else if(activeid2 == 'payment_cheque_date'){
+      $('#'+activeid2).trigger('click');
+      $('#purchase_invoice_id').focus();
+    }
+    else if(activeid2 == 'purchase_invoice_id'){
+      $('#'+activeid2).trigger('click');
+      $('#payment_amount_paid').focus();
+    }
+    else if(activeid2 == "payment_amount_paid"){
+      $('#'+activeid2).trigger('click');
+      $('#payment_account_no').focus();
+    }
+    else if(activeid2 == "payment_account_no"){
+      $('#'+activeid2).trigger('click');
+      $('#payment_note').focus();
+    }
+    else if(activeid2 == "payment_note"){
+      $('#'+activeid2).trigger('click');
+      $('#save-btn').focus();
+    }
+    else if(activeid2 == "save-btn"){
+      if(confirm('Do you really want to create/print this payment?')){
+        $('#'+activeid2).trigger('click');
+      }
+    }
+
+    },
+    {
+      'type':'keypress',
+      'keycode':13
+    }
+  );
+  shortcut.add("alt+s",function(e) {
+    e.preventDefault ();
+    if(confirm('Do you really want to create/print this payment?')){
+      $('#save-btn').trigger('click');
+    }
+  });
+  $(document).on('focus', '#payment_amount_paid', function(e) {
+    var val = this.value; //store the value of the element
+    this.value = ''; //clear the value of the element
+    this.value = val; //set that value back.
   });
 
 </script>

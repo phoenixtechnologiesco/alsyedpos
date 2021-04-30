@@ -108,7 +108,7 @@
 
 
   <body class="c-app">
-    <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-md c-sidebar-show" id="sidebar">
+    <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-md c-sidebar-toggler" id="sidebar">
 
       @include('dashboard.shared.nav-builder')
 

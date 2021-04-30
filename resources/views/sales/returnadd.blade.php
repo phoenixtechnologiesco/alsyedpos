@@ -140,7 +140,7 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="sale_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Invoice ID")}}</label>
+                            <label for="sale_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Sale Invoice ID")}}</label>
                               <div class="form-col-12">
                                 <div class="myrow">
                                   {{-- <div class="col-1"></div> --}}
@@ -180,7 +180,7 @@
                           <div class="form-group">
                             <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label>
                               <div class="form-col-12">
-                                <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="{{ old('payterm_duratype', '30 Days') }}">
+                                <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="{{ old('payterm_duratype', '0 Days') }}">
                               </div>
                           </div>
                         </div>
@@ -188,7 +188,7 @@
                           <div class="form-group">
                             <label for="customer_credit_limit" class=" form-col-12 control-label">{{__(" Credit Limit")}}</label>
                               <div class=" form-col-12">
-                                <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="{{ old('customer_credit_limit', '30000') }}">
+                                <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="{{ old('customer_credit_limit', '0') }}">
                                 @include('alerts.feedback', ['field' => 'credit_limit'])
                               </div>
                           </div>

@@ -19,7 +19,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="row">
-                        <div class="form-first-col-3">
+                        <div class="form-first-col-4">
                           <div class="form-group">
                             <label for="supplier_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Supplier")}}</label>
                             <div class="form-col-12 input-group ">
@@ -68,9 +68,9 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        <div class="form-col-3">
                           <div class="form-group">
-                            <label for="purchase_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Amount Paid")}}</label>
+                            <label for="purchase_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Paid")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -80,7 +80,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-last-col-2">
+                        <div class="form-last-col-3">
                           <div class="form-group">
                             <label for="purchase_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Dues")}}</label>
                             <div class="form-col-12 input-group">

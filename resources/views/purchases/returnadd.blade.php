@@ -149,9 +149,9 @@
                               @include('alerts.feedback', ['field' => 'purchase_amount_dues'])
                           </div>
                         </div>
-                        <div class="form-col-2">
+                        <div class="form-col-3">
                           <div class="form-group">
-                            <label for="purchase_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Invoice ID")}}</label>
+                            <label for="purchase_invoice_id" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Purchase Invoice ID")}}</label>
                               <div class="form-col-12">
                                 <div class="myrow">
                                   {{-- <div class="col-1"></div> --}}
@@ -161,7 +161,7 @@
                               </div>
                           </div>
                         </div>
-                        <div class="form-last-col-5">
+                        <div class="form-last-col-4">
                           <div class="form-group">
                             <label for="purchse_document" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
                             <div class="form-col-12 input-group">

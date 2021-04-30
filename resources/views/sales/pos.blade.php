@@ -98,7 +98,7 @@
                         <div class="row">
                           <div class="form-first-col-3">
                             <div class="form-group">
-                              <label for="customer_code" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
+                              <label for="customer_code" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Search Customer")}}</label>
                               <div class="form-col-12 input-group ">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text barcode">
@@ -150,7 +150,7 @@
                           </div> --}}
                           <div class="form-col-2">
                             <div class="form-group">
-                              <label for="customer_status" class="form-col-12 control-label">{{__(" Customer Status")}}</label>
+                              <label for="customer_status" class="form-col-12 control-label">{{__("Customer Status")}}</label>
                                 <div class="form-col-12">
                                   <input readonly type="text" name="customer_status" id="customer_status" class="form-control col-12" value="">
                                   @include('alerts.feedback', ['field' => 'customer_status'])
@@ -159,7 +159,7 @@
                           </div>
                           <div class="form-col-2">
                             <div class="form-group">
-                              <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Paid")}}</label>
+                              <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Customer Paid")}}</label>
                               <div class="form-col-12 input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text rs">Rs: </span>
@@ -220,7 +220,7 @@
                         <div class="row">
                           <div class="form-first-col-2">
                             <div class="form-group">
-                              <label for="sale_payment_method" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment Method")}}</label>
+                              <label for="sale_payment_method" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Pay Method")}}</label>
                                 <div class="form-col-12">
                                   {{-- <input readonly type="text" name="sale_payment_method" class="form-control col-12" value="{{ old('sale_payment_method', 'Cash') }}"> --}}
                                   <select readonly required id="sale_payment_method" name="sale_payment_method" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Select Payment Method...">
@@ -267,7 +267,7 @@
                           </div>
                           <div class="form-col-2">
                             <div class="form-group">
-                              <label for="sale_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Sale/Invoice Date")}}</label>
+                              <label for="sale_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Sale Date")}}</label>
                               <div class="form-col-12 input-group ">
                                 {{-- <div class="input-group-prepend">
                                   <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
@@ -280,19 +280,20 @@
                           </div>
                           <div class="form-col-2">
                             <div class="row">
+                              <label for="" class="form-col-12 control-label">{{__("Payterm ")}}&nbsp;&nbsp;{{(" Credit Limit")}}</label>
                               <div class="form-col-6">
-                                <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label>
-                                <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="30 Days">
+                                {{-- <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label> --}}
+                                <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="0 Days">
                               </div>
                               <div class="form-col-6">
-                                <label for="customer_credit_limit" class=" form-col-12 control-label">{{__(" Credit Limit")}}</label>
-                                <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="30000">
+                                {{-- <label for="customer_credit_limit" class=" form-col-12 control-label">{{__("Credit Lim")}}</label> --}}
+                                <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="0">
                               </div>
                             </div>
                           </div>
                           <div class="form-last-col-2">
                             <div class="form-group">
-                              <label for="sale_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
+                              <label for="sale_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Upload Doc")}}</label>
                               <div class="form-col-12 input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text barcode">
