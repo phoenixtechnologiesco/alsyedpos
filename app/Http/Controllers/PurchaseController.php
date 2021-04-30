@@ -269,7 +269,11 @@ class PurchaseController extends Controller
         }
         $purchase_ref_no = $random = Str::random(8); //str_random
         $lastpurchase = DB::table('purchases')->orderBy('purchase_id', 'desc')->limit(1)->first();
-        $lastid = (string)$lastpurchase->purchase_id+1;
+        if($lastpurchase == NULL){
+            $lastid = (string)1;
+        }else{
+            $lastid = (string)$lastpurchase->purchase_id+1;
+        }
         $lastid = substr($lastid, -8);
         $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
         $year = (string)Carbon::now()->year;
@@ -445,7 +449,7 @@ class PurchaseController extends Controller
             }
     
             $purchase_data = Purchase::where('purchase_id', $id)->first();
-            $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->get();
+            $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->orderBy('purchase_cartons_number', 'desc')->get();
             $user_data = User::where('id', $purchase_data->purchase_created_by)->first();
             $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
             $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
@@ -500,7 +504,11 @@ class PurchaseController extends Controller
         }
         $purchase_return_ref_no = $random = Str::random(8); //str_random
         $lastpurchasereturn = DB::table('purchase_returns')->orderBy('purchase_return_id', 'desc')->limit(1)->first();
-        $lastid = (string)$lastpurchasereturn->purchase_return_id+1;
+        if($lastpurchasereturn == NULL){
+            $lastid = (string)1;
+        }else{
+            $lastid = (string)$lastpurchasereturn->purchase_return_id+1;
+        }
         $lastid = substr($lastid, -8);
         $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
         $year = (string)Carbon::now()->year;
@@ -1141,8 +1149,8 @@ class PurchaseController extends Controller
     public function genInvoice($id)
     {
         $purchase_data = Purchase::where('purchase_id', $id)->first();
-        $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->get();
-        $user_data = User::where('id', $purchase_data->purchase_added_by)->first();
+        $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->orderBy('purchase_cartons_number', 'desc')->get();
+        $user_data = User::where('id', $purchase_data->purchase_created_by)->first();
         $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
         $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
         $payment_data = Payment::where('purchase_id', $id)->get();
@@ -1153,8 +1161,8 @@ class PurchaseController extends Controller
     public function genInvoice2($id)
     {
         $purchase_data = Purchase::where('purchase_id', $id)->first();
-        $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->get();
-        $user_data = User::where('id', $purchase_data->purchase_added_by)->first();
+        $purchase_products_data = PurchaseProducts::where('purchase_id', $id)->orderBy('purchase_cartons_number', 'desc')->get();
+        $user_data = User::where('id', $purchase_data->purchase_created_by)->first();
         $warehouse_data = Warehouse::where('warehouse_id', $purchase_data->warehouse_id)->first();
         $supplier_data = Supplier::where('supplier_id', $purchase_data->purchase_supplier_id)->first();
         $payment_data = Payment::where('purchase_id', $id)->get();

@@ -36,8 +36,8 @@
                   <th class="text-center">Customer Name</th>
                   <th class="text-center">Shop Name</th>
                   <th class="text-center">Shop Description</th>
-                  <th class="text-center">Shop Town</th>
-                  <th class="text-center">Shop Area</th>
+                  {{-- <th class="text-center">Shop Town</th>
+                  <th class="text-center">Shop Area</th> --}}
                   <th class="text-center">Balance Paid</th>
                   <th class="text-center">Balance Dues</th>
                   <th class="text-center">Credit Duration</th>
@@ -116,14 +116,14 @@
           //   //   return meta.row + 1;
           //   // },
           // },
-          { className: 'dt-body-center', data: 'DT_RowIndex', name: 'DT_RowIndex'},
+          { className: 'dt-body-center', searchable: false, data: 'DT_RowIndex', name: 'DT_RowIndex'},
           { className: 'dt-body-center', data: 'customer_ref_no', name: 'customer_ref_no' },
           { className: 'dt-body-center', data: 'customer_type', name: 'customer_type' },
           { className: 'dt-body-center', data: 'customer_name', name: 'customer_name' },
           { className: 'dt-body-center', data: 'customer_shop_name', name: 'customer_shop_name' },
           { className: 'dt-body-center', data: 'customer_shop_info', name: 'customer_shop_info' },
-          { className: 'dt-body-center', data: 'customer_town', name: 'customer_town' },
-          { className: 'dt-body-center', data: 'customer_area', name: 'customer_area' },
+          // { className: 'dt-body-center', data: 'customer_town', name: 'customer_town' },
+          // { className: 'dt-body-center', data: 'customer_area', name: 'customer_area' },
           { className: 'dt-body-center', data: 'customer_balance_paid', name: 'customer_balance_paid' },
           { className: 'dt-body-center', data: 'customer_balance_dues', name: 'customer_balance_dues' },
           { className: 'dt-body-center', data: 'customer_credit_duration', name: 'customer_credit_duration' },

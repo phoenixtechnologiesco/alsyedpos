@@ -148,7 +148,7 @@ class PaymentController extends Controller
             'account_id'                 => '',
             'payment_note'               => '',
             'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
-            'sale_invoice_id'            => '',
+            'sale_invoice_id'            => 'required',
             'payment_invoice_id'         => '',
             'payment_invoice_date'       => 'required',
             'payment_document'           => '',
@@ -171,8 +171,13 @@ class PaymentController extends Controller
         //$payment_adds['ref_no'] = 'pr-' . date("Ymd") . '-'. date("his");
         $payment_amount_recieved = $request->payment_amount_recieved;
         // $payment_amount_balance = $request->payment_amount_paid;
-        $customer_amount_paid = $request->customer_amount_paid;
-        $customer_amount_dues = $request->customer_amount_dues;
+        $customer_id = $request->payment_customer_id;
+        $getcustomer = DB::table('customers')->where('customer_id','=', $customer_id)->first();
+
+        // $customer_amount_paid = $request->customer_amount_paid;
+        // $customer_amount_dues = $request->customer_amount_dues;
+        $customer_amount_paid = $getcustomer->customer_amount_paid;
+        $customer_amount_dues = $getcustomer->customer_amount_dues;
 
         $sale_purch_invoice_id = $request->sale_invoice_id;
         $searchsale = DB::table('sales')->where('sale_invoice_id', '=', $sale_purch_invoice_id)->first();
@@ -302,7 +307,7 @@ class PaymentController extends Controller
             'account_id'                 => '',
             'payment_note'               => '',
             'payment_status'             => '',//'paid', 'due', 'partial', 'overdue'
-            'purchase_invoice_id'        => '',
+            'purchase_invoice_id'        => 'required',
             'payment_invoice_id'         => '',
             'payment_invoice_date'       => 'required',
             'payment_document'           => '',
@@ -324,25 +329,33 @@ class PaymentController extends Controller
         //$payment_adds = $request->except('document');
         $payment_amount_paid = $request->payment_amount_paid;
         // $payment_amount_balance = $request->payment_amount_paid;
-        $supplier_amount_recieved = $request->supplier_amount_paid;
-        $supplier_amount_dues = $request->supplier_amount_dues;
+
+        $supplier_id = $request->payment_supplier_id;
+        $getsupplier = DB::table('suppliers')->where('supplier_id','=', $supplier_id)->first();
+
+        // $supplier_amount_recieved = $request->supplier_amount_paid;
+        // $supplier_amount_dues = $request->supplier_amount_dues;
+        $supplier_amount_recieved = $getsupplier->supplier_balance_paid;
+        $supplier_amount_dues = $getsupplier->supplier_balance_dues;
 
         $sale_purch_invoice_id = $request->purchase_invoice_id;
         $searchpurchase = DB::table('purchases')->where('purchase_invoice_id', $sale_purch_invoice_id)->first();
 
         // dd($searchpurchase);
         if($payment_amount_paid > $supplier_amount_dues){
+            // if($searchpurchase !== NULL){
             $purchase_amount_recieved = $searchpurchase->purchase_amount_paid + $payment_amount_paid;
             $purchase_amount_dues = $searchpurchase->purchase_amount_dues - $payment_amount_paid;
-
+            // }
             $supplier_amount_recieved = $supplier_amount_recieved + $payment_amount_paid;
             $supplier_amount_dues = $supplier_amount_dues - $payment_amount_paid;
             // $payment_amount_balance = $payment_amount_balance - $payment_amount_paid;
         }
         else{
+            // if($searchpurchase !== NULL){
             $purchase_amount_recieved = $searchpurchase->purchase_amount_paid + $payment_amount_paid;
             $purchase_amount_dues = $searchpurchase->purchase_amount_dues - $payment_amount_paid;
-
+            // }
             $supplier_amount_recieved = $supplier_amount_recieved + $payment_amount_paid;
             $supplier_amount_dues = $supplier_amount_dues - $payment_amount_paid;
             // // $payment_amount_balance = $payment_amount_balance - $payment_amount_paid;

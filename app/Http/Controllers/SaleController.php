@@ -235,7 +235,11 @@ class SaleController extends Controller
         }
         $sale_ref_no = $random = Str::random(8); //str_random
         $lastsale = DB::table('sales')->orderBy('sale_id', 'desc')->limit(1)->first();
-        $lastid = (string)$lastsale->sale_id+1;
+        if($lastsale == NULL){
+            $lastid = (string)1;
+        }else{
+            $lastid = (string)$lastsale->sale_id+1;
+        }
         $lastid = substr($lastid, -8);
         $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
         $year = (string)Carbon::now()->year;
@@ -428,7 +432,7 @@ class SaleController extends Controller
             }
     
             $sale_data = Sale::where('sale_id', $id)->first();
-            $sale_products_data = SaleProducts::where('sale_id', $id)->get();
+            $sale_products_data = SaleProducts::where('sale_id', $id)->orderBy('sale_cartons_number', 'desc')->get();
             $user_data = User::where('id', $sale_data->sale_added_by)->first();
             $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
             $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
@@ -484,7 +488,11 @@ class SaleController extends Controller
         }
         $sale_return_ref_no = $random = Str::random(8); //str_random
         $lastsalereturn = DB::table('sale_returns')->orderBy('sale_return_id', 'desc')->limit(1)->first();
-        $lastid = (string)$lastsalereturn->sale_return_id+1;
+        if($lastsalereturn == NULL){
+            $lastid = (string)1;
+        }else{
+            $lastid = (string)$lastsalereturn->salereturn_id+1;
+        }
         $lastid = substr($lastid, -8);
         $lastid = str_pad($lastid, 8, '0', STR_PAD_LEFT);
         $year = (string)Carbon::now()->year;
@@ -1186,7 +1194,7 @@ class SaleController extends Controller
     public function genInvoice($id)
     {
         $sale_data = Sale::where('sale_id', $id)->first();
-        $sale_products_data = SaleProducts::where('sale_id', $id)->get();
+        $sale_products_data = SaleProducts::where('sale_id', $id)->orderBy('sale_cartons_number', 'desc')->get();
         $user_data = User::where('id', $sale_data->sale_added_by)->first();
         $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
         $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
@@ -1201,7 +1209,7 @@ class SaleController extends Controller
     public function genInvoice2($id)
     {
         $sale_data = Sale::where('sale_id', $id)->first();
-        $sale_products_data = SaleProducts::where('sale_id', $id)->get();
+        $sale_products_data = SaleProducts::where('sale_id', $id)->orderBy('sale_cartons_number', 'desc')->get();
         $user_data = User::where('id', $sale_data->sale_added_by)->first();
         $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
         $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();

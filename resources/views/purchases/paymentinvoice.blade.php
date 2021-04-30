@@ -192,6 +192,14 @@
                 </tbody>
             </table>
             <hr>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:center"><strong>{{"Payment Reciept"}}</strong></th>
+                    </tr>
+                </thead>
+            </table>
+            <hr>
             <table >
                 <tbody>
                     <tr class="custom-td">
@@ -203,7 +211,7 @@
             <table >
                 <tbody>
                     <tr class="custom-td">
-                        <td class="custom-td">{{$supplier_data['supplier_name']." ".$supplier_data['supplier_ref_no']}}</td>
+                        {{-- <td class="custom-td">{{$supplier_data['supplier_name']." ".$supplier_data['supplier_ref_no']}}</td> --}}
                         <td class="custom-td" style="text-align:right">{{$payment_data->created_at}}</td>
                     </tr>
                 </tbody>
@@ -223,7 +231,7 @@
                 </thead>
                 <tbody>
                     <tr class="row">
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$supplier_data->supplier_name}}</td>
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$supplier_data->supplier_name." ".$supplier_data->supplier_ref_no}}</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                         <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$payment_data->payment_method}}</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
@@ -235,18 +243,17 @@
                     </tr>
                 </tbody>
                 <tfoot>
-                    <tr class="row">
+                    {{-- <tr class="row">
                         <th colspan="2" class="mycol form-col-2" style="text-align:left;">{{__('Total')}}</th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                         <th colspan="2" class="mycol form-col-2" style="text-align:left;">
-                            {{-- {{number_format((integer)$total_payment_quantity)}}{{__('pcs')}} --}}
                         </th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                         <th colspan="2" class="mycol form-col-2" style="text-align:left;"></th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                         <th colspan="2" class="mycol form-col-2" style="text-align:left;">|{{number_format((float)$payment_data->payment_amount_paid, 2, '.', '')}}|</th>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
-                    </tr>
+                    </tr> --}}
                     {{-- @if($payment_data->payment_discount)
                     <tr>
                         <th colspan="2">{{__('Order Discount')}}</th>
@@ -258,11 +265,11 @@
                         <th colspan="2" class="mycol form-col-3" style="text-align:left;">{{number_format((float)$supplier_data->supplier_balance_dues+$payment_data->payment_amount_paid, 2, '.', '')}}</th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Net Balance')}}</th>
                         <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$supplier_data->supplier_balance_dues/*+$payment_data->payment_grandtotal_price*/, 2, '.', '')}}</th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Payment Recieved')}}</th>
                         <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$payment_data->payment_amount_paid, 2, '.', '')}}</th>

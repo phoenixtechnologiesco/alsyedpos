@@ -288,6 +288,7 @@
         payment_method: 'required',
         product_type: 'required',
         // payment_invoice_id: 'required',
+        sale_invoice_id: 'required',
         payment_amount_recieved: 'required',
       },
       messages: {
@@ -296,6 +297,7 @@
         payment_method:  'Please Enter Payment Method',
         payment_type:  'Please Enter Payment Type',
         // payment_invoice_id: 'Please Enter Payment Invoice No.',
+        sale_invoice_id: 'Please Enter Sale Invoice No.',
         payment_amount_recieved:  'Please Enter Payment Amount Recieved',
       },
       errorElement: 'em',

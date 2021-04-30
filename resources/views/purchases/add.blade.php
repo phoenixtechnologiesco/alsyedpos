@@ -93,7 +93,7 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="purchase_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Amount Paid")}}</label>
+                            <label for="purchase_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Supplier Paid")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -115,22 +115,21 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-last-col-2">
+                        <div class="form-last-col-3">
                           <div class="form-group">
-                            <label for="purchase_status" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Status")}}</label>
-                              <select name="purchase_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Purchase Status">
-                                <option value="pending">Pending</option>
-                                <option value="ordered">Ordered</option>
-                                <option value="partial">Partial</option>
-                                <option value="received">Received</option>
-                                //received,partial,pending,ordered
-                              </select>
-                              @include('alerts.feedback', ['field' => 'purchase_amount_dues'])
+                            <label for="purchase_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Date")}}</label>
+                            <div class="form-col-12 input-group ">
+                              {{-- <div class="input-group-prepend">
+                                <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
+                              </div> --}}
+                              <input type="date" name="purchase_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
+                              @include('alerts.feedback', ['field' => 'purchase_invoice_date'])
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="form-first-col-2">
+                        <div class="form-first-col-3">
                           <div class="form-group">
                             <label for="purchase_payment_method" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Payment Method")}}</label>
                               <div class="form-col-12">
@@ -157,19 +156,20 @@
                               </div>
                           </div>
                         </div> --}}
-                        <div class="form-col-2">
+                        <div class="form-col-3">
                           <div class="form-group">
-                            <label for="purchase_invoice_date" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Date")}}</label>
-                            <div class="form-col-12 input-group ">
-                              {{-- <div class="input-group-prepend">
-                                <span class="input-group-text barcode"><i class="fa fa-file-text-o"></i></span>
-                              </div> --}}
-                              <input type="date" name="purchase_invoice_date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
-                              @include('alerts.feedback', ['field' => 'purchase_invoice_date'])
-                            </div>
+                            <label for="purchase_status" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Purchase Status")}}</label>
+                              <select name="purchase_status" class="selectpicker form-control col-12" data-live-search="true" data-live-search-style="begins" title="Purchase Status">
+                                <option value="pending">Pending</option>
+                                <option value="ordered">Ordered</option>
+                                <option value="partial">Partial</option>
+                                <option value="received">Received</option>
+                                //received,partial,pending,ordered
+                              </select>
+                              @include('alerts.feedback', ['field' => 'purchase_amount_dues'])
                           </div>
                         </div>
-                        <div class="form-last-col-4">
+                        <div class="form-last-col-6">
                           <div class="form-group">
                             <label for="purchase_document" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
                             <div class="form-col-12 input-group">
@@ -223,15 +223,15 @@
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="purchase_products_pieces_i" id="purchase_products_pieces_i" class="form-control col-12" min="0" value="0">
-                                    <input type="hidden" name="purchase_pieces_per_packet_i" min="0" id="purchase_pieces_per_packet_i" class="form-control col-12" min="0" value="{{ old('purchase_pieces_per_packet_i', '5') }}">
+                                    <input type="hidden" name="purchase_pieces_per_packet_i" id="purchase_pieces_per_packet_i" class="form-control col-12" min="0" value="{{ old('purchase_pieces_per_packet_i', '1') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="purchase_products_packets_i" id="purchase_products_packets_i" class="form-control col-12" min="0" value="0">
-                                    <input type="hidden" name="purchase_packets_per_carton_i" min="0" id="purchase_packets_per_carton_i" class="form-control col-12" min="0" value="{{ old('purchase_packets_per_carton_i', '4') }}">
+                                    <input type="hidden" name="purchase_packets_per_carton_i" id="purchase_packets_per_carton_i" class="form-control col-12" min="0" value="{{ old('purchase_packets_per_carton_i', '1') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="purchase_products_cartons_i" id="purchase_products_cartons_i" class="form-control col-12" min="0" value="0">
-                                    <input type="hidden" name="purchase_pieces_per_carton_i" min="0" id="purchase_pieces_per_carton_i" class="form-control col-12" min="0" value="{{ old('purchase_pieces_per_carton_i', '20') }}">
+                                    <input type="hidden" name="purchase_pieces_per_carton_i" id="purchase_pieces_per_carton_i" class="form-control col-12" min="0" value="{{ old('purchase_pieces_per_carton_i', '1') }}">
                                   </td>
                                   <td class="col-1 mycol" scope="col">
                                     <input type="number" name="purchase_products_unit_price_i" id="purchase_products_unit_price_i" class="form-control col-12" min="0"  value="0">
@@ -996,15 +996,15 @@
       subtotal_amount = Number(subtotal_amount) - Number(thisproduct_sub_total);
       grandtotal_amount = Number(grandtotal_amount) - Number(thisproduct_sub_total);
 
-      $('#purchase_total_qty').val('');
+      $('#purchase_total_qty').val(0);
       $('#purchase_total_qty').val(total_quantity);
-      $('#purchase_total_items').val('');
+      $('#purchase_total_items').val(0);
       $('#purchase_total_items').val(total_items);
-      $('#purchase_discount').val('');
+      $('#purchase_discount').val(0);
       $('#purchase_discount').val(total_discount);
-      $('#purchase_total_price_i').val('');
+      $('#purchase_total_price_i').val(0);
       $('#purchase_total_price_i').val(subtotal_amount);
-      $('#purchase_grandtotal_price').val('');
+      $('#purchase_grandtotal_price').val(0);
       $('#purchase_grandtotal_price').val(grandtotal_amount);
 
       $(this).closest('.prtr').remove();
@@ -1470,71 +1470,71 @@
     this.value = val; //set that value back.
   });
 
-  var dt = $('#productTable').DataTable( {
-            keys: true,
-            serverSide: true,
-            ajax: "{{ route('api.product_row_details2') }}",
-            columns: [
-            //     {
-            //         "className":      'details-control',
-            //         "orderable":      false,
-            //         "searchable":     false,
-            //         "data":           null,
-            //         "defaultContent": ''
-            //     },
-            //  { width:'25%', className: 'dt-body-center', data: 'customer_name', name: 'customer_name' },
-                { className: 'dt-body-center', searchable: false, data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
-                { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
-                { className: 'dt-body-center', data: 'product_pieces_available', name: 'product_pieces_available' },
-                { className: 'dt-body-center', data: 'product_packets_available', name: 'product_packets_available' },
-                { className: 'dt-body-center', data: 'product_cartons_available', name: 'product_cartons_available' },
-                { className: 'dt-body-center', data: 'product_trade_price_piece', name: 'product_trade_price_piece' },
-                { className: 'dt-body-center', data: 'product_trade_price_packet', name: 'product_trade_price_packet' },
-                { className: 'dt-body-center', data: 'product_trade_price_carton', name: 'product_trade_price_carton' },
-                { className: 'dt-body-center', data: 'product_cash_price_piece', name: 'product_cash_price_piece' },
-                { className: 'dt-body-center', data: 'product_cash_price_packet', name: 'product_cash_price_packet' },
-                { className: 'dt-body-center', data: 'product_cash_price_carton', name: 'product_cash_price_carton' },
-                { className: 'dt-body-center', data: 'product_credit_price_piece', name: 'product_credit_price_piece' },
-                { className: 'dt-body-center', data: 'product_credit_price_packet', name: 'product_credit_price_packet' },
-                { className: 'dt-body-center', data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
-                // { className: 'dt-body-center', data: 'product_nonbulk_price_piece', name: 'product_nonbulk_price_piece' },
-            //     // {
-            //     //       "targets": [ 12 ],
-            //     //       "visible": false
-            //     // },
-                { className: 'dt-body-center', data: 'action', name: 'action', orderable: false, searchable: false }
-            ],
-            // order: [[1, 'asc']],
-            order: [],
-            // columnDefs: [
-            //     {
-            //         "orderable": false,
-            //         'targets': 0
-            //     },
-            //     {
-            //         'render': function(data, type, row, meta){
-            //             if(type === 'display'){
-            //                 data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
-            //             }
+  var dt = $('#productTable').DataTable({
+    keys: true,
+    serverSide: true,
+    ajax: "{{ route('api.product_row_details2') }}",
+    columns: [
+    //     {
+    //         "className":      'details-control',
+    //         "orderable":      false,
+    //         "searchable":     false,
+    //         "data":           null,
+    //         "defaultContent": ''
+    //     },
+    //  { width:'25%', className: 'dt-body-center', data: 'customer_name', name: 'customer_name' },
+        { className: 'dt-body-center', searchable: false, data: 'DT_RowIndex', name: 'DT_RowIndex'},
+        { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
+        { className: 'dt-body-center', data: 'product_name', name: 'product_name' },
+        { className: 'dt-body-center', data: 'product_pieces_available', name: 'product_pieces_available' },
+        { className: 'dt-body-center', data: 'product_packets_available', name: 'product_packets_available' },
+        { className: 'dt-body-center', data: 'product_cartons_available', name: 'product_cartons_available' },
+        { className: 'dt-body-center', data: 'product_trade_price_piece', name: 'product_trade_price_piece' },
+        { className: 'dt-body-center', data: 'product_trade_price_packet', name: 'product_trade_price_packet' },
+        { className: 'dt-body-center', data: 'product_trade_price_carton', name: 'product_trade_price_carton' },
+        { className: 'dt-body-center', data: 'product_cash_price_piece', name: 'product_cash_price_piece' },
+        { className: 'dt-body-center', data: 'product_cash_price_packet', name: 'product_cash_price_packet' },
+        { className: 'dt-body-center', data: 'product_cash_price_carton', name: 'product_cash_price_carton' },
+        { className: 'dt-body-center', data: 'product_credit_price_piece', name: 'product_credit_price_piece' },
+        { className: 'dt-body-center', data: 'product_credit_price_packet', name: 'product_credit_price_packet' },
+        { className: 'dt-body-center', data: 'product_credit_price_carton', name: 'product_credit_price_carton' },
+        // { className: 'dt-body-center', data: 'product_nonbulk_price_piece', name: 'product_nonbulk_price_piece' },
+    //     // {
+    //     //       "targets": [ 12 ],
+    //     //       "visible": false
+    //     // },
+        { className: 'dt-body-center', data: 'action', name: 'action', orderable: false, searchable: false }
+    ],
+    // order: [[1, 'asc']],
+    order: [],
+    // columnDefs: [
+    //     {
+    //         "orderable": false,
+    //         'targets': 0
+    //     },
+    //     {
+    //         'render': function(data, type, row, meta){
+    //             if(type === 'display'){
+    //                 data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
+    //             }
 
-            //         return data;
-            //         },
-            //         'checkboxes': {
-            //         'selectRow': true,
-            //         'selectAllRender': '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>'
-            //         },
-            //         'targets': [0]
-            //     }
-            // ],
-            // select: { style: 'multi',  selector: 'td:first-child'},
-            // lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            // dom: '<"offset-1"lfB>rt<"offset-1"ip>',
-            // // dom: '<"top"i>rt<"bottom"flp><"clear">',
-            // drawCallback: function () {
-            //     var api = this.api();
-            // }
-        } );
+    //         return data;
+    //         },
+    //         'checkboxes': {
+    //         'selectRow': true,
+    //         'selectAllRender': '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>'
+    //         },
+    //         'targets': [0]
+    //     }
+    // ],
+    // select: { style: 'multi',  selector: 'td:first-child'},
+    // lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    // dom: '<"offset-1"lfB>rt<"offset-1"ip>',
+    // // dom: '<"top"i>rt<"bottom"flp><"clear">',
+    // drawCallback: function () {
+    //     var api = this.api();
+    // }
+  });
         
   $(document).on('click', '.addProduct', function () {
     // var rowindex = $(this).closest('tr').index();

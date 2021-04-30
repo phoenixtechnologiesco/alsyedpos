@@ -98,7 +98,7 @@
                         <div class="row">
                           <div class="form-first-col-3">
                             <div class="form-group">
-                              <label for="customer_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
+                              <label for="customer_code" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
                               <div class="form-col-12 input-group ">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text barcode">
@@ -128,7 +128,7 @@
                           </div>
                           {{-- <div class="form-col-3">
                             <div class="form-group">
-                              <label readonly for="sale_customer_name" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
+                              <label readonly for="sale_customer_name" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Name")}}</label>
                               <div class="form-col-12 input-group ">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text barcode">
@@ -159,7 +159,7 @@
                           </div>
                           <div class="form-col-2">
                             <div class="form-group">
-                              <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Amount Paid")}}</label>
+                              <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Paid")}}</label>
                               <div class="form-col-12 input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text rs">Rs: </span>
@@ -778,7 +778,7 @@
                                   <div class="row">
                                     <div class="form-first-col-3">
                                       <div class="form-group">
-                                        <label for="customer_code" class="form-col-10 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
+                                        <label for="customer_code" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Search Customer")}}</label>
                                         <div class="form-col-12 input-group ">
                                           <div class="input-group-prepend">
                                             <span class="input-group-text barcode">
@@ -2185,14 +2185,14 @@
         data5 = data4*pieces_per_packet;
         // console.log(data5);
         sign = Math.sign(catchproduct_cartons);
-        display_value = (sign*data2)+'.'+data5;
+        display_value = (sign*data2)+'.'+Math.trunc(data5);
         // console.log(display_value);
 
         data6 = Math.abs(catchproduct_cartons)-data3;
         data7 = data6*pieces_per_carton;
         // console.log(data7);
         sign2 = Math.sign(catchproduct_cartons);
-        display_value2 = (sign2*data3)+'.'+data7;
+        display_value2 = (sign2*data3)+'.'+Math.trunc(data7);
         // console.log(display_value2);
         // $('#available_pcs').val(catchproduct_pieces);
         // $('#available_pkts').val(catchproduct_packets);

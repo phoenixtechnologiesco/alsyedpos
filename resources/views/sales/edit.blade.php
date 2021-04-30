@@ -1221,15 +1221,15 @@
         var data5 = data4*pieces_per_packet;
         // console.log(data5);
         var sign = Math.sign(catchproduct_cartons);
-        var display_value = (sign*data2)+'.'+data5;
-        console.log(display_value);
+        var display_value = (sign*data2)+'.'+Math.trunc(data5);
+        // console.log(display_value);
 
         var data6 = Math.abs(catchproduct_cartons)-data3;
         var data7 = data6*pieces_per_carton;
         // console.log(data7);
         var sign2 = Math.sign(catchproduct_cartons);
-        var display_value2 = (sign2*data3)+'.'+data7;
-        console.log(display_value2);
+        var display_value2 = (sign2*data3)+'.'+Math.trunc(data7);
+        // console.log(display_value2);
         // $('#available_pcs').val(catchproduct_pieces);
         // $('#available_pkts').val(catchproduct_packets);
         // $('#available_crtns').val(catchproduct_cartons);

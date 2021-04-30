@@ -211,8 +211,8 @@
             <table class="table-bordered">
                 <thead class="thead-dark-custom">
                     <tr class="row">
-                        <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Product')}}</strong></th>
-                        <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th>
+                        <th colspan="3" class="mycol form-col-2" style="text-align:left"><strong>{{__('Product')}}</strong></th>
+                        {{-- <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th> --}}
                         <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Qty')}}</strong></th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th>
                         <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Disc.')}}</strong></th>
@@ -229,11 +229,14 @@
                         $product_name = $product_data->product_name;
                         $sale_quantity_all += $sale_product->sale_quantity_total;
                         // $unit_price_all += number_format((float)($sale_product->sale_product_sub_total / $sale_product->sale_quantity_total), 2, '.', '');
+                        $sale_packets_number = $sale_product->sale_packets_number;
+                        $sale_cartons_number = $sale_product->sale_cartons_number;
+                        $sale_pieces_number = $sale_product->sale_pieces_number;
                     ?>
                     <tr class="row">
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$product_name}}</td>
-                        <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((integer)$sale_product->sale_quantity_total)}}{{__('pcs')}}</td>
+                        <td colspan="3" class="mycol form-col-2" style="text-align:left;">{{$product_name}}</td>
+                        {{-- <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td> --}}
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">@if($sale_cartons_number !== 0){{number_format((integer)$sale_cartons_number).'crtns '}}@endif @if($sale_packets_number !== 0){{ (number_format((integer)$sale_packets_number)).'pckts ' }}@endif @if($sale_pieces_number !== 0){{number_format((integer)$sale_pieces_number).'pcs'}}@endif </td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                         {{-- {{number_format((float)($sale_product->sale_product_sub_total / $sale_product->sale_quantity_total), 2, '.', '')}} --}}
                         <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((float)$sale_product->sale_trade_discount, 2, '.', '')}}</td>

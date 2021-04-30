@@ -210,8 +210,8 @@
             <table class="table-bordered">
                 <thead class="thead-dark-custom">
                     <tr class="row">
-                        <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Product')}}</strong></th>
-                        <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th>
+                        <th colspan="3" class="mycol form-col-3" style="text-align:left"><strong>{{__('Product')}}</strong></th>
+                        {{-- <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th> --}}
                         <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Qty')}}</strong></th>
                         <th colspan="1" class="mycol form-col-1" style="text-align:left"><strong>{{__(' ')}}</strong></th>
                         <th colspan="2" class="mycol form-col-2" style="text-align:left"><strong>{{__('Disc.')}}</strong></th>
@@ -228,11 +228,14 @@
                         $product_name = $product_data->product_name;
                         $purchase_quantity_all += $purchase_product->purchase_quantity_total;
                         // $unit_price_all += number_format((float)($purchase_product->purchase_product_sub_total / $purchase_product->purchase_quantity_total), 2, '.', '');
+                        $purchase_packets_number = $purchase_product->purchase_packets_number;
+                        $purchase_cartons_number = $purchase_product->purchase_cartons_number;
+                        $purchase_pieces_number = $purchase_product->purchase_pieces_number;
                     ?>
                     <tr class="row">
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{$product_name}}</td>
-                        <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
-                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((integer)$purchase_product->purchase_quantity_total)}}{{__('pcs')}}</td>
+                        <td colspan="3" class="mycol form-col-3" style="text-align:left;">{{$product_name}}</td>
+                        {{-- <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td> --}}
+                        <td colspan="2" class="mycol form-col-2" style="text-align:left;">@if($purchase_cartons_number !== 0){{number_format((integer)$purchase_cartons_number).'crtns '}}@endif @if($purchase_packets_number !== 0){{ (number_format((integer)$purchase_packets_number)).'pckts ' }}@endif @if($purchase_pieces_number !== 0){{number_format((integer)$purchase_pieces_number).'pcs'}}@endif</td>
                         <td colspan="1" class="mycol form-col-1" style="text-align:left;"></td>
                         {{-- {{number_format((float)($purchase_product->purchase_product_sub_total / $purchase_product->purchase_quantity_total), 2, '.', '')}} --}}
                         <td colspan="2" class="mycol form-col-2" style="text-align:left;">{{number_format((float)($purchase_product->purchase_trade_discount), 2, '.', '')}}</td>
@@ -270,7 +273,7 @@
                     </tr>
                     <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Net Balance')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$supplier_data->supplier_balance_dues, 2, '.', '')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)$supplier_data->previous + ($purchase_data->purchase_grandtotal_price-$supplier_data->previous), 2, '.', '')}}</th>
                         {{-- number_format((float)$supplier_data->previous+(float)$purchase_data->purchase_amount_paid/*+$purchase_data->purchase_grandtotal_price*/,2,'.','') --}}
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>
@@ -281,7 +284,7 @@
                     </tr>
                     <tr>
                         <th colspan="9" class="mycol form-col-1" style="text-align:left;">{{__('Payment Dues')}}</th>
-                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)($supplier_data->supplier_balance_dues-$purchase_data->amount_recieved)/*+($purchase_data->purchase_amount_dues)*/, 2, '.', '')}}</th>
+                        <th colspan="2" class="mycol form-col-3" style="text-align:left">{{number_format((float)(($supplier_data->supplier_balance_dues + ($purchase_data->purchase_grandtotal_price-$supplier_data->previous))-$purchase_data->amount_recieved)/*+($purchase_data->purchase_amount_dues)*/, 2, '.', '')}}</th>
                         {{-- number_format((float)($supplier_data->supplier_balance_dues)/*+($purchase_data->purchase_amount_dues)*/,2,'.','') --}}
                         <th colspan="1" class="mycol form-col-1" style="text-align:left;"></th>
                     </tr>

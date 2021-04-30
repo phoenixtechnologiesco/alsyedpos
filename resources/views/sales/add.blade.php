@@ -85,7 +85,7 @@
                         </div> --}}
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="customer_status" class="form-col-12 control-label">{{__(" Customer Status")}}</label>
+                            <label for="customer_status" class="form-col-12 control-label">{{__(" Status")}}</label>
                               <div class="form-col-12">
                                 <input readonly type="text" name="customer_status" id="customer_status" class="form-control col-12" value="">
                                 @include('alerts.feedback', ['field' => 'customer_status'])
@@ -94,7 +94,7 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Amount Paid")}}</label>
+                            <label for="customer_amount_paid" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Paid")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -106,7 +106,7 @@
                         </div>
                         <div class="form-col-2">
                           <div class="form-group">
-                            <label for="customer_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Customer Dues")}}</label>
+                            <label for="customer_amount_dues" class="form-col-12 control-label">&nbsp;&nbsp;{{__("Customer Dues")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text rs">Rs: </span>
@@ -210,7 +210,7 @@
                         </div>
                         <div class="form-last-col-2">
                           <div class="form-group">
-                            <label for="sale_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Upload Document")}}</label>
+                            <label for="sale_document" class="form-col-12 control-label">&nbsp;&nbsp;{{__(" Upload Doc")}}</label>
                             <div class="form-col-12 input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text barcode">
@@ -975,15 +975,10 @@
       subtotal_amount = Number(subtotal_amount) - Number(thisproduct_sub_total);
       grandtotal_amount = Number(grandtotal_amount) - Number(thisproduct_sub_total);
 
-      $('#sale_total_qty').val('');
       $('#sale_total_qty').val(total_quantity);
-      $('#sale_total_items').val('');
       $('#sale_total_items').val(total_items);
-      $('#sale_discount').val('');
       $('#sale_discount').val(total_discount);
-      $('#sale_total_price').val('');
       $('#sale_total_price').val(subtotal_amount);
-      $('#sale_grandtotal_price').val('');
       $('#sale_grandtotal_price').val(grandtotal_amount);
       if(sale_amount_recieved >= grandtotal_amount){
         sale_return_change = Number(sale_amount_recieved) -  Number(grandtotal_amount);
@@ -1131,15 +1126,15 @@
         var data5 = data4*pieces_per_packet;
         // console.log(data5);
         var sign = Math.sign(catchproduct_cartons);
-        var display_value = (sign*data2)+'.'+data5;
-        console.log(display_value);
+        var display_value = (sign*data2)+'.'+Math.trunc(data5);
+        // console.log(display_value);
 
         var data6 = Math.abs(catchproduct_cartons)-data3;
         var data7 = data6*pieces_per_carton;
         // console.log(data7);
         var sign2 = Math.sign(catchproduct_cartons);
-        var display_value2 = (sign2*data3)+'.'+data7;
-        console.log(display_value2);
+        var display_value2 = (sign2*data3)+'.'+Math.trunc(data7);
+        // console.log(display_value2);
         // $('#available_pcs').val(catchproduct_pieces);
         // $('#available_pkts').val(catchproduct_packets);
         // $('#available_crtns').val(catchproduct_cartons);

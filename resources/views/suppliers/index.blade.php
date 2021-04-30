@@ -108,7 +108,7 @@
           //   //   return meta.row + 1;
           //   // },
           // },
-          { className: 'dt-body-center', data: 'DT_RowIndex', name: 'DT_RowIndex'},
+          { className: 'dt-body-center', searchable: false, data: 'DT_RowIndex', name: 'DT_RowIndex'},
           { className: 'dt-body-center', data: 'supplier_ref_no', name: 'supplier_ref_no' },
           { className: 'dt-body-center', data: 'supplier_name', name: 'supplier_name' },
           { className: 'dt-body-center', data: 'supplier_type', name: 'supplier_type' },
