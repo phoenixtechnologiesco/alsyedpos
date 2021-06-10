@@ -14,6 +14,7 @@ use Input;
 use Session;
 use Response;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class CompanyController extends Controller
 {
@@ -63,7 +64,7 @@ class CompanyController extends Controller
         $validate = Validator::make($request->all(), [ 
             // 'company_ref_no'            => 'required',
             'company_parent'            => '',
-            'company_name'              => 'required',
+            'company_name'              => ['required','unique:companies,company_name'],
             'company_description'              => '',
             // 'status_id'                 => 'required',
         ]);
@@ -133,7 +134,7 @@ class CompanyController extends Controller
         $validate = Validator::make($request->all(), [ 
             // 'company_ref_no'            => '',
             'company_parent'            => '',
-            'company_name'              => '',
+            'company_name'              => ['required', Rule::unique('companies', 'company_name')->ignore($id, 'company_id'),],
             'company_description'       => '',
             // 'status_id'                 => 'required',
         ]);

@@ -190,13 +190,13 @@
                             <div class="form-col-6">
                               <label for="payterm_duratype" class="form-col-12 control-label">{{__("Payterm")}}</label>
                                 <div class="form-col-12">
-                                  <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="30 Days">
+                                  <input readonly type="text" name="payterm_duratype" id="payterm_duratype" class="form-control col-12" value="0 Days">
                                 </div>
                             </div>
                             <div class="form-col-6">
                               <label for="customer_credit_limit" class=" form-col-12 control-label">{{__(" Credit Limit")}}</label>
                                 <div class=" form-col-12">
-                                  <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="30000">
+                                  <input readonly type="number" name="customer_credit_limit" id="customer_credit_limit" class="form-control col-12" value="0">
                                 </div>
                             </div>
                           </div>

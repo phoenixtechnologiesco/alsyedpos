@@ -15,6 +15,7 @@ use Input;
 use Session;
 use Response;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
@@ -73,7 +74,7 @@ class CustomerController extends Controller
         $validate = Validator::make($request->all(), [ 
             'customer_ref_no' 			=> 'required',
             'customer_type'             => 'required',//General, Distributer, Reseller
-            'customer_name' 			=> 'required',
+            'customer_name' 			=> ['required','unique:customers,customer_name'],
             'customer_shop_name' 		=> '',
             'customer_shop_info' 		=> '',
             'customer_email' 			=> '',
@@ -180,7 +181,7 @@ class CustomerController extends Controller
         $validate = Validator::make($request->all(), [ 
             'customer_ref_no' 			=> 'required',
             'customer_type'             => 'required',//General, Distributer, Reseller
-            'customer_name' 			=> 'required',
+            'customer_name' 			=> ['required', Rule::unique('customers', 'customer_name')->ignore($id, 'customer_id'),],
             'customer_shop_name' 		=> '',
             'customer_shop_info' 		=> '',
             'customer_email' 			=> '',

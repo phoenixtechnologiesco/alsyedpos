@@ -15,6 +15,7 @@ use Input;
 use Session;
 use Response;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class BrandController extends Controller
 {
@@ -65,7 +66,7 @@ class BrandController extends Controller
         $validate = Validator::make($request->all(), [ 
             // 'brand_ref_no'            => '',
             'parent_company'            => '',
-            'brand_name'              => 'required',
+            'brand_name'              => ['required','unique:brands,brand_name'],
             'brand_description'              => '',
             // 'status_id'                 => 'required',
         ]);
@@ -134,7 +135,7 @@ class BrandController extends Controller
         $validate = Validator::make($request->all(), [ 
             // 'brand_ref_no'            => '',
             'parent_company'            => '',
-            'brand_name'              => '',
+            'brand_name'              => ['required', Rule::unique('brands', 'brand_name')->ignore($id, 'brand_id'),],
             'brand_description'       => '',
             // 'status_id'                 => 'required',
         ]);

@@ -250,6 +250,7 @@ class SaleController extends Controller
         $sale_amount_recieved = $request->sale_amount_recieved;
         $customer_amount_paid = $request->customer_amount_paid;
         $customer_amount_dues = $request->customer_amount_dues;
+        $previous_balance = $request->customer_amount_dues;
         $sale_amount_dues = $sale_grandtotal_price;
 
         if($sale_amount_recieved >= $sale_grandtotal_price){
@@ -436,6 +437,7 @@ class SaleController extends Controller
             $user_data = User::where('id', $sale_data->sale_added_by)->first();
             $warehouse_data = Warehouse::where('warehouse_id', $sale_data->warehouse_id)->first();
             $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
+            $customer_data->previous = $previous_balance;
             $payment_data = Payment::where('sale_id', $id)->get();
 
             return view('sales.invoice', compact('sale_data', 'sale_products_data', 'user_data', 'warehouse_data', 'customer_data', 'payment_data',));
@@ -1097,7 +1099,7 @@ class SaleController extends Controller
             $customer_data = Customer::where('customer_id', $sale_data->sale_customer_id)->first();
             $payment_data = Payment::where('sale_id', $sale_id)->get();
             $customer_data->previous = $previous_balance;
-            $sale_data->amount_recieved = $sale_amount_recieved;
+            $sale_data->sale_amount_recieved = $sale_amount_recieved;
 
             return view('sales.invoiceupdate', compact('sale_data', 'sale_products_data', 'user_data', 'warehouse_data', 'customer_data', 'payment_data', ));
             // return redirect('sale/gen_invoice2/'.$sale_id);

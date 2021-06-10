@@ -15,6 +15,7 @@ use Input;
 use Session;
 use Response;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class SupplierController extends Controller
 {
@@ -70,7 +71,7 @@ class SupplierController extends Controller
         $validate = Validator::make($request->all(), [ 
             'supplier_ref_no' 			=> 'required',
             'supplier_type'             => 'required',//General, Booker
-            'supplier_name' 			=> 'required',
+            'supplier_name' 			=> ['required','unique:suppliers,supplier_name'],
             'supplier_shop_name' 		=> '',
             'supplier_shop_info' 		=> '',
             'supplier_email' 			=> '',
@@ -168,7 +169,7 @@ class SupplierController extends Controller
         $validate = Validator::make($request->all(), [ 
             'supplier_ref_no' 			=> 'required',
             'supplier_type'             => 'required',//General, Booker
-            'supplier_name' 			=> 'required',
+            'supplier_name' 			=> ['required', Rule::unique('suppliers', 'supplier_name')->ignore($id, 'supplier_id'),],
             'supplier_shop_name' 		=> '',
             'supplier_shop_info' 		=> '',
             'supplier_email' 			=> '',

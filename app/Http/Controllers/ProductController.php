@@ -18,6 +18,7 @@ use Input;
 use Session;
 use Response;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -124,9 +125,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [ 
-            'product_ref_no'                => '',
+            'product_ref_no'                => 'unique:products,product_ref_no',
             'warehouse_id'                  => 'required',
-            'product_name'                  => 'required',
+            'product_name'                  => ['required','unique:products,product_name'],
             'product_company'               => 'required',
             'product_brand'                 => '',
             'product_piece_per_packet'      => '',
@@ -288,9 +289,9 @@ class ProductController extends Controller
     {
         $product_id = $id; //OR $request->products_id;
         $validate = Validator::make($request->all(), [ 
-            'product_ref_no'                => '',
+            'product_ref_no'                => Rule::unique('products', 'product_ref_no')->ignore($id, 'product_id'),
             'warehouse_id'                  => 'required',
-            'product_name'                  => 'required',
+            'product_name'                  => ['required', Rule::unique('products', 'product_name')->ignore($id, 'product_id')],
             'product_company'               => 'required',
             'product_brand'                 => '',
             'product_piece_per_packet'      => '',
@@ -306,9 +307,9 @@ class ProductController extends Controller
             'product_quantity_available'    => 'required',
             'product_quantity_damage'       => '',
             'product_alert_quantity'        => 'required',
-            'product_trade_price_piece'     => '',
+            'product_trade_price_piece'     => 'required',
             'product_trade_price_packet'    => '',
-            'product_trade_price_carton'    => 'required',
+            'product_trade_price_carton'    => '',
             'product_credit_price_piece'    => 'required',
             'product_credit_price_packet'   => '',
             'product_credit_price_carton'   => '',
